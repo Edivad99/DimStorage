@@ -1,0 +1,6 @@
+{
+   "parent": "item/generated",
+   "textures": {
+       "layer0": "dimstorage:items/solid_dim_core"
+   }
+}

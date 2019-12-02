@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "dimstorage:dim_core"
+    },
+    "pattern": [
+        "aba",
+        "bcb",
+        "aba"
+   ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "a": {
+            "item": "minecraft:iron_ingot"
+        },
+        "b": {
+            "item": "minecraft:redstone"
+        },
+        "c": {
+           "item": "minecraft:diamond"
+        }
+    }
+}
