@@ -35,7 +35,7 @@ public class ProxyClient extends Proxy {
 		super.init(e);
 
 		PacketCustom.assignHandler(DimStorageCPH.channel, new DimStorageCPH());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
+		
 	}
 
 	@SubscribeEvent
