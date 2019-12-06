@@ -98,7 +98,7 @@ public class ModelDimChest extends ModelBase {
 		// check state
 		if(this.tileEntity.locked)
 			this.indicatorRed.render(f5);
-		else if (this.tileEntity.frequency.hasOwner())
+		else if(this.tileEntity.frequency.hasOwner())
 			this.indicatorBlue.render(f5);
 		else
 			this.indicatorGreen.render(f5);

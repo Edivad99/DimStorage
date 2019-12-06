@@ -48,7 +48,7 @@ public class ItemDimChest extends ItemBlock {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
 	{

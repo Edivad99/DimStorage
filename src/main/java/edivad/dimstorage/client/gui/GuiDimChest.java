@@ -47,7 +47,7 @@ public class GuiDimChest extends GuiContainer {
 	private boolean settingsButtonOver;
 
 	private boolean noConfig;
-	
+
 	private TileEntityDimChest ownerTile;
 	private InventoryPlayer invPlayer;
 
@@ -119,7 +119,7 @@ public class GuiDimChest extends GuiContainer {
 				drawSettings(true);
 			}
 		}
-		else if (state == SettingsState.STATE_CLOSING)
+		else if(state == SettingsState.STATE_CLOSING)
 		{
 			animationState -= ANIMATION_SPEED;
 			if(animationState <= 0)
@@ -139,7 +139,7 @@ public class GuiDimChest extends GuiContainer {
 			PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
 			this.inventorySlots = new ContainerDimChest(invPlayer, ownerTile.getStorage());
 		}
-		else if (button.id == BUTTON_FREQ)
+		else if(button.id == BUTTON_FREQ)
 		{
 			try
 			{
@@ -154,7 +154,7 @@ public class GuiDimChest extends GuiContainer {
 				freqTextField.setText(String.valueOf(currentFreq));
 			}
 		}
-		else if (button.id == BUTTON_LOCKED)
+		else if(button.id == BUTTON_LOCKED)
 		{
 			ownerTile.swapLocked();
 			PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));

@@ -17,45 +17,49 @@ public class DimChestItemRender implements IItemRenderer {
 	private final ResourceLocation texture = new ResourceLocation("dimstorage", "textures/models/dimchest.png");
 
 	private ModelDimChest model = new ModelDimChest();
-	
-    @Override
-    public void renderItem(ItemStack item, TransformType transformType) {
-        GlStateManager.pushMatrix();
 
-        Frequency frequency = Frequency.readFromStack(item);
-        //RenderTileEnderChest.renderChest(2, frequency, 0, 0, 0, 0, 0F);
-        render(0,0,0,0,0,0);
+	@Override
+	public void renderItem(ItemStack item, TransformType transformType)
+	{
+		GlStateManager.pushMatrix();
 
-        //Fixes issues with inventory rendering.
-        //The Portal renderer modifies blend and disables it.
-        //Vanillas inventory relies on the fact that items don't modify gl so it never bothers to set it again.
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.popMatrix();
-    }
+		Frequency frequency = Frequency.readFromStack(item);
+		//RenderTileEnderChest.renderChest(2, frequency, 0, 0, 0, 0, 0F);
+		render(0, 0, 0, 0, 0, 0);
 
-    @Override
-    public IModelState getTransforms() {
-        return TransformUtils.DEFAULT_BLOCK;
-    }
+		//Fixes issues with inventory rendering.
+		//The Portal renderer modifies blend and disables it.
+		//Vanillas inventory relies on the fact that items don't modify gl so it never bothers to set it again.
+		GlStateManager.enableBlend();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.popMatrix();
+	}
 
-    @Override
-    public boolean isAmbientOcclusion() {
-        return false;
-    }
+	@Override
+	public IModelState getTransforms()
+	{
+		return TransformUtils.DEFAULT_BLOCK;
+	}
 
-    @Override
-    public boolean isGui3d() {
-        return false;
-    }
-    
-    private void render(double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+	@Override
+	public boolean isAmbientOcclusion()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isGui3d()
+	{
+		return false;
+	}
+
+	private void render(double x, double y, double z, float partialTicks, int destroyStage, float alpha)
 	{
 		GlStateManager.pushMatrix();
 
 		GlStateManager.translate(x, y, z);
 
-		this.renderBlock();
+		renderBlock();
 		GlStateManager.popMatrix();
 	}
 
@@ -83,4 +87,3 @@ public class DimChestItemRender implements IItemRenderer {
 		GlStateManager.popMatrix();
 	}
 }
-

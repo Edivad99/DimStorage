@@ -122,13 +122,13 @@ public class Frequency implements Copyable<Frequency> {
 	{
 		return new Frequency(owner, channel);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
 		if(!(obj instanceof Frequency))
 			return false;
-		
+
 		Frequency f = (Frequency) obj;
 		return (f.channel == this.channel && f.owner == this.owner);
 	}

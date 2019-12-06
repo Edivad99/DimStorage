@@ -5,14 +5,11 @@ import com.google.common.util.concurrent.ListenableFuture;
 import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.ModItems;
-import edivad.dimstorage.client.render.tile.RenderTileDimChest;
 import edivad.dimstorage.network.DimStorageCPH;
-import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -33,9 +30,7 @@ public class ProxyClient extends Proxy {
 	public void init(FMLInitializationEvent e)
 	{
 		super.init(e);
-
 		PacketCustom.assignHandler(DimStorageCPH.channel, new DimStorageCPH());
-		
 	}
 
 	@SubscribeEvent

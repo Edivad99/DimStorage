@@ -33,7 +33,7 @@ public class EventHandler {
 				{
 					event.player.sendMessage(new TextComponentString(TextFormatting.WHITE + "- " + change));
 				}
-				
+
 				if(result.changes.size() > 1)
 				{
 					event.player.sendMessage(new TextComponentString(TextFormatting.WHITE + "- And more..."));

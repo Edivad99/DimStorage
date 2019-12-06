@@ -29,6 +29,6 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileEntityDimChest.class, Main.MODID + ":dimensional_chest");
 		ModelRegistryHelper.register(new ModelResourceLocation(Main.MODID + ":dimensional_chest"), new DimChestItemRender());
 		//ModelLoader.setCustomStateMapper(dimChest, new StateMap.Builder().build());
-        //ModelRegistryHelper.register(new ModelResourceLocation(Main.MODID + ":dimensional_chest", "normal"), ParticleDummyModel.INSTANCE);
+		//ModelRegistryHelper.register(new ModelResourceLocation(Main.MODID + ":dimensional_chest", "normal"), ParticleDummyModel.INSTANCE);
 	}
 }

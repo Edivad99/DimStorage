@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DimChest extends Block implements ITileEntityProvider {
 
 	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
-	
+
 	public DimChest()
 	{
 		super(Material.ROCK);
@@ -105,7 +105,6 @@ public class DimChest extends Block implements ITileEntityProvider {
 		super.breakBlock(worldIn, pos, state);
 		worldIn.removeTileEntity(pos);
 	}
-	
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)

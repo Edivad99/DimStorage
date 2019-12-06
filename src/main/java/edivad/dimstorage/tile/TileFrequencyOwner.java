@@ -37,9 +37,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		}
 		reloadStorage();
 	}
-	
+
 	public abstract void reloadStorage();
-	
+
 	public void swapOwner()
 	{
 		if(frequency.hasOwner())
@@ -47,14 +47,14 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		else
 			setFreq(frequency.copy().setOwner(Minecraft.getMinecraft().player.getDisplayNameString()));
 	}
-	
-	public boolean canAccess() 
+
+	public boolean canAccess()
 	{
 		if(!frequency.hasOwner())
 			return true;
 		return frequency.getOwner().equals(Minecraft.getMinecraft().player.getDisplayNameString());
 	}
-	
+
 	@Override
 	public void update()
 	{

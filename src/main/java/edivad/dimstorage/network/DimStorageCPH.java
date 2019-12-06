@@ -36,24 +36,24 @@ public class DimStorageCPH implements IClientPacketHandler {
 				((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(packet.readBoolean() ? 1 : 0);
 				System.out.println("Chest open on the frequency: " + freq);
 				break;
-//			case 4: break;
-//			case 5:
-//			case 6:
-//				handleTankTilePacket(mc.world, packet.readPos(), packet);
-//				break;
-			default: 
+			//			case 4: break;
+			//			case 5:
+			//			case 6:
+			//				handleTankTilePacket(mc.world, packet.readPos(), packet);
+			//				break;
+			default:
 				System.out.println(packet.getType());
 				break;
 		}
 	}
 
-//	private void handleTankTilePacket(WorldClient world, BlockPos pos, PacketCustom packet)
-//	{
-//		//        TileEntity tile = world.getTileEntity(pos);
-//		//        if (tile instanceof TileEnderTank) {
-//		//            ((TileEnderTank) tile).sync(packet);
-//		//        }
-//	}
+	//	private void handleTankTilePacket(WorldClient world, BlockPos pos, PacketCustom packet)
+	//	{
+	//		//        TileEntity tile = world.getTileEntity(pos);
+	//		//        if (tile instanceof TileEnderTank) {
+	//		//            ((TileEnderTank) tile).sync(packet);
+	//		//        }
+	//	}
 
 	private void handleTilePacket(WorldClient world, PacketCustom packet, BlockPos pos)
 	{
@@ -64,15 +64,15 @@ public class DimStorageCPH implements IClientPacketHandler {
 			((TileFrequencyOwner) tile).readFromPacket(packet);
 		}
 	}
-	
-//	private void openGui(WorldClient world, InventoryPlayer inventory, PacketCustom packet)
-//	{
-//		int windowID = packet.readUByte();
-//		TileEntity entity = world.getTileEntity(packet.readPos());
-//		if(entity != null && (entity instanceof TileEntityDimChest))
-//		{
-//			TileEntityDimChest tile = (TileEntityDimChest) entity;
-//			((DimChestStorage) DimStorageManager.instance(true).getStorage(Frequency.readFromPacket(packet), "item")).openClientGui(windowID, inventory, tile);
-//		}
-//	}
+
+	//	private void openGui(WorldClient world, InventoryPlayer inventory, PacketCustom packet)
+	//	{
+	//		int windowID = packet.readUByte();
+	//		TileEntity entity = world.getTileEntity(packet.readPos());
+	//		if(entity != null && (entity instanceof TileEntityDimChest))
+	//		{
+	//			TileEntityDimChest tile = (TileEntityDimChest) entity;
+	//			((DimChestStorage) DimStorageManager.instance(true).getStorage(Frequency.readFromPacket(packet), "item")).openClientGui(windowID, inventory, tile);
+	//		}
+	//	}
 }

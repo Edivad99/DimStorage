@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
+public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile {
 
 	private static final float MIN_MOVABLE_POSITION = 0f;
 	private static final float MAX_MOVABLE_POSITION = 0.5f;
@@ -35,7 +35,7 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
 	private int openCount;
 	public float movablePartState;
 	public int rotation;
-	
+
 	public boolean locked;
 	private DimChestStorage currentStorage;
 
@@ -58,8 +58,8 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
 			//System.out.println(getStorage().freq);
 		}
-//		if(world.isRemote && world.getTotalWorldTime() % 20 == 0)
-//			System.out.println(getStorage().freq);
+		//		if(world.isRemote && world.getTotalWorldTime() % 20 == 0)
+		//			System.out.println(getStorage().freq);
 
 		if(this.openCount > 0)
 		{
@@ -76,7 +76,7 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
 				this.movablePartState = MIN_MOVABLE_POSITION;
 		}
 	}
-	
+
 	public void swapLocked()
 	{
 		locked = !locked;
@@ -148,7 +148,7 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
 		{
 			player.sendMessage(new TextComponentString(TextFormatting.RED + Translate.translateToLocal("tile." + Main.MODID + ".accessDenied")));
 		}
-	
+
 		return true;
 	}
 
@@ -194,7 +194,7 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile{
 		currentStorage.empty();
 		return new GuiDimChest(player.inventory, currentStorage, this);
 	}
-	
+
 	@Override
 	public void reloadStorage()
 	{
