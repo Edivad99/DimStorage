@@ -1,0 +1,26 @@
+{
+    "parent": "dimstorage:root",
+    "display": {
+        "icon": {
+            "item": "dimstorage:dimensional_chest"
+        },
+        "title": {
+            "translate": "advancements.dimstorage.dimensional_chest"
+        },
+        "description": {
+            "translate": "advancements.dimstorage.dimensional_chest.desc"
+        }
+    },
+    "criteria": {
+        "certus": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dimstorage:dimensional_chest"
+                    }
+                ]
+            }
+        }
+    }
+}

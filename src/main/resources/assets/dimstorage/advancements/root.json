@@ -1,0 +1,26 @@
+{
+    "display": {
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+        "icon": {
+            "item": "dimstorage:dim_core"
+        },
+        "title": {
+            "translate": "advancements.dimstorage.root"
+        },
+        "description": {
+            "translate": "advancements.dimstorage.root.desc"
+        }
+    },
+    "criteria": {
+        "certus": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dimstorage:dim_core"
+                    }
+                ]
+            }
+        }
+    }
+}
