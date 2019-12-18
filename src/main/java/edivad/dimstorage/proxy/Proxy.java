@@ -6,6 +6,7 @@ import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.ModItems;
+import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.DimStorageSPH;
 import edivad.dimstorage.network.test.PacketHandler;
@@ -29,6 +30,7 @@ public class Proxy {
 	{
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
+		MainCompatHandler.registerTOP();
 	}
 
 	public void init(FMLInitializationEvent e)

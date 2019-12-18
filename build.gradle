@@ -32,10 +32,15 @@ repositories {
         name = "CB Repo"
         url = "http://chickenbones.net/maven"
     }
+    maven { // TOP
+        name 'tterrag maven'
+        url "http://maven.tterrag.com/"
+    }
 }
 
 dependencies {
      compile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:deobf"
+     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
 }
 
 processResources {

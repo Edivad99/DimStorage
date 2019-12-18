@@ -3,8 +3,12 @@ package edivad.dimstorage.blocks;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
+import edivad.dimstorage.compat.top.TOPInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -24,6 +28,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -31,7 +36,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class DimChest extends Block implements ITileEntityProvider {
+public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvider {
 
 	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
 
@@ -179,5 +184,26 @@ public class DimChest extends Block implements ITileEntityProvider {
 	{
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
+	}
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
+	{
+		TileEntity te = world.getTileEntity(data.getPos());
+		if(te instanceof TileEntityDimChest)
+		{
+			TileEntityDimChest tile = (TileEntityDimChest) te;
+			
+			if(tile.frequency.hasOwner())
+			{
+				if(tile.canAccess())
+					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
+				else
+					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
+			}
+			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
+			if(tile.locked)
+				probeInfo.horizontal().text("Locked: Yes");
+		}
 	}
 }
