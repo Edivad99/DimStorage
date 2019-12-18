@@ -2,7 +2,9 @@ package edivad.dimstorage.proxy;
 
 import javax.annotation.Nullable;
 
-import edivad.dimstorage.tools.IGuiTile;
+import edivad.dimstorage.client.gui.GuiDimChest;
+import edivad.dimstorage.container.ContainerDimChest;
+import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -19,9 +21,14 @@ public class GuiHandler implements IGuiHandler {
 	{
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
-		if(te instanceof IGuiTile)
+		if(ID == 0)//DimChest
 		{
-			return ((IGuiTile) te).createContainer(player);
+			if(te instanceof TileEntityDimChest)
+			{
+				TileEntityDimChest tile = (TileEntityDimChest) te;
+				//tile.reloadStorage();
+				return new ContainerDimChest(player.inventory, ((TileEntityDimChest) te).getStorage());
+			}
 		}
 		return null;
 	}
@@ -33,10 +40,16 @@ public class GuiHandler implements IGuiHandler {
 	{
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
-		if(te instanceof IGuiTile)
+		if(ID == 0)//DimChest
 		{
-			return ((IGuiTile) te).createGui(player);
+			if(te instanceof TileEntityDimChest)
+			{
+				TileEntityDimChest tile = (TileEntityDimChest) te;
+				tile.getStorage().empty();
+				return new GuiDimChest(player.inventory, tile.getStorage(), tile);
+			}
 		}
+
 		return null;
 	}
 }

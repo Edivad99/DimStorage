@@ -8,7 +8,6 @@ import edivad.dimstorage.client.gui.GuiDimChest;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tools.IGuiTile;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile {
+public class TileEntityDimChest extends TileFrequencyOwner {
 
 	private static final float MIN_MOVABLE_POSITION = 0f;
 	private static final float MAX_MOVABLE_POSITION = 0.5f;
@@ -177,22 +176,6 @@ public class TileEntityDimChest extends TileFrequencyOwner implements IGuiTile {
 			return (T) new InvWrapper(getStorage());
 		}
 		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public Container createContainer(EntityPlayer player)
-	{
-		reloadStorage();
-		return new ContainerDimChest(player.inventory, currentStorage);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer createGui(EntityPlayer player)
-	{
-		reloadStorage();
-		currentStorage.empty();
-		return new GuiDimChest(player.inventory, currentStorage, this);
 	}
 
 	@Override

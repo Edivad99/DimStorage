@@ -113,9 +113,6 @@ public class DimChest extends Block implements ITileEntityProvider {
 		if(tile != null)
 		{
 			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
-			//            if (ConfigurationHandler.anarchyMode && tile.frequency.hasOwner()) {
-			//                drops.add(ConfigurationHandler.personalItem.copy());
-			//            }
 		}
 	}
 
