@@ -165,7 +165,11 @@ public class GuiDimChest extends GuiContainer {
 	protected void keyTyped(char c, int code) throws IOException
 	{
 		super.keyTyped(c, code);
-		freqTextField.textboxKeyTyped(c, code);
+		//14 delete
+		if((code >= 2 && code <= 11) || code == 14)
+		{
+			freqTextField.textboxKeyTyped(c, code);
+		}
 	}
 
 	@Override

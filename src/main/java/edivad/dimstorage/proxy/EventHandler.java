@@ -18,7 +18,7 @@ public class EventHandler {
 	public void handlePlayerLoggedInEvent(PlayerLoggedInEvent event)
 	{
 		CheckResult result = ForgeVersion.getResult(Loader.instance().activeModContainer());
-		if(!(result.status.equals(Status.UP_TO_DATE) || result.status.equals(Status.PENDING)))
+		if(!(result.status.equals(Status.UP_TO_DATE) || result.status.equals(Status.PENDING) || result.status.equals(Status.AHEAD)))
 		{
 			event.player.sendMessage(new TextComponentString(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "A new version is available (" + result.target + "), please update!"));
 			event.player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Changelog:"));
