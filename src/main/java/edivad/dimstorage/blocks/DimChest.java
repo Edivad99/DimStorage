@@ -1,14 +1,19 @@
 package edivad.dimstorage.blocks;
 
+import java.util.List;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
 import edivad.dimstorage.compat.top.TOPInfoProvider;
+import edivad.dimstorage.compat.waila.WailaInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -36,7 +41,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvider {
+public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvider, WailaInfoProvider {
 
 	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
 
@@ -205,5 +210,27 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 			if(tile.locked)
 				probeInfo.horizontal().text("Locked: Yes");
 		}
+	}
+
+	@Override
+	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+	{
+		TileEntity te = accessor.getTileEntity();
+        if(te instanceof TileEntityDimChest)
+		{
+			TileEntityDimChest tile = (TileEntityDimChest) te;
+			
+			if(tile.frequency.hasOwner())
+			{
+				if(tile.canAccess())
+					currenttip.add(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
+				else
+					currenttip.add(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
+			}
+			currenttip.add("Frequency: " + tile.frequency.getChannel());
+			if(tile.locked)
+				currenttip.add("Locked: Yes");
+		}
+        return currenttip;
 	}
 }

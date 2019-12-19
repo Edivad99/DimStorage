@@ -31,6 +31,7 @@ public class Proxy {
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 		MainCompatHandler.registerTOP();
+		MainCompatHandler.registerWaila();
 	}
 
 	public void init(FMLInitializationEvent e)

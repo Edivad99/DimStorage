@@ -32,6 +32,10 @@ repositories {
         name = "CB Repo"
         url = "http://chickenbones.net/maven"
     }
+	maven { // The repo from which to get waila
+        name "Mobius Repo"
+        url "http://tehnut.info/maven"
+    }
     maven { // TOP
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
@@ -40,7 +44,8 @@ repositories {
 
 dependencies {
      compile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:deobf"
-     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+	 deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2:api"
+     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17:api"
 }
 
 processResources {

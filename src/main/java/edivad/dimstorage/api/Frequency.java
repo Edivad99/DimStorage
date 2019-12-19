@@ -6,6 +6,7 @@ import codechicken.lib.util.Copyable;
 import codechicken.lib.util.ItemNBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.Loader;
 
 public class Frequency implements Copyable<Frequency> {
 
@@ -64,7 +65,9 @@ public class Frequency implements Copyable<Frequency> {
 	{
 		owner = tagCompound.getString("owner");
 		channel = tagCompound.getInteger("channel");
-		System.out.println("read_internal: " + this);
+		//Useful at the moment to avoid console spam
+		if(!Loader.isModLoaded("waila"))
+			System.out.println("read_internal: " + this);
 		return this;
 	}
 
