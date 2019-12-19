@@ -143,7 +143,7 @@ public class GuiDimChest extends GuiContainer {
 		{
 			try
 			{
-				int freq = Integer.parseInt(freqTextField.getText());
+				int freq = Math.abs(Integer.parseInt(freqTextField.getText()));
 				ownerTile.setFreq(ownerTile.frequency.copy().setChannel(freq));
 				PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
 				this.inventorySlots = new ContainerDimChest(invPlayer, ownerTile.getStorage());
