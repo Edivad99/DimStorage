@@ -1,9 +1,9 @@
 package edivad.dimstorage.network;
 
 import codechicken.lib.packet.ICustomPacketHandler.IServerPacketHandler;
+import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import codechicken.lib.packet.PacketCustom;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.INetHandlerPlayServer;

@@ -1,12 +1,12 @@
 package edivad.dimstorage.network;
 
 import codechicken.lib.packet.ICustomPacketHandler.IClientPacketHandler;
+import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import codechicken.lib.packet.PacketCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.play.INetHandlerPlayClient;

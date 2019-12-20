@@ -2,7 +2,6 @@ package edivad.dimstorage.network.test;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
