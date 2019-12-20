@@ -81,7 +81,8 @@ public class DoBlockUpdate implements IMessage {
 				chest.locked = msg.locked;
 				
 				world.markBlockRangeForRenderUpdate(msg.pos, msg.pos);
-				player.openGui(Main.MODID, 1, world, msg.pos.getX(), msg.pos.getY(), msg.pos.getZ());
+				if(chest.canAccess())
+					player.openGui(Main.MODID, 1, world, msg.pos.getX(), msg.pos.getY(), msg.pos.getZ());
 			}
 		}
 	}

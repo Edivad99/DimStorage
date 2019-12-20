@@ -28,7 +28,6 @@ public class GuiHandler implements IGuiHandler {
 			if(te instanceof TileEntityDimChest)
 			{
 				TileEntityDimChest tile = (TileEntityDimChest) te;
-				//tile.reloadStorage();
 				return new ContainerDimChest(player.inventory, ((TileEntityDimChest) te).getStorage());
 			}
 		}
