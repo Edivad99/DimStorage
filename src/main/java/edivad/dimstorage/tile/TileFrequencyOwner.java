@@ -35,11 +35,8 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		{
 			sendUpdatePacket();
 		}
-		reloadStorage();
 	}
-
-	public abstract void reloadStorage();
-
+	
 	public void swapOwner()
 	{
 		if(frequency.hasOwner())

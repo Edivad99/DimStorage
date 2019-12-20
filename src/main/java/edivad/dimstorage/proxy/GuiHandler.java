@@ -21,7 +21,9 @@ public class GuiHandler implements IGuiHandler {
 	{
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
-		if(ID == 0)//DimChest
+		int block = ID / 2;
+		
+		if(block == 0)//DimChest
 		{
 			if(te instanceof TileEntityDimChest)
 			{
@@ -40,13 +42,17 @@ public class GuiHandler implements IGuiHandler {
 	{
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
-		if(ID == 0)//DimChest
+		
+		int block = ID / 2;
+		boolean openGUI = (ID % 2) != 0;
+		
+		if(block == 0)//DimChest
 		{
 			if(te instanceof TileEntityDimChest)
 			{
 				TileEntityDimChest tile = (TileEntityDimChest) te;
 				tile.getStorage().empty();
-				return new GuiDimChest(player.inventory, tile.getStorage(), tile);
+				return new GuiDimChest(player.inventory, tile.getStorage(), tile, openGUI);
 			}
 		}
 

@@ -51,7 +51,7 @@ public class GuiDimChest extends GuiContainer {
 	private TileEntityDimChest ownerTile;
 	private InventoryPlayer invPlayer;
 
-	public GuiDimChest(InventoryPlayer invPlayer, DimChestStorage chestInv, TileEntityDimChest owner)
+	public GuiDimChest(InventoryPlayer invPlayer, DimChestStorage chestInv, TileEntityDimChest owner, boolean drawSettings)
 	{
 		super(new ContainerDimChest(invPlayer, chestInv));
 		this.ownerTile = owner;
@@ -62,9 +62,15 @@ public class GuiDimChest extends GuiContainer {
 
 		this.state = SettingsState.STATE_CLOSED;
 		this.animationState = 0;
-		this.drawSettings = false;
+		this.drawSettings = drawSettings;
 		this.settingsButtonOver = false;
 		this.noConfig = false;
+		
+		if(this.drawSettings)
+		{
+			animationState = SETTINGS_WIDTH;
+			state = SettingsState.STATE_OPENED;
+		}
 	}
 
 	@Override
@@ -137,7 +143,6 @@ public class GuiDimChest extends GuiContainer {
 		{
 			ownerTile.swapOwner();
 			PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
-			this.inventorySlots = new ContainerDimChest(invPlayer, ownerTile.getStorage());
 		}
 		else if(button.id == BUTTON_FREQ)
 		{
@@ -145,9 +150,8 @@ public class GuiDimChest extends GuiContainer {
 			{
 				int freq = Math.abs(Integer.parseInt(freqTextField.getText()));
 				ownerTile.setFreq(ownerTile.frequency.copy().setChannel(freq));
-				PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
-				this.inventorySlots = new ContainerDimChest(invPlayer, ownerTile.getStorage());
 				currentFreq = freq;
+				PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
 			}
 			catch(Exception e)
 			{

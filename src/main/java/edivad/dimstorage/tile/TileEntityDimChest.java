@@ -183,10 +183,4 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		return super.getCapability(capability, facing);
 	}
-
-	@Override
-	public void reloadStorage()
-	{
-		currentStorage = getStorage();
-	}
 }
