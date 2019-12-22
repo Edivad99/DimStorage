@@ -8,8 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class EnvironmentDimChest extends AbstractDimStorageEnviroment<TileEntityDimChest> {
 
-	// wget -f <download url> <path to the new file + filename>
-	// pastebin get myyu9FwC dimstorage -f
+	// wget -f https://raw.githubusercontent.com/Edivad99/DimStorage/master/extra/DimStorageAPI.lua dimstorage
 
 	public EnvironmentDimChest(TileEntityDimChest tile)
 	{
