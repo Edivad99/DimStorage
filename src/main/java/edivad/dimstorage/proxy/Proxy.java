@@ -7,10 +7,12 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.ModItems;
 import edivad.dimstorage.compat.MainCompatHandler;
+import edivad.dimstorage.compat.opencomputers.DriverDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.DimStorageSPH;
 import edivad.dimstorage.network.test.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
+import li.cil.oc.api.Driver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -39,6 +41,9 @@ public class Proxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, new GuiHandler());
 		PacketCustom.assignHandler(DimStorageSPH.channel, new DimStorageSPH());
 		PacketHandler.init();
+
+		//OpenComputers
+		Driver.add(new DriverDimChest());
 	}
 
 	public void postInit(FMLPostInitializationEvent e)

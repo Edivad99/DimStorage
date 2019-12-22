@@ -40,12 +40,16 @@ repositories {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
+	maven { //OpenComputers
+		url = "http://maven.cil.li/" 
+	}
 }
 
 dependencies {
-     compile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:deobf"
-	 deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2:api"
-     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17:api"
+    compile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:deobf"
+	compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2:api"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17:api"
 }
 
 processResources {
