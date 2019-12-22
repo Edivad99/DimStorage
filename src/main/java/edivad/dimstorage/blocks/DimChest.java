@@ -198,7 +198,7 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 		if(te instanceof TileEntityDimChest)
 		{
 			TileEntityDimChest tile = (TileEntityDimChest) te;
-			
+
 			if(tile.frequency.hasOwner())
 			{
 				if(tile.canAccess())
@@ -216,10 +216,10 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
 		TileEntity te = accessor.getTileEntity();
-        if(te instanceof TileEntityDimChest)
+		if(te instanceof TileEntityDimChest)
 		{
 			TileEntityDimChest tile = (TileEntityDimChest) te;
-			
+
 			if(tile.frequency.hasOwner())
 			{
 				if(tile.canAccess())
@@ -231,6 +231,6 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 			if(tile.locked)
 				currenttip.add("Locked: Yes");
 		}
-        return currenttip;
+		return currenttip;
 	}
 }

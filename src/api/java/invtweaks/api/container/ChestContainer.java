@@ -6,36 +6,34 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A marker for containers that have a chest-like persistent storage component. Enables the Inventory Tweaks sorting
- * buttons for this container.
+ * A marker for containers that have a chest-like persistent storage component. Enables the
+ * Inventory Tweaks sorting buttons for this container.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ChestContainer
-{
-    // Set to true if the Inventory Tweaks sorting buttons should be shown for this container.
-    boolean showButtons() default true;
+public @interface ChestContainer {
 
-    // Size of a chest row
-    int rowSize() default 9;
+	// Set to true if the Inventory Tweaks sorting buttons should be shown for this container.
+	boolean showButtons() default true;
 
-    // Uses 'large chest' mode for sorting buttons
-    // (Renders buttons vertically down the right side of the GUI)
-    boolean isLargeChest() default false;
+	// Size of a chest row
+	int rowSize() default 9;
 
-    // Annotation for method to get size of a chest row if it is not a fixed size for this container class
-    // Signature int func()
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface RowSizeCallback
-    {
-    }
+	// Uses 'large chest' mode for sorting buttons
+	// (Renders buttons vertically down the right side of the GUI)
+	boolean isLargeChest() default false;
 
-    // Annotation for method to get size of a chest row if it is not a fixed size for this container class
-    // Signature boolean func()
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface IsLargeCallback
-    {
-    }
+	// Annotation for method to get size of a chest row if it is not a fixed size for this container class
+	// Signature int func()
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	@interface RowSizeCallback {
+	}
+
+	// Annotation for method to get size of a chest row if it is not a fixed size for this container class
+	// Signature boolean func()
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	@interface IsLargeCallback {
+	}
 }

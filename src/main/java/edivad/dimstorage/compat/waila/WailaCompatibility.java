@@ -19,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
-
 public class WailaCompatibility implements IWailaDataProvider {
 
 	public static final WailaCompatibility INSTANCE = new WailaCompatibility();
@@ -33,7 +32,7 @@ public class WailaCompatibility implements IWailaDataProvider {
 		{
 			throw new RuntimeException("Please register this handler using the provided method.");
 		}
-		
+
 		if(!loaded)
 		{
 			registrar.registerBodyProvider(INSTANCE, DimChest.class);
@@ -46,9 +45,9 @@ public class WailaCompatibility implements IWailaDataProvider {
 	{
 		if(registered)
 			return;
-		
+
 		FMLInterModComms.sendMessage("waila", "register", "edivad.dimstorage.compat.waila.WailaCompatibility.load");
-		registered = true;		
+		registered = true;
 	}
 
 	@Override

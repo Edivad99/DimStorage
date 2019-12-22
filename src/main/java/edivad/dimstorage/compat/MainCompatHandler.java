@@ -13,11 +13,12 @@ public class MainCompatHandler {
 			TOPCompatibility.register();
 		}
 	}
+
 	public static void registerWaila()
 	{
-        if (Loader.isModLoaded("waila")) 
-        {
-            WailaCompatibility.register();
-        }
-    }
+		if(Loader.isModLoaded("waila"))
+		{
+			WailaCompatibility.register();
+		}
+	}
 }

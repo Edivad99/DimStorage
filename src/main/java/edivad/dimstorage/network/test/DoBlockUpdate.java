@@ -52,7 +52,6 @@ public class DoBlockUpdate implements IMessage {
 		buf.writeInt(freq.getChannel());
 		buf.writeBoolean(locked);
 	}
-	
 
 	public static class Handler implements IMessageHandler<DoBlockUpdate, IMessage> {
 
@@ -70,7 +69,7 @@ public class DoBlockUpdate implements IMessage {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity tile = world.getTileEntity(msg.pos);
-				
+
 				if(!(tile instanceof TileEntityDimChest))
 				{
 					Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
@@ -79,7 +78,7 @@ public class DoBlockUpdate implements IMessage {
 				TileEntityDimChest chest = (TileEntityDimChest) tile;
 				chest.frequency.set(msg.freq);
 				chest.locked = msg.locked;
-				
+
 				world.markBlockRangeForRenderUpdate(msg.pos, msg.pos);
 				if(chest.canAccess())
 					player.openGui(Main.MODID, 1, world, msg.pos.getX(), msg.pos.getY(), msg.pos.getZ());
