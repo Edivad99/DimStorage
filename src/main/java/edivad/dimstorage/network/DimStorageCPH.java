@@ -64,15 +64,4 @@ public class DimStorageCPH implements IClientPacketHandler {
 			((TileFrequencyOwner) tile).readFromPacket(packet);
 		}
 	}
-
-	//	private void openGui(WorldClient world, InventoryPlayer inventory, PacketCustom packet)
-	//	{
-	//		int windowID = packet.readUByte();
-	//		TileEntity entity = world.getTileEntity(packet.readPos());
-	//		if(entity != null && (entity instanceof TileEntityDimChest))
-	//		{
-	//			TileEntityDimChest tile = (TileEntityDimChest) entity;
-	//			((DimChestStorage) DimStorageManager.instance(true).getStorage(Frequency.readFromPacket(packet), "item")).openClientGui(windowID, inventory, tile);
-	//		}
-	//	}
 }

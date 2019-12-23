@@ -36,7 +36,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		movablePartState = MIN_MOVABLE_POSITION;
 		locked = false;
-		//currentStorage = getStorage();
 	}
 
 	@Override
@@ -49,10 +48,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 			openCount = getStorage().getNumOpen();
 			world.addBlockEvent(getPos(), getBlockType(), 1, openCount);
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
-			//System.out.println(getStorage().freq);
 		}
-		//		if(world.isRemote && world.getTotalWorldTime() % 20 == 0)
-		//			System.out.println(getStorage().freq);
 
 		if(this.openCount > 0)
 		{
