@@ -171,13 +171,6 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 	}
 
 	@Override
-	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
-	{
-		TileEntity tile = world.getTileEntity(pos);
-		return tile instanceof TileFrequencyOwner && ((TileFrequencyOwner) tile).rotate();
-	}
-
-	@Override
 	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
 	{
 		TileEntity tileentity = worldIn.getTileEntity(pos);

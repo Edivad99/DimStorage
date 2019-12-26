@@ -27,33 +27,16 @@ public class DimStorageCPH implements IClientPacketHandler {
 				handleTilePacket(mc.world, packet, packet.readPos());
 				System.out.println("readFromPacket");
 				break;
-			case 2:
-				//openGui(mc.world, mc.player.inventory, packet);
-				System.out.println("openGui");
-				break;
 			case 3:
 				Frequency freq = Frequency.readFromPacket(packet);
 				((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(packet.readBoolean() ? 1 : 0);
 				System.out.println("Chest open on the frequency: " + freq);
 				break;
-			//			case 4: break;
-			//			case 5:
-			//			case 6:
-			//				handleTankTilePacket(mc.world, packet.readPos(), packet);
-			//				break;
 			default:
 				System.out.println(packet.getType());
 				break;
 		}
 	}
-
-	//	private void handleTankTilePacket(WorldClient world, BlockPos pos, PacketCustom packet)
-	//	{
-	//		//        TileEntity tile = world.getTileEntity(pos);
-	//		//        if (tile instanceof TileEnderTank) {
-	//		//            ((TileEnderTank) tile).sync(packet);
-	//		//        }
-	//	}
 
 	private void handleTilePacket(WorldClient world, PacketCustom packet, BlockPos pos)
 	{

@@ -2,7 +2,6 @@ package edivad.dimstorage.tile;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.packet.ICustomPacketTile;
 import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
@@ -130,10 +129,5 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public void handleUpdateTag(NBTTagCompound tag)
 	{
 		readFromPacket(PacketCustom.fromNBTTag(tag));
-	}
-
-	public boolean rotate()
-	{
-		return false;
 	}
 }

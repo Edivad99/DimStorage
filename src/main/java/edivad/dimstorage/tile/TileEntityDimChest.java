@@ -2,7 +2,6 @@ package edivad.dimstorage.tile;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
@@ -138,17 +137,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 			player.sendMessage(new TextComponentString(TextFormatting.RED + Translate.translateToLocal("tile." + Main.MODID + ".accessDenied")));
 		}
 
-		return true;
-	}
-
-	@Override
-	public boolean rotate()
-	{
-		if(!world.isRemote)
-		{
-			rotation = (rotation + 1) % 4;
-			PacketCustom.sendToChunk(getUpdatePacket(), world, pos.getX() >> 4, pos.getZ() >> 4);
-		}
 		return true;
 	}
 
