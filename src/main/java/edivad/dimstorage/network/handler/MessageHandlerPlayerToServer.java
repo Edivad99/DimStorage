@@ -1,4 +1,4 @@
-package edivad.dimstorage.network.v2.server;
+package edivad.dimstorage.network.handler;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;

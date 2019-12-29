@@ -1,32 +1,28 @@
 package edivad.dimstorage.api;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.util.Copyable;
-import codechicken.lib.util.ItemNBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 
-public class Frequency implements Copyable<Frequency> {
+public class Frequency {
 
 	private String owner;
 	private int channel;
 
-	public Frequency(String owner, int channel)
+	public Frequency()
 	{
-		this.owner = owner;
-		this.channel = channel;
+		this(1);
 	}
-
+	
 	public Frequency(int channel)
 	{
 		this("public", channel);
 	}
-
-	public Frequency()
+	
+	public Frequency(String owner, int channel)
 	{
-		this(1);
+		this.owner = owner;
+		this.channel = channel;
 	}
 
 	public Frequency setOwner(String owner)
@@ -84,16 +80,6 @@ public class Frequency implements Copyable<Frequency> {
 		return tagCompound;
 	}
 
-	public void writeToPacket(MCDataOutput packet)
-	{
-		packet.writeNBTTagCompound(write_internal(new NBTTagCompound()));
-	}
-
-	public static Frequency readFromPacket(MCDataInput packet)
-	{
-		return new Frequency(packet.readNBTTagCompound());
-	}
-
 	public static Frequency readFromStack(ItemStack stack)
 	{
 		if(stack.hasTagCompound())
@@ -109,7 +95,14 @@ public class Frequency implements Copyable<Frequency> {
 
 	public ItemStack writeToStack(ItemStack stack)
 	{
-		NBTTagCompound tagCompound = ItemNBTUtils.validateTagExists(stack);
+		NBTTagCompound tagCompound;
+		if(!stack.hasTagCompound())
+		{
+			stack.setTagCompound(new NBTTagCompound());
+			tagCompound = stack.getTagCompound();
+		}
+		else
+			tagCompound = stack.getTagCompound();
 		tagCompound.setTag("Frequency", write_internal(new NBTTagCompound()));
 		return stack;
 	}
@@ -120,7 +113,6 @@ public class Frequency implements Copyable<Frequency> {
 		return "owner=" + owner + ",channel=" + channel;
 	}
 
-	@Override
 	public Frequency copy()
 	{
 		return new Frequency(owner, channel);

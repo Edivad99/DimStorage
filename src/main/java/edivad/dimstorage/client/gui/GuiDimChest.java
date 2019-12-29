@@ -6,8 +6,8 @@ import org.lwjgl.input.Mouse;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.container.ContainerDimChest;
-import edivad.dimstorage.network.v2.PacketHandler;
-import edivad.dimstorage.network.v2.server.UpdateBlock;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.UpdateBlock;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Translate;
@@ -49,13 +49,11 @@ public class GuiDimChest extends GuiContainer {
 	private boolean noConfig;
 
 	private TileEntityDimChest ownerTile;
-	private InventoryPlayer invPlayer;
 
 	public GuiDimChest(InventoryPlayer invPlayer, DimChestStorage chestInv, TileEntityDimChest owner, boolean drawSettings)
 	{
 		super(new ContainerDimChest(invPlayer, chestInv));
 		this.ownerTile = owner;
-		this.invPlayer = invPlayer;
 
 		this.xSize = 176;//176
 		this.ySize = 230;//230
