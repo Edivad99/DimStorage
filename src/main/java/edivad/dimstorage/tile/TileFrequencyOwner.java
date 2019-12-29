@@ -1,25 +1,18 @@
 package edivad.dimstorage.tile;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.packet.ICustomPacketTile;
-import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.network.DimStorageCPH;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileFrequencyOwner extends TileEntity implements ITickable, ICustomPacketTile {
+public abstract class TileFrequencyOwner extends TileEntity implements ITickable {
 
 	public Frequency frequency = new Frequency();
 	private int changeCount;
@@ -31,10 +24,6 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		IBlockState state = world.getBlockState(pos);
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, state, state, 3);
-		if(!world.isRemote)
-		{
-			sendUpdatePacket();
-		}
 	}
 
 	public void swapOwner()
@@ -86,54 +75,18 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	{
 	}
 
-	protected void sendUpdatePacket()
-	{
-		createPacket().sendToChunk(world, getPos().getX() >> 4, getPos().getZ() >> 4);
-	}
-
-	public PacketCustom createPacket()
-	{
-		PacketCustom packet = new PacketCustom(DimStorageCPH.channel, 1);
-		writeToPacket(packet);
-		return packet;
-	}
-
-	@Override
-	public final SPacketUpdateTileEntity getUpdatePacket()
-	{
-		return createPacket().toTilePacket(getPos());
-	}
-
+	//Synchronizing on chunk load
 	@Override
 	public NBTTagCompound getUpdateTag()
 	{
-		return createPacket().toNBTTag(super.getUpdateTag());
+		NBTTagCompound tag = super.getUpdateTag();
+		tag.setTag("Frequency", frequency.writeToNBT(tag));
+		return tag;
 	}
-
-	public void writeToPacket(MCDataOutput packet)
-	{
-		frequency.writeToPacket(packet);
-	}
-
-	public void readFromPacket(MCDataInput packet)
-	{
-		frequency.set(Frequency.readFromPacket(packet));
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
-		readFromPacket(PacketCustom.fromTilePacket(pkt));
-	}
-
+	
 	@Override
 	public void handleUpdateTag(NBTTagCompound tag)
 	{
-		readFromPacket(PacketCustom.fromNBTTag(tag));
-	}
-
-	public boolean rotate()
-	{
-		return false;
-	}
+		frequency.set(new Frequency(tag.getCompoundTag("Frequency")));
+	}	
 }

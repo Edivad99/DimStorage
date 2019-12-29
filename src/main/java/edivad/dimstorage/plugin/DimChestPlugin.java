@@ -6,7 +6,8 @@ import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
-import edivad.dimstorage.network.DimStorageSPH;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -35,7 +36,7 @@ public class DimChestPlugin implements DimStoragePlugin {
 		{
 			if(((DimChestStorage) inv).getNumOpen() > 0)
 			{
-				DimStorageSPH.sendOpenUpdateTo(player, inv.freq, true);
+				PacketHandler.packetReq.sendToAll(new OpenChest(inv.freq, true));
 			}
 		}
 	}

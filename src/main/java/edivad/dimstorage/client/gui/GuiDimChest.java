@@ -6,8 +6,8 @@ import org.lwjgl.input.Mouse;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.container.ContainerDimChest;
-import edivad.dimstorage.network.test.DoBlockUpdate;
-import edivad.dimstorage.network.test.PacketHandler;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.UpdateBlock;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Translate;
@@ -49,13 +49,11 @@ public class GuiDimChest extends GuiContainer {
 	private boolean noConfig;
 
 	private TileEntityDimChest ownerTile;
-	private InventoryPlayer invPlayer;
 
 	public GuiDimChest(InventoryPlayer invPlayer, DimChestStorage chestInv, TileEntityDimChest owner, boolean drawSettings)
 	{
 		super(new ContainerDimChest(invPlayer, chestInv));
 		this.ownerTile = owner;
-		this.invPlayer = invPlayer;
 
 		this.xSize = 176;//176
 		this.ySize = 230;//230
@@ -142,7 +140,7 @@ public class GuiDimChest extends GuiContainer {
 		if(button.id == BUTTON_OWNER)
 		{
 			ownerTile.swapOwner();
-			PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
+			PacketHandler.packetReq.sendToServer(new UpdateBlock(ownerTile));
 		}
 		else if(button.id == BUTTON_FREQ)
 		{
@@ -151,7 +149,7 @@ public class GuiDimChest extends GuiContainer {
 				int freq = Math.abs(Integer.parseInt(freqTextField.getText()));
 				ownerTile.setFreq(ownerTile.frequency.copy().setChannel(freq));
 				currentFreq = freq;
-				PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
+				PacketHandler.packetReq.sendToServer(new UpdateBlock(ownerTile));
 			}
 			catch(Exception e)
 			{
@@ -161,7 +159,7 @@ public class GuiDimChest extends GuiContainer {
 		else if(button.id == BUTTON_LOCKED)
 		{
 			ownerTile.swapLocked();
-			PacketHandler.packetReq.sendToServer(new DoBlockUpdate(ownerTile));
+			PacketHandler.packetReq.sendToServer(new UpdateBlock(ownerTile));
 		}
 	}
 

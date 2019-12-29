@@ -1,11 +1,12 @@
 package edivad.dimstorage.storage;
 
-import codechicken.lib.inventory.InventoryUtils;
-import codechicken.lib.util.ArrayUtils;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
-import edivad.dimstorage.network.DimStorageSPH;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.OpenChest;
+import edivad.dimstorage.tools.extra.ArrayUtils;
+import edivad.dimstorage.tools.extra.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -88,7 +89,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 			open++;
 			if(open == 1)
 			{
-				DimStorageSPH.sendOpenUpdateTo(null, freq, true);
+				PacketHandler.packetReq.sendToAll(new OpenChest(freq, true));
 			}
 		}
 	}
@@ -96,16 +97,14 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 	public void closeInventory()
 	{
 		if(manager.client)
-		{
 			return;
-		}
 
 		synchronized(this)
 		{
 			open--;
 			if(open == 0)
 			{
-				DimStorageSPH.sendOpenUpdateTo(null, freq, false);
+				PacketHandler.packetReq.sendToAll(new OpenChest(freq, false));
 			}
 		}
 	}

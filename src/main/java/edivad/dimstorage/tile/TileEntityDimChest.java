@@ -1,15 +1,15 @@
 package edivad.dimstorage.tile;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.packet.PacketCustom;
 import edivad.dimstorage.Main;
+import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -30,7 +30,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public int rotation;
 
 	public boolean locked;
-	private DimChestStorage currentStorage;
 
 	public TileEntityDimChest()
 	{
@@ -90,20 +89,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public void writeToPacket(MCDataOutput packet)
-	{
-		super.writeToPacket(packet);
-		packet.writeByte(rotation);
-	}
-
-	@Override
-	public void readFromPacket(MCDataInput packet)
-	{
-		super.readFromPacket(packet);
-		rotation = packet.readUByte() & 3;
-	}
-
-	@Override
 	public void onPlaced(EntityLivingBase entity)
 	{
 		rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
@@ -142,17 +127,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public boolean rotate()
-	{
-		if(!world.isRemote)
-		{
-			rotation = (rotation + 1) % 4;
-			PacketCustom.sendToChunk(getUpdatePacket(), world, pos.getX() >> 4, pos.getZ() >> 4);
-		}
-		return true;
-	}
-
-	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
 	{
 		return !locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
@@ -166,5 +140,43 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 			return (T) new InvWrapper(getStorage());
 		}
 		return super.getCapability(capability, facing);
+	}
+	
+	//Synchronizing on block update
+	@Override
+	public final SPacketUpdateTileEntity getUpdatePacket()
+	{
+		NBTTagCompound root = new NBTTagCompound();
+		root.setTag("Frequency", frequency.writeToNBT(new NBTTagCompound()));
+		root.setByte("rot", (byte) rotation);
+		root.setBoolean("locked", locked);
+		return new SPacketUpdateTileEntity(getPos(), 1, root);
+	}
+	
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+	{
+		NBTTagCompound tag = pkt.getNbtCompound();
+		frequency.set(new Frequency(tag.getCompoundTag("Frequency")));
+		rotation = tag.getByte("rot") & 3;
+		locked = tag.getBoolean("locked");
+	}
+		
+	//Synchronizing on chunk load
+	@Override
+	public NBTTagCompound getUpdateTag()
+	{
+		NBTTagCompound tag = super.getUpdateTag();
+		tag.setByte("rot", (byte) rotation);
+		tag.setBoolean("locked", locked);
+		return tag;
+	}
+	
+	@Override
+	public void handleUpdateTag(NBTTagCompound tag)
+	{
+		super.handleUpdateTag(tag);
+		rotation = tag.getByte("rot") & 3;
+		locked = tag.getBoolean("locked");
 	}
 }
