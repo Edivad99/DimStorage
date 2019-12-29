@@ -37,7 +37,7 @@ public class OpenChest extends MessageHandlerServerToPlayer<OpenChest> implement
 	{
 		ByteBufUtils.writeUTF8String(buf, freq.getOwner());
 		buf.writeInt(freq.getChannel());
-		
+
 		buf.writeBoolean(open);
 	}
 

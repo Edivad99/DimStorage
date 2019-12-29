@@ -7,17 +7,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public abstract class MessageHandlerServerToPlayer <T extends IMessage> implements IMessageHandler<T, IMessage> {
+public abstract class MessageHandlerServerToPlayer<T extends IMessage> implements IMessageHandler<T, IMessage> {
 
 	@Override
 	public IMessage onMessage(T msg, MessageContext ctx)
 	{
 		final EntityPlayer player = Main.proxy.getClientPlayer();
 		final World world = player.world;
-		
+
 		Main.proxy.addScheduledTaskClient(() -> handle(msg, world, player));
 		return null;
 	}
-	
+
 	protected abstract void handle(T msg, World world, EntityPlayer player);
 }

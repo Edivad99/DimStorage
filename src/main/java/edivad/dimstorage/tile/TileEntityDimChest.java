@@ -141,7 +141,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		return super.getCapability(capability, facing);
 	}
-	
+
 	//Synchronizing on block update
 	@Override
 	public final SPacketUpdateTileEntity getUpdatePacket()
@@ -152,7 +152,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		root.setBoolean("locked", locked);
 		return new SPacketUpdateTileEntity(getPos(), 1, root);
 	}
-	
+
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
@@ -161,7 +161,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
 	}
-		
+
 	//Synchronizing on chunk load
 	@Override
 	public NBTTagCompound getUpdateTag()
@@ -171,7 +171,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		tag.setBoolean("locked", locked);
 		return tag;
 	}
-	
+
 	@Override
 	public void handleUpdateTag(NBTTagCompound tag)
 	{

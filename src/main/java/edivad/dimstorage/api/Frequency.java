@@ -1,5 +1,8 @@
 package edivad.dimstorage.api;
 
+import org.apache.logging.log4j.Level;
+
+import edivad.dimstorage.Main;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
@@ -13,12 +16,12 @@ public class Frequency {
 	{
 		this(1);
 	}
-	
+
 	public Frequency(int channel)
 	{
 		this("public", channel);
 	}
-	
+
 	public Frequency(String owner, int channel)
 	{
 		this.owner = owner;
@@ -63,7 +66,7 @@ public class Frequency {
 		channel = tagCompound.getInteger("channel");
 		//Useful at the moment to avoid console spam
 		if(!Loader.isModLoaded("waila"))
-			System.out.println("read_internal: " + this);
+			Main.logger.log(Level.DEBUG, "read_internal: " + this);
 		return this;
 	}
 
@@ -97,12 +100,9 @@ public class Frequency {
 	{
 		NBTTagCompound tagCompound;
 		if(!stack.hasTagCompound())
-		{
 			stack.setTagCompound(new NBTTagCompound());
-			tagCompound = stack.getTagCompound();
-		}
-		else
-			tagCompound = stack.getTagCompound();
+
+		tagCompound = stack.getTagCompound();
 		tagCompound.setTag("Frequency", write_internal(new NBTTagCompound()));
 		return stack;
 	}

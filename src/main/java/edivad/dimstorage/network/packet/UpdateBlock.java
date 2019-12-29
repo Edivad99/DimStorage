@@ -59,7 +59,7 @@ public class UpdateBlock extends MessageHandlerPlayerToServer<UpdateBlock> imple
 			Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
 			return;
 		}
-		
+
 		TileEntityDimChest chest = (TileEntityDimChest) tile;
 		chest.frequency.set(msg.freq);
 		chest.locked = msg.locked;
