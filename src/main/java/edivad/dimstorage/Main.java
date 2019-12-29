@@ -22,7 +22,7 @@ public class Main {
 	public static final String MODID = "dimstorage";
 	public static final String MODNAME = "DimStorage";
 	public static final String MCVERSION = "1.12.2";
-	public static final String MODVERSION = "1.2.1";
+	public static final String MODVERSION = "1.3.0";
 	public static final String UPDATE_URL = "https://raw.githubusercontent.com/Edivad99/mod-version-controll/master/dimstorage_update.json";
 	public static final String CLIENT_PROXY_CLASS = "edivad.dimstorage.proxy.ProxyClient";
 	public static final String SERVER_PROXY_CLASS = "edivad.dimstorage.proxy.Proxy";
