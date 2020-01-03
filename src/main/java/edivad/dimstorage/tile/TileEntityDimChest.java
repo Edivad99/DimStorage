@@ -1,23 +1,31 @@
 package edivad.dimstorage.tile;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Translate;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class TileEntityDimChest extends TileFrequencyOwner {
 
@@ -33,20 +41,21 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
 	public TileEntityDimChest()
 	{
+		super(ModBlocks.tileEntityDimChest);
 		movablePartState = MIN_MOVABLE_POSITION;
 		locked = false;
 	}
 
 	@Override
-	public void update()
+	public void tick()
 	{
-		super.update();
+		super.tick();
 
-		if(!world.isRemote && (world.getTotalWorldTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
+		if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
 		{
 			openCount = getStorage().getNumOpen();
-			world.addBlockEvent(getPos(), getBlockType(), 1, openCount);
-			world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
+			world.addBlockEvent(getPos(), this.getBlockState().getBlock(), 1, openCount);
+			world.notifyNeighborsOfStateChange(pos, this.getBlockState().getBlock());
 		}
 
 		if(this.openCount > 0)
@@ -89,94 +98,104 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public void onPlaced(EntityLivingBase entity)
+	public void onPlaced(LivingEntity entity)
 	{
 		rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
-		super.writeToNBT(tag);
-		tag.setByte("rot", (byte) rotation);
-		tag.setBoolean("locked", locked);
+		super.write(tag);
+		tag.putByte("rot", (byte) rotation);
+		tag.putBoolean("locked", locked);
 		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
 	}
 
 	@Override
-	public boolean activate(EntityPlayer player, World worldIn, BlockPos pos)
+	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
 	{
 		if(canAccess())
 		{
-			player.openGui(Main.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			//player.openGui(Main.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			//NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
+			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, getPos());
 		}
 		else
 		{
-			player.sendMessage(new TextComponentString(TextFormatting.RED + Translate.translateToLocal("tile." + Main.MODID + ".accessDenied")));
+			player.sendMessage(new StringTextComponent(TextFormatting.RED + Translate.translateToLocal("message." + Main.MODID + ".accessDenied")));
 		}
 
 		return true;
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		return !locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
 	{
 		if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
-			return (T) new InvWrapper(getStorage());
+			return LazyOptional.of(() -> (T) getStorage());
 		}
 		return super.getCapability(capability, facing);
 	}
+	
 
 	//Synchronizing on block update
 	@Override
-	public final SPacketUpdateTileEntity getUpdatePacket()
+	public final SUpdateTileEntityPacket getUpdatePacket()
 	{
-		NBTTagCompound root = new NBTTagCompound();
-		root.setTag("Frequency", frequency.writeToNBT(new NBTTagCompound()));
-		root.setByte("rot", (byte) rotation);
-		root.setBoolean("locked", locked);
-		return new SPacketUpdateTileEntity(getPos(), 1, root);
+		CompoundNBT root = new CompoundNBT();
+		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.putByte("rot", (byte) rotation);
+		root.putBoolean("locked", locked);
+		return new SUpdateTileEntityPacket(getPos(), 1, root);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
 	{
-		NBTTagCompound tag = pkt.getNbtCompound();
-		frequency.set(new Frequency(tag.getCompoundTag("Frequency")));
+		CompoundNBT tag = pkt.getNbtCompound();
+		frequency.set(new Frequency(tag.getCompound("Frequency")));
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
 	}
 
 	//Synchronizing on chunk load
 	@Override
-	public NBTTagCompound getUpdateTag()
+	public CompoundNBT getUpdateTag()
 	{
-		NBTTagCompound tag = super.getUpdateTag();
-		tag.setByte("rot", (byte) rotation);
-		tag.setBoolean("locked", locked);
+		CompoundNBT tag = super.getUpdateTag();
+		tag.putByte("rot", (byte) rotation);
+		tag.putBoolean("locked", locked);
 		return tag;
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
+	public void handleUpdateTag(CompoundNBT tag)
 	{
 		super.handleUpdateTag(tag);
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new StringTextComponent("Dimensional Chest");
+	}
+
+	@Override
+	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+	{
+		return new ContainerDimChest(id, playerInventory, getStorage());
 	}
 }

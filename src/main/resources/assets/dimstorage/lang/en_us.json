@@ -1,0 +1,23 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+
+    "item.dimstorage.dim_core": "Dimensional Core",
+    "item.dimstorage.solid_dim_core": "Solid Dimensional Core",
+    "item.dimstorage.dim_wall": "Dimensional Wall",
+
+    "block.dimstorage.dimensional_chest": "Dimensional Chest",
+
+    "advancements.dimstorage.root": "Dimensional Core",
+    "advancements.dimstorage.root.desc": "The power of dimensions",
+    "advancements.dimstorage.dimensional_chest": "Dimensional Chest",
+    "advancements.dimstorage.dimensional_chest.desc": "A more connected inventory",
+
+    "gui.dimstorage.change": "Change",
+	"gui.dimstorage.owner": "Owner:",
+	"gui.dimstorage.frequency": "Frequency:",
+	"gui.dimstorage.locked": "Locked:",
+	"gui.dimstorage.yes": "Yes",
+	"gui.dimstorage.no": "No",
+	
+    "message.dimstorage.accessDenied": "Access Denied!"
+}

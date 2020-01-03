@@ -7,12 +7,11 @@ import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.tools.extra.ArrayUtils;
 import edivad.dimstorage.tools.extra.InventoryUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DimChestStorage extends AbstractDimStorage implements IInventory {
 
@@ -35,10 +34,10 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 		}
 	}
 
-	public void loadFromTag(NBTTagCompound tag)
+	public void loadFromTag(CompoundNBT tag)
 	{
 		empty();
-		InventoryUtils.readItemStacksFromTag(items, tag.getTagList("Items", 10));
+		InventoryUtils.readItemStacksFromTag(items, tag.getList("Items", 10));
 	}
 
 	@Override
@@ -47,10 +46,10 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 		return "item";
 	}
 
-	public NBTTagCompound saveToTag()
+	public CompoundNBT saveToTag()
 	{
-		NBTTagCompound compound = new NBTTagCompound();
-		compound.setTag("Items", InventoryUtils.writeItemStacksToTag(this.items));
+		CompoundNBT compound = new CompoundNBT();
+		compound.put("Items", InventoryUtils.writeItemStacksToTag(this.items));
 		return compound;
 	}
 
@@ -89,7 +88,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 			open++;
 			if(open == 1)
 			{
-				PacketHandler.packetReq.sendToAll(new OpenChest(freq, true));
+				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, true));
 			}
 		}
 	}
@@ -104,7 +103,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 			open--;
 			if(open == 0)
 			{
-				PacketHandler.packetReq.sendToAll(new OpenChest(freq, false));
+				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, false));
 			}
 		}
 	}
@@ -147,7 +146,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player)
+	public boolean isUsableByPlayer(PlayerEntity player)
 	{
 		return true;
 	}
@@ -174,52 +173,17 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 	}
 
 	@Override
-	public String getName()
-	{
-		return "Dimensional chest";
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return true;
-	}
-
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return new TextComponentString("Dimensional chest");
-	}
-
-	@Override
-	public int getField(int id)
-	{
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value)
-	{
-	}
-
-	@Override
-	public int getFieldCount()
-	{
-		return 0;
-	}
-
-	@Override
 	public void clear()
 	{
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player)
+	public void openInventory(PlayerEntity player)
 	{
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player)
+	public void closeInventory(PlayerEntity player)
 	{
 	}
 }

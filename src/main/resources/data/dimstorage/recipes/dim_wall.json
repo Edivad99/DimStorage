@@ -1,0 +1,22 @@
+{
+	"result": {
+		"item": "dimstorage:dim_wall"
+	},
+	"pattern": [
+		"aba",
+		"bcb",
+		"aba"
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"a": {
+			"item": "minecraft:iron_ingot"
+		},
+		"b": {
+			"item": "minecraft:redstone"
+		},
+		"c": {
+			"item": "minecraft:ender_pearl"
+		}
+	}
+}

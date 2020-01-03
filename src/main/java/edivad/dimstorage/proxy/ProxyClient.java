@@ -1,52 +1,41 @@
 package edivad.dimstorage.proxy;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import edivad.dimstorage.ModBlocks;
-import edivad.dimstorage.ModItems;
+import edivad.dimstorage.client.render.tile.RenderTileDimChest;
+import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
-public class ProxyClient extends Proxy {
-
+@Mod.EventBusSubscriber(Dist.CLIENT)
+public class ProxyClient implements IProxy  {
+	
 	@Override
-	public void preInit(FMLPreInitializationEvent e)
-	{
-		super.preInit(e);
+	public void init() {
+//		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
+	}
+
+//	@Override
+//	public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
+//	{
+//		return Minecraft.getMinecraft().addScheduledTask(runnableToSchedule);
+//	}
+
+	@Override
+	public PlayerEntity getClientPlayer()
+	{
+		return Minecraft.getInstance().player;
 	}
 
 	@Override
-	public void init(FMLInitializationEvent e)
+	public World getClientWorld()
 	{
-		super.init(e);
-	}
-
-	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event)
-	{
-		ModBlocks.initModels();
-		ModItems.initModels();
-	}
-
-	@Override
-	public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
-	{
-		return Minecraft.getMinecraft().addScheduledTask(runnableToSchedule);
-	}
-
-	@Override
-	public EntityPlayer getClientPlayer()
-	{
-		return Minecraft.getMinecraft().player;
+		return Minecraft.getInstance().world;
 	}
 
 }

@@ -1,21 +1,23 @@
 package edivad.dimstorage.container;
 
+import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.storage.DimChestStorage;
-import invtweaks.api.container.ChestContainer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+//import invtweaks.api.container.ChestContainer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
-@ChestContainer()
+//@ChestContainer()
 public class ContainerDimChest extends Container {
 
 	public DimChestStorage chestInv;
 
-	public ContainerDimChest(InventoryPlayer playerInventory, DimChestStorage chestInv)
+	public ContainerDimChest(int windowId, PlayerInventory playerInventory, DimChestStorage chestInv)
 	{
+		super(ModBlocks.containerDimChest, windowId);
 		this.chestInv = chestInv;
 		this.chestInv.openInventory();
 
@@ -27,7 +29,7 @@ public class ContainerDimChest extends Container {
 	{
 		for(int y = 0; y < 6; y++)
 			for(int x = 0; x < 9; x++)
-				this.addSlotToContainer(new Slot(chestInv, x + y * 9, 8 + x * 18, 18 + y * 18));
+				this.addSlot(new Slot(chestInv, x + y * 9, 8 + x * 18, 18 + y * 18));
 	}
 
 	private void addPlayerSlots(IInventory playerInventory)
@@ -35,20 +37,20 @@ public class ContainerDimChest extends Container {
 		// Main Inventory
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; x++)
-				this.addSlotToContainer(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 140 + y * 18));
+				this.addSlot(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 140 + y * 18));
 		// Hotbar
 		for(int x = 0; x < 9; x++)
-			this.addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 198));
+			this.addSlot(new Slot(playerInventory, x, 8 + x * 18, 198));
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn)
+	public boolean canInteractWith(PlayerEntity playerIn)
 	{
 		return chestInv.isUsableByPlayer(playerIn);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int position)
+	public ItemStack transferStackInSlot(PlayerEntity player, int position)
 	{
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = (Slot) this.inventorySlots.get(position);
@@ -77,7 +79,7 @@ public class ContainerDimChest extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer entityplayer)
+	public void onContainerClosed(PlayerEntity entityplayer)
 	{
 		super.onContainerClosed(entityplayer);
 		chestInv.closeInventory();

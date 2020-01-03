@@ -1,18 +1,21 @@
 package edivad.dimstorage.client.render.tile;
 
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.client.model.ModelDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class RenderTileDimChest extends TileEntitySpecialRenderer<TileEntityDimChest> {
+public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	private static final ResourceLocation texture = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
 
@@ -22,21 +25,23 @@ public class RenderTileDimChest extends TileEntitySpecialRenderer<TileEntityDimC
 	{
 		this.model = new ModelDimChest();
 	}
-
+	
+	
 	@Override
-	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		if(te == null || te.isInvalid())
+		if(te == null || te.isRemoved())
 			return;
 
-		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
+		super.render(te, x, y, z, partialTicks, destroyStage);
 
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate(x, y, z);
+		//GlStateManager.translatef(x, y, z);
+		GL11.glTranslated(x, y, z);
 
 		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
-		this.renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
+		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
 		GlStateManager.popMatrix();
 	}
 
@@ -50,32 +55,33 @@ public class RenderTileDimChest extends TileEntitySpecialRenderer<TileEntityDimC
 		GlStateManager.pushMatrix();
 		this.bindTexture(texture);
 
-		GlStateManager.translate(0.5F, -0.5F, 0.5F);
+		//GlStateManager.translatef(0.5F, -0.5F, 0.5F);
+		GL11.glTranslated(0.5F, -0.5F, 0.5F);
 		//This line actually rotates the renderer.
 
 		/** direction **/
 		switch (rot)
 		{
 			case 0:
-				GlStateManager.rotate(180F, 0F, 1F, 0F);
+				GlStateManager.rotatef(180F, 0F, 1F, 0F);
 				break;
 			case 1:
-				GlStateManager.rotate(90F, 0F, 1F, 0F);
+				GlStateManager.rotatef(90F, 0F, 1F, 0F);
 				break;
 			case 2:
-				GlStateManager.rotate(0F, 0F, 1F, 0F);
+				GlStateManager.rotatef(0F, 0F, 1F, 0F);
 				break;
 			case 3:
-				GlStateManager.rotate(270F, 0F, 1F, 0F);
+				GlStateManager.rotatef(270F, 0F, 1F, 0F);
 				break;
 		}
-		GlStateManager.rotate(180F, 0F, 1F, 0F);
+		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
 		/** sens **/
-		GlStateManager.rotate(180F, 1F, 0F, 0F);
+		GlStateManager.rotatef(180F, 1F, 0F, 0F);
 
 		/** Ajustement **/
-		GlStateManager.translate(0F, -2F, 0F);
+		GlStateManager.translatef(0F, -2F, 0F);
 
 		this.model.setTileEntity(tileEntity);
 		this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

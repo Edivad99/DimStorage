@@ -17,14 +17,14 @@ import com.google.common.collect.ImmutableMap;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class DimStorageManager {
 
@@ -33,30 +33,31 @@ public class DimStorageManager {
 		@SubscribeEvent
 		public void onWorldLoad(Load event)
 		{
-			if(event.getWorld().isRemote)
+			if(event.getWorld().getWorld().isRemote)
 				reloadManager(true);
 		}
 
 		@SubscribeEvent
 		public void onWorldSave(Save event)
 		{
-			if(!event.getWorld().isRemote && instance(false) != null)
+			if(!event.getWorld().getWorld().isRemote && instance(false) != null)
 				instance(false).save(false);
 		}
 
 		@SubscribeEvent
 		public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
 		{
-			instance(false).sendClientInfo(event.player);
+			instance(false).sendClientInfo(event.getPlayer());
 		}
 
 		@SubscribeEvent
 		public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event)
 		{
-			instance(false).sendClientInfo(event.player);
+			instance(false).sendClientInfo(event.getPlayer());
 		}
 	}
-
+	
+	//private static MinecraftServer minecraftServer;
 	private static DimStorageManager serverManager;
 	private static DimStorageManager clientManager;
 	private static HashMap<String, DimStoragePlugin> plugins = new HashMap<>();
@@ -69,7 +70,7 @@ public class DimStorageManager {
 	private File[] saveFiles;
 	private int saveTo;
 	private List<AbstractDimStorage> dirtyStorage;
-	private NBTTagCompound saveTag;
+	private CompoundNBT saveTag;
 
 	public DimStorageManager(boolean client)
 	{
@@ -84,9 +85,10 @@ public class DimStorageManager {
 
 		if(!client)
 			load();
+			
 	}
 
-	private void sendClientInfo(EntityPlayer player)
+	private void sendClientInfo(PlayerEntity player)
 	{
 		for(Map.Entry<String, DimStoragePlugin> plugin : plugins.entrySet())
 		{
@@ -96,8 +98,12 @@ public class DimStorageManager {
 
 	private void load()
 	{
-		this.saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "DimStorage");
-
+		ServerWorld serverWorld = null;/*DimensionManager.getWorld(minecraftServer, DimensionType.OVERWORLD, false, false);*/
+		if(serverWorld == null)
+			return;
+		
+		this.saveDir = new File(serverWorld.getSaveHandler().getWorldDirectory(), "DimStorage");
+		
 		try
 		{
 			if(!this.saveDir.exists())
@@ -118,10 +124,10 @@ public class DimStorageManager {
 					din.close();
 				}
 				else
-					saveTag = new NBTTagCompound();
+					saveTag = new CompoundNBT();
 			}
 			else
-				saveTag = new NBTTagCompound();
+				saveTag = new CompoundNBT();
 		}
 		catch(Exception e)
 		{
@@ -135,7 +141,7 @@ public class DimStorageManager {
 		{
 			for(AbstractDimStorage inv : this.dirtyStorage)
 			{
-				saveTag.setTag(inv.freq + ",type=" + inv.type(), inv.saveToTag());
+				saveTag.put(inv.freq + ",type=" + inv.type(), inv.saveToTag());
 				inv.setClean();
 			}
 
@@ -170,6 +176,7 @@ public class DimStorageManager {
 			clientManager = newManager;
 		else
 			serverManager = newManager;
+			
 	}
 
 	public File getSaveDir()
@@ -197,8 +204,8 @@ public class DimStorageManager {
 		{
 			storage = plugins.get(type).createDimStorage(this, freq);
 
-			if(!client && saveTag.hasKey(key))
-				storage.loadFromTag(saveTag.getCompoundTag(key));
+			if(!client && saveTag.contains(key))
+				storage.loadFromTag(saveTag.getCompound(key));
 
 			storageMap.put(key, storage);
 			storageList.get(type).add(storage);

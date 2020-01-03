@@ -4,25 +4,25 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTPrimitive;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NumberNBT;
 
 public class InventoryUtils {
 
 	/**
 	 * NBT item loading function with support for stack sizes > 32K
 	 */
-	public static void readItemStacksFromTag(ItemStack[] items, NBTTagList tagList)
+	public static void readItemStacksFromTag(ItemStack[] items, ListNBT tagList)
 	{
-		for(int i = 0; i < tagList.tagCount(); i++)
+		for(int i = 0; i < tagList.size(); i++)
 		{
-			NBTTagCompound tag = tagList.getCompoundTagAt(i);
+			CompoundNBT tag = tagList.getCompound(i);
 			int b = tag.getShort("Slot");
-			items[b] = new ItemStack(tag);
-			if(tag.hasKey("Quantity"))
+			items[b] = ItemStack.read(tag);
+			if(tag.contains("Quantity"))
 			{
-				items[b].setCount(((NBTPrimitive) tag.getTag("Quantity")).getInt());
+				items[b].setCount(((NumberNBT) tag.get("Quantity")).getInt());
 			}
 		}
 	}
@@ -30,7 +30,7 @@ public class InventoryUtils {
 	/**
 	 * NBT item saving function
 	 */
-	public static NBTTagList writeItemStacksToTag(ItemStack[] items)
+	public static ListNBT writeItemStacksToTag(ItemStack[] items)
 	{
 		return writeItemStacksToTag(items, 64);
 	}
@@ -38,25 +38,24 @@ public class InventoryUtils {
 	/**
 	 * NBT item saving function with support for stack sizes > 32K
 	 */
-	public static NBTTagList writeItemStacksToTag(ItemStack[] items, int maxQuantity)
+	public static ListNBT writeItemStacksToTag(ItemStack[] items, int maxQuantity)
 	{
-		NBTTagList tagList = new NBTTagList();
+		ListNBT tagList = new ListNBT();
 		for(int i = 0; i < items.length; i++)
 		{
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setShort("Slot", (short) i);
-			items[i].writeToNBT(tag);
+			CompoundNBT tag = new CompoundNBT();
+			tag.putShort("Slot", (short) i);
+			items[i].setTag(tag);
 
 			if(maxQuantity > Short.MAX_VALUE)
 			{
-				tag.setInteger("Quantity", items[i].getCount());
+				tag.putInt("Quantity", items[i].getCount());
 			}
 			else if(maxQuantity > Byte.MAX_VALUE)
 			{
-				tag.setShort("Quantity", (short) items[i].getCount());
+				tag.putShort("Quantity", (short) items[i].getCount());
 			}
-
-			tagList.appendTag(tag);
+			tagList.add(tag);
 		}
 		return tagList;
 	}
@@ -87,7 +86,7 @@ public class InventoryUtils {
 				inv.markDirty();
 				return item;
 			}
-			ItemStack itemstack1 = item.splitStack(size);
+			ItemStack itemstack1 = item.split(size);
 			if(item.getCount() == 0)
 			{
 				inv.setInventorySlotContents(slot, ItemStack.EMPTY);

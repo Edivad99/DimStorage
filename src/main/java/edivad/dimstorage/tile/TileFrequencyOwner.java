@@ -2,17 +2,24 @@ package edivad.dimstorage.tile;
 
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileFrequencyOwner extends TileEntity implements ITickable {
+public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+
+	public TileFrequencyOwner(TileEntityType<?> tileEntityTypeIn)
+	{
+		super(tileEntityTypeIn);
+	}
 
 	public Frequency frequency = new Frequency();
 	private int changeCount;
@@ -21,8 +28,8 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	{
 		this.frequency = frequency;
 		markDirty();
-		IBlockState state = world.getBlockState(pos);
-		world.markBlockRangeForRenderUpdate(pos, pos);
+		BlockState state = world.getBlockState(pos);
+		//world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, state, state, 3);
 	}
 
@@ -31,62 +38,64 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		if(frequency.hasOwner())
 			setFreq(frequency.copy().setOwner("public"));
 		else
-			setFreq(frequency.copy().setOwner(Minecraft.getMinecraft().player.getDisplayNameString()));
+			setFreq(frequency.copy().setOwner(Minecraft.getInstance().player.getDisplayName().getFormattedText()));
 	}
 
 	public boolean canAccess()
 	{
 		if(!frequency.hasOwner())
 			return true;
-		return frequency.getOwner().equals(Minecraft.getMinecraft().player.getDisplayNameString());
+		return frequency.getOwner().equals(Minecraft.getInstance().player.getDisplayName().getFormattedText());
 	}
 
 	@Override
-	public void update()
+	public void tick()
 	{
 		if(getStorage().getChangeCount() > changeCount)
 		{
-			world.updateComparatorOutputLevel(pos, getBlockType());
+			world.updateComparatorOutputLevel(pos, this.getBlockState().getBlock());
 			changeCount = getStorage().getChangeCount();
 		}
 	}
 
 	public abstract AbstractDimStorage getStorage();
 
-	public void readFromNBT(NBTTagCompound tag)
+	@Override
+	public void read(CompoundNBT tag)
 	{
-		super.readFromNBT(tag);
-		frequency.set(new Frequency(tag.getCompoundTag("Frequency")));
+		super.read(tag);
+		frequency.set(new Frequency(tag.getCompound("Frequency")));
 	}
 
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	@Override
+	public CompoundNBT write(CompoundNBT tag)
 	{
-		super.writeToNBT(tag);
-		tag.setTag("Frequency", frequency.writeToNBT(new NBTTagCompound()));
+		super.write(tag);
+		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		return tag;
 	}
 
-	public boolean activate(EntityPlayer player, World worldIn, BlockPos pos)
+	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
 	{
 		return false;
 	}
 
-	public void onPlaced(EntityLivingBase entity)
+	public void onPlaced(LivingEntity entity)
 	{
 	}
 
 	//Synchronizing on chunk load
 	@Override
-	public NBTTagCompound getUpdateTag()
+	public CompoundNBT getUpdateTag()
 	{
-		NBTTagCompound tag = super.getUpdateTag();
-		tag.setTag("Frequency", frequency.writeToNBT(tag));
+		CompoundNBT tag = super.getUpdateTag();
+		tag.put("Frequency", frequency.writeToNBT(tag));
 		return tag;
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
+	public void handleUpdateTag(CompoundNBT tag)
 	{
-		frequency.set(new Frequency(tag.getCompoundTag("Frequency")));
+		frequency.set(new Frequency(tag.getCompound("Frequency")));
 	}
 }

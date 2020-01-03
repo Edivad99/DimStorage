@@ -1,144 +1,124 @@
 package edivad.dimstorage.blocks;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.client.render.tile.RenderTileDimChest;
-import edivad.dimstorage.compat.top.TOPInfoProvider;
-import edivad.dimstorage.compat.waila.WailaInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvider, WailaInfoProvider {
+public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvider */ {
 
 	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
 
 	public DimChest()
 	{
-		super(Material.ROCK);
-
-		this.setHardness(20F);
-		this.setResistance(100F);
-		this.setSoundType(SoundType.STONE);
-
+		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(20F, 100F));
 		setRegistryName(DIMCHEST);
-		setUnlocalizedName(Main.MODID + "." + "dimensional_chest");
-
-		this.setCreativeTab(Main.tabDimStorage);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new TileEntityDimChest();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
+	public BlockRenderType getRenderType(BlockState state)
 	{
-		return EnumBlockRenderType.INVISIBLE;
+		return BlockRenderType.INVISIBLE;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
 	{
 		TileEntity tile = world.getTileEntity(pos);
 		if(tile instanceof TileEntityDimChest)
 		{
 			TileEntityDimChest chest = (TileEntityDimChest) tile;
 			if(chest.canAccess() || player.isCreative())
-				return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+				return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
 		}
 		return false;
 	}
 
 	@Override
-	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
+	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
 	{
 		super.harvestBlock(worldIn, player, pos, state, te, stack);
-		worldIn.setBlockToAir(pos);
+		worldIn.removeBlock(pos, false);
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
 	{
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+		super.onPlayerDestroy(worldIn, pos, state);
+		worldIn.getWorld().removeTileEntity(pos);
 	}
 
+	//	@Override
+	//	public List<ItemStack> getDrops(BlockState state, Builder builder)
+	//	{
+	//		state.getBlock()
+	//		return super.getDrops(state, builder).add(createItem(tile.frequency));
+	//	}
+	//
+	//	@Override
+	//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	//	{
+	//		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
+	//		if(tile != null)
+	//		{
+	//			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
+	//		}
+	//	}
+
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-		if(tile != null)
-		{
-			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
-		}
+		return createItem(tile.frequency);
 	}
 
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult rayTraceResult, World world, BlockPos pos, EntityPlayer player)
+	private ItemStack createItem(Frequency freq)
 	{
-		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-		return createItem(this.getMetaFromState(state), tile.frequency);
-	}
-
-	private ItemStack createItem(int meta, Frequency freq)
-	{
-		ItemStack stack = new ItemStack(this, 1, meta);
-		if(!stack.hasTagCompound())
+		ItemStack stack = new ItemStack(this, 1);
+		if(!stack.hasTag())
 		{
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTag(new CompoundNBT());
 		}
 
 		freq.writeToStack(stack);
@@ -146,22 +126,22 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{
 		if(worldIn.isRemote)
 			return true;
 
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(!(tile instanceof TileFrequencyOwner))
+		if(!(tile instanceof TileFrequencyOwner) || !(tile instanceof INamedContainerProvider))
 			return false;
 
 		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
 
-		return !playerIn.isSneaking() && owner.activate(playerIn, worldIn, pos);
+		return !player.isSneaking() && owner.activate(player, worldIn, pos);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if(tile instanceof TileFrequencyOwner)
@@ -171,59 +151,52 @@ public class DimChest extends Block implements ITileEntityProvider, TOPInfoProvi
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
+	public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
 	{
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void initModel()
-	{
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
-	}
-
-	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
-	{
-		TileEntity te = world.getTileEntity(data.getPos());
-		if(te instanceof TileEntityDimChest)
-		{
-			TileEntityDimChest tile = (TileEntityDimChest) te;
-
-			if(tile.frequency.hasOwner())
-			{
-				if(tile.canAccess())
-					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
-				else
-					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
-			}
-			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
-			if(tile.locked)
-				probeInfo.horizontal().text("Locked: Yes");
-		}
-	}
-
-	@Override
-	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-	{
-		TileEntity te = accessor.getTileEntity();
-		if(te instanceof TileEntityDimChest)
-		{
-			TileEntityDimChest tile = (TileEntityDimChest) te;
-
-			if(tile.frequency.hasOwner())
-			{
-				if(tile.canAccess())
-					currenttip.add(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
-				else
-					currenttip.add(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
-			}
-			currenttip.add("Frequency: " + tile.frequency.getChannel());
-			if(tile.locked)
-				currenttip.add("Locked: Yes");
-		}
-		return currenttip;
-	}
+	//	@Override
+	//	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
+	//	{
+	//		TileEntity te = world.getTileEntity(data.getPos());
+	//		if(te instanceof TileEntityDimChest)
+	//		{
+	//			TileEntityDimChest tile = (TileEntityDimChest) te;
+	//
+	//			if(tile.frequency.hasOwner())
+	//			{
+	//				if(tile.canAccess())
+	//					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
+	//				else
+	//					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
+	//			}
+	//			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
+	//			if(tile.locked)
+	//				probeInfo.horizontal().text("Locked: Yes");
+	//		}
+	//	}
+	//
+	//	@Override
+	//	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+	//	{
+	//		TileEntity te = accessor.getTileEntity();
+	//		if(te instanceof TileEntityDimChest)
+	//		{
+	//			TileEntityDimChest tile = (TileEntityDimChest) te;
+	//
+	//			if(tile.frequency.hasOwner())
+	//			{
+	//				if(tile.canAccess())
+	//					currenttip.add(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
+	//				else
+	//					currenttip.add(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
+	//			}
+	//			currenttip.add("Frequency: " + tile.frequency.getChannel());
+	//			if(tile.locked)
+	//				currenttip.add("Locked: Yes");
+	//		}
+	//		return currenttip;
+	//	}
 }

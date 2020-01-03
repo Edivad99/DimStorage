@@ -4,8 +4,7 @@ import org.apache.logging.log4j.Level;
 
 import edivad.dimstorage.Main;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraft.nbt.CompoundNBT;
 
 public class Frequency {
 
@@ -55,42 +54,42 @@ public class Frequency {
 		return channel;
 	}
 
-	public Frequency(NBTTagCompound tagCompound)
+	public Frequency(CompoundNBT tagCompound)
 	{
 		read_internal(tagCompound);
 	}
 
-	protected Frequency read_internal(NBTTagCompound tagCompound)
+	protected Frequency read_internal(CompoundNBT tagCompound)
 	{
 		owner = tagCompound.getString("owner");
-		channel = tagCompound.getInteger("channel");
+		channel = tagCompound.getInt("channel");
 		//Useful at the moment to avoid console spam
-		if(!Loader.isModLoaded("waila"))
-			Main.logger.log(Level.DEBUG, "read_internal: " + this);
+		//if(!Loader.isModLoaded("waila"))
+		Main.logger.log(Level.DEBUG, "read_internal: " + this);
 		return this;
 	}
 
-	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+	public CompoundNBT writeToNBT(CompoundNBT tagCompound)
 	{
 		write_internal(tagCompound);
 		return tagCompound;
 	}
 
-	protected NBTTagCompound write_internal(NBTTagCompound tagCompound)
+	protected CompoundNBT write_internal(CompoundNBT tagCompound)
 	{
-		tagCompound.setString("owner", owner);
-		tagCompound.setInteger("channel", channel);
+		tagCompound.putString("owner", owner);
+		tagCompound.putInt("channel", channel);
 		return tagCompound;
 	}
 
 	public static Frequency readFromStack(ItemStack stack)
 	{
-		if(stack.hasTagCompound())
+		if(stack.hasTag())
 		{
-			NBTTagCompound stackTag = stack.getTagCompound();
-			if(stackTag.hasKey("Frequency"))
+			CompoundNBT stackTag = stack.getTag();
+			if(stackTag.contains("Frequency"))
 			{
-				return new Frequency(stackTag.getCompoundTag("Frequency"));
+				return new Frequency(stackTag.getCompound("Frequency"));
 			}
 		}
 		return new Frequency();
@@ -98,12 +97,12 @@ public class Frequency {
 
 	public ItemStack writeToStack(ItemStack stack)
 	{
-		NBTTagCompound tagCompound;
-		if(!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
+		CompoundNBT tagCompound;
+		if(!stack.hasTag())
+			stack.setTag(new CompoundNBT());
 
-		tagCompound = stack.getTagCompound();
-		tagCompound.setTag("Frequency", write_internal(new NBTTagCompound()));
+		tagCompound = stack.getTag();
+		tagCompound.put("Frequency", write_internal(new CompoundNBT()));
 		return stack;
 	}
 

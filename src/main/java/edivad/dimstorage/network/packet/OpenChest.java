@@ -1,22 +1,22 @@
 package edivad.dimstorage.network.packet;
 
+import java.util.function.Supplier;
+
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
-import edivad.dimstorage.network.handler.MessageHandlerServerToPlayer;
 import edivad.dimstorage.storage.DimChestStorage;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class OpenChest extends MessageHandlerServerToPlayer<OpenChest> implements IMessage {
+public class OpenChest  {
 
 	private Frequency freq;
 	private boolean open;
 
-	public OpenChest()
+	public OpenChest(PacketBuffer buf)
 	{
+		freq = new Frequency(buf.readString(), buf.readInt());
+		open = buf.readBoolean();
 	}
 
 	public OpenChest(Frequency freq, boolean open)
@@ -24,27 +24,23 @@ public class OpenChest extends MessageHandlerServerToPlayer<OpenChest> implement
 		this.freq = freq;
 		this.open = open;
 	}
-
-	@Override
-	public void fromBytes(ByteBuf buf)
+	
+	public void toBytes(PacketBuffer buf)
 	{
-		freq = new Frequency(ByteBufUtils.readUTF8String(buf), buf.readInt());
-		open = buf.readBoolean();
-	}
-
-	@Override
-	public void toBytes(ByteBuf buf)
-	{
-		ByteBufUtils.writeUTF8String(buf, freq.getOwner());
+		buf.writeString(freq.getOwner());
 		buf.writeInt(freq.getChannel());
 
 		buf.writeBoolean(open);
 	}
-
-	@Override
-	protected void handle(OpenChest msg, World world, EntityPlayer player)
-	{
-		((DimChestStorage) DimStorageManager.instance(true).getStorage(msg.freq, "item")).setClientOpen(msg.open ? 1 : 0);
-	}
+	
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            if(ctx.get().getDirection().getOriginationSide().isServer())
+            {
+            	((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
+            }
+        });
+        ctx.get().setPacketHandled(true);
+    }
 
 }
