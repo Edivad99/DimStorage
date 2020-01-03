@@ -94,7 +94,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	@Override
 	public DimChestStorage getStorage()
 	{
-		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+		return (DimChestStorage) DimStorageManager.instance(world.isRemote, world).getStorage(frequency, "item");
 	}
 
 	@Override

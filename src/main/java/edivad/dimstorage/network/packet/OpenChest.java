@@ -37,10 +37,9 @@ public class OpenChest  {
         ctx.get().enqueueWork(() -> {
             if(ctx.get().getDirection().getOriginationSide().isServer())
             {
-            	((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
+            	((DimChestStorage) DimStorageManager.instance(true, ctx.get().getSender().world).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
             }
         });
         ctx.get().setPacketHandled(true);
     }
-
 }

@@ -13,6 +13,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -26,7 +27,6 @@ public class Main {
 
 	public static final String MODID = "dimstorage";
 	public static final String MODNAME = "DimStorage";
-	public static final String UPDATE_URL = "https://raw.githubusercontent.com/Edivad99/mod-version-controll/master/dimstorage_update.json";
 	
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ProxyClient(), () -> () -> new Proxy());
 	
@@ -47,7 +47,7 @@ public class Main {
 	@SubscribeEvent
 	public void preServerStart(FMLServerStartedEvent event)
 	{
-		DimStorageManager.reloadManager(false);
+		DimStorageManager.reloadManager(false, event.getServer().getWorld(DimensionType.OVERWORLD));
 	}
 	
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

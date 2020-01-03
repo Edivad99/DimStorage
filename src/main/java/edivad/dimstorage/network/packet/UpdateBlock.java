@@ -49,7 +49,7 @@ public class UpdateBlock  {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
-			if(!world.isBlockLoaded(pos))
+			if(!world.isBlockPresent(pos))
 				return;
 			
 			TileEntity tile = world.getTileEntity(pos);
