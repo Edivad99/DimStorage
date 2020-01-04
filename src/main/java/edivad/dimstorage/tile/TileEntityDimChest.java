@@ -26,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class TileEntityDimChest extends TileFrequencyOwner {
 
@@ -141,7 +142,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> (T) getStorage());
+			return LazyOptional.of(() -> (T) new InvWrapper(getStorage()));
 		}
 		return super.getCapability(capability, facing);
 	}
