@@ -21,7 +21,7 @@ Downloads can be found on [CurseForge](https://www.curseforge.com/minecraft/mc-m
 
 ## Installation
 
-You install this mod by putting it into the `minecraft/mods/` folder. For using this mod you have to install [CodeChicken Lib 1.8.+](https://www.curseforge.com/minecraft/mc-mods/codechicken-lib-1-8) mod.
+You install this mod by putting it into the `minecraft/mods/` folder.
 
 ## Issues
 
