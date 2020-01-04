@@ -2,6 +2,7 @@ package edivad.dimstorage.network.packet;
 
 import java.util.function.Supplier;
 
+import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
@@ -35,10 +36,7 @@ public class OpenChest  {
 	
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            if(ctx.get().getDirection().getOriginationSide().isServer())
-            {
-            	((DimChestStorage) DimStorageManager.instance(true, ctx.get().getSender().world).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
-            }
+        	((DimChestStorage) DimStorageManager.instance(true, Main.proxy.getClientWorld()).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
         });
         ctx.get().setPacketHandled(true);
     }

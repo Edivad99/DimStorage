@@ -6,11 +6,14 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UpdateBlock  {
 
@@ -65,8 +68,8 @@ public class UpdateBlock  {
 			chest.locked = locked;
 			
 			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), 3);
-//			if(chest.canAccess())
-//				player.openGui(Main.MODID, 1, world, pos.getX(), pos.getY(), pos.getZ());
+			if(chest.canAccess())
+				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
 		});
 		ctx.get().setPacketHandled(true);
 	}

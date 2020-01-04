@@ -125,9 +125,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		if(canAccess())
 		{
-			//player.openGui(Main.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
-			//NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
-			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, getPos());
+			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
 		}
 		else
 		{
@@ -196,6 +194,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	@Override
 	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
 	{
-		return new ContainerDimChest(id, playerInventory, getStorage());
+		return new ContainerDimChest(id, playerInventory, this, false);
 	}
 }

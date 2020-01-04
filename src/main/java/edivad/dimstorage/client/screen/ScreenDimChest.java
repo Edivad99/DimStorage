@@ -1,14 +1,11 @@
 package edivad.dimstorage.client.screen;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateBlock;
-import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -16,7 +13,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 
@@ -46,17 +43,17 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 
 	private TileEntityDimChest ownerTile;
 
-	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, DimChestStorage chestInv, TileEntityDimChest owner, boolean drawSettings)
+	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, ITextComponent text)
 	{
-		super(container, invPlayer, new StringTextComponent("Dimensional Chest"));
-		this.ownerTile = owner;
+		super(container, invPlayer, text);
+		this.ownerTile = container.owner;
 
 		this.xSize = 176;//176
 		this.ySize = 230;//230
 
 		this.state = SettingsState.STATE_CLOSED;
 		this.animationState = 0;
-		this.drawSettings = drawSettings;
+		this.drawSettings = container.isOpen;
 		this.settingsButtonOver = false;
 		this.noConfig = false;
 
@@ -80,7 +77,7 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
 		no = Translate.translateToLocal("gui." + Main.MODID + ".no");
 		inventory = Translate.translateToLocal("container.inventory");
-		name = Translate.translateToLocal("tile." + Main.MODID + ".dimensional_chest.name");
+		name = Translate.translateToLocal("block." + Main.MODID + ".dimensional_chest");
 
 		// init buttons list
 		this.buttons.clear();
@@ -90,24 +87,34 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		lockedButton = new Button(this.width / 2 + 95, this.height / 2 + 58, 64, 20, no, button -> change("lock"));
 		this.addButton(ownerButton);
 		this.addButton(freqButton);
-		//fix this
 		this.addButton(lockedButton);
 
-		// add Freq textfield
+		// Add TextFieldWidget freq
 		currentFreq = ownerTile.frequency.getChannel();
 		freqTextField = new TextFieldWidget(this.font, this.width / 2 + 95, this.height / 2, 64, 15, String.valueOf(currentFreq));
 		freqTextField.setMaxStringLength(3);
+		freqTextField.setVisible(true);
 		freqTextField.setFocused2(false);
-
+		freqTextField.setText(String.valueOf(currentFreq));
+		children.add(freqTextField);
+		
 		drawSettings(drawSettings);
+	}
+	
+	@Override
+	public void tick()
+	{
+		super.tick();
+		freqTextField.tick();
 	}
 	
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
 		this.renderBackground();
+		super.render(mouseX, mouseY, partialTicks);
 		
-		//freqTextField.updateCursorCounter();
+		freqTextField.render(mouseX, mouseY, partialTicks);
 
 		if(state == SettingsState.STATE_OPENNING)
 		{
@@ -128,7 +135,7 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 				state = SettingsState.STATE_CLOSED;
 			}
 		}
-		super.render(mouseX, mouseY, partialTicks);
+		
 	}
 	
 	private void change(String action)
@@ -156,23 +163,14 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		}
 		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
 	}
-	
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-	{
-		if((keyCode >= GLFW.GLFW_KEY_0 && keyCode <= GLFW.GLFW_KEY_9) || keyCode == GLFW.GLFW_KEY_DELETE)
-		{
-			freqTextField.keyPressed(keyCode, scanCode, modifiers);
-		}
-		return super.keyPressed(keyCode, scanCode, modifiers);
-	}
-
+		
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
 	{
-		boolean clicked = super.mouseClicked(mouseX, mouseY, clickedButton);
+		super.mouseClicked(mouseX, mouseY, clickedButton);
+		
 		if(noConfig)
-			return clicked;
+			return false;
 
 		freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
 
@@ -189,7 +187,7 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 				over = true;
 
 		if(!over)
-			return clicked;
+			return false;
 
 		if(state == SettingsState.STATE_CLOSED)
 		{
@@ -201,29 +199,23 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 			drawSettings(false);
 		}
 		
-		return clicked;
+		return true;
 	}
+	
+	@Override
+	public void mouseMoved(double x, double y)
+	{
+		super.mouseMoved(x, y);
 
-//	@Override
-//	public void handleMouseInput() throws IOException
-//	{
-//		super.handleMouseInput();
-//
-//		int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
-//		int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-//
-//		int x = (this.width - this.xSize) / 2;
-//		int y = (this.height - this.ySize) / 2;
-//
-//		int buttonX = x + this.xSize;
-//		int buttonY = y + 16;
-//
-//		this.settingsButtonOver = false;
-//
-//		if(mouseX >= buttonX && mouseX <= buttonX + BUTTON_WIDTH)
-//			if(mouseY >= buttonY && mouseY <= buttonY + BUTTON_WIDTH)
-//				settingsButtonOver = true;
-//	}
+		int buttonX = (this.width - this.xSize) / 2 + this.xSize;
+		int buttonY = (this.height - this.ySize) / 2 + 16;
+
+		this.settingsButtonOver = false;
+
+		if(x >= buttonX && x <= buttonX + BUTTON_WIDTH)
+			if(y >= buttonY && y <= buttonY + BUTTON_WIDTH)
+				settingsButtonOver = true;
+	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
@@ -283,7 +275,7 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		posY += 40;
 
 		// freq
-		this.font.drawString(freq.toString(), 185, posY, 4210752);
+		this.font.drawString(freq, 185, posY, 4210752);
 		posY += 9;
 		this.hLine(185, 185 + this.font.getStringWidth(freq), posY, 0xFF333333);
 		posY += 51;
@@ -296,17 +288,6 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		// refresh button label
 		this.lockedButton.setMessage(ownerTile.locked ? this.yes : this.no);
 	}
-	
-	
-
-//	@Override
-//	public void drawScreen(int par1, int par2, float par3)
-//	{
-//		super.drawScreen(par1, par2, par3);
-//
-//		// freq
-//		freqTextField.drawTextBox();
-//	}
 
 	private void drawSettings(boolean draw)
 	{

@@ -1,7 +1,5 @@
 package edivad.dimstorage.client.render.tile;
 
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.Main;
@@ -26,23 +24,21 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		this.model = new ModelDimChest();
 	}
 	
-	
 	@Override
 	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
 		if(te == null || te.isRemoved())
 			return;
 
-		super.render(te, x, y, z, partialTicks, destroyStage);
-
 		GlStateManager.pushMatrix();
 
-		//GlStateManager.translatef(x, y, z);
-		GL11.glTranslated(x, y, z);
+		GlStateManager.translated(x, y, z);
 
 		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
 		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
 		GlStateManager.popMatrix();
+		
+		super.render(te, x, y, z, partialTicks, destroyStage);
 	}
 
 	private void renderBlock(TileEntityDimChest tileEntity, World world, BlockPos pos, Block block)
@@ -55,8 +51,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		GlStateManager.pushMatrix();
 		this.bindTexture(texture);
 
-		//GlStateManager.translatef(0.5F, -0.5F, 0.5F);
-		GL11.glTranslated(0.5F, -0.5F, 0.5F);
+		GlStateManager.translatef(0.5F, -0.5F, 0.5F);
 		//This line actually rotates the renderer.
 
 		/** direction **/

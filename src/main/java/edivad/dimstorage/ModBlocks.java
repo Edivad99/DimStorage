@@ -39,6 +39,7 @@ public class ModBlocks {
 		{
 			BlockPos pos = data.readBlockPos();
 			TileEntity te = Main.proxy.getClientWorld().getTileEntity(pos);
+			boolean isOpen = data.readBoolean();
 			if(!(te instanceof TileEntityDimChest))
 			{
 				Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
@@ -46,7 +47,7 @@ public class ModBlocks {
 			}
 			
 			TileEntityDimChest tile = (TileEntityDimChest) te;
-			return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile.getStorage());
+			return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
 		}).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_chest")));
 	}
 

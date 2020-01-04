@@ -1,11 +1,14 @@
 package edivad.dimstorage.proxy;
 
+import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
+import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,8 +25,9 @@ public class ProxyClient implements IProxy  {
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
-//		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
+		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
 //		MainCompatHandler.registerTOP();
 //		MainCompatHandler.registerWaila();
 		//NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, new GuiHandler());
