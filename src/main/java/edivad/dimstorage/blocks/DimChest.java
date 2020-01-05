@@ -1,7 +1,5 @@
 package edivad.dimstorage.blocks;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import edivad.dimstorage.Main;
@@ -14,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -26,9 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvider */ {
 
@@ -93,27 +90,23 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
 	{
-		super.harvestBlock(worldIn, player, pos, state, te, stack);
-		worldIn.removeBlock(pos, false);
-	}
-
-	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
-	{
-		super.onPlayerDestroy(worldIn, pos, state);
-		worldIn.getWorld().removeTileEntity(pos);
+		TileFrequencyOwner tile = (TileFrequencyOwner) worldIn.getTileEntity(pos);
+		if(tile != null)
+		{
+			ItemStack item = createItem(tile.frequency);
+			
+			float xOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+	        float yOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+	        float zOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+			
+	        ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, item);
+	        worldIn.addEntity(entityitem);
+		}
+		
+		worldIn.removeTileEntity(pos);
+		worldIn.removeBlock(pos, false);	
 	}
 	
-//	@Override
-//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-//	{
-//		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-//		if(tile != null)
-//		{
-//			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
-//		}
-//	}
-
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
@@ -128,9 +121,8 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 		{
 			stack.setTag(new CompoundNBT());
 		}
-
-		freq.writeToStack(stack);
-		return stack;
+		
+		return freq.writeToStack(stack);
 	}
 
 	@Override
