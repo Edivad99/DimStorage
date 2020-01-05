@@ -1,5 +1,7 @@
 package edivad.dimstorage.blocks;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import edivad.dimstorage.Main;
@@ -26,6 +28,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvider */ {
 
@@ -61,6 +64,18 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 	{
 		return false;
 	}
+	
+	@Override
+	public boolean isSolid(BlockState state)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean isVariableOpacity()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
@@ -88,23 +103,16 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 		super.onPlayerDestroy(worldIn, pos, state);
 		worldIn.getWorld().removeTileEntity(pos);
 	}
-
-	//	@Override
-	//	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	//	{
-	//		state.getBlock()
-	//		return super.getDrops(state, builder).add(createItem(tile.frequency));
-	//	}
-	//
-	//	@Override
-	//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	//	{
-	//		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-	//		if(tile != null)
-	//		{
-	//			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
-	//		}
-	//	}
+	
+//	@Override
+//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+//	{
+//		TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
+//		if(tile != null)
+//		{
+//			drops.add(createItem(state.getBlock().getMetaFromState(state), tile.frequency));
+//		}
+//	}
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
