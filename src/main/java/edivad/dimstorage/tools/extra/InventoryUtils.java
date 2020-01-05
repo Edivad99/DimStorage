@@ -4,9 +4,10 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NumberNBT;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
 
 public class InventoryUtils {
 
@@ -20,9 +21,10 @@ public class InventoryUtils {
 			CompoundNBT tag = tagList.getCompound(i);
 			int b = tag.getShort("Slot");
 			items[b] = ItemStack.read(tag);
-			if(tag.contains("Quantity"))
+			INBT quant = tag.get("Quantity");
+			if(quant instanceof NumberNBT)
 			{
-				items[b].setCount(((NumberNBT) tag.get("Quantity")).getInt());
+				items[b].setCount(((NumberNBT) quant).getInt());
 			}
 		}
 	}
@@ -45,7 +47,7 @@ public class InventoryUtils {
 		{
 			CompoundNBT tag = new CompoundNBT();
 			tag.putShort("Slot", (short) i);
-			items[i].setTag(tag);
+			items[i].write(tag);
 
 			if(maxQuantity > Short.MAX_VALUE)
 			{
@@ -55,6 +57,7 @@ public class InventoryUtils {
 			{
 				tag.putShort("Quantity", (short) items[i].getCount());
 			}
+
 			tagList.add(tag);
 		}
 		return tagList;
