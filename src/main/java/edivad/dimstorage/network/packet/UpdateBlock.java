@@ -23,7 +23,7 @@ public class UpdateBlock  {
 
 	public UpdateBlock(PacketBuffer buf)
 	{
-		pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
+		pos = buf.readBlockPos();
 		freq = new Frequency(buf.readString(), buf.readInt());
 		locked = buf.readBoolean();
 	}
@@ -37,12 +37,11 @@ public class UpdateBlock  {
 
 	public void toBytes(PacketBuffer buf)
 	{
-		buf.writeInt(pos.getX());
-		buf.writeInt(pos.getY());
-		buf.writeInt(pos.getZ());
+		buf.writeBlockPos(pos);
 		
 		buf.writeString(freq.getOwner());
 		buf.writeInt(freq.getChannel());
+		
 		buf.writeBoolean(locked);
 	}
 
