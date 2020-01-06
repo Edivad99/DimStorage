@@ -9,7 +9,7 @@ loaderVersion="[28,)" #mandatory (28 is current forge version)
 modId="dimstorage" #mandatory
 
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="1.0.0" #mandatory
+version="2.0.0" #mandatory
 
  # A display name for the mod
 displayName="DimStorage" #mandatory
@@ -36,7 +36,7 @@ description="DimStorage add a technologic version of ender chest system with own
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[28.1.109,)" #mandatory
+    versionRange="[28.1.111,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER

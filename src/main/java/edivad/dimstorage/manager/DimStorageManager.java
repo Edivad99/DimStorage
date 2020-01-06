@@ -58,7 +58,6 @@ public class DimStorageManager {
 		}
 	}
 	
-	//private static MinecraftServer minecraftServer;
 	private static DimStorageManager serverManager;
 	private static DimStorageManager clientManager;
 	private static HashMap<String, DimStoragePlugin> plugins = new HashMap<>();
@@ -103,7 +102,7 @@ public class DimStorageManager {
 	private void load(World world)
 	{	
 		this.saveDir = new File(((ServerWorld)world).getSaveHandler().getWorldDirectory(), "DimStorage");
-		
+		//this.saveDir = new File("C:\\Users\\david\\Desktop\\DimStorage Save", "DimStorage");
 		try
 		{
 			if(!this.saveDir.exists())
