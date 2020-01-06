@@ -4,8 +4,12 @@ import javax.annotation.Nullable;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.compat.top.TOPInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -24,10 +28,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvider */ {
+public class DimChest extends Block implements TOPInfoProvider {
 
 	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
 
@@ -61,13 +66,13 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isSolid(BlockState state)
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isVariableOpacity()
 	{
@@ -94,19 +99,19 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 		if(tile != null)
 		{
 			ItemStack item = createItem(tile.frequency);
-			
+
 			float xOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-	        float yOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-	        float zOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-			
-	        ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, item);
-	        worldIn.addEntity(entityitem);
+			float yOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+			float zOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
+
+			ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, item);
+			worldIn.addEntity(entityitem);
 		}
-		
+
 		worldIn.removeTileEntity(pos);
-		worldIn.removeBlock(pos, false);	
+		worldIn.removeBlock(pos, false);
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
@@ -121,7 +126,7 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 		{
 			stack.setTag(new CompoundNBT());
 		}
-		
+
 		return freq.writeToStack(stack);
 	}
 
@@ -157,25 +162,24 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 		return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
-	//	@Override
-	//	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
-	//	{
-	//		TileEntity te = world.getTileEntity(data.getPos());
-	//		if(te instanceof TileEntityDimChest)
-	//		{
-	//			TileEntityDimChest tile = (TileEntityDimChest) te;
-	//
-	//			if(tile.frequency.hasOwner())
-	//			{
-	//				if(tile.canAccess())
-	//					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
-	//				else
-	//					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
-	//			}
-	//			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
-	//			if(tile.locked)
-	//				probeInfo.horizontal().text("Locked: Yes");
-	//		}
-	//	}
-	//
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
+	{
+		TileEntity te = world.getTileEntity(data.getPos());
+		if(te instanceof TileEntityDimChest)
+		{
+			TileEntityDimChest tile = (TileEntityDimChest) te;
+
+			if(tile.frequency.hasOwner())
+			{
+				if(tile.canAccess())
+					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
+				else
+					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
+			}
+			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
+			if(tile.locked)
+				probeInfo.horizontal().text("Locked: Yes");
+		}
+	}
 }

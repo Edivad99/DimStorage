@@ -1,17 +1,15 @@
 package edivad.dimstorage.compat;
 
+import edivad.dimstorage.compat.top.TOPCompatibility;
+import net.minecraftforge.fml.ModList;
+
 public class MainCompatHandler {
 
 	public static void registerTOP()
 	{
-//		if(Loader.isModLoaded("theoneprobe"))
-//		{
-//			TOPCompatibility.register();
-//		}
-	}
-
-	public static void registerWaila()
-	{
-		// nothing specific to do; registration is implicit
+		if (ModList.get().isLoaded("theoneprobe"))
+		{
+            TOPCompatibility.register();
+        }
 	}
 }

@@ -3,6 +3,7 @@ package edivad.dimstorage.proxy;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
 import edivad.dimstorage.client.screen.ScreenDimChest;
+import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
@@ -28,11 +29,9 @@ public class ProxyClient implements IProxy  {
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
 		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
-//		MainCompatHandler.registerTOP();
-//		MainCompatHandler.registerWaila();
-		//NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, new GuiHandler());
 		PacketHandler.init();
 
+		MainCompatHandler.registerTOP();
 		//OpenComputers
 		//if(Loader.isModLoaded("opencomputers"))
 		//{
