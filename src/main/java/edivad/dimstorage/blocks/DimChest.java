@@ -178,25 +178,4 @@ public class DimChest extends Block /*implements TOPInfoProvider, WailaInfoProvi
 	//		}
 	//	}
 	//
-	//	@Override
-	//	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-	//	{
-	//		TileEntity te = accessor.getTileEntity();
-	//		if(te instanceof TileEntityDimChest)
-	//		{
-	//			TileEntityDimChest tile = (TileEntityDimChest) te;
-	//
-	//			if(tile.frequency.hasOwner())
-	//			{
-	//				if(tile.canAccess())
-	//					currenttip.add(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
-	//				else
-	//					currenttip.add(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
-	//			}
-	//			currenttip.add("Frequency: " + tile.frequency.getChannel());
-	//			if(tile.locked)
-	//				currenttip.add("Locked: Yes");
-	//		}
-	//		return currenttip;
-	//	}
 }

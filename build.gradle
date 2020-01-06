@@ -17,12 +17,11 @@ version = "2.0.0"
 group = "edivad.dimstorage"
 archivesBaseName = "DimStorage-1.14.4"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
     mappings channel: 'snapshot', version: '20200102-1.14.3'
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
+	
     runs {
         client {
             workingDirectory project.file('run')
@@ -85,13 +84,16 @@ repositories {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
-	maven { //OpenComputers
+	/*maven { //OpenComputers
 		url = "http://maven.cil.li/" 
-	}
+	}*/
 }
 
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.14.4-28.1.111'
+	
+	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10+:api')
+	//compile fg.deobf("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.37-13")
 	
 	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
 	//deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2:api"
