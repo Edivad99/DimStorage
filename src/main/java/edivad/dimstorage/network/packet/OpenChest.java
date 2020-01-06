@@ -8,7 +8,7 @@ import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class OpenChest  {
+public class OpenChest {
 
 	private Frequency freq;
 	private boolean open;
@@ -24,7 +24,7 @@ public class OpenChest  {
 		this.freq = freq;
 		this.open = open;
 	}
-	
+
 	public void toBytes(PacketBuffer buf)
 	{
 		buf.writeString(freq.getOwner());
@@ -32,11 +32,13 @@ public class OpenChest  {
 
 		buf.writeBoolean(open);
 	}
-	
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-        	((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
-        });
-        ctx.get().setPacketHandled(true);
-    }
+
+	public void handle(Supplier<NetworkEvent.Context> ctx)
+	{
+		ctx.get().enqueueWork(() ->
+		{
+			((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
+		});
+		ctx.get().setPacketHandled(true);
+	}
 }

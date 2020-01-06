@@ -26,18 +26,18 @@ public class Main {
 
 	public static final String MODID = "dimstorage";
 	public static final String MODNAME = "DimStorage";
-	
+
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ProxyClient(), () -> () -> new Proxy());
-	
+
 	public static final ItemGroup dimStorageTab = new DimStorageTab(Main.MODID + "_tab");
-	
+
 	public static final Logger logger = LogManager.getLogger();
 
 	public Main()
 	{
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 	}
-	
+
 	private void setup(final FMLCommonSetupEvent event)
 	{
 		proxy.init();
@@ -48,7 +48,7 @@ public class Main {
 	{
 		DimStorageManager.reloadManager(false);
 	}
-	
+
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents {
 

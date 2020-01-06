@@ -23,7 +23,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 	{
 		this.model = new ModelDimChest();
 	}
-	
+
 	@Override
 	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
@@ -37,7 +37,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
 		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
 		GlStateManager.popMatrix();
-		
+
 		super.render(te, x, y, z, partialTicks, destroyStage);
 	}
 

@@ -135,7 +135,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
@@ -146,7 +146,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		return super.getCapability(capability, facing);
 	}
-	
 
 	//Synchronizing on block update
 	@Override

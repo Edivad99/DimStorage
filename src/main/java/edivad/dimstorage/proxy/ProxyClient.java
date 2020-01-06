@@ -18,15 +18,16 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class ProxyClient implements IProxy  {
-	
+public class ProxyClient implements IProxy {
+
 	@Override
-	public void init() {
-		
+	public void init()
+	{
+
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
-		
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
 		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
 		PacketHandler.init();

@@ -76,7 +76,6 @@ public class ModelDimChest extends Model {
 		this.indicatorBlue = this.createIndicator(2);
 		this.indicatorRed = this.createIndicator(4);
 	}
-	
 
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{

@@ -18,21 +18,20 @@ public class ModBlocks {
 	//Block
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
 	public static DimChest dimChest;
-	
-	
+
 	//Container
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
 	public static ContainerType<ContainerDimChest> containerDimChest;
-	
+
 	//TileEntity
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
 	public static TileEntityType<?> tileEntityDimChest;
-	
+
 	public static void registerTiles(IForgeRegistry<TileEntityType<?>> registry)
 	{
 		registry.register(TileEntityType.Builder.create(TileEntityDimChest::new, ModBlocks.dimChest).build(null).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_chest")));
 	}
-	
+
 	public static void registerContainers(IForgeRegistry<ContainerType<?>> registry)
 	{
 		registry.register(IForgeContainerType.create((windowId, inv, data) ->
@@ -45,7 +44,7 @@ public class ModBlocks {
 				Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
 				return null;
 			}
-			
+
 			TileEntityDimChest tile = (TileEntityDimChest) te;
 			return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
 		}).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_chest")));

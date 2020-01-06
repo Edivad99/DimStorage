@@ -4,7 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 public class Proxy implements IProxy {
-	
+
 	@Override
 	public void init()
 	{

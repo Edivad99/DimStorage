@@ -7,9 +7,9 @@ public class MainCompatHandler {
 
 	public static void registerTOP()
 	{
-		if (ModList.get().isLoaded("theoneprobe"))
+		if(ModList.get().isLoaded("theoneprobe"))
 		{
-            TOPCompatibility.register();
-        }
+			TOPCompatibility.register();
+		}
 	}
 }

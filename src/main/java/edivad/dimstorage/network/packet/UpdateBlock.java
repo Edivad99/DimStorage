@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class UpdateBlock  {
+public class UpdateBlock {
 
 	private BlockPos pos;
 	private Frequency freq;
@@ -38,34 +38,34 @@ public class UpdateBlock  {
 	public void toBytes(PacketBuffer buf)
 	{
 		buf.writeBlockPos(pos);
-		
+
 		buf.writeString(freq.getOwner());
 		buf.writeInt(freq.getChannel());
-		
+
 		buf.writeBoolean(locked);
 	}
 
-	
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() -> {
+		ctx.get().enqueueWork(() ->
+		{
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			if(!world.isBlockPresent(pos))
 				return;
-			
+
 			TileEntity tile = world.getTileEntity(pos);
-			
+
 			if(!(tile instanceof TileEntityDimChest))
 			{
 				Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
 				return;
 			}
-			
+
 			TileEntityDimChest chest = (TileEntityDimChest) tile;
 			chest.frequency.set(freq);
 			chest.locked = locked;
-			
+
 			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), 3);
 			if(chest.canAccess())
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));

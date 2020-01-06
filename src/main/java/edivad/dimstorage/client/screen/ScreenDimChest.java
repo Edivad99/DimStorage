@@ -28,7 +28,7 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 	}
 
 	private String change, owner, freq, locked, yes, no, inventory, name;
-	
+
 	private Button ownerButton, freqButton, lockedButton;
 	private TextFieldWidget freqTextField;
 
@@ -63,12 +63,12 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 			state = SettingsState.STATE_OPENED;
 		}
 	}
-	
+
 	@Override
 	protected void init()
 	{
 		super.init();
-		
+
 		// Get translation
 		change = Translate.translateToLocal("gui." + Main.MODID + ".change");
 		owner = Translate.translateToLocal("gui." + Main.MODID + ".owner");
@@ -97,23 +97,23 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		freqTextField.setFocused2(false);
 		freqTextField.setText(String.valueOf(currentFreq));
 		children.add(freqTextField);
-		
+
 		drawSettings(drawSettings);
 	}
-	
+
 	@Override
 	public void tick()
 	{
 		super.tick();
 		freqTextField.tick();
 	}
-	
+
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
 		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
-		
+
 		freqTextField.render(mouseX, mouseY, partialTicks);
 
 		if(state == SettingsState.STATE_OPENNING)
@@ -135,9 +135,9 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 				state = SettingsState.STATE_CLOSED;
 			}
 		}
-		
+
 	}
-	
+
 	private void change(String action)
 	{
 		if(action == "owner")
@@ -163,12 +163,12 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 		}
 		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
 	}
-		
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
 	{
 		super.mouseClicked(mouseX, mouseY, clickedButton);
-		
+
 		if(noConfig)
 			return false;
 
@@ -198,10 +198,10 @@ public class ScreenDimChest extends ContainerScreen<ContainerDimChest> {
 			state = SettingsState.STATE_CLOSING;
 			drawSettings(false);
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void mouseMoved(double x, double y)
 	{

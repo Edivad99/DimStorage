@@ -10,7 +10,6 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.VersionChecker.CheckResult;
 import net.minecraftforge.fml.VersionChecker.Status;
 
-
 public class EventHandler {
 
 	public static final EventHandler INSTANCE = new EventHandler();

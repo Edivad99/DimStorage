@@ -32,7 +32,7 @@ public class ItemDimChest extends BlockItem {
 	{
 		return Frequency.readFromStack(stack);
 	}
-	
+
 	@Override
 	protected boolean placeBlock(BlockItemUseContext context, BlockState state)
 	{
@@ -41,14 +41,14 @@ public class ItemDimChest extends BlockItem {
 			World world = context.getWorld();
 			BlockPos pos = context.getPos();
 			ItemStack stack = context.getItem();
-			
+
 			TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
 			tile.setFreq(getFreq(stack));
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
@@ -57,6 +57,6 @@ public class ItemDimChest extends BlockItem {
 			tooltip.add(new StringTextComponent(TextFormatting.DARK_RED + Translate.translateToLocal("gui." + Main.MODID + ".owner") + " " + frequency.getOwner()));
 		if(stack.hasTag())
 			tooltip.add(new StringTextComponent(Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + frequency.getChannel()));
-		
+
 	}
 }

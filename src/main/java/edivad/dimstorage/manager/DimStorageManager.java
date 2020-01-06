@@ -46,7 +46,7 @@ public class DimStorageManager {
 			if(!event.getWorld().getWorld().isRemote && instance(false) != null)
 				instance(false).save(false);
 		}
-		
+
 		@SubscribeEvent
 		public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
 		{
@@ -59,7 +59,7 @@ public class DimStorageManager {
 			instance(false).sendClientInfo(event.getPlayer());
 		}
 	}
-	
+
 	private static DimStorageManager serverManager;
 	private static DimStorageManager clientManager;
 	private static HashMap<String, DimStoragePlugin> plugins = new HashMap<>();
@@ -84,10 +84,10 @@ public class DimStorageManager {
 
 		for(String key : plugins.keySet())
 			this.storageList.put(key, new ArrayList<AbstractDimStorage>());
-		
+
 		if(!client)
 			load();
-			
+
 	}
 
 	private void sendClientInfo(PlayerEntity player)
@@ -99,9 +99,9 @@ public class DimStorageManager {
 	}
 
 	private void load()
-	{	
+	{
 		MinecraftServer server = LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
-		
+
 		this.saveDir = new File(server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
 		try
 		{
@@ -175,7 +175,7 @@ public class DimStorageManager {
 			clientManager = newManager;
 		else
 			serverManager = newManager;
-			
+
 	}
 
 	public File getSaveDir()

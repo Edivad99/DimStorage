@@ -17,7 +17,7 @@ public class ContainerDimChest extends Container {
 	public DimChestStorage chestInv;
 	public TileEntityDimChest owner;
 	public boolean isOpen;
-	
+
 	public ContainerDimChest(int windowId, PlayerInventory playerInventory, TileEntityDimChest owner, boolean isOpen)
 	{
 		super(ModBlocks.containerDimChest, windowId);
