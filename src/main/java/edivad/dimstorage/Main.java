@@ -13,7 +13,6 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -47,7 +46,7 @@ public class Main {
 	@SubscribeEvent
 	public void preServerStart(FMLServerStartedEvent event)
 	{
-		DimStorageManager.reloadManager(false, event.getServer().getWorld(DimensionType.OVERWORLD));
+		DimStorageManager.reloadManager(false);
 	}
 	
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

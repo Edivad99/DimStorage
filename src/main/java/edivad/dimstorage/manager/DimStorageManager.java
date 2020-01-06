@@ -20,12 +20,14 @@ import edivad.dimstorage.api.Frequency;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 
 public class DimStorageManager {
 
@@ -35,26 +37,26 @@ public class DimStorageManager {
 		public void onWorldLoad(Load event)
 		{
 			if(event.getWorld().getWorld().isRemote)
-				reloadManager(true, event.getWorld().getWorld());
+				reloadManager(true);
 		}
 
 		@SubscribeEvent
 		public void onWorldSave(Save event)
 		{
-			if(!event.getWorld().getWorld().isRemote && instance(false, event.getWorld().getWorld()) != null)
-				instance(false, event.getWorld().getWorld()).save(false);
+			if(!event.getWorld().getWorld().isRemote && instance(false) != null)
+				instance(false).save(false);
 		}
-
+		
 		@SubscribeEvent
 		public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
 		{
-			instance(false, event.getEntity().world).sendClientInfo(event.getPlayer());
+			instance(false).sendClientInfo(event.getPlayer());
 		}
 
 		@SubscribeEvent
 		public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event)
 		{
-			instance(false, event.getEntity().world).sendClientInfo(event.getPlayer());
+			instance(false).sendClientInfo(event.getPlayer());
 		}
 	}
 	
@@ -72,7 +74,7 @@ public class DimStorageManager {
 	private List<AbstractDimStorage> dirtyStorage;
 	private CompoundNBT saveTag;
 
-	public DimStorageManager(boolean client, World world)
+	public DimStorageManager(boolean client)
 	{
 		this.client = client;
 
@@ -82,12 +84,9 @@ public class DimStorageManager {
 
 		for(String key : plugins.keySet())
 			this.storageList.put(key, new ArrayList<AbstractDimStorage>());
-
-		if(!client && world == null)
-			 throw new NullPointerException("Null world Exception"); 
 		
 		if(!client)
-			load(world);
+			load();
 			
 	}
 
@@ -99,10 +98,11 @@ public class DimStorageManager {
 		}
 	}
 
-	private void load(World world)
+	private void load()
 	{	
-		this.saveDir = new File(((ServerWorld)world).getSaveHandler().getWorldDirectory(), "DimStorage");
-		//this.saveDir = new File("C:\\Users\\david\\Desktop\\DimStorage Save", "DimStorage");
+		MinecraftServer server = LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
+		
+		this.saveDir = new File(server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
 		try
 		{
 			if(!this.saveDir.exists())
@@ -167,9 +167,9 @@ public class DimStorageManager {
 		}
 	}
 
-	public static void reloadManager(boolean client, World world)
+	public static void reloadManager(boolean client)
 	{
-		DimStorageManager newManager = new DimStorageManager(client, world);
+		DimStorageManager newManager = new DimStorageManager(client);
 
 		if(client)
 			clientManager = newManager;
@@ -183,12 +183,12 @@ public class DimStorageManager {
 		return saveDir;
 	}
 
-	public static DimStorageManager instance(boolean client, World world)
+	public static DimStorageManager instance(boolean client)
 	{
 		DimStorageManager manager = client ? clientManager : serverManager;
 		if(manager == null)
 		{
-			reloadManager(client, world);
+			reloadManager(client);
 			manager = client ? clientManager : serverManager;
 		}
 		return manager;
