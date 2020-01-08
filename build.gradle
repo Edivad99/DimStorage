@@ -92,8 +92,8 @@ repositories {
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.14.4-28.1.111'
 	
-	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4:api')
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.37-15:api") {
+	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10+:api')
+	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.+:api") {
         transitive = false
     })
 	
