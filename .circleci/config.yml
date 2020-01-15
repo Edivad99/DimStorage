@@ -34,7 +34,7 @@ jobs:
       - run: chmod +x ./gradlew
       - run: rm -rf build/libs
       - run: ./gradlew clean
-      - run: ./gradlew build
+      - run: ./gradlew setupCIWorkspace
 
       - save_cache:
           paths:
