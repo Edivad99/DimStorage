@@ -12,10 +12,13 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -36,6 +39,11 @@ public class Main {
 	public Main()
 	{
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+	}
+	
+	public static MinecraftServer getServer() 
+	{
+		return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
 	}
 
 	private void setup(final FMLCommonSetupEvent event)

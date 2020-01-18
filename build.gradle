@@ -84,9 +84,18 @@ repositories {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
-	/*maven { //OpenComputers
+	maven { 
+		name 'CCraft'
+		url 'https://squiddev.cc/maven/' 
+	}
+	maven {
+		name 'OpenComputers'
 		url = "http://maven.cil.li/" 
-	}*/
+	}
+	maven {
+        name = "JEI"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
@@ -97,6 +106,8 @@ dependencies {
         transitive = false
     })
 	
+	runtime fg.deobf("mezz.jei:jei-1.14.4:6+")
+	//compile fg.deobf('org.squiddev:cc-tweaked-1.14.4:1+')
 	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
 }
 

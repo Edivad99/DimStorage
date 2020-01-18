@@ -50,4 +50,10 @@ public abstract class AbstractDimStorage {
 	public abstract CompoundNBT saveToTag();
 
 	public abstract void loadFromTag(CompoundNBT tag);
+	
+	@Override
+	public String toString()
+	{
+		return freq + ",type=" + type();
+	}
 }

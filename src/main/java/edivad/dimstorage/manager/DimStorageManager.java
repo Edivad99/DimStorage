@@ -14,20 +14,18 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
 
 public class DimStorageManager {
 
@@ -100,9 +98,7 @@ public class DimStorageManager {
 
 	private void load()
 	{
-		MinecraftServer server = LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
-
-		this.saveDir = new File(server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
+		this.saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
 		try
 		{
 			if(!this.saveDir.exists())

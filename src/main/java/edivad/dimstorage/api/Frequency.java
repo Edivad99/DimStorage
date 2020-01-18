@@ -63,8 +63,6 @@ public class Frequency {
 	{
 		owner = tagCompound.getString("owner");
 		channel = tagCompound.getInt("channel");
-		//Useful at the moment to avoid console spam
-		//if(!Loader.isModLoaded("waila"))
 		Main.logger.log(Level.DEBUG, "read_internal: " + this);
 		return this;
 	}
