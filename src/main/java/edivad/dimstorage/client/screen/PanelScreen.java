@@ -2,6 +2,7 @@ package edivad.dimstorage.client.screen;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -26,7 +27,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 
 	private String change, owner, freq, locked, yes, no, inventory, name;
 
-	protected Button ownerButton, freqButton, lockedButton;
+	private Button ownerButton, freqButton, lockedButton;
 	protected TextFieldWidget freqTextField;
 	
 	private SettingsState state;
@@ -34,7 +35,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 	private boolean drawSettings;
 	private boolean settingsButtonOver;
 
-	private boolean noConfig;
+	private boolean allowConfig;
 	
 	public PanelScreen(T container, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
 	{
@@ -47,7 +48,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 		this.animationState = 0;
 		this.drawSettings = drawSettings;
 		this.settingsButtonOver = false;
-		this.noConfig = false;
+		this.allowConfig = Config.DIMCHEST_ALLOWCONFIG.get();
 
 		if(this.drawSettings)
 		{
@@ -75,6 +76,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 		this.buttons.clear();
 
 		ownerButton = new Button(this.width / 2 + 95, this.height / 2 - 42, 64, 20, change, button -> actions(Actions.OWNER));
+		ownerButton.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
 		freqButton = new Button(this.width / 2 + 95, this.height / 2 + 19, 64, 20, change, button -> actions(Actions.FREQ));
 		lockedButton = new Button(this.width / 2 + 95, this.height / 2 + 58, 64, 20, isLocked() ? yes : no, button -> actions(Actions.LOCK));
 		this.addButton(ownerButton);
@@ -137,7 +139,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 	{
 		super.mouseClicked(mouseX, mouseY, clickedButton);
 
-		if(noConfig)
+		if(!allowConfig)
 			return false;
 
 		freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
@@ -194,7 +196,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 		int y = (this.height - this.ySize) / 2;
 		int settingsX = x + (this.xSize - SETTINGS_WIDTH);
 
-		if(!noConfig)
+		if(allowConfig)
 			this.blit(settingsX + this.animationState, y + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
 
 		this.blit(x, y, 0, 0, this.xSize, 222);

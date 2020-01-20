@@ -8,6 +8,7 @@ import edivad.dimstorage.proxy.IProxy;
 import edivad.dimstorage.proxy.Proxy;
 import edivad.dimstorage.proxy.ProxyClient;
 import edivad.dimstorage.tabs.DimStorageTab;
+import edivad.dimstorage.tools.Config;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -19,10 +20,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mod(Main.MODID)
 public class Main {
@@ -38,10 +42,16 @@ public class Main {
 
 	public Main()
 	{
+		//ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+
+		//Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-client.toml"));
+		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
 	}
-	
-	public static MinecraftServer getServer() 
+
+	public static MinecraftServer getServer()
 	{
 		return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
 	}
