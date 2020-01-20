@@ -11,7 +11,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
+public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 
 	private static final int ANIMATION_SPEED = 10;
 	private static final int SETTINGS_WIDTH = 80;
@@ -20,7 +20,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 	private static enum SettingsState {
 		STATE_CLOSED, STATE_OPENNING, STATE_OPENED, STATE_CLOSING
 	}
-	
+
 	protected static enum Actions {
 		OWNER, FREQ, LOCK
 	}
@@ -29,21 +29,21 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 
 	private Button ownerButton, freqButton, lockedButton;
 	protected TextFieldWidget freqTextField;
-	
+
 	private SettingsState state;
 	private int animationState;
 	private boolean drawSettings;
 	private boolean settingsButtonOver;
 
 	private boolean allowConfig;
-	
+
 	public PanelScreen(T container, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
 	{
 		super(container, invPlayer, text, background);
-		
+
 		this.xSize = 176;//176
 		this.ySize = 230;//230
-		
+
 		this.state = SettingsState.STATE_CLOSED;
 		this.animationState = 0;
 		this.drawSettings = drawSettings;
@@ -56,7 +56,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 			state = SettingsState.STATE_OPENED;
 		}
 	}
-	
+
 	@Override
 	protected void init()
 	{
@@ -82,7 +82,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 		this.addButton(ownerButton);
 		this.addButton(freqButton);
 		this.addButton(lockedButton);
-		
+
 		freqTextField = new TextFieldWidget(this.font, this.width / 2 + 95, this.height / 2, 64, 15, String.valueOf(getTileFrequency().getChannel()));
 		freqTextField.setMaxStringLength(3);
 		freqTextField.setVisible(true);
@@ -92,20 +92,20 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 
 		drawSettings(drawSettings);
 	}
-	
+
 	protected abstract void actions(Actions action);
-	
+
 	protected abstract Frequency getTileFrequency();
-	
+
 	protected abstract boolean isLocked();
-	
+
 	@Override
 	public void tick()
 	{
 		super.tick();
 		freqTextField.tick();
 	}
-	
+
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
@@ -171,7 +171,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 
 		return true;
 	}
-	
+
 	@Override
 	public void mouseMoved(double x, double y)
 	{
@@ -186,7 +186,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 			if(y >= buttonY && y <= buttonY + BUTTON_WIDTH)
 				settingsButtonOver = true;
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
@@ -222,7 +222,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 				this.blit(buttonX + 4, buttonY - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
 		}
 	}
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
@@ -255,9 +255,9 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T>{
 		this.hLine(185, 185 + this.font.getStringWidth(locked), posY, 0xFF333333);
 
 		// refresh button label
-		this.lockedButton.setMessage(isLocked()? yes : no);
+		this.lockedButton.setMessage(isLocked() ? yes : no);
 	}
-	
+
 	private void drawSettings(boolean draw)
 	{
 		drawSettings = draw;

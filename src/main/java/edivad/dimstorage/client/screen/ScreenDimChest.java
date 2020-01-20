@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
-	
+
 	private TileEntityDimChest ownerTile;
 
 	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, ITextComponent text)
@@ -28,7 +28,7 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 			case OWNER:
 				ownerTile.swapOwner();
 				break;
-			
+
 			case FREQ:
 				int prevChannel = ownerTile.frequency.getChannel();
 				try
@@ -41,7 +41,7 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 					freqTextField.setText(String.valueOf(prevChannel));
 				}
 				break;
-				
+
 			case LOCK:
 				ownerTile.swapLocked();
 				break;

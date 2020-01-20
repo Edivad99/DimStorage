@@ -12,19 +12,20 @@ import net.minecraftforge.fml.common.Mod;
 public class Config {
 
 	public static final String CATEGORY_GENERAL = "general";
-	
+
 	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	//private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
-	
+
 	public static ForgeConfigSpec COMMON_CONFIG;
 	//public static ForgeConfigSpec CLIENT_CONFIG;
-	
+
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWCONFIG;
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWPRIVATENETWORK;
-	
-	static {
+
+	static
+	{
 		COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
-		
+
 		//@formatter:off
 		DIMCHEST_ALLOWCONFIG = COMMON_BUILDER
 								.comment("Allow players to change the DimChest's frequency, default: true")
@@ -35,11 +36,11 @@ public class Config {
 								.define("allowPrivateNetwork", true);
 		//@formatter:on
 		COMMON_BUILDER.pop();
-		
+
 		COMMON_CONFIG = COMMON_BUILDER.build();
 		//CLIENT_CONFIG = CLIENT_BUILDER.build();
 	}
-	
+
 	public static void loadConfig(ForgeConfigSpec spec, Path path)
 	{
 		//@formatter:off

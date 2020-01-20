@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 
 	protected ResourceLocation background;
-	
+
 	public BaseScreen(T container, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background)
 	{
 		super(container, invPlayer, text);
