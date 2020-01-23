@@ -98,7 +98,8 @@ public class DimStorageManager {
 
 	private void load()
 	{
-		this.saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
+		//this.saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
+		this.saveDir = new File(Main.getServer().func_71218_a(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
 		try
 		{
 			if(!this.saveDir.exists())

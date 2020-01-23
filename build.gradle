@@ -20,7 +20,7 @@ archivesBaseName = "DimStorage-1.14.4"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200118-1.14.3'
+    mappings channel: 'snapshot', version: '20200119-1.14.4'
 	
     runs {
         client {
@@ -99,7 +99,7 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.14.4-28.1.115'
+	minecraft 'net.minecraftforge:forge:1.14.4-28.1.116'
 	
 	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4:api')
 	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.+:api") {
