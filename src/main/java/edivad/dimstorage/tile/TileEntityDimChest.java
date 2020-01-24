@@ -1,12 +1,12 @@
 package edivad.dimstorage.tile;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tools.Translate;
+import edivad.dimstorage.tools.Message;
+import edivad.dimstorage.tools.Message.Messages;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,8 +19,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -130,7 +129,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		else
 		{
-			player.sendMessage(new StringTextComponent(TextFormatting.RED + Translate.translateToLocal("message." + Main.MODID + ".accessDenied")));
+			Message.sendChatMessage(player, Messages.ACCESSDENIED);
 		}
 
 		return true;
@@ -188,7 +187,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new StringTextComponent("Dimensional Chest");
+		return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
 	}
 
 	@Override

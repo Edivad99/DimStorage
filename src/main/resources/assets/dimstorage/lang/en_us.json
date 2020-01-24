@@ -19,5 +19,7 @@
 	"gui.dimstorage.yes": "Yes",
 	"gui.dimstorage.no": "No",
 	
-    "message.dimstorage.accessDenied": "Access Denied!"
+    "message.dimstorage.accessDenied": "Access Denied!",
+    "message.dimstorage.bindingComplete": "Linked to chest",
+    "message.dimstorage.notLinked": "DimPad not connected to any DimChest"
 }
