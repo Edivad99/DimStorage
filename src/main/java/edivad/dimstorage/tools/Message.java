@@ -13,9 +13,6 @@ public class Message {
 
 	public static void sendChatMessage(PlayerEntity player, Messages message)
 	{
-		if(player.isServerWorld())
-			return;
-
 		StringTextComponent messageToSend = null;
 		switch (message)
 		{
@@ -31,6 +28,7 @@ public class Message {
 				messageToSend = new StringTextComponent(TextFormatting.RED + Translate.translateToLocal("message." + Main.MODID + ".notLinked"));
 				break;
 		}
-		player.sendMessage(messageToSend);
+		if(messageToSend != null)
+			player.sendMessage(messageToSend);
 	}
 }
