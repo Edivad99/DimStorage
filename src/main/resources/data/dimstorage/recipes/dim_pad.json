@@ -1,0 +1,25 @@
+{
+	"result": {
+		"item": "dimstorage:dim_pad"
+	},
+	"pattern": [
+		"cdc",
+		"cdc",
+		"aba"
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"a": {
+			"item": "minecraft:obsidian"
+		},
+		"b": {
+			"item": "dimstorage:solid_dim_core"
+		},
+		"c": {
+			"item": "minecraft:iron_ingot"
+		},
+		"d": {
+			"item": "minecraft:glass_pane"
+		}
+	}
+}

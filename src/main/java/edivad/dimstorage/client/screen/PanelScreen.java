@@ -109,7 +109,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
 		freqTextField.render(mouseX, mouseY, partialTicks);
 

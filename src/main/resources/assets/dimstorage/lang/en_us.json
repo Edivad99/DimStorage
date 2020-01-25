@@ -4,6 +4,7 @@
     "item.dimstorage.dim_core": "Dimensional Core",
     "item.dimstorage.solid_dim_core": "Solid Dimensional Core",
     "item.dimstorage.dim_wall": "Dimensional Wall",
+    "item.dimstorage.dim_pad": "DimPad",
 
     "block.dimstorage.dimensional_chest": "Dimensional Chest",
 
@@ -21,5 +22,8 @@
 	
     "message.dimstorage.accessDenied": "Access Denied!",
     "message.dimstorage.bindingComplete": "Linked to chest",
-    "message.dimstorage.notLinked": "DimPad not connected to any DimChest"
+    "message.dimstorage.notLinked": "DimPad not connected to any DimChest",
+    "message.dimstorage.areaNotLoaded": "DimChest is not loaded!",
+    "message.dimstorage.adviceToLink": "Press shift + right click to bind a DimChest",
+    "message.dimstorage.pressShift": "Press Shift"
 }

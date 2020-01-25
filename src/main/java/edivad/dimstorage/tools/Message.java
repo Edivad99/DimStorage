@@ -8,14 +8,11 @@ import net.minecraft.util.text.TextFormatting;
 public class Message {
 
 	public static enum Messages {
-		ACCESSDENIED, BINDINGCOMPLETE, NOTLINKED
+		ACCESSDENIED, BINDINGCOMPLETE, NOTLINKED, AREANOTLOADED
 	}
 
 	public static void sendChatMessage(PlayerEntity player, Messages message)
 	{
-		if(player.isServerWorld())
-			return;
-
 		StringTextComponent messageToSend = null;
 		switch (message)
 		{
@@ -30,7 +27,12 @@ public class Message {
 			case NOTLINKED:
 				messageToSend = new StringTextComponent(TextFormatting.RED + Translate.translateToLocal("message." + Main.MODID + ".notLinked"));
 				break;
+
+			case AREANOTLOADED:
+				messageToSend = new StringTextComponent(TextFormatting.RED + Translate.translateToLocal("message." + Main.MODID + ".areaNotLoaded"));
+				break;
 		}
-		player.sendMessage(messageToSend);
+		if(messageToSend != null)
+			player.sendMessage(messageToSend);
 	}
 }
