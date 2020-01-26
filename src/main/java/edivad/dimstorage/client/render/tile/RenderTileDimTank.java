@@ -49,7 +49,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			return;
 
 		FluidStack fluid = tank.liquidState.c_liquid;
-		System.out.println(tank.frequency + " " + fluid.getFluid().getRegistryName() + " " + fluid.getAmount());
+		//System.out.println(tank.frequency + " " + fluid.getFluid().getRegistryName() + " " + fluid.getAmount());
 		if(fluid == null)
 			return;
 

@@ -3,6 +3,7 @@ package edivad.dimstorage.network;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.network.packet.UpdateBlockTank;
 import edivad.dimstorage.network.packet.tank.PlayerItemTankCacheSync;
 import edivad.dimstorage.network.packet.tank.SyncLiquidTank;
 import edivad.dimstorage.network.packet.tank.UpdateTankLiquid;
@@ -19,6 +20,7 @@ public class PacketHandler {
 		int id = 0;
 		INSTANCE.registerMessage(id++, UpdateBlock.class, UpdateBlock::toBytes, UpdateBlock::new, UpdateBlock::handle);
 		INSTANCE.registerMessage(id++, OpenChest.class, OpenChest::toBytes, OpenChest::new, OpenChest::handle);
+		INSTANCE.registerMessage(id++, UpdateBlockTank.class, UpdateBlockTank::toBytes, UpdateBlockTank::new, UpdateBlockTank::handle);
 		
 		INSTANCE.registerMessage(id++, UpdateTankLiquid.class, UpdateTankLiquid::toBytes, UpdateTankLiquid::new, UpdateTankLiquid::handle);
 		INSTANCE.registerMessage(id++, PlayerItemTankCacheSync.class, PlayerItemTankCacheSync::toBytes, PlayerItemTankCacheSync::new, PlayerItemTankCacheSync::handle);

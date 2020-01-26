@@ -103,7 +103,7 @@ public class DimTank extends Block {
 
 		TileEntityDimTank owner = (TileEntityDimTank) tile;
 
-		return !player.isSneaking() && owner.activate(player, worldIn, pos, handIn);
+		return owner.activate(player, worldIn, pos, handIn);
 	}
 	
 	@Override

@@ -2,16 +2,23 @@ package edivad.dimstorage.tile;
 
 import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.TankSynchroniser;
 import edivad.dimstorage.network.packet.tank.SyncLiquidTank;
 import edivad.dimstorage.storage.DimTankStorage;
+import edivad.dimstorage.tools.Message;
+import edivad.dimstorage.tools.Message.Messages;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -26,25 +33,26 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityDimTank extends TileFrequencyOwner {
 
-	public class DimTankState extends TankSynchroniser.TankState{
+	public class DimTankState extends TankSynchroniser.TankState {
 
 		@Override
 		public void sendSyncPacket()
 		{
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX(), pos.getZ())), new SyncLiquidTank(getPos(), s_liquid));
 		}
-		
+
 		@Override
 		public void onLiquidChanged()
 		{
 			//world.checkLight(pos);
 		}
 	}
-	
+
 	public class TankFluidCap implements IFluidHandler {
 
 		@Override
@@ -92,11 +100,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
 	public DimTankState liquidState = new DimTankState();
 	public TankFluidCap fluidCap = new TankFluidCap();
-	
+	public boolean locked;
 
 	public TileEntityDimTank()
 	{
 		super(ModBlocks.tileEntityDimTank);
+		locked = false;
 	}
 
 	@Override
@@ -105,6 +114,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.tick();
 		ejectLiquid();
 		liquidState.update(world.isRemote);
+	}
+
+	public void swapLocked()
+	{
+		locked = !locked;
+		this.markDirty();
 	}
 
 	private void ejectLiquid()
@@ -130,7 +145,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 			}
 		}
 	}
-	
+
 	@Override
 	public void setFreq(Frequency frequency)
 	{
@@ -138,20 +153,29 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		if(!world.isRemote)
 			liquidState.setFrequency(frequency);
 	}
-	
+
 	@Override
 	public DimTankStorage getStorage()
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
 	}
-	
+
+	@Override
+	public CompoundNBT write(CompoundNBT tag)
+	{
+		super.write(tag);
+		tag.putBoolean("locked", locked);
+		return tag;
+	}
+
 	@Override
 	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 		liquidState.setFrequency(frequency);
+		locked = tag.getBoolean("locked");
 	}
-	
+
 	public int getLightValue()
 	{
 		if(liquidState.s_liquid.getAmount() > 0)
@@ -162,17 +186,65 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
-		return FluidUtil.interactWithFluidHandler(player, hand, getStorage());
+		if(player.isSneaking())
+		{
+			if(canAccess())
+			{
+				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
+			}
+			else
+			{
+				Message.sendChatMessage(player, Messages.ACCESSDENIED);
+			}
+			return true;
+		}
+		else
+			return FluidUtil.interactWithFluidHandler(player, hand, getStorage());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		if(cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> fluidCap).cast(); 
+			return LazyOptional.of(() ->(T) fluidCap).cast();
 		}
 		return super.getCapability(cap, side);
+	}
+
+	//Synchronizing on block update
+	@Override
+	public final SUpdateTileEntityPacket getUpdatePacket()
+	{
+		CompoundNBT root = new CompoundNBT();
+		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.putBoolean("locked", locked);
+		return new SUpdateTileEntityPacket(getPos(), 1, root);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+	{
+		CompoundNBT tag = pkt.getNbtCompound();
+		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		locked = tag.getBoolean("locked");
+	}
+
+	//Synchronizing on chunk load
+	@Override
+	public CompoundNBT getUpdateTag()
+	{
+		CompoundNBT tag = super.getUpdateTag();
+		tag.putBoolean("locked", locked);
+		return tag;
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundNBT tag)
+	{
+		super.handleUpdateTag(tag);
+		locked = tag.getBoolean("locked");
 	}
 
 	@Override
@@ -184,6 +256,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	@Override
 	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
 	{
-		return null;
+		return new ContainerDimTank(id, playerInventory, this, false);
 	}
 }
