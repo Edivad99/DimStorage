@@ -8,16 +8,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -86,5 +90,30 @@ public class DimTank extends Block {
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
 		return BOX;
+	}
+	
+	@Override
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+	{
+		if(worldIn.isRemote)
+			return true;
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if(!(tile instanceof TileEntityDimTank))
+			return false;
+
+		TileEntityDimTank owner = (TileEntityDimTank) tile;
+
+		return !player.isSneaking() && owner.activate(player, worldIn, pos, handIn);
+	}
+	
+	@Override
+	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
+	{
+		TileEntity tile = world.getTileEntity(pos);
+		if(tile instanceof TileEntityDimTank)
+		{
+			return ((TileEntityDimTank) tile).getLightValue();
+		}
+		return 0;
 	}
 }

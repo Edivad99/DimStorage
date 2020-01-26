@@ -1,12 +1,17 @@
 package edivad.dimstorage.tile;
 
 import edivad.dimstorage.ModBlocks;
+import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.TankSynchroniser;
+import edivad.dimstorage.network.packet.tank.SyncLiquidTank;
 import edivad.dimstorage.storage.DimTankStorage;
+import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -21,9 +26,25 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityDimTank extends TileFrequencyOwner {
 
+	public class DimTankState extends TankSynchroniser.TankState{
+
+		@Override
+		public void sendSyncPacket()
+		{
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX(), pos.getZ())), new SyncLiquidTank(getPos(), s_liquid));
+		}
+		
+		@Override
+		public void onLiquidChanged()
+		{
+			//world.checkLight(pos);
+		}
+	}
+	
 	public class TankFluidCap implements IFluidHandler {
 
 		@Override
@@ -67,16 +88,11 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		{
 			return getStorage().drain(maxDrain, action);
 		}
-
 	}
 
-	public class DimTankState {
-
-		public FluidStack c_liquid = new FluidStack(Fluids.LAVA, 4000);
-	}
-
-	public TankFluidCap fluidCap = new TankFluidCap();
 	public DimTankState liquidState = new DimTankState();
+	public TankFluidCap fluidCap = new TankFluidCap();
+	
 
 	public TileEntityDimTank()
 	{
@@ -88,6 +104,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		super.tick();
 		ejectLiquid();
+		liquidState.update(world.isRemote);
 	}
 
 	private void ejectLiquid()
@@ -113,6 +130,34 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 			}
 		}
 	}
+	
+	@Override
+	public void setFreq(Frequency frequency)
+	{
+		super.setFreq(frequency);
+		if(!world.isRemote)
+			liquidState.setFrequency(frequency);
+	}
+	
+	@Override
+	public DimTankStorage getStorage()
+	{
+		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
+	}
+	
+	@Override
+	public void read(CompoundNBT tag)
+	{
+		super.read(tag);
+		liquidState.setFrequency(frequency);
+	}
+	
+	public int getLightValue()
+	{
+		if(liquidState.s_liquid.getAmount() > 0)
+			return FluidUtils.getLuminosity(liquidState.c_liquid, liquidState.s_liquid.getAmount() / 16D);
+		return 0;
+	}
 
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
@@ -123,14 +168,11 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		// TODO Auto-generated method stub
+		if(cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+		{
+			return LazyOptional.of(() -> fluidCap).cast(); 
+		}
 		return super.getCapability(cap, side);
-	}
-
-	@Override
-	public DimTankStorage getStorage()
-	{
-		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
 	}
 
 	@Override
