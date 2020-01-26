@@ -5,6 +5,7 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimTankStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -66,11 +67,17 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		{
 			return getStorage().drain(maxDrain, action);
 		}
-		
+
 	}
-	
+
+	public class DimTankState {
+
+		public FluidStack c_liquid = new FluidStack(Fluids.LAVA, 4000);
+	}
+
 	public TankFluidCap fluidCap = new TankFluidCap();
-	
+	public DimTankState liquidState = new DimTankState();
+
 	public TileEntityDimTank()
 	{
 		super(ModBlocks.tileEntityDimTank);
@@ -82,10 +89,10 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.tick();
 		ejectLiquid();
 	}
-	
+
 	private void ejectLiquid()
 	{
-		for (Direction side : Direction.values())
+		for(Direction side : Direction.values())
 		{
 			TileEntity tile = world.getTileEntity(pos.offset(side));
 			if(tile != null)
@@ -106,20 +113,19 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		return FluidUtil.interactWithFluidHandler(player, hand, getStorage());
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		// TODO Auto-generated method stub
 		return super.getCapability(cap, side);
 	}
-
 
 	@Override
 	public DimTankStorage getStorage()

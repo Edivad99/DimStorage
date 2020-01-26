@@ -30,19 +30,19 @@ public class FluidUtils {
 		return fluid == null || fluid.getFluid() == null ? tag : fluid.writeToNBT(tag);
 	}
 
-//	public static IFluidHandler getFluidHandlerOrEmpty(World world, BlockPos pos, Direction dir)
-//	{
-//		return getFluidHandlerOr(world.getTileEntity(pos), dir, EmptyFluidHandler.INSTANCE);
-//	}
-//
-//	public static IFluidHandler getFluidHandlerOr(TileEntity tile, Direction face, IFluidHandler fluidHandler)
-//	{
-//		IFluidHandler handler = hasFluidHandler(tile, face) ? getFluidHandler_Raw(tile, face) : null;
-//		return handler != null ? handler : fluidHandler;
-//	}
-//
-//	public static boolean hasFluidHandler(TileEntity tile, Direction face)
-//	{
-//		return tile != null && tile.hasCapability(FLUID_HANDLER, face);
-//	}
+	//	public static IFluidHandler getFluidHandlerOrEmpty(World world, BlockPos pos, Direction dir)
+	//	{
+	//		return getFluidHandlerOr(world.getTileEntity(pos), dir, EmptyFluidHandler.INSTANCE);
+	//	}
+	//
+	//	public static IFluidHandler getFluidHandlerOr(TileEntity tile, Direction face, IFluidHandler fluidHandler)
+	//	{
+	//		IFluidHandler handler = hasFluidHandler(tile, face) ? getFluidHandler_Raw(tile, face) : null;
+	//		return handler != null ? handler : fluidHandler;
+	//	}
+	//
+	//	public static boolean hasFluidHandler(TileEntity tile, Direction face)
+	//	{
+	//		return tile != null && tile.hasCapability(FLUID_HANDLER, face);
+	//	}
 }

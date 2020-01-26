@@ -25,13 +25,13 @@ public class DimTank extends Block {
 
 	public static final ResourceLocation DIMTANK = new ResourceLocation(Main.MODID, "dimensional_tank");
 	private static final VoxelShape BOX = VoxelShapes.create(2 / 16D, 0 / 16D, 2 / 16D, 14 / 16D, 16 / 16D, 14 / 16D);
-	
+
 	public DimTank()
 	{
 		super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(20F, 100F));
 		setRegistryName(DIMTANK);
 	}
-	
+
 	@Override
 	public boolean hasTileEntity(BlockState state)
 	{
@@ -44,7 +44,7 @@ public class DimTank extends Block {
 	{
 		return new TileEntityDimTank();
 	}
-	
+
 	@Override
 	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
 	{
@@ -56,32 +56,32 @@ public class DimTank extends Block {
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isVariableOpacity()
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face)
 	{
 		return face == Direction.UP || face == Direction.DOWN;
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;//CUTOUT
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
 		return BOX;
 	}
-	
+
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{

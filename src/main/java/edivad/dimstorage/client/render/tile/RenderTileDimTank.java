@@ -6,8 +6,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
@@ -17,7 +15,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,7 +25,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 	public RenderTileDimTank()
 	{
 	}
-	
+
 	@Override
 	public void render(TileEntityDimTank tileEntity, double x, double y, double z, float partialTicks, int destroyStage)
 	{
@@ -42,7 +39,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 		renderFluid(tileEntity);
 
 		GlStateManager.popMatrix();
-		
+
 		super.render(tileEntity, x, y, z, partialTicks, destroyStage);
 	}
 
@@ -51,9 +48,8 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 		if(tank == null)
 			return;
 
-		FluidStack fluid = tank.liquid_state.c_liquid;
-		//FluidStack fluid = new FluidStack(Fluids.WATER, 10000);
-		//System.out.println(tank.frequency + " " + fluid.getFluid().toString() + " " + fluid.getAmount());
+		FluidStack fluid = tank.liquidState.c_liquid;
+		System.out.println(tank.frequency + " " + fluid.getFluid().getRegistryName() + " " + fluid.getAmount());
 		if(fluid == null)
 			return;
 

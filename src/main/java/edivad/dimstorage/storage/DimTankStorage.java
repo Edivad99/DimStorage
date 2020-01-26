@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class DimTankStorage extends AbstractDimStorage implements IFluidHandler{
+public class DimTankStorage extends AbstractDimStorage implements IFluidHandler {
 
 	private class Tank extends ExtendedFluidTank {
 
@@ -23,7 +23,7 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler{
 			setDirty();
 		}
 	}
-	
+
 	public static final int CAPACITY = 16000;
 	private Tank tank;
 
