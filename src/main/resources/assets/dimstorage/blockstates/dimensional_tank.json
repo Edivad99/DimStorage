@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model" : "dimstorage:block/dimensional_tank" }
+    }
+}

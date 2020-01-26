@@ -4,6 +4,7 @@ import edivad.dimstorage.items.DimCore;
 import edivad.dimstorage.items.DimWall;
 import edivad.dimstorage.items.ItemDimChest;
 import edivad.dimstorage.items.SolidDimCore;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -25,5 +26,6 @@ public class ModItems {
 		registry.register(new DimWall());
 		registry.register(new SolidDimCore());
 		registry.register(new ItemDimChest(ModBlocks.dimChest));
+		registry.register(new BlockItem(ModBlocks.dimTank, new Item.Properties().group(Main.dimStorageTab)).setRegistryName("dimensional_tank"));
 	}
 }

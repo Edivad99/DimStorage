@@ -1,8 +1,10 @@
 package edivad.dimstorage;
 
 import edivad.dimstorage.blocks.DimChest;
+import edivad.dimstorage.blocks.DimTank;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tile.TileEntityDimTank;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +20,8 @@ public class ModBlocks {
 	//Block
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
 	public static DimChest dimChest;
+	@ObjectHolder(Main.MODID + ":dimensional_tank")
+	public static DimTank dimTank;
 
 	//Container
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
@@ -26,10 +30,13 @@ public class ModBlocks {
 	//TileEntity
 	@ObjectHolder(Main.MODID + ":dimensional_chest")
 	public static TileEntityType<?> tileEntityDimChest;
+	@ObjectHolder(Main.MODID + ":dimensional_tank")
+	public static TileEntityType<?> tileEntityDimTank;
 
 	public static void registerTiles(IForgeRegistry<TileEntityType<?>> registry)
 	{
 		registry.register(TileEntityType.Builder.create(TileEntityDimChest::new, ModBlocks.dimChest).build(null).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_chest")));
+		registry.register(TileEntityType.Builder.create(TileEntityDimTank::new, ModBlocks.dimTank).build(null).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_tank")));
 	}
 
 	public static void registerContainers(IForgeRegistry<ContainerType<?>> registry)
@@ -53,5 +60,6 @@ public class ModBlocks {
 	public static void register(IForgeRegistry<Block> registry)
 	{
 		registry.register(new DimChest());
+		registry.register(new DimTank());
 	}
 }

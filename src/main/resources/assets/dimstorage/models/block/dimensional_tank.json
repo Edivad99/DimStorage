@@ -1,0 +1,23 @@
+{
+	"parent": "block/block",
+	"textures": {
+        "particle": "dimstorage:blocks/dimtank_side",
+        "up": "dimstorage:blocks/dimtank_bottom",
+        "down": "dimstorage:blocks/dimtank_bottom",
+        "side": "dimstorage:blocks/dimtank_side"
+    },
+    "elements": [
+        {
+            "from": [2, 0, 2],
+            "to": [14, 16, 14],
+            "faces": {
+                "down": {"texture": "#down", "cullface": "down"},
+                "up": {"texture": "#up", "cullface": "up"},
+                "north": {"texture": "#side"},
+                "south": {"texture": "#side"},
+                "west": {"texture": "#side"},
+                "east": {"texture": "#side"}
+            }
+        }
+    ]
+} 

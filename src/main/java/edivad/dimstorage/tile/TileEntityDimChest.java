@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -121,7 +122,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		if(canAccess())
 		{

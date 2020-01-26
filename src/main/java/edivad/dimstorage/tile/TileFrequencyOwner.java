@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -75,7 +76,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		return tag;
 	}
 
-	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		return false;
 	}

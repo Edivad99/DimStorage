@@ -6,6 +6,7 @@
     "item.dimstorage.dim_wall": "Dimensional Wall",
 
     "block.dimstorage.dimensional_chest": "Dimensional Chest",
+    "block.dimstorage.dimensional_tank": "Dimensional Tank",
 
     "advancements.dimstorage.root": "Dimensional Core",
     "advancements.dimstorage.root.desc": "The power of dimensions",

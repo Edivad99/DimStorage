@@ -142,7 +142,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 
 		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
 
-		return !player.isSneaking() && owner.activate(player, worldIn, pos);
+		return !player.isSneaking() && owner.activate(player, worldIn, pos, handIn);
 	}
 
 	@Override
