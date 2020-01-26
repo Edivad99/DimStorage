@@ -11,10 +11,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncLiquidTank {
-	
+
 	private BlockPos pos;
 	private FluidStack fluidStack;
-	
+
 	public SyncLiquidTank(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
@@ -43,12 +43,12 @@ public class SyncLiquidTank {
 				TileEntity te = world.getTileEntity(pos);
 				if(te instanceof TileEntityDimTank)
 				{
-					TileEntityDimTank tank = (TileEntityDimTank)te;
+					TileEntityDimTank tank = (TileEntityDimTank) te;
 					tank.liquidState.sync(fluidStack);
 				}
 			}
 		});
 		ctx.get().setPacketHandled(true);
 	}
-	
+
 }

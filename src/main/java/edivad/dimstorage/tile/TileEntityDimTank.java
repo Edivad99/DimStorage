@@ -202,13 +202,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 			return FluidUtil.interactWithFluidHandler(player, hand, getStorage());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() ->(T) fluidCap).cast();
+			return LazyOptional.of(() -> fluidCap).cast();
 		}
 		return super.getCapability(cap, side);
 	}

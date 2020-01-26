@@ -97,7 +97,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	protected abstract Frequency getTileFrequency();
 
 	protected abstract boolean isLocked();
-	
+
 	protected abstract String getName();
 
 	@Override

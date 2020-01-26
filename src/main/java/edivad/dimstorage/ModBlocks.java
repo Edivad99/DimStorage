@@ -58,7 +58,7 @@ public class ModBlocks {
 			TileEntityDimChest tile = (TileEntityDimChest) te;
 			return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
 		}).setRegistryName(new ResourceLocation(Main.MODID, "dimensional_chest")));
-		
+
 		registry.register(IForgeContainerType.create((windowId, inv, data) ->
 		{
 			BlockPos pos = data.readBlockPos();

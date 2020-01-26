@@ -9,10 +9,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateTankLiquid {
-	
+
 	private Frequency freq;
 	private FluidStack fluidStack;
-	
+
 	public UpdateTankLiquid(PacketBuffer buf)
 	{
 		freq = new Frequency(buf.readString(), buf.readInt());
@@ -29,7 +29,7 @@ public class UpdateTankLiquid {
 	{
 		buf.writeString(freq.getOwner());
 		buf.writeInt(freq.getChannel());
-		
+
 		buf.writeFluidStack(fluidStack);
 	}
 
@@ -41,5 +41,5 @@ public class UpdateTankLiquid {
 		});
 		ctx.get().setPacketHandled(true);
 	}
-	
+
 }

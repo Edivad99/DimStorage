@@ -21,7 +21,7 @@ public class PacketHandler {
 		INSTANCE.registerMessage(id++, UpdateBlock.class, UpdateBlock::toBytes, UpdateBlock::new, UpdateBlock::handle);
 		INSTANCE.registerMessage(id++, OpenChest.class, OpenChest::toBytes, OpenChest::new, OpenChest::handle);
 		INSTANCE.registerMessage(id++, UpdateBlockTank.class, UpdateBlockTank::toBytes, UpdateBlockTank::new, UpdateBlockTank::handle);
-		
+
 		INSTANCE.registerMessage(id++, UpdateTankLiquid.class, UpdateTankLiquid::toBytes, UpdateTankLiquid::new, UpdateTankLiquid::handle);
 		INSTANCE.registerMessage(id++, PlayerItemTankCacheSync.class, PlayerItemTankCacheSync::toBytes, PlayerItemTankCacheSync::new, PlayerItemTankCacheSync::handle);
 		INSTANCE.registerMessage(id++, SyncLiquidTank.class, SyncLiquidTank::toBytes, SyncLiquidTank::new, SyncLiquidTank::handle);

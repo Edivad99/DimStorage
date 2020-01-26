@@ -91,7 +91,7 @@ public class DimTank extends Block {
 	{
 		return BOX;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{
@@ -105,7 +105,7 @@ public class DimTank extends Block {
 
 		return owner.activate(player, worldIn, pos, handIn);
 	}
-	
+
 	@Override
 	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
 	{
