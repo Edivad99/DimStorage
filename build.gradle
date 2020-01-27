@@ -13,14 +13,14 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "2.1.1"
+version = "${mod_version}"
 group = "edivad.dimstorage"
-archivesBaseName = "DimStorage-1.14.4"
+archivesBaseName = "DimStorage-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200119-1.14.4'
+    mappings channel: "snapshot", version: "${mappings_version}"
 	
     runs {
         client {
@@ -99,14 +99,14 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.14.4-28.1.116'
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	
-	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4:api')
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.+:api") {
+	compile fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
+	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
         transitive = false
     })
 	
-	runtime fg.deobf("mezz.jei:jei-1.14.4:6+")
+	runtime fg.deobf("mezz.jei:jei-${jei_version}")
 	//compile fg.deobf('org.squiddev:cc-tweaked-1.14.4:1+')
 	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
 }
