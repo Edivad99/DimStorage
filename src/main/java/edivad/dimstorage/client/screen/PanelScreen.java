@@ -1,11 +1,15 @@
 package edivad.dimstorage.client.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
@@ -145,16 +149,10 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 
 		freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
 
-		int x = (this.width - this.xSize) / 2;
-		int y = (this.height - this.ySize) / 2;
-
-		int buttonX = x + this.xSize;
-		int buttonY = y + 16;
-
 		boolean over = false;
 
-		if(mouseX >= buttonX && mouseX <= buttonX + BUTTON_WIDTH)
-			if(mouseY >= buttonY && mouseY <= buttonY + BUTTON_WIDTH)
+		if(mouseX >= getButtonX() && mouseX <= getButtonX() + BUTTON_WIDTH)
+			if(mouseY >= getButtonY() && mouseY <= getButtonY() + BUTTON_WIDTH)
 				over = true;
 
 		if(!over)
@@ -173,18 +171,25 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		return true;
 	}
 
+	public int getButtonX()
+	{
+		return guiLeft + xSize;
+	}
+
+	public int getButtonY()
+	{
+		return guiTop + 16;
+	}
+
 	@Override
 	public void mouseMoved(double x, double y)
 	{
 		super.mouseMoved(x, y);
 
-		int buttonX = (this.width - this.xSize) / 2 + this.xSize;
-		int buttonY = (this.height - this.ySize) / 2 + 16;
-
 		this.settingsButtonOver = false;
 
-		if(x >= buttonX && x <= buttonX + BUTTON_WIDTH)
-			if(y >= buttonY && y <= buttonY + BUTTON_WIDTH)
+		if(x >= getButtonX() && x <= getButtonX() + BUTTON_WIDTH)
+			if(y >= getButtonY() && y <= getButtonY() + BUTTON_WIDTH)
 				settingsButtonOver = true;
 	}
 
@@ -192,35 +197,29 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
 		super.drawGuiContainerBackgroundLayer(f, i, j);
-
-		int x = (this.width - this.xSize) / 2;
-		int y = (this.height - this.ySize) / 2;
-		int settingsX = x + (this.xSize - SETTINGS_WIDTH);
+		int settingsX = guiLeft + (this.xSize - SETTINGS_WIDTH);
 
 		if(allowConfig)
-			this.blit(settingsX + this.animationState, y + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
+			this.blit(settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
 
-		this.blit(x, y, 0, 0, this.xSize, 222);
-
-		int buttonX = x + this.xSize;
-		int buttonY = y + 16;
+		this.blit(guiLeft, guiTop, 0, 0, this.xSize, 222);
 
 		// button background
-		this.blit(buttonX, buttonY, this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
+		this.blit(getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
 		if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENNING)
 		{
 			if(settingsButtonOver)
-				this.blit(buttonX + 6, buttonY - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
+				this.blit(getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
 			else
-				this.blit(buttonX + 6, buttonY - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
+				this.blit(getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
 		}
 		else if(state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING)
 		{
 			if(settingsButtonOver)
-				this.blit(buttonX + 4, buttonY - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
+				this.blit(getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
 			else
-				this.blit(buttonX + 4, buttonY - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
+				this.blit(getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
 		}
 	}
 
@@ -257,6 +256,14 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 
 		// refresh button label
 		this.lockedButton.setMessage(isLocked() ? yes : no);
+	}
+
+	public List<Rectangle2d> getAreas()
+	{
+		List<Rectangle2d> extraAreas = new ArrayList<>();
+		extraAreas.add(new Rectangle2d(guiLeft, getButtonY(), 200, 20));
+		extraAreas.add(new Rectangle2d(guiLeft, getButtonY(), xSize + animationState, 180));
+		return extraAreas;
 	}
 
 	private void drawSettings(boolean draw)
