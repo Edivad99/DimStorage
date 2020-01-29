@@ -84,6 +84,15 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public void onPlaced(LivingEntity entity)
 	{
 	}
+	
+	public void setLocked(boolean locked)
+	{
+	}
+	
+	public boolean isLocked()
+	{
+		return false;
+	}
 
 	//Synchronizing on chunk load
 	@Override

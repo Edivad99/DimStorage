@@ -100,7 +100,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
 	public DimTankState liquidState = new DimTankState();
 	public TankFluidCap fluidCap = new TankFluidCap();
-	public boolean locked;
+	private boolean locked;
 
 	public TileEntityDimTank()
 	{
@@ -152,6 +152,18 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.setFreq(frequency);
 		if(!world.isRemote)
 			liquidState.setFrequency(frequency);
+	}
+	
+	@Override
+	public void setLocked(boolean locked)
+	{
+		this.locked = locked;
+	}
+	
+	@Override
+	public boolean isLocked()
+	{
+		return locked;
 	}
 
 	@Override

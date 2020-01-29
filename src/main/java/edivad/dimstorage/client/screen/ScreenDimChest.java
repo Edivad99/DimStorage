@@ -59,7 +59,7 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 	@Override
 	protected boolean isLocked()
 	{
-		return ownerTile.locked;
+		return ownerTile.isLocked();
 	}
 
 	@Override

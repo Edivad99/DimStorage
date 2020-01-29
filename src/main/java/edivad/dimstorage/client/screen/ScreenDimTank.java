@@ -4,7 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlockTank;
+import edivad.dimstorage.network.packet.UpdateBlock;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.Translate;
@@ -53,7 +53,7 @@ public class ScreenDimTank extends PanelScreen<ContainerDimTank> {
 				ownerTile.swapLocked();
 				break;
 		}
-		PacketHandler.INSTANCE.sendToServer(new UpdateBlockTank(ownerTile));
+		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ScreenDimTank extends PanelScreen<ContainerDimTank> {
 	@Override
 	protected boolean isLocked()
 	{
-		return ownerTile.locked;
+		return ownerTile.isLocked();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public float movablePartState;
 	public int rotation;
 
-	public boolean locked;
+	private boolean locked;
 
 	public TileEntityDimChest()
 	{
@@ -79,6 +79,18 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		locked = !locked;
 		this.markDirty();
+	}
+	
+	@Override
+	public void setLocked(boolean locked)
+	{
+		this.locked = locked;
+	}
+	
+	@Override
+	public boolean isLocked()
+	{
+		return locked;
 	}
 
 	@Override
