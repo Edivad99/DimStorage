@@ -107,24 +107,6 @@ public class InventoryUtils {
 		return ItemStack.EMPTY;
 	}
 
-	//	public static boolean mergeItemStack(ItemStack stack, InvWrapper wrapper)
-	//	{
-	//		ItemStack remain = stack;
-	//		for(int i=0; i<wrapper.getSlots(); i++)
-	//		{
-	//			remain = wrapper.insertItem(i, remain, true);
-	//			if(remain.isEmpty())
-	//			{
-	//				wrapper.insertItem(i, stack, false);
-	//				break;
-	//			}
-	//		}
-	//		
-	//		return remain.isEmpty();
-	//		
-	//		
-	//	}
-
 	public static boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, InvWrapper wrapper)
 	{
 		boolean flag = false;
@@ -132,13 +114,8 @@ public class InventoryUtils {
 
 		if(stack.isStackable())
 		{
-			while(!stack.isEmpty())
+			while(!stack.isEmpty() && i < endIndex)
 			{
-				if(i >= endIndex)
-				{
-					break;
-				}
-
 				ItemStack itemstack = wrapper.getStackInSlot(i);
 				if(!itemstack.isEmpty() && Container.areItemsAndTagsEqual(stack, itemstack))
 				{
@@ -157,7 +134,6 @@ public class InventoryUtils {
 						flag = true;
 					}
 				}
-
 				i++;
 			}
 		}
@@ -166,13 +142,8 @@ public class InventoryUtils {
 		{
 			i = startIndex;
 
-			while(true)
+			while(i < endIndex && !flag)
 			{
-				if(i >= endIndex)
-				{
-					break;
-				}
-
 				ItemStack itemstack1 = wrapper.getStackInSlot(i).getStack();
 				if(itemstack1.isEmpty() && wrapper.isItemValid(i, stack))
 				{
@@ -185,9 +156,7 @@ public class InventoryUtils {
 						wrapper.setStackInSlot(i, stack.split(stack.getCount()));
 					}
 					flag = true;
-					break;
 				}
-
 				i++;
 			}
 		}
