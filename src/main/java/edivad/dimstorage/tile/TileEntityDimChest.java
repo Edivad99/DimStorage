@@ -53,7 +53,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public int rotation;
 
 	public boolean locked;
-	
+
 	public static final int AREA = Config.DIMCHEST_AREA.get();
 	public boolean collect;
 	private List<BlockPos> blockNeighbors;
@@ -97,7 +97,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 				this.movablePartState = MIN_MOVABLE_POSITION;
 		}
 	}
-	
+
 	private List<BlockPos> getChunkNeighbors(int area)
 	{
 		int range = area / 2;
@@ -108,7 +108,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		if(blockNeighbors.isEmpty())
 			blockNeighbors = getChunkNeighbors(AREA);
-		
+
 		for(BlockPos pos : blockNeighbors)
 		{
 			BlockState block = world.getBlockState(pos);
@@ -164,7 +164,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		locked = !locked;
 		this.markDirty();
 	}
-	
+
 	public void swapCollect()
 	{
 		collect = !collect;

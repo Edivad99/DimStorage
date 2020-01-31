@@ -8,14 +8,14 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import net.minecraft.util.ResourceLocation;
 
 @JeiPlugin
-public class DimStorageJEI implements IModPlugin{
+public class DimStorageJEI implements IModPlugin {
 
 	@Override
 	public ResourceLocation getPluginUid()
 	{
 		return new ResourceLocation(Main.MODID, "jei_plugin");
 	}
-	
+
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
