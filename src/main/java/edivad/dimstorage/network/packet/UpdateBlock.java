@@ -19,13 +19,14 @@ public class UpdateBlock {
 
 	private BlockPos pos;
 	private Frequency freq;
-	private boolean locked;
+	private boolean locked, collect;
 
 	public UpdateBlock(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
 		freq = new Frequency(buf.readString(), buf.readInt());
 		locked = buf.readBoolean();
+		collect = buf.readBoolean();
 	}
 
 	public UpdateBlock(TileEntityDimChest tile)
@@ -33,6 +34,7 @@ public class UpdateBlock {
 		pos = tile.getPos();
 		freq = tile.frequency;
 		locked = tile.locked;
+		collect = tile.collect;
 	}
 
 	public void toBytes(PacketBuffer buf)
@@ -43,6 +45,7 @@ public class UpdateBlock {
 		buf.writeInt(freq.getChannel());
 
 		buf.writeBoolean(locked);
+		buf.writeBoolean(collect);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
@@ -65,6 +68,7 @@ public class UpdateBlock {
 			TileEntityDimChest chest = (TileEntityDimChest) tile;
 			chest.frequency.set(freq);
 			chest.locked = locked;
+			chest.collect = collect;
 
 			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), 3);
 			if(chest.canAccess())

@@ -18,8 +18,12 @@
 	"gui.dimstorage.locked": "Locked:",
 	"gui.dimstorage.yes": "Yes",
 	"gui.dimstorage.no": "No",
+	"gui.dimstorage.collecting": "Collecting",
+	"gui.dimstorage.idle": "Idle",
 	
     "message.dimstorage.accessDenied": "Access Denied!",
     "message.dimstorage.bindingComplete": "Linked to chest",
-    "message.dimstorage.notLinked": "DimPad not connected to any DimChest"
+    "message.dimstorage.notLinked": "DimPad not connected to any DimChest",
+    
+    "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
 }

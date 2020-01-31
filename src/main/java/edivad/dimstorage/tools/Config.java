@@ -21,6 +21,7 @@ public class Config {
 
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWCONFIG;
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWPRIVATENETWORK;
+	public static ForgeConfigSpec.IntValue DIMCHEST_AREA;
 
 	static
 	{
@@ -34,6 +35,10 @@ public class Config {
 		DIMCHEST_ALLOWPRIVATENETWORK = COMMON_BUILDER
 								.comment("Allow players to make DimChest private, default: true")
 								.define("allowPrivateNetwork", true);
+		
+		DIMCHEST_AREA = COMMON_BUILDER
+						.comment("It is the diameter in which DimChest checks the inventories, default: 3")
+						.defineInRange("diameter", 3, 3, 7);
 		//@formatter:on
 		COMMON_BUILDER.pop();
 

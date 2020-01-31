@@ -8,4 +8,9 @@ public class Translate {
 	{
 		return I18n.format(key);
 	}
+	
+	public static String translateToLocal(String key, Object... parameters)
+	{
+		return I18n.format(key, parameters);
+	}
 }

@@ -3,11 +3,13 @@ package edivad.dimstorage.tools.extra;
 import javax.annotation.Nonnull;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NumberNBT;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class InventoryUtils {
 
@@ -103,5 +105,94 @@ public class InventoryUtils {
 			return itemstack1;
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	
+//	public static boolean mergeItemStack(ItemStack stack, InvWrapper wrapper)
+//	{
+//		ItemStack remain = stack;
+//		for(int i=0; i<wrapper.getSlots(); i++)
+//		{
+//			remain = wrapper.insertItem(i, remain, true);
+//			if(remain.isEmpty())
+//			{
+//				wrapper.insertItem(i, stack, false);
+//				break;
+//			}
+//		}
+//		
+//		return remain.isEmpty();
+//		
+//		
+//	}
+
+	public static boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, InvWrapper wrapper)
+	{
+		boolean flag = false;
+		int i = startIndex;
+
+		if(stack.isStackable())
+		{
+			while(!stack.isEmpty())
+			{
+				if(i >= endIndex)
+				{
+					break;
+				}
+				
+				ItemStack itemstack = wrapper.getStackInSlot(i);
+				if(!itemstack.isEmpty() && Container.areItemsAndTagsEqual(stack, itemstack))
+				{
+					int j = itemstack.getCount() + stack.getCount();
+					int maxSize = stack.getMaxStackSize();
+					if(j <= maxSize)
+					{
+						stack.setCount(0);
+						itemstack.setCount(j);
+						flag = true;
+					}
+					else if(itemstack.getCount() < maxSize)
+					{
+						stack.shrink(maxSize - itemstack.getCount());
+						itemstack.setCount(maxSize);
+						flag = true;
+					}
+				}
+
+				i++;
+			}
+		}
+
+		if(!stack.isEmpty())
+		{
+			i = startIndex;
+
+			while(true)
+			{
+				if(i >= endIndex)
+				{
+					break;
+				}
+
+				ItemStack itemstack1 = wrapper.getStackInSlot(i).getStack();				
+				if(itemstack1.isEmpty() && wrapper.isItemValid(i, stack))
+				{
+					if(stack.getCount() > 64)
+					{
+						wrapper.setStackInSlot(i, stack.split(64));
+					}
+					else
+					{
+						wrapper.setStackInSlot(i, stack.split(stack.getCount()));
+					}
+					flag = true;
+					break;
+				}
+
+				i++;
+			}
+		}
+
+		return flag;
 	}
 }

@@ -45,6 +45,9 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 			case LOCK:
 				ownerTile.swapLocked();
 				break;
+			case COLLECT:
+				ownerTile.swapCollect();
+				break;
 		}
 		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
 	}
@@ -59,5 +62,11 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 	protected boolean isLocked()
 	{
 		return ownerTile.locked;
+	}
+
+	@Override
+	protected boolean isCollecting()
+	{
+		return ownerTile.collect;
 	}
 }
