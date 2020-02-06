@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -46,6 +47,8 @@ public class Main {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+		MinecraftForge.EVENT_BUS.register(this);
+	    MinecraftForge.EVENT_BUS.register(new RegistryEvents());
 
 		//Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-client.toml"));
 		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
