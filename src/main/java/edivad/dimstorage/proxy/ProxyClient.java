@@ -23,21 +23,21 @@ public class ProxyClient implements IProxy {
 	@Override
 	public void init()
 	{
-
-		DimStorageManager.registerPlugin(new DimChestPlugin());
-		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
 		ScreenManager.registerFactory(ModBlocks.containerDimChest, ScreenDimChest::new);
-		PacketHandler.init();
-
+		
 		MainCompatHandler.registerTOP();
 		//OpenComputers
 		//if(Loader.isModLoaded("opencomputers"))
 		//{
 		//	Driver.add(new DriverDimChest());
 		//}
+		
+		DimStorageManager.registerPlugin(new DimChestPlugin());
+		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
+		PacketHandler.init();
 	}
 
 	@Override
