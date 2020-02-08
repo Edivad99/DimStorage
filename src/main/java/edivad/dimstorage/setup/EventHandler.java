@@ -1,4 +1,4 @@
-package edivad.dimstorage.proxy;
+package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
 import net.minecraft.util.text.StringTextComponent;

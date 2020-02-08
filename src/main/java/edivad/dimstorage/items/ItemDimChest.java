@@ -4,7 +4,7 @@ import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blocks.DimChest;
+import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.block.Block;
@@ -24,8 +24,7 @@ public class ItemDimChest extends BlockItem {
 
 	public ItemDimChest(Block block)
 	{
-		super(block, new Item.Properties().group(Main.dimStorageTab).maxStackSize(1));
-		setRegistryName(DimChest.DIMCHEST);
+		super(block, new Item.Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
 	}
 
 	public Frequency getFreq(ItemStack stack)

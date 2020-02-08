@@ -1,9 +1,8 @@
 package edivad.dimstorage.container;
 
-import edivad.dimstorage.ModBlocks;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
-//import invtweaks.api.container.ChestContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -11,7 +10,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
-//@ChestContainer()
 public class ContainerDimChest extends Container {
 
 	public DimChestStorage chestInv;
@@ -20,7 +18,7 @@ public class ContainerDimChest extends Container {
 
 	public ContainerDimChest(int windowId, PlayerInventory playerInventory, TileEntityDimChest owner, boolean isOpen)
 	{
-		super(ModBlocks.containerDimChest, windowId);
+		super(Registration.DIMCHEST_CONTAINER.get(), windowId);
 		this.chestInv = owner.getStorage();
 		this.owner = owner;
 		this.isOpen = isOpen;
