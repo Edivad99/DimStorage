@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Message;
@@ -60,7 +60,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
 	public TileEntityDimChest()
 	{
-		super(ModBlocks.tileEntityDimChest);
+		super(Registration.DIMCHEST_TILE.get());
 		movablePartState = MIN_MOVABLE_POSITION;
 		locked = false;
 		collect = false;

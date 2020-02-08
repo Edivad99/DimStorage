@@ -3,8 +3,8 @@ package edivad.dimstorage.client.render.tile;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.client.model.ModelDimChest;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -35,7 +35,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		GlStateManager.translated(x, y, z);
 
 		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
-		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
+		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), Registration.DIMCHEST.get());
 		GlStateManager.popMatrix();
 
 		super.render(te, x, y, z, partialTicks, destroyStage);

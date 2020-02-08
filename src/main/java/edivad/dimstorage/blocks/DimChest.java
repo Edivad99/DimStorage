@@ -2,7 +2,6 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.compat.top.TOPInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
@@ -24,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -34,12 +32,9 @@ import net.minecraft.world.World;
 
 public class DimChest extends Block implements TOPInfoProvider {
 
-	public static final ResourceLocation DIMCHEST = new ResourceLocation(Main.MODID, "dimensional_chest");
-
 	public DimChest()
 	{
 		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(20F, 100F));
-		setRegistryName(DIMCHEST);
 	}
 
 	@Override
