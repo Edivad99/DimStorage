@@ -216,7 +216,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
 	{
-		if(canAccess())
+		if(canAccess(player))
 		{
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
 		}

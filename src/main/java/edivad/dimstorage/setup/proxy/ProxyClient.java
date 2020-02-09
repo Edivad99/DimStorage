@@ -20,5 +20,4 @@ public class ProxyClient implements IProxy {
 	{
 		return Minecraft.getInstance().world;
 	}
-
 }

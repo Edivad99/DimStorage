@@ -81,7 +81,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 		if(tile instanceof TileEntityDimChest)
 		{
 			TileEntityDimChest chest = (TileEntityDimChest) tile;
-			if(chest.canAccess() || player.isCreative())
+			if(chest.canAccess(player) || player.isCreative())
 				return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
 		}
 		return false;
@@ -167,7 +167,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 
 			if(tile.frequency.hasOwner())
 			{
-				if(tile.canAccess())
+				if(tile.canAccess(player))
 					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
 				else
 					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());

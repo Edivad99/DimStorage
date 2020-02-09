@@ -11,6 +11,7 @@ import edivad.dimstorage.setup.proxy.Proxy;
 import edivad.dimstorage.setup.proxy.ProxyClient;
 import edivad.dimstorage.tools.Config;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
@@ -33,13 +34,15 @@ public class Main {
 	public Main()
 	{
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
-
 		Registration.init();
 
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+			FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+		});
+		
+		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
 	}
 
 	public static MinecraftServer getServer()

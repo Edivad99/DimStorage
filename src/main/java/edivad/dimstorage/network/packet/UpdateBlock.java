@@ -24,7 +24,7 @@ public class UpdateBlock {
 	public UpdateBlock(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
-		freq = new Frequency(buf.readString(), buf.readInt());
+		freq = new Frequency(buf.readString(32767), buf.readInt());
 		locked = buf.readBoolean();
 		collect = buf.readBoolean();
 	}
@@ -71,8 +71,7 @@ public class UpdateBlock {
 			chest.collect = collect;
 
 			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), 3);
-			if(chest.canAccess())
-				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
 		});
 		ctx.get().setPacketHandled(true);
 	}
