@@ -38,10 +38,11 @@ public class Main {
 
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+		{
 			FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 		});
-		
+
 		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
 	}
 
