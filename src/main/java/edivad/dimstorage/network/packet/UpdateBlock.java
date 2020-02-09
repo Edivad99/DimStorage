@@ -24,7 +24,7 @@ public class UpdateBlock {
 	public UpdateBlock(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
-		freq = new Frequency(buf.readString(32767), buf.readInt());
+		freq = Frequency.readFromPacket(buf);
 		locked = buf.readBoolean();
 		collect = buf.readBoolean();
 	}
@@ -41,8 +41,7 @@ public class UpdateBlock {
 	{
 		buf.writeBlockPos(pos);
 
-		buf.writeString(freq.getOwner());
-		buf.writeInt(freq.getChannel());
+		freq.writeToPacket(buf);
 
 		buf.writeBoolean(locked);
 		buf.writeBoolean(collect);

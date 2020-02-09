@@ -9,8 +9,14 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class PacketHandler {
 
-	public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Main.MODID, "net"), () -> "1.0", s -> true, s -> true);
-
+	private static final String PROTOCOL_VERSION = "1";
+	// @formatter:off
+	public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+								new ResourceLocation(Main.MODID, "net"), 
+								() -> PROTOCOL_VERSION, 
+								PROTOCOL_VERSION::equals, 
+								PROTOCOL_VERSION::equals);
+	// @formatter:on
 	public static void init()
 	{
 		int id = 0;

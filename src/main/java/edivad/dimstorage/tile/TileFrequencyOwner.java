@@ -31,7 +31,6 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		this.frequency = frequency;
 		markDirty();
 		BlockState state = world.getBlockState(pos);
-		//world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, state, state, 3);
 	}
 

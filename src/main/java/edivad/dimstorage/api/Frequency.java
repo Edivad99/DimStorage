@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Level;
 import edivad.dimstorage.Main;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
 
 public class Frequency {
 
@@ -130,5 +131,16 @@ public class Frequency {
 		this.owner = frequency.owner;
 		this.channel = frequency.channel;
 		return this;
+	}
+
+	public static Frequency readFromPacket(PacketBuffer buf)
+	{
+		return new Frequency(buf.readString(32767), buf.readInt());
+	}
+
+	public void writeToPacket(PacketBuffer buf)
+	{
+		buf.writeString(owner);
+		buf.writeInt(channel);
 	}
 }
