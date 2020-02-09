@@ -36,7 +36,7 @@ public class Registration {
 	}
 
 	public static final RegistryObject<DimChest> DIMCHEST = BLOCKS.register("dimensional_chest", DimChest::new);
-	public static final RegistryObject<Item> DIMCHEST_ITEM = ITEMS.register("dimensional_chest", () -> new ItemDimChest(DIMCHEST.get()));
+	public static final RegistryObject<Item> DIMCHEST_ITEM = ITEMS.register("dimensional_chest", ItemDimChest::new);
 	public static final RegistryObject<TileEntityType<TileEntityDimChest>> DIMCHEST_TILE = TILES.register("dimensional_chest", () -> TileEntityType.Builder.create(TileEntityDimChest::new, DIMCHEST.get()).build(null));
 
 	public static final RegistryObject<ContainerType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) ->

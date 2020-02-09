@@ -12,7 +12,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	private static final ResourceLocation texture = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
