@@ -76,22 +76,14 @@ minecraft {
 }
 
 repositories {
-	maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "http://tehnut.info/maven"
-    }
-    maven { // TOP
-        name 'tterrag maven'
-        url "http://maven.tterrag.com/"
-    }
-	maven { 
-		name 'CCraft'
-		url 'https://squiddev.cc/maven/' 
-	}
 	maven {
-		name 'OpenComputers'
-		url = "http://maven.cil.li/" 
-	}
+        name = "Waila"
+        url "https://tehnut.info/maven"
+    }
+    maven {
+        name = 'TOP'
+        url "https://maven.tterrag.com/"
+    }
 	maven {
         name = "JEI"
         url = "http://dvs1.progwml6.com/files/maven"
