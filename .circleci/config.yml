@@ -34,7 +34,7 @@ jobs:
       - run: chmod +x ./gradlew
       - run: rm -rf build/libs
       - run: ./gradlew clean
-      - run: ./gradlew build --refresh-dependencies --no-daemon
+      - run: ./gradlew build --no-daemon
 
       - save_cache:
           paths:
