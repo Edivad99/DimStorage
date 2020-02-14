@@ -3,7 +3,6 @@ package edivad.dimstorage.setup;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
 import edivad.dimstorage.client.screen.ScreenDimChest;
-import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,13 +22,5 @@ public class ClientSetup {
 		//Special render & GUI
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
 		ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-
-		//Compat
-		MainCompatHandler.registerTOP();
-		//OpenComputers
-		//if(Loader.isModLoaded("opencomputers"))
-		//{
-		//	Driver.add(new DriverDimChest());
-		//}
 	}
 }

@@ -1,6 +1,7 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
@@ -29,6 +30,14 @@ public class ModSetup {
 		PacketHandler.init();
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
+		
+		//Compat
+		MainCompatHandler.registerTOP();
+		//OpenComputers
+		//if(Loader.isModLoaded("opencomputers"))
+		//{
+		//	Driver.add(new DriverDimChest());
+		//}
 	}
 
 	@SubscribeEvent
