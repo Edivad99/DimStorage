@@ -8,7 +8,6 @@ import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,11 +33,8 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 			return;
 
 		GlStateManager.pushMatrix();
-
 		GlStateManager.translated(x, y, z);
-
-		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
-		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), Registration.DIMCHEST.get());
+		renderBlock(te, te.getWorld(), te.getPos(), Registration.DIMCHEST.get());
 		GlStateManager.popMatrix();
 
 		super.render(te, x, y, z, partialTicks, destroyStage);
@@ -46,7 +42,6 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	private void renderBlock(TileEntityDimChest tileEntity, World world, BlockPos pos, Block block)
 	{
-
 		int rot = 0;
 		if(tileEntity != null)
 			rot = tileEntity.rotation;
@@ -82,9 +77,8 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		GlStateManager.translatef(0F, -2F, 0F);
 
 		this.model.setTileEntity(tileEntity);
-		this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GlStateManager.popMatrix();
 	}
-
 }

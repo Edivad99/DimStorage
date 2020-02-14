@@ -3,7 +3,6 @@ package edivad.dimstorage.client.model;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
-import net.minecraft.entity.Entity;
 
 public class ModelDimChest extends Model {
 
@@ -77,7 +76,7 @@ public class ModelDimChest extends Model {
 		this.indicatorRed = this.createIndicator(4);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	public void render(float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		// render boxes
 		base.render(f5);
