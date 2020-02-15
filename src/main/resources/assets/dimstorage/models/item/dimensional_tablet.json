@@ -1,6 +1,6 @@
 {
    "parent": "item/generated",
    "textures": {
-       "layer0": "dimstorage:items/dim_pad"
+       "layer0": "dimstorage:items/dimensional_tablet"
    }
 }

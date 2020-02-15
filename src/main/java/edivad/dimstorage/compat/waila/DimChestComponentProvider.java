@@ -21,7 +21,7 @@ public class DimChestComponentProvider implements IComponentProvider {
 		if(accessor.getTileEntity() instanceof TileEntityDimChest)
 		{
 			CompoundNBT data = accessor.getServerData();
-			
+
 			String owner = Translate.translateToLocal("gui." + Main.MODID + ".owner") + " ";
 			String freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " ";
 			String locked = Translate.translateToLocal("gui." + Main.MODID + ".locked") + " ";

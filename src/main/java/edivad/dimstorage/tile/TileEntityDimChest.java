@@ -290,6 +290,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	@Override
 	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
 	{
-		return new ContainerDimChest(ModBlocks.containerDimChest, id, playerInventory, this, false);
+		return new ContainerDimChest(id, playerInventory, this, false);
 	}
 }
