@@ -13,14 +13,14 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "2.2.0"
+version = "${mod_version}"
 group = "edivad.dimstorage"
-archivesBaseName = "DimStorage-1.14.4"
+archivesBaseName = "DimStorage-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200119-1.14.4'
+    mappings channel: "snapshot", version: "${mappings_version}"
 	
     runs {
         client {
@@ -76,22 +76,14 @@ minecraft {
 }
 
 repositories {
-	maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "http://tehnut.info/maven"
-    }
-    maven { // TOP
-        name 'tterrag maven'
-        url "http://maven.tterrag.com/"
-    }
-	maven { 
-		name 'CCraft'
-		url 'https://squiddev.cc/maven/' 
-	}
 	maven {
-		name 'OpenComputers'
-		url = "http://maven.cil.li/" 
-	}
+        name = "Waila"
+        url "https://tehnut.info/maven"
+    }
+    maven {
+        name = 'TOP'
+        url "https://maven.tterrag.com/"
+    }
 	maven {
         name = "JEI"
         url = "http://dvs1.progwml6.com/files/maven"
@@ -99,14 +91,22 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.14.4-28.1.116'
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	
-	compile fg.deobf('mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4:api')
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.+:api") {
+	compile fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
+	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
         transitive = false
     })
-	
-	runtime fg.deobf("mezz.jei:jei-1.14.4:6+")
+	// at runtime, use the full TOP jar
+	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+        transitive = false
+    })
+    
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    
 	//compile fg.deobf('org.squiddev:cc-tweaked-1.14.4:1+')
 	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
 }

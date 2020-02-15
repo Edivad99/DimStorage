@@ -4,10 +4,10 @@ import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blocks.DimChest;
+import edivad.dimstorage.setup.ModSetup;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
@@ -19,13 +19,14 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemDimChest extends BlockItem {
 
-	public ItemDimChest(Block block)
+	public ItemDimChest()
 	{
-		super(block, new Item.Properties().group(Main.dimStorageTab).maxStackSize(1));
-		setRegistryName(DimChest.DIMCHEST);
+		super(Registration.DIMCHEST.get(), new Item.Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
 	}
 
 	public Frequency getFreq(ItemStack stack)
@@ -49,6 +50,7 @@ public class ItemDimChest extends BlockItem {
 		return false;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{

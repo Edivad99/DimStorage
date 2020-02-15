@@ -3,7 +3,6 @@ package edivad.dimstorage.client.model;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
-import net.minecraft.entity.Entity;
 
 public class ModelDimChest extends Model {
 
@@ -77,27 +76,27 @@ public class ModelDimChest extends Model {
 		this.indicatorRed = this.createIndicator(4);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	public void render(float f)
 	{
 		// render boxes
-		base.render(f5);
-		top1.render(f5);
-		top2.render(f5);
-		top3.render(f5);
-		top4.render(f5);
-		top5.render(f5);
+		base.render(f);
+		top1.render(f);
+		top2.render(f);
+		top3.render(f);
+		top4.render(f);
+		top5.render(f);
 
 		// render movable part
 		this.movable.offsetZ = this.tileEntity.movablePartState;
-		this.movable.render(f5);
+		this.movable.render(f);
 
 		// check state
 		if(this.tileEntity.locked)
-			this.indicatorRed.render(f5);
+			this.indicatorRed.render(f);
 		else if(this.tileEntity.frequency.hasOwner())
-			this.indicatorBlue.render(f5);
+			this.indicatorBlue.render(f);
 		else
-			this.indicatorGreen.render(f5);
+			this.indicatorGreen.render(f);
 	}
 
 	private RendererModel createIndicator(int offsetY)

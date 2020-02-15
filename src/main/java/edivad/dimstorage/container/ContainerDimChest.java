@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
-//import invtweaks.api.container.ChestContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -13,7 +12,6 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
-//@ChestContainer()
 public class ContainerDimChest extends Container {
 
 	public DimChestStorage chestInv;

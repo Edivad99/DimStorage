@@ -1,14 +1,12 @@
 package edivad.dimstorage.items;
 
-import edivad.dimstorage.Main;
+import edivad.dimstorage.setup.ModSetup;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 
 public class DimWall extends Item {
 
 	public DimWall()
 	{
-		super(new Properties().group(Main.dimStorageTab).maxStackSize(64));
-		setRegistryName(new ResourceLocation(Main.MODID, "dim_wall"));
+		super(new Properties().group(ModSetup.dimStorageTab).maxStackSize(64));
 	}
 }
