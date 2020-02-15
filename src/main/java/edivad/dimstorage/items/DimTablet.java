@@ -7,8 +7,6 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tools.Message;
-import edivad.dimstorage.tools.Message.Messages;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,10 +61,10 @@ public class DimTablet extends Item implements INamedContainerProvider {
 				tag.putBoolean("bound", true);
 				device.setTag(tag);
 
-				Message.sendChatMessage(player, Messages.BINDINGCOMPLETE);
+				player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
 				return ActionResultType.SUCCESS;
 			}
-			Message.sendChatMessage(player, Messages.ACCESSDENIED);
+			player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 		}
 		return ActionResultType.PASS;
 	}
@@ -82,7 +80,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 				return super.onItemRightClick(world, player, hand);
 			if(!stack.getOrCreateTag().getBoolean("bound"))
 			{
-				Message.sendChatMessage(player, Messages.NOTLINKED);
+				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"));
 				return new ActionResult<>(ActionResultType.PASS, stack);
 			}
 

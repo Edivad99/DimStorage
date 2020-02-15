@@ -12,8 +12,6 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Config;
-import edivad.dimstorage.tools.Message;
-import edivad.dimstorage.tools.Message.Messages;
 import edivad.dimstorage.tools.extra.InventoryUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +30,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -222,7 +222,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		else
 		{
-			Message.sendChatMessage(player, Messages.ACCESSDENIED);
+			player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 		}
 
 		return true;
