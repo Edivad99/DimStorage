@@ -23,6 +23,11 @@ public class Frequency {
 		this("public", channel);
 	}
 
+	public Frequency(PacketBuffer buf)
+	{
+		this(buf.readString(32767), buf.readInt());
+	}
+
 	public Frequency(String owner, int channel)
 	{
 		this.owner = owner;
@@ -132,11 +137,6 @@ public class Frequency {
 		this.owner = frequency.owner;
 		this.channel = frequency.channel;
 		return this;
-	}
-
-	public static Frequency readFromPacket(PacketBuffer buf)
-	{
-		return new Frequency(buf.readString(32767), buf.readInt());
 	}
 
 	public void writeToPacket(PacketBuffer buf)

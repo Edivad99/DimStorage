@@ -25,7 +25,7 @@ public class ScreenDimTablet extends BaseScreen<ContainerDimTablet> {
 
 		// Get translation
 		inventory = Translate.translateToLocal("container.inventory");
-		name = Translate.translateToLocal("item." + Main.MODID + ".dimensional_tablet");
+		name = this.getTitle().getFormattedText();
 	}
 
 	@Override

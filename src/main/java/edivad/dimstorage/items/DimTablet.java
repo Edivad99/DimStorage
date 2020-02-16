@@ -46,25 +46,25 @@ public class DimTablet extends Item implements INamedContainerProvider {
 		PlayerEntity player = context.getPlayer();
 		BlockPos pos = context.getPos();
 
-		if(world.isRemote)
-			return ActionResultType.PASS;
-
-		ItemStack device = player.getHeldItem(context.getHand());
-		TileEntity tile = world.getTileEntity(pos);
-		if(tile instanceof TileEntityDimChest && player.isSneaking())
+		if(!world.isRemote)
 		{
-			TileEntityDimChest dimChest = (TileEntityDimChest) tile;
-			if(dimChest.canAccess(player))
+			ItemStack device = player.getHeldItem(context.getHand());
+			TileEntity tile = world.getTileEntity(pos);
+			if(tile instanceof TileEntityDimChest && player.isSneaking())
 			{
-				CompoundNBT tag = new CompoundNBT();
-				tag.put("frequency", dimChest.frequency.writeToNBT(new CompoundNBT()));
-				tag.putBoolean("bound", true);
-				device.setTag(tag);
+				TileEntityDimChest dimChest = (TileEntityDimChest) tile;
+				if(dimChest.canAccess(player))
+				{
+					CompoundNBT tag = new CompoundNBT();
+					tag.put("frequency", dimChest.frequency.writeToNBT(new CompoundNBT()));
+					tag.putBoolean("bound", true);
+					device.setTag(tag);
 
-				player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
-				return ActionResultType.SUCCESS;
+					player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
+					return ActionResultType.SUCCESS;
+				}
+				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 			}
-			player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 		}
 		return ActionResultType.PASS;
 	}
