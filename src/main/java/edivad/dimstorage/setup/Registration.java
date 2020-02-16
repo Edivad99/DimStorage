@@ -3,7 +3,9 @@ package edivad.dimstorage.setup;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.blocks.DimChest;
 import edivad.dimstorage.container.ContainerDimChest;
+import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.items.DimCore;
+import edivad.dimstorage.items.DimTablet;
 import edivad.dimstorage.items.DimWall;
 import edivad.dimstorage.items.ItemDimChest;
 import edivad.dimstorage.items.SolidDimCore;
@@ -58,4 +60,9 @@ public class Registration {
 	public static final RegistryObject<DimWall> DIMWALL = ITEMS.register("dim_wall", DimWall::new);
 	public static final RegistryObject<SolidDimCore> SOLIDDIMCORE = ITEMS.register("solid_dim_core", SolidDimCore::new);
 
+	public static final RegistryObject<DimTablet> DIMPAD = ITEMS.register("dimensional_tablet", DimTablet::new);
+	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMPAD_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) ->
+	{
+		return new ContainerDimTablet(windowId, Main.proxy.getClientPlayer().inventory, Main.proxy.getClientWorld());
+	}));
 }

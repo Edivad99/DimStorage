@@ -29,7 +29,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 			return;
 
 		super.render(te, x, y, z, partialTicks, destroyStage);
-		
+
 		GlStateManager.pushMatrix();
 		GlStateManager.translated(x, y, z);
 		renderBlock(te);
