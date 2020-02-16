@@ -15,7 +15,7 @@ public class ModelDimChest extends Model {
 	private RendererModel top4;
 	private RendererModel top5;
 	private RendererModel movable;
-	private RendererModel indicatorGreen, indicatorBlue, indicatorRed;
+	private RendererModel indicatorGreen, indicatorBlue, indicatorRed, indicatorYellow;
 
 	public ModelDimChest()
 	{
@@ -74,6 +74,7 @@ public class ModelDimChest extends Model {
 		this.indicatorGreen = this.createIndicator(0);
 		this.indicatorBlue = this.createIndicator(2);
 		this.indicatorRed = this.createIndicator(4);
+		this.indicatorYellow = this.createIndicator(6);
 	}
 
 	public void render(float f)
@@ -95,6 +96,8 @@ public class ModelDimChest extends Model {
 			this.indicatorRed.render(f);
 		else if(this.tileEntity.frequency.hasOwner())
 			this.indicatorBlue.render(f);
+		else if(this.tileEntity.collect)
+			this.indicatorYellow.render(f);
 		else
 			this.indicatorGreen.render(f);
 	}
