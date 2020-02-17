@@ -74,7 +74,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 	{
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote)
+		if(!world.isRemote && hand.compareTo(Hand.MAIN_HAND)==0)
 		{
 			if(player.isSneaking())
 				return super.onItemRightClick(world, player, hand);
