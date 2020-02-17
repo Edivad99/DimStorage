@@ -49,22 +49,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		//This line actually rotates the renderer.
 
 		/** direction **/
-		switch (rot)
-		{
-			case 0:
-				GlStateManager.rotatef(180F, 0F, 1F, 0F);
-				break;
-			case 1:
-				GlStateManager.rotatef(90F, 0F, 1F, 0F);
-				break;
-			case 2:
-				GlStateManager.rotatef(0F, 0F, 1F, 0F);
-				break;
-			case 3:
-				GlStateManager.rotatef(270F, 0F, 1F, 0F);
-				break;
-		}
-		GlStateManager.rotatef(180F, 0F, 1F, 0F);
+		GlStateManager.rotatef(360 - rot * 90, 0F, 1F, 0F);
 
 		/** sens **/
 		GlStateManager.rotatef(180F, 1F, 0F, 0F);
