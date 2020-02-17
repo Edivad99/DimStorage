@@ -89,7 +89,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT getUpdateTag()
 	{
 		CompoundNBT tag = super.getUpdateTag();
-		tag.put("Frequency", frequency.writeToNBT(tag));
+		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		return tag;
 	}
 
