@@ -8,5 +8,12 @@
     "west": "dimstorage:blocks/dimchest_sides",
     "north": "dimstorage:blocks/dimchest_sides",
     "south": "dimstorage:blocks/dimchest_sides"
+  },
+  "display": {
+  	"gui": {
+      "rotation": [ 25.0, 45.0, 0.0 ],
+      "translation": [ 0.0, 0.0, 0.0 ],
+      "scale": [ 0.625, 0.625, 0.625 ]
+    }
   }
 }
