@@ -93,7 +93,7 @@ repositories {
 dependencies {
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	
-	compile fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
+	compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
 	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
         transitive = false
     })
