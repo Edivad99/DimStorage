@@ -1,10 +1,12 @@
 package edivad.dimstorage.client.screen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -26,12 +28,12 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	}
 
 	protected static enum Actions {
-		OWNER, FREQ, LOCK
+		OWNER, FREQ, LOCK, COLLECT
 	}
 
-	private String change, owner, freq, locked, yes, no, inventory;
+	private String change, owner, freq, locked, yes, no, inventory, name, collecting, idle;
 
-	private Button ownerButton, freqButton, lockedButton;
+	private Button ownerButton, freqButton, lockedButton, collectButton;
 	protected TextFieldWidget freqTextField;
 
 	private SettingsState state;
@@ -73,20 +75,26 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		locked = Translate.translateToLocal("gui." + Main.MODID + ".locked");
 		yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
 		no = Translate.translateToLocal("gui." + Main.MODID + ".no");
+		collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting");
+		idle = Translate.translateToLocal("gui." + Main.MODID + ".idle");
 		inventory = Translate.translateToLocal("container.inventory");
+		name = this.getTitle().getFormattedText();
 
-		// init buttons list
+		// Init buttons list
 		this.buttons.clear();
 
-		ownerButton = new Button(this.width / 2 + 95, this.height / 2 - 42, 64, 20, change, button -> actions(Actions.OWNER));
+		ownerButton = new Button(this.width / 2 + 95, this.height / 2 - 57, 64, 20, getTileFrequency().getOwner(), button -> actions(Actions.OWNER));
 		ownerButton.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
-		freqButton = new Button(this.width / 2 + 95, this.height / 2 + 19, 64, 20, change, button -> actions(Actions.FREQ));
-		lockedButton = new Button(this.width / 2 + 95, this.height / 2 + 58, 64, 20, isLocked() ? yes : no, button -> actions(Actions.LOCK));
+		freqButton = new Button(this.width / 2 + 95, this.height / 2 + 4, 64, 20, change, button -> actions(Actions.FREQ));
+		lockedButton = new Button(this.width / 2 + 95, this.height / 2 + 43, 64, 20, isLocked() ? yes : no, button -> actions(Actions.LOCK));
+		collectButton = new Button(this.width / 2 + 95, this.height / 2 + 70, 64, 20, isCollecting() ? collecting : idle, button -> actions(Actions.COLLECT));
+
 		this.addButton(ownerButton);
 		this.addButton(freqButton);
 		this.addButton(lockedButton);
+		this.addButton(collectButton);
 
-		freqTextField = new TextFieldWidget(this.font, this.width / 2 + 95, this.height / 2, 64, 15, String.valueOf(getTileFrequency().getChannel()));
+		freqTextField = new TextFieldWidget(this.font, this.width / 2 + 95, this.height / 2 - 15, 64, 15, String.valueOf(getTileFrequency().getChannel()));
 		freqTextField.setMaxStringLength(3);
 		freqTextField.setVisible(true);
 		freqTextField.setFocused2(false);
@@ -103,6 +111,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	protected abstract boolean isLocked();
 
 	protected abstract String getName();
+	protected abstract boolean isCollecting();
 
 	@Override
 	public void tick()
@@ -114,9 +123,12 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
 		freqTextField.render(mouseX, mouseY, partialTicks);
+
+		this.renderHoveredToolTip(mouseX, mouseY);
+		if(mouseX > this.width / 2 + 90 && mouseX < this.width / 2 + 164 && mouseY > this.height / 2 + 65 && mouseY < this.height / 2 + 95)
+			this.renderTooltip(Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
 
 		if(state == SettingsState.STATE_OPENNING)
 		{
@@ -182,14 +194,14 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	}
 
 	@Override
-	public void mouseMoved(double x, double y)
+	public void mouseMoved(double mouseX, double mouseY)
 	{
-		super.mouseMoved(x, y);
+		super.mouseMoved(mouseX, mouseY);
 
 		this.settingsButtonOver = false;
 
-		if(x >= getButtonX() && x <= getButtonX() + BUTTON_WIDTH)
-			if(y >= getButtonY() && y <= getButtonY() + BUTTON_WIDTH)
+		if(mouseX >= getButtonX() && mouseX <= getButtonX() + BUTTON_WIDTH)
+			if(mouseY >= getButtonY() && mouseY <= getButtonY() + BUTTON_WIDTH)
 				settingsButtonOver = true;
 	}
 
@@ -239,9 +251,8 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		posY += 9;
 		this.hLine(185, 185 + this.font.getStringWidth(owner), posY, 0xFF333333);
 		posY += 6;
-		int width = this.font.getStringWidth(getTileFrequency().getOwner());
-		this.font.drawString(getTileFrequency().getOwner(), 215 - width / 2, posY, 4210752);
-		posY += 40;
+		this.ownerButton.setMessage(getTileFrequency().getOwner());
+		posY += 25;
 
 		// freq
 		this.font.drawString(freq, 185, posY, 4210752);
@@ -253,7 +264,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		this.font.drawString(locked, 185, posY, 4210752);
 		posY += 9;
 		this.hLine(185, 185 + this.font.getStringWidth(locked), posY, 0xFF333333);
-
 		// refresh button label
 		this.lockedButton.setMessage(isLocked() ? yes : no);
 	}
@@ -261,8 +271,8 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	public List<Rectangle2d> getAreas()
 	{
 		List<Rectangle2d> extraAreas = new ArrayList<>();
-		extraAreas.add(new Rectangle2d(guiLeft, getButtonY(), 200, 20));
-		extraAreas.add(new Rectangle2d(guiLeft, getButtonY(), xSize + animationState, 180));
+		extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
+		extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY() + BUTTON_WIDTH, animationState, 180));
 		return extraAreas;
 	}
 
@@ -273,6 +283,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		ownerButton.visible = draw;
 		freqButton.visible = draw;
 		lockedButton.visible = draw;
+		collectButton.visible = draw;
 
 		freqTextField.setVisible(draw);
 	}

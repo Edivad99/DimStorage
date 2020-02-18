@@ -16,10 +16,11 @@ public class DimChestDataProvider implements IServerDataProvider<TileEntity> {
 		{
 			TileEntityDimChest tile = (TileEntityDimChest) tileEntity;
 			compoundNBT.putBoolean("HasOwner", tile.frequency.hasOwner());
-			compoundNBT.putBoolean("CanAccess", tile.canAccess());
+			compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
 			compoundNBT.putString("Owner", tile.frequency.getOwner());
 			compoundNBT.putInt("Frequency", tile.frequency.getChannel());
 			compoundNBT.putBoolean("Locked", tile.isLocked());
+			compoundNBT.putBoolean("Collecting", tile.collect);
 		}
 	}
 }

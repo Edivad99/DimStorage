@@ -1,4 +1,4 @@
-package edivad.dimstorage.proxy;
+package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
 import net.minecraft.util.text.StringTextComponent;
@@ -43,10 +43,6 @@ public class EventHandler {
 		if(result.equals(Status.AHEAD))
 		{
 			event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "Version not released yet"));
-		}
-		if(result.equals(Status.UP_TO_DATE))
-		{
-			event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "It's a beta version, expect some bugs"));
 		}
 	}
 }

@@ -1,0 +1,26 @@
+{
+    "parent": "dimstorage:root",
+    "display": {
+        "icon": {
+            "item": "dimstorage:dimensional_tablet"
+        },
+        "title": {
+            "translate": "advancements.dimstorage.dimensional_tablet"
+        },
+        "description": {
+            "translate": "advancements.dimstorage.dimensional_tablet.desc"
+        }
+    },
+    "criteria": {
+        "certus": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dimstorage:dimensional_tablet"
+                    }
+                ]
+            }
+        }
+    }
+}

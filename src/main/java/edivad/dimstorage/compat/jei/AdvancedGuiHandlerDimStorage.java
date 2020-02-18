@@ -12,22 +12,23 @@ import net.minecraft.client.renderer.Rectangle2d;
 @SuppressWarnings("rawtypes")
 public class AdvancedGuiHandlerDimStorage implements IGuiContainerHandler<PanelScreen> {
 
-	public AdvancedGuiHandlerDimStorage() {
-	  }
-	
+	public AdvancedGuiHandlerDimStorage()
+	{
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Rectangle2d> getGuiExtraAreas(PanelScreen containerScreen)
 	{
 		return containerScreen.getAreas();
 	}
-	
+
 	@Override
 	public Object getIngredientUnderMouse(PanelScreen containerScreen, double mouseX, double mouseY)
 	{
 		return null;
 	}
-	
+
 	@Override
 	public Collection<IGuiClickableArea> getGuiClickableAreas(PanelScreen containerScreen)
 	{

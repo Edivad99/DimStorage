@@ -1,27 +1,30 @@
 package edivad.dimstorage.container;
 
+import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
-public class ContainerDimChest extends Container {
+public class ContainerDimTablet extends Container {
 
 	private DimChestStorage chestInv;
-	public TileEntityDimChest owner;
-	public boolean isOpen;
 
-	public ContainerDimChest(int windowId, PlayerInventory playerInventory, TileEntityDimChest owner, boolean isOpen)
+	public ContainerDimTablet(int windowId, PlayerInventory playerInventory, World world)
 	{
-		super(Registration.DIMCHEST_CONTAINER.get(), windowId);
-		this.chestInv = owner.getStorage();
-		this.owner = owner;
-		this.isOpen = isOpen;
+		super(Registration.DIMPAD_CONTAINER.get(), windowId);
+
+		ItemStack item = playerInventory.player.getHeldItem(Hand.MAIN_HAND);
+		Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));
+
+		this.chestInv = (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
 		this.chestInv.openInventory();
 
 		addOwnSlots();
@@ -49,7 +52,7 @@ public class ContainerDimChest extends Container {
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn)
 	{
-		return chestInv.isUsableByPlayer(playerIn);
+		return true;
 	}
 
 	@Override

@@ -3,16 +3,14 @@ package edivad.dimstorage.client.render.tile;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.client.model.ModelDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	private static final ResourceLocation texture = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
@@ -30,23 +28,19 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		if(te == null || te.isRemoved())
 			return;
 
-		GlStateManager.pushMatrix();
-
-		GlStateManager.translated(x, y, z);
-
-		TileEntityDimChest myTileEntity = (TileEntityDimChest) te;
-		renderBlock(myTileEntity, myTileEntity.getWorld(), myTileEntity.getPos(), ModBlocks.dimChest);
-		GlStateManager.popMatrix();
-
 		super.render(te, x, y, z, partialTicks, destroyStage);
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translated(x, y, z);
+		renderBlock(te);
+		GlStateManager.popMatrix();
 	}
 
-	private void renderBlock(TileEntityDimChest tileEntity, World world, BlockPos pos, Block block)
+	private void renderBlock(TileEntityDimChest te)
 	{
-
 		int rot = 0;
-		if(tileEntity != null)
-			rot = tileEntity.rotation;
+		if(te != null)
+			rot = te.rotation;
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(texture);
@@ -55,22 +49,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		//This line actually rotates the renderer.
 
 		/** direction **/
-		switch (rot)
-		{
-			case 0:
-				GlStateManager.rotatef(180F, 0F, 1F, 0F);
-				break;
-			case 1:
-				GlStateManager.rotatef(90F, 0F, 1F, 0F);
-				break;
-			case 2:
-				GlStateManager.rotatef(0F, 0F, 1F, 0F);
-				break;
-			case 3:
-				GlStateManager.rotatef(270F, 0F, 1F, 0F);
-				break;
-		}
-		GlStateManager.rotatef(180F, 0F, 1F, 0F);
+		GlStateManager.rotatef(360 - rot * 90, 0F, 1F, 0F);
 
 		/** sens **/
 		GlStateManager.rotatef(180F, 1F, 0F, 0F);
@@ -78,10 +57,9 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		/** Ajustement **/
 		GlStateManager.translatef(0F, -2F, 0F);
 
-		this.model.setTileEntity(tileEntity);
-		this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.setTileEntity(te);
+		this.model.render(0.0625F);
 
 		GlStateManager.popMatrix();
 	}
-
 }

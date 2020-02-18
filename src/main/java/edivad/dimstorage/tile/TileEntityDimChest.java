@@ -1,32 +1,47 @@
 package edivad.dimstorage.tile;
 
-import edivad.dimstorage.ModBlocks;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tools.Message;
-import edivad.dimstorage.tools.Message.Messages;
+import edivad.dimstorage.tools.Config;
+import edivad.dimstorage.tools.extra.InventoryUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class TileEntityDimChest extends TileFrequencyOwner {
 
@@ -40,11 +55,18 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
 	private boolean locked;
 
+	public static final int AREA = Config.DIMCHEST_AREA.get();
+	public boolean collect;
+	private List<BlockPos> blockNeighbors;
+
 	public TileEntityDimChest()
 	{
-		super(ModBlocks.tileEntityDimChest);
+		super(Registration.DIMCHEST_TILE.get());
 		movablePartState = MIN_MOVABLE_POSITION;
 		locked = false;
+		collect = false;
+
+		blockNeighbors = new ArrayList<>();
 	}
 
 	@Override
@@ -57,6 +79,8 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 			openCount = getStorage().getNumOpen();
 			world.addBlockEvent(getPos(), this.getBlockState().getBlock(), 1, openCount);
 			world.notifyNeighborsOfStateChange(pos, this.getBlockState().getBlock());
+			if(collect)
+				checkNeighbors();
 		}
 
 		if(this.openCount > 0)
@@ -75,6 +99,67 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 	}
 
+	private List<BlockPos> getChunkNeighbors(int area)
+	{
+		int range = area / 2;
+		return BlockPos.getAllInBox(getPos().add(-range, 0, -range), getPos().add(range, 0, range)).map(BlockPos::toImmutable).collect(Collectors.toList());
+	}
+
+	private void checkNeighbors()
+	{
+		if(blockNeighbors.isEmpty())
+			blockNeighbors = getChunkNeighbors(AREA);
+
+		for(BlockPos pos : blockNeighbors)
+		{
+			BlockState block = world.getBlockState(pos);
+			if(block.hasTileEntity())
+			{
+				TileEntity te = world.getTileEntity(pos);
+				if(!(te instanceof TileFrequencyOwner))
+				{
+					processInventory(te);
+				}
+			}
+		}
+	}
+
+	private void processInventory(TileEntity te)
+	{
+		IItemHandler handler = getItemHandler(te);
+		if(handler != null)
+		{
+			InvWrapper myInventory = new InvWrapper(getStorage());
+			int size = handler.getSlots();
+			//TODO: To avoid that DimChest find fuel inside the furnace
+			if(te instanceof AbstractFurnaceTileEntity)
+				size--;
+			for(int i = 0; i < size; i++)
+			{
+				if(!handler.getStackInSlot(i).isEmpty())
+					InventoryUtils.mergeItemStack(handler.getStackInSlot(i), 0, getStorage().getSizeInventory(), myInventory);
+			}
+		}
+	}
+
+	private IItemHandler getItemHandler(@Nonnull TileEntity tile)
+	{
+		IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
+		//System.out.println(handler);
+		if(handler == null)
+		{
+			if(tile instanceof ISidedInventory)
+			{
+				handler = new SidedInvWrapper((ISidedInventory) tile, Direction.DOWN);
+			}
+			else if(tile instanceof IInventory)
+			{
+				handler = new InvWrapper((IInventory) tile);
+			}
+		}
+		return handler;
+	}
+
 	public void swapLocked()
 	{
 		locked = !locked;
@@ -91,6 +176,12 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public boolean isLocked()
 	{
 		return locked;
+	}
+
+	public void swapCollect()
+	{
+		collect = !collect;
+		this.markDirty();
 	}
 
 	@Override
@@ -122,6 +213,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		super.write(tag);
 		tag.putByte("rot", (byte) rotation);
 		tag.putBoolean("locked", locked);
+		tag.putBoolean("collect", collect);
 		return tag;
 	}
 
@@ -131,18 +223,19 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		super.read(tag);
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
+		collect = tag.getBoolean("collect");
 	}
 
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
-		if(canAccess())
+		if(canAccess(player))
 		{
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
 		}
 		else
 		{
-			Message.sendChatMessage(player, Messages.ACCESSDENIED);
+			player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 		}
 
 		return true;
@@ -167,6 +260,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		root.putByte("rot", (byte) rotation);
 		root.putBoolean("locked", locked);
+		root.putBoolean("collect", collect);
 		return new SUpdateTileEntityPacket(getPos(), 1, root);
 	}
 
@@ -177,6 +271,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
+		collect = tag.getBoolean("collect");
 	}
 
 	//Synchronizing on chunk load
@@ -186,6 +281,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		CompoundNBT tag = super.getUpdateTag();
 		tag.putByte("rot", (byte) rotation);
 		tag.putBoolean("locked", locked);
+		tag.putBoolean("collect", collect);
 		return tag;
 	}
 
@@ -195,6 +291,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		super.handleUpdateTag(tag);
 		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
+		collect = tag.getBoolean("collect");
 	}
 
 	@Override

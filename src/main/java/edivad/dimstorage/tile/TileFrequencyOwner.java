@@ -1,9 +1,9 @@
 package edivad.dimstorage.tile;
 
+import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -14,6 +14,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
@@ -30,23 +32,21 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		this.frequency = frequency;
 		markDirty();
 		BlockState state = world.getBlockState(pos);
-		//world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, state, state, 3);
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public void swapOwner()
 	{
 		if(frequency.hasOwner())
 			setFreq(frequency.copy().setOwner("public"));
 		else
-			setFreq(frequency.copy().setOwner(Minecraft.getInstance().player.getDisplayName().getFormattedText()));
+			setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer().getDisplayName().getFormattedText()));
 	}
 
-	public boolean canAccess()
+	public boolean canAccess(PlayerEntity player)
 	{
-		if(!frequency.hasOwner())
-			return true;
-		return frequency.getOwner().equals(Minecraft.getInstance().player.getDisplayName().getFormattedText());
+		return frequency.canAccess(player);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT getUpdateTag()
 	{
 		CompoundNBT tag = super.getUpdateTag();
-		tag.put("Frequency", frequency.writeToNBT(tag));
+		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		return tag;
 	}
 
