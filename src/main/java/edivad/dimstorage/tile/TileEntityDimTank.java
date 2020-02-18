@@ -1,15 +1,13 @@
 package edivad.dimstorage.tile;
 
-import edivad.dimstorage.ModBlocks;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.TankSynchroniser;
 import edivad.dimstorage.network.packet.tank.SyncLiquidTank;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tools.Message;
-import edivad.dimstorage.tools.Message.Messages;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -24,6 +22,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -100,11 +100,11 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
 	public DimTankState liquidState = new DimTankState();
 	public TankFluidCap fluidCap = new TankFluidCap();
-	private boolean locked;
+	public boolean locked;
 
 	public TileEntityDimTank()
 	{
-		super(ModBlocks.tileEntityDimTank);
+		super(Registration.DIMTANK_TILE.get());
 		locked = false;
 	}
 
@@ -153,18 +153,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		if(!world.isRemote)
 			liquidState.setFrequency(frequency);
 	}
-	
-	@Override
-	public void setLocked(boolean locked)
-	{
-		this.locked = locked;
-	}
-	
-	@Override
-	public boolean isLocked()
-	{
-		return locked;
-	}
 
 	@Override
 	public DimTankStorage getStorage()
@@ -200,13 +188,13 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		if(player.isSneaking())
 		{
-			if(canAccess())
+			if(canAccess(player))
 			{
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
 			}
 			else
 			{
-				Message.sendChatMessage(player, Messages.ACCESSDENIED);
+				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 			}
 			return true;
 		}

@@ -173,7 +173,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
 			}
 			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
-			if(tile.isLocked())
+			if(tile.locked)
 				probeInfo.horizontal().text("Locked: Yes");
 			probeInfo.horizontal().text("Collecting: " + (tile.collect ? "Yes" : "No"));
 		}

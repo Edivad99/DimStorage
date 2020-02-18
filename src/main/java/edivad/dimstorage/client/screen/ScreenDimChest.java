@@ -4,9 +4,8 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -50,7 +49,7 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 				ownerTile.swapCollect();
 				break;
 		}
-		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
+		PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(ownerTile));
 	}
 
 	@Override
@@ -62,13 +61,7 @@ public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
 	@Override
 	protected boolean isLocked()
 	{
-		return ownerTile.isLocked();
-	}
-
-	@Override
-	protected String getName()
-	{
-		return Translate.translateToLocal("block." + Main.MODID + ".dimensional_chest");
+		return ownerTile.locked;
 	}
 
 	@Override

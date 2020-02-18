@@ -1,7 +1,6 @@
 package edivad.dimstorage.container;
 
-import edivad.dimstorage.ModBlocks;
-import edivad.dimstorage.storage.DimTankStorage;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,14 +10,12 @@ import net.minecraft.inventory.container.Slot;
 
 public class ContainerDimTank extends Container {
 
-	public DimTankStorage dimTank;
 	public TileEntityDimTank owner;
 	public boolean isOpen;
 
 	public ContainerDimTank(int windowId, PlayerInventory playerInventory, TileEntityDimTank owner, boolean isOpen)
 	{
-		super(ModBlocks.containerDimTank, windowId);
-		this.dimTank = owner.getStorage();
+		super(Registration.DIMTANK_CONTAINER.get(), windowId);
 		this.owner = owner;
 		this.isOpen = isOpen;
 

@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -15,13 +15,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class UpdateBlock {
+public class UpdateDimChest {
 
 	private BlockPos pos;
 	private Frequency freq;
 	private boolean locked, collect;
 
-	public UpdateBlock(PacketBuffer buf)
+	public UpdateDimChest(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
 		freq = new Frequency(buf);
@@ -29,11 +29,11 @@ public class UpdateBlock {
 		collect = buf.readBoolean();
 	}
 
-	public UpdateBlock(TileFrequencyOwner tile)
+	public UpdateDimChest(TileEntityDimChest tile)
 	{
 		pos = tile.getPos();
 		freq = tile.frequency;
-		locked = tile.isLocked();
+		locked = tile.locked;
 		collect = tile.collect;
 	}
 
@@ -58,19 +58,12 @@ public class UpdateBlock {
 
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(!(tile instanceof TileFrequencyOwner))
+			if(!(tile instanceof TileEntityDimChest))
 			{
-				Main.logger.error("Wrong type of tile entity (expected TileFrequencyOwner)!");
+				Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
 				return;
 			}
-
-			TileFrequencyOwner te = (TileFrequencyOwner) tile;
-			te.frequency.set(freq);
-			te.setLocked(locked);
-
-			world.notifyBlockUpdate(pos, te.getBlockState(), te.getBlockState(), 3);
-			if(te.canAccess())
-				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+			
 			TileEntityDimChest chest = (TileEntityDimChest) tile;
 			chest.frequency.set(freq);
 			chest.locked = locked;

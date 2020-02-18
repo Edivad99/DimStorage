@@ -5,6 +5,7 @@ import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
+import edivad.dimstorage.plugin.DimTankPlugin;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,7 @@ public class ModSetup {
 	{
 		PacketHandler.init();
 		DimStorageManager.registerPlugin(new DimChestPlugin());
+		DimStorageManager.registerPlugin(new DimTankPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 
 		//Compat

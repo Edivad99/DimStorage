@@ -2,7 +2,6 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -27,13 +25,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DimTank extends Block {
 
-	public static final ResourceLocation DIMTANK = new ResourceLocation(Main.MODID, "dimensional_tank");
 	private static final VoxelShape BOX = VoxelShapes.create(2 / 16D, 0 / 16D, 2 / 16D, 14 / 16D, 16 / 16D, 14 / 16D);
 
 	public DimTank()
 	{
-		super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(20F, 100F));
-		setRegistryName(DIMTANK);
+		super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(5.0F));
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		OWNER, FREQ, LOCK, COLLECT
 	}
 
-	private String change, owner, freq, locked, yes, no, inventory, name, collecting, idle;
+	private String change, owner, freq, locked, yes, no, inventory, collecting, idle;
 
 	private Button ownerButton, freqButton, lockedButton, collectButton;
 	protected TextFieldWidget freqTextField;
@@ -78,7 +78,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting");
 		idle = Translate.translateToLocal("gui." + Main.MODID + ".idle");
 		inventory = Translate.translateToLocal("container.inventory");
-		name = this.getTitle().getFormattedText();
 
 		// Init buttons list
 		this.buttons.clear();
@@ -110,8 +109,9 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 
 	protected abstract boolean isLocked();
 
-	protected abstract String getName();
-	protected abstract boolean isCollecting();
+	protected boolean isCollecting() {
+		return false;
+	}
 
 	@Override
 	public void tick()
@@ -238,7 +238,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		this.font.drawString(getName(), 8, 6, 4210752);
+		this.font.drawString(this.getTitle().getFormattedText(), 8, 6, 4210752);
 		this.font.drawString(inventory, 8, 128, 4210752);
 
 		if(!drawSettings)

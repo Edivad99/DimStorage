@@ -4,10 +4,9 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.network.packet.tank.UpdateDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
@@ -52,8 +51,10 @@ public class ScreenDimTank extends PanelScreen<ContainerDimTank> {
 			case LOCK:
 				ownerTile.swapLocked();
 				break;
+			default:
+				return;
 		}
-		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
+		PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(ownerTile));
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class ScreenDimTank extends PanelScreen<ContainerDimTank> {
 	@Override
 	protected boolean isLocked()
 	{
-		return ownerTile.isLocked();
+		return ownerTile.locked;
 	}
 
 	@Override
@@ -111,8 +112,9 @@ public class ScreenDimTank extends PanelScreen<ContainerDimTank> {
 	}
 
 	@Override
-	protected String getName()
+	protected boolean isCollecting()
 	{
-		return Translate.translateToLocal("block." + Main.MODID + ".dimensional_tank");
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

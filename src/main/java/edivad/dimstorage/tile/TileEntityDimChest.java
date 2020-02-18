@@ -53,7 +53,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public float movablePartState;
 	public int rotation;
 
-	private boolean locked;
+	public boolean locked;
 
 	public static final int AREA = Config.DIMCHEST_AREA.get();
 	public boolean collect;
@@ -164,18 +164,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		locked = !locked;
 		this.markDirty();
-	}
-	
-	@Override
-	public void setLocked(boolean locked)
-	{
-		this.locked = locked;
-	}
-	
-	@Override
-	public boolean isLocked()
-	{
-		return locked;
 	}
 
 	public void swapCollect()
