@@ -4,6 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.compat.MainCompatHandler;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.TankSynchroniser;
 import edivad.dimstorage.plugin.DimChestPlugin;
 import edivad.dimstorage.plugin.DimTankPlugin;
 import net.minecraft.item.ItemGroup;
@@ -32,6 +33,7 @@ public class ModSetup {
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		DimStorageManager.registerPlugin(new DimTankPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
+		MinecraftForge.EVENT_BUS.register(new TankSynchroniser());
 
 		//Compat
 		MainCompatHandler.registerTOP();
