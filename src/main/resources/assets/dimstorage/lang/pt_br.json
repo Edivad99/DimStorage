@@ -24,9 +24,6 @@
 	  "gui.dimstorage.collecting": "Coletando",
 	  "gui.dimstorage.idle": "Parado",
 	
-    "message.dimstorage.accessDenied": "Accesso Negado!",
-    "message.dimstorage.bindingComplete": "Conectado ao baú",
-    "message.dimstorage.notLinked": "O Tablet Dimensional não está conectado a nenhum Baú Dim.",
     "message.dimstorage.adviceToLink": "Segure shift + clique direito do mouse para conectar a um Baú Dim.",
 
     "tooltip.dimstorage.collect": "Quando o Coletando está ativado, significa que o Baú Dim. coletará todos os itens dos inventários em uma área de %dx%d"
