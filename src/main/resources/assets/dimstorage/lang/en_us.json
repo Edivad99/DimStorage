@@ -23,10 +23,7 @@
 	"gui.dimstorage.no": "No",
 	"gui.dimstorage.collecting": "Collecting",
 	"gui.dimstorage.idle": "Idle",
-	
-    "message.dimstorage.accessDenied": "Access Denied!",
-    "message.dimstorage.bindingComplete": "Linked to chest",
-    "message.dimstorage.notLinked": "Dimensional Tablet not connected to any DimChest",
+    
     "message.dimstorage.adviceToLink": "Press shift + right click to bind a DimChest",
 
     "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
