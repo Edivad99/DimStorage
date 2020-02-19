@@ -50,7 +50,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 		{
 			ItemStack device = player.getHeldItem(context.getHand());
 			TileEntity tile = world.getTileEntity(pos);
-			if(tile instanceof TileEntityDimChest && player.isSneaking())
+			if(tile instanceof TileEntityDimChest && player.isShiftKeyDown())
 			{
 				TileEntityDimChest dimChest = (TileEntityDimChest) tile;
 				if(dimChest.canAccess(player))
@@ -76,7 +76,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 
 		if(!world.isRemote && hand.compareTo(Hand.MAIN_HAND)==0)
 		{
-			if(player.isSneaking())
+			if(player.isShiftKeyDown())
 				return super.onItemRightClick(world, player, hand);
 			if(!stack.getOrCreateTag().getBoolean("bound"))
 			{

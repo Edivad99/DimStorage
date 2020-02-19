@@ -6,8 +6,6 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
-import edivad.dimstorage.client.model.ModelDimChest;
-import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
