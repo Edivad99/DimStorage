@@ -27,13 +27,13 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		super(dispatcher);
 		model = new ModelDimChest();
 	}
-	
+
 	@Override
 	public void render(TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
 	{
 		if(te == null || te.isRemoved())
 			return;
-		
+
 		matrixStackIn.push();
 		matrixStackIn.translate(0D, 0D, 0D);
 		renderBlock(te, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
@@ -59,7 +59,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		matrixStackIn.translate(0D, -2D, 0D);
 
 		model.setTileEntity(te);
-		
+
 		IVertexBuilder buffer = bufferIn.getBuffer(RenderType.getEntitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
 		model.render(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 

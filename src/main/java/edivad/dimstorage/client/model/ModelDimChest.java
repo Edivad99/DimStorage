@@ -81,7 +81,7 @@ public class ModelDimChest extends Model {
 		indicatorRed = createIndicator(4);
 		indicatorYellow = createIndicator(6);
 	}
-	
+
 	@Override
 	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
 	{
