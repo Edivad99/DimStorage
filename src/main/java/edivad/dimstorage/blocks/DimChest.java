@@ -22,6 +22,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -62,11 +63,11 @@ public class DimChest extends Block implements TOPInfoProvider {
 		return false;
 	}
 
-	@Override
-	public boolean isSolid(BlockState state)
-	{
-		return false;
-	}
+//	@Override
+//	public boolean isSolid(BlockState state)
+//	{
+//		return false;
+//	}
 
 	@Override
 	public boolean isVariableOpacity()
@@ -126,18 +127,20 @@ public class DimChest extends Block implements TOPInfoProvider {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_)
 	{
 		if(worldIn.isRemote)
-			return true;
+			return ActionResultType.SUCCESS;
 
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if(!(tile instanceof TileFrequencyOwner) || !(tile instanceof INamedContainerProvider))
-			return false;
+			return ActionResultType.FAIL;
 
 		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
 
-		return !player.isSneaking() && owner.activate(player, worldIn, pos);
+		if(!player.isShiftKeyDown())
+			return owner.activate(player, worldIn, pos);
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override

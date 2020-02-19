@@ -29,6 +29,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -214,7 +215,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos)
 	{
 		if(canAccess(player))
 		{
@@ -225,7 +226,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 			Message.sendChatMessage(player, Messages.ACCESSDENIED);
 		}
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	@SuppressWarnings("unchecked")

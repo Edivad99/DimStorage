@@ -3,7 +3,6 @@ package edivad.dimstorage.setup;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.render.tile.RenderTileDimChest;
 import edivad.dimstorage.client.screen.ScreenDimChest;
-import edivad.dimstorage.tile.TileEntityDimChest;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,7 +19,7 @@ public class ClientSetup {
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 
 		//Special render & GUI
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimChest.class, new RenderTileDimChest());
+		ClientRegistry.bindTileEntityRenderer(Registration.DIMCHEST_TILE.get(), RenderTileDimChest::new);
 		ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
 	}
 }

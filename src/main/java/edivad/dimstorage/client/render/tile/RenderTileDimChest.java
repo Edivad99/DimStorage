@@ -1,84 +1,81 @@
 package edivad.dimstorage.client.render.tile;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.client.model.ModelDimChest;
-import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import net.minecraft.block.Block;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.model.TransformationHelper;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	private static final ResourceLocation texture = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
 
-	private ModelDimChest model;
+	//private ModelDimChest model;
 
-	public RenderTileDimChest()
+	public RenderTileDimChest(TileEntityRendererDispatcher rendererDispatcher)
 	{
-		this.model = new ModelDimChest();
+		super(rendererDispatcher);
+		//this.model = new ModelDimChest();
 	}
 
 	@Override
-	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage)
+	public void render(TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
 	{
 		if(te == null || te.isRemoved())
 			return;
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x, y, z);
-		renderBlock(te, te.getWorld(), te.getPos(), Registration.DIMCHEST.get());
-		GlStateManager.popMatrix();
+		matrixStackIn.push();
+		//matrixStackIn.translate(p_227861_1_, p_227861_3_, p_227861_5_);
+		matrixStackIn.translate(0D, 0D, 0D);
+		//renderBlock(te, matrixStackIn);
+		matrixStackIn.pop();
 
-		super.render(te, x, y, z, partialTicks, destroyStage);
 	}
 
-	private void renderBlock(TileEntityDimChest tileEntity, World world, BlockPos pos, Block block)
+	//	@Override
+	//	public void render(TileEntityDimChest te, double x, double y, double z, float partialTicks, int destroyStage)
+	//	{
+	//		if(te == null || te.isRemoved())
+	//			return;
+	//
+	//		GlStateManager.pushMatrix();
+	//		GlStateManager.translated(x, y, z);
+	//		renderBlock(te);
+	//		GlStateManager.popMatrix();
+	//	}
+
+	private void renderBlock(TileEntityDimChest te, MatrixStack matrix)
 	{
 		int rot = 0;
-		if(tileEntity != null)
-			rot = tileEntity.rotation;
+		if(te != null)
+			rot = te.rotation;
 
-		GlStateManager.pushMatrix();
-		this.bindTexture(texture);
+		matrix.push();
+		//this.bindTexture(texture);
 
-		GlStateManager.translatef(0.5F, -0.5F, 0.5F);
+		matrix.translate(0.5F, -0.5F, 0.5F);
 		//This line actually rotates the renderer.
 
 		/** direction **/
-		switch (rot)
-		{
-			case 0:
-				GlStateManager.rotatef(180F, 0F, 1F, 0F);
-				break;
-			case 1:
-				GlStateManager.rotatef(90F, 0F, 1F, 0F);
-				break;
-			case 2:
-				GlStateManager.rotatef(0F, 0F, 1F, 0F);
-				break;
-			case 3:
-				GlStateManager.rotatef(270F, 0F, 1F, 0F);
-				break;
-		}
-		GlStateManager.rotatef(180F, 0F, 1F, 0F);
+		matrix.rotate(TransformationHelper.quatFromXYZ(new Vector3f(360 - rot * 90, 0, 1), true));
 
 		/** sens **/
-		GlStateManager.rotatef(180F, 1F, 0F, 0F);
+		matrix.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180, 1, 0), true));
 
 		/** Ajustement **/
-		GlStateManager.translatef(0F, -2F, 0F);
+		matrix.translate(0F, -2F, 0F);
 
-		this.model.setTileEntity(tileEntity);
-		this.model.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		//model.setTileEntity(te);
+		//model.render(0.0625F);
 
-		GlStateManager.popMatrix();
+		matrix.pop();
 	}
 }

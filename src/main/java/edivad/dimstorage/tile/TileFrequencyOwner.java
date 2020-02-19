@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -77,9 +78,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		return tag;
 	}
 
-	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos)
 	{
-		return false;
+		return ActionResultType.FAIL;
 	}
 
 	public void onPlaced(LivingEntity entity)
@@ -91,7 +92,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT getUpdateTag()
 	{
 		CompoundNBT tag = super.getUpdateTag();
-		tag.put("Frequency", frequency.writeToNBT(tag));
+		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		return tag;
 	}
 
