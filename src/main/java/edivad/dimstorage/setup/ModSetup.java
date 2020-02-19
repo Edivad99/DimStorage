@@ -30,7 +30,7 @@ public class ModSetup {
 		PacketHandler.init();
 		DimStorageManager.registerPlugin(new DimChestPlugin());
 		MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
-		
+
 		//Compat
 		MainCompatHandler.registerTOP();
 		//OpenComputers

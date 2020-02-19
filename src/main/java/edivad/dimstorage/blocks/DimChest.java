@@ -35,7 +35,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 
 	public DimChest()
 	{
-		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(20F, 100F));
+		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5.0F));
 	}
 
 	@Override

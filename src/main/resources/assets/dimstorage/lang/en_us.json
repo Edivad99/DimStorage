@@ -4,6 +4,7 @@
     "item.dimstorage.dim_core": "Dimensional Core",
     "item.dimstorage.solid_dim_core": "Solid Dimensional Core",
     "item.dimstorage.dim_wall": "Dimensional Wall",
+    "item.dimstorage.dimensional_tablet": "Dimensional Tablet",
 
     "block.dimstorage.dimensional_chest": "Dimensional Chest",
 
@@ -11,6 +12,8 @@
     "advancements.dimstorage.root.desc": "The power of dimensions",
     "advancements.dimstorage.dimensional_chest": "Dimensional Chest",
     "advancements.dimstorage.dimensional_chest.desc": "A more connected inventory",
+    "advancements.dimstorage.dimensional_tablet": "Dimensional Tablet",
+    "advancements.dimstorage.dimensional_tablet.desc": "A remote inventory",
 
     "gui.dimstorage.change": "Change",
 	"gui.dimstorage.owner": "Owner:",
@@ -20,10 +23,9 @@
 	"gui.dimstorage.no": "No",
 	"gui.dimstorage.collecting": "Collecting",
 	"gui.dimstorage.idle": "Idle",
-	
-    "message.dimstorage.accessDenied": "Access Denied!",
-    "message.dimstorage.bindingComplete": "Linked to chest",
-    "message.dimstorage.notLinked": "DimPad not connected to any DimChest",
     
+    "message.dimstorage.adviceToLink": "Press shift + right click to bind a DimChest",
+
     "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
+
 }

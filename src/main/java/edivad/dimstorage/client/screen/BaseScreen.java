@@ -24,4 +24,11 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindTexture(background);
 	}
+
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks)
+	{
+		this.renderBackground();
+		super.render(mouseX, mouseY, partialTicks);
+	}
 }

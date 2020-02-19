@@ -78,7 +78,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting");
 		idle = Translate.translateToLocal("gui." + Main.MODID + ".idle");
 		inventory = Translate.translateToLocal("container.inventory");
-		name = Translate.translateToLocal("block." + Main.MODID + ".dimensional_chest");
+		name = this.getTitle().getFormattedText();
 
 		// Init buttons list
 		this.buttons.clear();
@@ -122,7 +122,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
 		freqTextField.render(mouseX, mouseY, partialTicks);
 

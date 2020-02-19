@@ -46,9 +46,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 
 	public boolean canAccess(PlayerEntity player)
 	{
-		if(!frequency.hasOwner())
-			return true;
-		return frequency.getOwner().equals(player.getDisplayName().getFormattedText());
+		return frequency.canAccess(player);
 	}
 
 	@Override

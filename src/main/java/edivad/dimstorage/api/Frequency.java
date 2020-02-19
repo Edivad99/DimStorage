@@ -3,6 +3,7 @@ package edivad.dimstorage.api;
 import org.apache.logging.log4j.Level;
 
 import edivad.dimstorage.Main;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -22,10 +23,20 @@ public class Frequency {
 		this("public", channel);
 	}
 
+	public Frequency(PacketBuffer buf)
+	{
+		this(buf.readString(32767), buf.readInt());
+	}
+
 	public Frequency(String owner, int channel)
 	{
 		this.owner = owner;
 		this.channel = channel;
+	}
+
+	public Frequency(CompoundNBT tagCompound)
+	{
+		read_internal(tagCompound);
 	}
 
 	public Frequency setOwner(String owner)
@@ -53,11 +64,6 @@ public class Frequency {
 	public int getChannel()
 	{
 		return channel;
-	}
-
-	public Frequency(CompoundNBT tagCompound)
-	{
-		read_internal(tagCompound);
 	}
 
 	protected Frequency read_internal(CompoundNBT tagCompound)
@@ -133,14 +139,16 @@ public class Frequency {
 		return this;
 	}
 
-	public static Frequency readFromPacket(PacketBuffer buf)
-	{
-		return new Frequency(buf.readString(32767), buf.readInt());
-	}
-
 	public void writeToPacket(PacketBuffer buf)
 	{
 		buf.writeString(owner);
 		buf.writeInt(channel);
+	}
+
+	public boolean canAccess(PlayerEntity player)
+	{
+		if(!hasOwner())
+			return true;
+		return getOwner().equals(player.getDisplayName().getFormattedText());
 	}
 }
