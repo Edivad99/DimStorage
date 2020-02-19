@@ -81,7 +81,7 @@ repositories {
         url "https://tehnut.info/maven"
     }
     maven {
-        name = 'TOP'
+        name = "TOP"
         url "https://maven.tterrag.com/"
     }
 	maven {
