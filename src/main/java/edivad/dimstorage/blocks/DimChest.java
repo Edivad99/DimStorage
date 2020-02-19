@@ -35,7 +35,7 @@ public class DimChest extends Block implements TOPInfoProvider {
 
 	public DimChest()
 	{
-		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5.0F));
+		super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5.0F).notSolid());
 	}
 
 	@Override
@@ -62,12 +62,6 @@ public class DimChest extends Block implements TOPInfoProvider {
 	{
 		return false;
 	}
-
-//	@Override
-//	public boolean isSolid(BlockState state)
-//	{
-//		return false;
-//	}
 
 	@Override
 	public boolean isVariableOpacity()
