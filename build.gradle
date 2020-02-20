@@ -104,9 +104,6 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
-    
-	//compile fg.deobf('org.squiddev:cc-tweaked-1.14.4:1+')
-	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

@@ -1,5 +1,5 @@
 # DimStorage
-[![CircleCI](https://circleci.com/gh/Edivad99/DimStorage/tree/1.14.x.svg?style=svg)](https://circleci.com/gh/Edivad99/DimStorage/tree/1.14.x)
+[![CircleCI](https://circleci.com/gh/Edivad99/DimStorage/tree/1.15.x.svg?style=svg)](https://circleci.com/gh/Edivad99/DimStorage/tree/1.15.x)
 ## Table of Contents
 
 * [About](#about)
