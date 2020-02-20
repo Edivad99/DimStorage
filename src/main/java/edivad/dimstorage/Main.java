@@ -19,7 +19,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mod(Main.MODID)
 public class Main {
@@ -42,8 +41,6 @@ public class Main {
 		{
 			FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 		});
-
-		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
 	}
 
 	public static MinecraftServer getServer()
