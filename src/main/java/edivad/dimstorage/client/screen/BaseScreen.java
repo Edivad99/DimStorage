@@ -30,5 +30,6 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 	{
 		this.renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 }
