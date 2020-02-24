@@ -186,7 +186,7 @@ public class Frequency {
 		buf.writeInt(channel);
 	}
 
-	public boolean canAccess(PlayerEntity player)
+	public boolean canAccess(@Nonnull PlayerEntity player)
 	{
 		if(!hasOwner())
 			return true;
