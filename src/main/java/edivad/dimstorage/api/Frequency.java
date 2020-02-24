@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Level;
 
 import edivad.dimstorage.Main;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -17,7 +16,7 @@ import net.minecraft.network.PacketBuffer;
 public class Frequency {
 
 	private UUID owner;
-	private boolean isPublic;
+	private String ownerText;
 	private int channel;
 
 	public Frequency()
@@ -27,14 +26,27 @@ public class Frequency {
 
 	public Frequency(int channel)
 	{
-		this(true, null, channel);
+		this(null, channel);
 	}
 
-	public Frequency(boolean isPublic, @Nullable UUID owner, int channel)
+	public Frequency(@Nullable PlayerEntity player, int channel)
 	{
-		if((isPublic && owner != null) || (!isPublic && owner == null))
-			throw new RuntimeException();
-		this.isPublic = isPublic;
+		if(player == null)
+		{
+			owner = null;
+			ownerText = "public";
+		}
+		else
+		{
+			owner = player.getUniqueID();
+			ownerText = player.getName().getFormattedText();
+		}
+		this.channel = channel;
+	}
+
+	private Frequency(String ownerText, @Nullable UUID owner, int channel)
+	{
+		this.ownerText = ownerText;
 		this.owner = owner;
 		this.channel = channel;
 	}
@@ -46,15 +58,15 @@ public class Frequency {
 
 	public Frequency setOwner(@Nonnull PlayerEntity player)
 	{
-		isPublic = false;
 		owner = player.getUniqueID();
+		ownerText = player.getName().getFormattedText();
 		return this;
 	}
 
 	public Frequency setPublic()
 	{
-		isPublic = true;
 		owner = null;
+		ownerText = "public";
 		return this;
 	}
 
@@ -65,20 +77,12 @@ public class Frequency {
 
 	public String getOwner()
 	{
-		if(owner != null)
-		{
-			ServerPlayerEntity spe = Main.getServer().getPlayerList().getPlayerByUUID(owner);
-			if(spe != null)
-				return spe.getName().getFormattedText();
-			else
-				return "undefined";
-		}
-		return "public";
+		return ownerText;
 	}
 
 	public boolean hasOwner()
 	{
-		return !isPublic;
+		return !ownerText.equals("public");
 	}
 
 	public Frequency setChannel(int channel)
@@ -94,8 +98,8 @@ public class Frequency {
 
 	protected Frequency read_internal(CompoundNBT tagCompound)
 	{
-		isPublic = tagCompound.getBoolean("isPublic");
-		if(!isPublic)
+		ownerText = tagCompound.getString("ownerText");
+		if(!ownerText.equals("public"))
 			owner = tagCompound.getUniqueId("owner");
 		else
 			owner = null;
@@ -112,8 +116,8 @@ public class Frequency {
 
 	protected CompoundNBT write_internal(CompoundNBT tagCompound)
 	{
-		tagCompound.putBoolean("isPublic", isPublic);
-		if(!isPublic)
+		tagCompound.putString("ownerText", ownerText);
+		if(!ownerText.equals("public"))
 			tagCompound.putUniqueId("owner", owner);
 		tagCompound.putInt("channel", channel);
 		return tagCompound;
@@ -146,12 +150,12 @@ public class Frequency {
 	@Override
 	public String toString()
 	{
-		return "owner=" + (isPublic ? "public" : owner) + ",channel=" + channel;
+		return "owner=" + (ownerText.equals("public") ? ownerText : owner) + ",channel=" + channel;
 	}
 
 	public Frequency copy()
 	{
-		return new Frequency(isPublic, owner, channel);
+		return new Frequency(ownerText, owner, channel);
 	}
 
 	@Override
@@ -161,12 +165,12 @@ public class Frequency {
 			return false;
 
 		Frequency f = (Frequency) obj;
-		return (f.channel == this.channel && f.owner == this.owner && f.isPublic == this.isPublic);
+		return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
 	}
 
 	public Frequency set(Frequency frequency)
 	{
-		this.isPublic = frequency.isPublic;
+		this.ownerText = frequency.ownerText;
 		this.owner = frequency.owner;
 		this.channel = frequency.channel;
 		return this;
@@ -174,14 +178,14 @@ public class Frequency {
 
 	public static Frequency getFromPacket(PacketBuffer buf)
 	{
-		boolean isPublic = buf.readBoolean();
-		return new Frequency(isPublic, isPublic ? null : buf.readUniqueId(), buf.readInt());
+		String ownerT = buf.readString(32767);
+		return new Frequency(ownerT, ownerT.equals("public") ? null : buf.readUniqueId(), buf.readInt());
 	}
 
 	public void writeToPacket(PacketBuffer buf)
 	{
-		buf.writeBoolean(isPublic);
-		if(!isPublic)
+		buf.writeString(ownerText);
+		if(!ownerText.equals("public"))
 			buf.writeUniqueId(owner);
 		buf.writeInt(channel);
 	}
