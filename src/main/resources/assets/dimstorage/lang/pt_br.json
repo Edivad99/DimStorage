@@ -16,14 +16,14 @@
     "advancements.dimstorage.dimensional_tablet.desc": "Um inventário remoto",
 
     "gui.dimstorage.change": "Alterar",
-	"gui.dimstorage.owner": "Dono(a):",
-	"gui.dimstorage.frequency": "Frequência:",
-	"gui.dimstorage.locked": "Bloquear:",
-	"gui.dimstorage.yes": "Sim",
-	"gui.dimstorage.no": "Não",
-	"gui.dimstorage.collecting": "Coletando",
-	"gui.dimstorage.idle": "Parado",
-	
+    "gui.dimstorage.owner": "Dono(a):",
+    "gui.dimstorage.frequency": "Frequência:",
+    "gui.dimstorage.locked": "Bloquear:",
+    "gui.dimstorage.yes": "Sim",
+    "gui.dimstorage.no": "Não",
+    "gui.dimstorage.collecting": "Coletando",
+    "gui.dimstorage.idle": "Parado",
+
     "message.dimstorage.adviceToLink": "Segure shift + clique direito do mouse para conectar a um Baú Dim.",
 
     "tooltip.dimstorage.collect": "Quando o Coletando está ativado, significa que o Baú Dim. coletará todos os itens dos inventários em uma área de %dx%d"
