@@ -82,7 +82,7 @@ public class Frequency {
 
 	public boolean hasOwner()
 	{
-		return !ownerText.equals("public");
+		return !ownerText.equals("public") && owner != null;
 	}
 
 	public Frequency setChannel(int channel)
@@ -117,7 +117,7 @@ public class Frequency {
 	protected CompoundNBT write_internal(CompoundNBT tagCompound)
 	{
 		tagCompound.putString("ownerText", ownerText);
-		if(!ownerText.equals("public"))
+		if(hasOwner())
 			tagCompound.putUniqueId("owner", owner);
 		tagCompound.putInt("channel", channel);
 		return tagCompound;
@@ -150,7 +150,7 @@ public class Frequency {
 	@Override
 	public String toString()
 	{
-		return "owner=" + (ownerText.equals("public") ? ownerText : owner) + ",channel=" + channel;
+		return "owner=" + (hasOwner() ? owner : ownerText) + ",channel=" + channel;
 	}
 
 	public Frequency copy()
@@ -185,7 +185,7 @@ public class Frequency {
 	public void writeToPacket(PacketBuffer buf)
 	{
 		buf.writeString(ownerText);
-		if(!ownerText.equals("public"))
+		if(hasOwner())
 			buf.writeUniqueId(owner);
 		buf.writeInt(channel);
 	}
