@@ -39,9 +39,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public void swapOwner()
 	{
 		if(frequency.hasOwner())
-			setFreq(frequency.copy().setOwner("public"));
+			setFreq(frequency.copy().setPublic());
 		else
-			setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer().getDisplayName().getFormattedText()));
+			setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer()));
 	}
 
 	public boolean canAccess(PlayerEntity player)

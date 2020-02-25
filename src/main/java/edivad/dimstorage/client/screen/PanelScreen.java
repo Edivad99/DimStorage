@@ -125,7 +125,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		super.render(mouseX, mouseY, partialTicks);
 		freqTextField.render(mouseX, mouseY, partialTicks);
 
-		this.renderHoveredToolTip(mouseX, mouseY);
 		if(mouseX > this.width / 2 + 90 && mouseX < this.width / 2 + 164 && mouseY > this.height / 2 + 65 && mouseY < this.height / 2 + 95)
 			this.renderTooltip(Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
 

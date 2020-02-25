@@ -1,0 +1,31 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+
+    "item.dimstorage.dim_core": "Ядро измерений",
+    "item.dimstorage.solid_dim_core": "Надёжное ядро измерений",
+    "item.dimstorage.dim_wall": "Стена измерений",
+    "item.dimstorage.dimensional_tablet": "Планшет измерений",
+
+    "block.dimstorage.dimensional_chest": "Сундук измерений",
+
+    "advancements.dimstorage.root": "Ядро измерений",
+    "advancements.dimstorage.root.desc": "Сила измерений",
+    "advancements.dimstorage.dimensional_chest": "Сундук измерений",
+    "advancements.dimstorage.dimensional_chest.desc": "Более связанный инвентарь",
+    "advancements.dimstorage.dimensional_tablet": "Планшет измерений",
+    "advancements.dimstorage.dimensional_tablet.desc": "Удаленный инвентарь",
+
+    "gui.dimstorage.change": "Изменить",
+    "gui.dimstorage.owner": "Владелец:",
+    "gui.dimstorage.frequency": "Частота:",
+    "gui.dimstorage.locked": "Закрыт:",
+    "gui.dimstorage.yes": "Да",
+    "gui.dimstorage.no": "Нет",
+    "gui.dimstorage.collecting": "Сбор",
+    "gui.dimstorage.idle": "Простой",
+
+    "message.dimstorage.adviceToLink": "Нажмите shift + ПКМ, чтобы связать Сундук измерений",
+
+    "tooltip.dimstorage.collect": "Когда идёт сбор, это означает, что Сундук измерений собирает все предметы в инвентарях в %dx%d радиусе"
+
+}
