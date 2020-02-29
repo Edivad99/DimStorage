@@ -5,9 +5,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.Level;
-
-import edivad.dimstorage.Main;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

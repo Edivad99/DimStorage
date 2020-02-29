@@ -144,7 +144,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	private IItemHandler getItemHandler(@Nonnull TileEntity tile)
 	{
 		IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
-		//System.out.println(handler);
 		if(handler == null)
 		{
 			if(tile instanceof ISidedInventory)
