@@ -6,11 +6,15 @@ import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.client.screen.element.button.ChangeButton;
+import edivad.dimstorage.client.screen.element.button.CollectButton;
+import edivad.dimstorage.client.screen.element.button.LockButton;
+import edivad.dimstorage.client.screen.element.button.OwnerButton;
+import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Translate;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -31,10 +35,8 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		OWNER, FREQ, LOCK, COLLECT
 	}
 
-	private String change, owner, freq, locked, yes, no, inventory, name, collecting, idle;
-
-	private Button ownerButton, freqButton, lockedButton, collectButton;
-	protected TextFieldWidget freqTextField;
+	private String owner, freq, locked;
+	protected FrequencyText freqTextField;
 
 	private SettingsState state;
 	private int animationState;
@@ -69,36 +71,19 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		super.init();
 
 		// Get translation
-		change = Translate.translateToLocal("gui." + Main.MODID + ".change");
 		owner = Translate.translateToLocal("gui." + Main.MODID + ".owner");
 		freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency");
 		locked = Translate.translateToLocal("gui." + Main.MODID + ".locked");
-		yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-		no = Translate.translateToLocal("gui." + Main.MODID + ".no");
-		collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting");
-		idle = Translate.translateToLocal("gui." + Main.MODID + ".idle");
-		inventory = Translate.translateToLocal("container.inventory");
-		name = this.getTitle().getFormattedText();
 
 		// Init buttons list
 		this.buttons.clear();
 
-		ownerButton = new Button(this.width / 2 + 95, this.height / 2 - 57, 64, 20, getTileFrequency().getOwner(), button -> actions(Actions.OWNER));
-		ownerButton.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
-		freqButton = new Button(this.width / 2 + 95, this.height / 2 + 4, 64, 20, change, button -> actions(Actions.FREQ));
-		lockedButton = new Button(this.width / 2 + 95, this.height / 2 + 43, 64, 20, isLocked() ? yes : no, button -> actions(Actions.LOCK));
-		collectButton = new Button(this.width / 2 + 95, this.height / 2 + 70, 64, 20, isCollecting() ? collecting : idle, button -> actions(Actions.COLLECT));
+		this.addButton(new OwnerButton(width, height, getTileFrequency().getOwner(), button -> actions(Actions.OWNER)));
+		this.addButton(new ChangeButton(width, height, button -> actions(Actions.FREQ)));
+		this.addButton(new LockButton(width, height, isLocked(), button -> actions(Actions.LOCK)));
+		this.addButton(new CollectButton(width, height, isCollecting(), button -> actions(Actions.COLLECT)));
 
-		this.addButton(ownerButton);
-		this.addButton(freqButton);
-		this.addButton(lockedButton);
-		this.addButton(collectButton);
-
-		freqTextField = new TextFieldWidget(this.font, this.width / 2 + 95, this.height / 2 - 15, 64, 15, String.valueOf(getTileFrequency().getChannel()));
-		freqTextField.setMaxStringLength(3);
-		freqTextField.setVisible(true);
-		freqTextField.setFocused2(false);
-		freqTextField.setText(String.valueOf(getTileFrequency().getChannel()));
+		freqTextField = new FrequencyText(width, height, String.valueOf(getTileFrequency().getChannel()));
 		children.add(freqTextField);
 
 		drawSettings(drawSettings);
@@ -140,6 +125,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		}
 		else if(state == SettingsState.STATE_CLOSING)
 		{
+			drawSettings(false);
 			animationState -= ANIMATION_SPEED;
 			if(animationState <= 0)
 			{
@@ -175,7 +161,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		else if(state == SettingsState.STATE_OPENED)
 		{
 			state = SettingsState.STATE_CLOSING;
-			drawSettings(false);
 		}
 
 		return true;
@@ -236,8 +221,8 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		this.font.drawString(name, 8, 6, 4210752);
-		this.font.drawString(inventory, 8, 128, 4210752);
+		this.font.drawString(this.getTitle().getFormattedText(), 8, 6, 4210752);
+		this.font.drawString(Translate.translateToLocal("container.inventory"), 8, 128, 4210752);
 
 		if(!drawSettings)
 			return;
@@ -248,9 +233,7 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		this.font.drawString(owner, 185, posY, 4210752);
 		posY += 9;
 		this.hLine(185, 185 + this.font.getStringWidth(owner), posY, 0xFF333333);
-		posY += 6;
-		this.ownerButton.setMessage(getTileFrequency().getOwner());
-		posY += 25;
+		posY += 31;
 
 		// freq
 		this.font.drawString(freq, 185, posY, 4210752);
@@ -262,8 +245,6 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 		this.font.drawString(locked, 185, posY, 4210752);
 		posY += 9;
 		this.hLine(185, 185 + this.font.getStringWidth(locked), posY, 0xFF333333);
-		// refresh button label
-		this.lockedButton.setMessage(isLocked() ? yes : no);
 	}
 
 	public List<Rectangle2d> getAreas()
@@ -277,12 +258,9 @@ public abstract class PanelScreen<T extends Container> extends BaseScreen<T> {
 	private void drawSettings(boolean draw)
 	{
 		drawSettings = draw;
-
-		ownerButton.visible = draw;
-		freqButton.visible = draw;
-		lockedButton.visible = draw;
-		collectButton.visible = draw;
-
+		
+		for(Widget widget : this.buttons)
+			widget.visible = draw;
 		freqTextField.setVisible(draw);
 	}
 }
