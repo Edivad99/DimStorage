@@ -15,7 +15,7 @@ public class OpenChest {
 
 	public OpenChest(PacketBuffer buf)
 	{
-		freq = Frequency.getFromPacket(buf);
+		freq = Frequency.readFromPacket(buf);
 		open = buf.readBoolean();
 	}
 

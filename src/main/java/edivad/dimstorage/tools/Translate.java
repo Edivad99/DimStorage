@@ -1,16 +1,24 @@
 package edivad.dimstorage.tools;
 
+import java.util.regex.Pattern;
+
 import net.minecraft.client.resources.I18n;
 
 public class Translate {
 
+	private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
+	
 	public static String translateToLocal(String key)
 	{
-		return I18n.format(key);
+		String translated = I18n.format(key);
+		translated = COMPILE.matcher(translated).replaceAll("\u00a7");
+		return translated;
 	}
 
 	public static String translateToLocal(String key, Object... parameters)
 	{
-		return I18n.format(key, parameters);
+		String translated = I18n.format(key, parameters);
+		translated = COMPILE.matcher(translated).replaceAll("\u00a7");
+		return translated;
 	}
 }
