@@ -86,7 +86,7 @@ repositories {
     }
 	maven {
         name = "JEI"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "https://dvs1.progwml6.com/files/maven"
     }
 }
 
@@ -98,14 +98,14 @@ dependencies {
         transitive = false
     })
 	// at runtime, use the full TOP jar
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
-        transitive = false
-    })
+	//compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+    //    transitive = false
+    //})
     
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     
 	//compile fg.deobf('org.squiddev:cc-tweaked-1.14.4:1+')
 	//compile "li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api"
