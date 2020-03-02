@@ -1,7 +1,8 @@
 package edivad.dimstorage.client.screen;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.client.screen.element.button.CollectButton;
+import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateBlock;
@@ -10,63 +11,48 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
+public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
 
 	private TileEntityDimChest ownerTile;
-
+	
 	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, ITextComponent text)
 	{
-		super(container, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimchest.png"), container.isOpen);
+		super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimchest.png"), container.isOpen);
 		this.ownerTile = container.owner;
 	}
 
 	@Override
 	protected void actions(Actions action)
 	{
-		switch (action)
+		if(action == Actions.OWNER)
+			ownerTile.swapOwner();
+		else if(action == Actions.LOCK)
+			ownerTile.swapLocked();
+		else if(action == Actions.COLLECT)
+			ownerTile.swapCollect();
+		else if(action == Actions.FREQ)
 		{
-			case OWNER:
-				ownerTile.swapOwner();
-				break;
-
-			case FREQ:
-				int prevChannel = ownerTile.frequency.getChannel();
-				try
-				{
-					int freq = Math.abs(Integer.parseInt(freqTextField.getText()));
-					ownerTile.setFreq(ownerTile.frequency.copy().setChannel(freq));
-				}
-				catch(Exception e)
-				{
-					freqTextField.setText(String.valueOf(prevChannel));
-				}
-				break;
-
-			case LOCK:
-				ownerTile.swapLocked();
-				break;
-			case COLLECT:
-				ownerTile.swapCollect();
-				break;
+			int prevChannel = ownerTile.frequency.getChannel();
+			try
+			{
+				int newFreq = getFrequencyText();
+				ownerTile.setFreq(ownerTile.frequency.copy().setChannel(newFreq));
+			}
+			catch(Exception e)
+			{
+				setFrequencyText(prevChannel);
+			}
 		}
 		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
 	}
-
+	
 	@Override
-	protected Frequency getTileFrequency()
+	protected void init()
 	{
-		return ownerTile.frequency;
-	}
+		super.init();
 
-	@Override
-	protected boolean isLocked()
-	{
-		return ownerTile.locked;
-	}
+		addComponent(new CollectButton(width / 2 + 95, height / 2 + 75, ownerTile.collect, button -> actions(Actions.COLLECT)));
 
-	@Override
-	protected boolean isCollecting()
-	{
-		return ownerTile.collect;
+		drawSettings(drawSettings);
 	}
 }

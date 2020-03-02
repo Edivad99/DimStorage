@@ -8,7 +8,7 @@ public class LockButton extends Button {
 
 	public LockButton(int width, int height, boolean isLock, Button.IPressable onPress)
 	{
-		super(width / 2 + 95, height / 2 + 43, 64, 20, getText(isLock), onPress);
+		super(width, height, 64, 20, getText(isLock), onPress);
 	}
 
 	private static String getText(boolean isLock)

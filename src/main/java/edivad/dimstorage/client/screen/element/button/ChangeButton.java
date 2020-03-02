@@ -8,6 +8,6 @@ public class ChangeButton extends Button {
 
 	public ChangeButton(int width, int height, Button.IPressable onPress)
 	{
-		super(width / 2 + 95, height / 2 + 4, 64, 20, Translate.translateToLocal("gui." + Main.MODID + ".change"), onPress);
+		super(width, height, 64, 20, Translate.translateToLocal("gui." + Main.MODID + ".change"), onPress);
 	}
 }
