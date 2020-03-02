@@ -49,8 +49,7 @@ public class UpdateBlock {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			if(!world.isBlockPresent(pos))

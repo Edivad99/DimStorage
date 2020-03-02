@@ -41,8 +41,7 @@ public class Registration {
 	public static final RegistryObject<Item> DIMCHEST_ITEM = ITEMS.register("dimensional_chest", ItemDimChest::new);
 	public static final RegistryObject<TileEntityType<TileEntityDimChest>> DIMCHEST_TILE = TILES.register("dimensional_chest", () -> TileEntityType.Builder.create(TileEntityDimChest::new, DIMCHEST.get()).build(null));
 
-	public static final RegistryObject<ContainerType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) ->
-	{
+	public static final RegistryObject<ContainerType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		BlockPos pos = data.readBlockPos();
 		TileEntity te = Main.proxy.getClientWorld().getTileEntity(pos);
 		boolean isOpen = data.readBoolean();
@@ -61,8 +60,7 @@ public class Registration {
 	public static final RegistryObject<SolidDimCore> SOLIDDIMCORE = ITEMS.register("solid_dim_core", SolidDimCore::new);
 
 	public static final RegistryObject<DimTablet> DIMPAD = ITEMS.register("dimensional_tablet", DimTablet::new);
-	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMPAD_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) ->
-	{
+	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMPAD_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		return new ContainerDimTablet(windowId, Main.proxy.getClientPlayer().inventory, Main.proxy.getClientWorld());
 	}));
 }

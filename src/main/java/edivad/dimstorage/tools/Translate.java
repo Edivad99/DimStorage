@@ -7,7 +7,7 @@ import net.minecraft.client.resources.I18n;
 public class Translate {
 
 	private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
-	
+
 	public static String translateToLocal(String key)
 	{
 		String translated = I18n.format(key);

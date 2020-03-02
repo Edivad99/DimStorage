@@ -52,8 +52,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public float movablePartState;
 	public int rotation;
 
-	public boolean locked;
-
 	public static final int AREA = Config.DIMCHEST_AREA.get();
 	public boolean collect;
 	private List<BlockPos> blockNeighbors;
@@ -62,7 +60,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		super(Registration.DIMCHEST_TILE.get());
 		movablePartState = MIN_MOVABLE_POSITION;
-		locked = false;
 		collect = false;
 
 		blockNeighbors = new ArrayList<>();
@@ -158,12 +155,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		return handler;
 	}
 
-	public void swapLocked()
-	{
-		locked = !locked;
-		this.markDirty();
-	}
-
 	public void swapCollect()
 	{
 		collect = !collect;
@@ -198,7 +189,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		super.write(tag);
 		tag.putByte("rot", (byte) rotation);
-		tag.putBoolean("locked", locked);
 		tag.putBoolean("collect", collect);
 		return tag;
 	}
@@ -208,7 +198,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		super.read(tag);
 		rotation = tag.getByte("rot") & 3;
-		locked = tag.getBoolean("locked");
 		collect = tag.getBoolean("collect");
 	}
 
@@ -244,8 +233,8 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		CompoundNBT root = new CompoundNBT();
 		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
-		root.putByte("rot", (byte) rotation);
 		root.putBoolean("locked", locked);
+		root.putByte("rot", (byte) rotation);
 		root.putBoolean("collect", collect);
 		return new SUpdateTileEntityPacket(getPos(), 1, root);
 	}
@@ -255,8 +244,8 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		CompoundNBT tag = pkt.getNbtCompound();
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
-		rotation = tag.getByte("rot") & 3;
 		locked = tag.getBoolean("locked");
+		rotation = tag.getByte("rot") & 3;
 		collect = tag.getBoolean("collect");
 	}
 
@@ -266,7 +255,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		CompoundNBT tag = super.getUpdateTag();
 		tag.putByte("rot", (byte) rotation);
-		tag.putBoolean("locked", locked);
 		tag.putBoolean("collect", collect);
 		return tag;
 	}
@@ -276,7 +264,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	{
 		super.handleUpdateTag(tag);
 		rotation = tag.getByte("rot") & 3;
-		locked = tag.getBoolean("locked");
 		collect = tag.getBoolean("collect");
 	}
 

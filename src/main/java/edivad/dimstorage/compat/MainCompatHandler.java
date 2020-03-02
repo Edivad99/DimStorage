@@ -12,12 +12,12 @@ public class MainCompatHandler {
 			TOPCompatibility.register();
 		}
 	}
-	
-//	public static void registerOC()
-//	{
-//		if(ModList.get().isLoaded("opencomputers"))
-//		{
-//			Driver.add(new DriverDimChest());
-//		}
-//	}
+
+	//	public static void registerOC()
+	//	{
+	//		if(ModList.get().isLoaded("opencomputers"))
+	//		{
+	//			Driver.add(new DriverDimChest());
+	//		}
+	//	}
 }
