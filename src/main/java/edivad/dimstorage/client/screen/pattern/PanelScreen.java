@@ -17,6 +17,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 
 	private static final int ANIMATION_SPEED = 10;
 	private static final int SETTINGS_WIDTH = 80;
+	private static final int SETTINGS_HEIGHT = 180;
 	private static final int BUTTON_WIDTH = 20;
 
 	private static enum SettingsState {
@@ -137,7 +138,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 		if(allowConfig)
 			this.blit(settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
 
-		this.blit(guiLeft, guiTop, 0, 0, this.xSize, 222);
+		this.blit(guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
 
 		// button background
 		this.blit(getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
@@ -162,7 +163,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 	{
 		List<Rectangle2d> extraAreas = new ArrayList<>();
 		extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
-		extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY() + BUTTON_WIDTH, animationState, 180));
+		extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY() + BUTTON_WIDTH, animationState, SETTINGS_HEIGHT));
 		return extraAreas;
 	}
 

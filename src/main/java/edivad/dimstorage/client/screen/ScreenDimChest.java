@@ -1,10 +1,13 @@
 package edivad.dimstorage.client.screen;
 
+import java.util.Collections;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.CollectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -27,5 +30,13 @@ public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
 		addComponent(new CollectButton(width / 2 + 95, height / 2 + 75, ownerTile));
 
 		drawSettings(drawSettings);
+	}
+	
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks)
+	{
+		super.render(mouseX, mouseY, partialTicks);
+		if(drawSettings && mouseX > this.width / 2 + 90 && mouseX < this.width / 2 + 164 && mouseY > this.height / 2 + 70 && mouseY < this.height / 2 + 100)
+			this.renderTooltip(Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
 	}
 }
