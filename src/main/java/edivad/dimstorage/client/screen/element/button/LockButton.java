@@ -10,7 +10,7 @@ public class LockButton extends Button {
 	{
 		super(width / 2 + 95, height / 2 + 43, 64, 20, getText(isLock), onPress);
 	}
-	
+
 	private static String getText(boolean isLock)
 	{
 		if(isLock)

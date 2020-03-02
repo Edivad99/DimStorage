@@ -10,7 +10,7 @@ public class CollectButton extends Button {
 	{
 		super(width / 2 + 95, height / 2 + 70, 64, 20, getText(isCollecting), onPress);
 	}
-	
+
 	private static String getText(boolean isCollecting)
 	{
 		if(isCollecting)
