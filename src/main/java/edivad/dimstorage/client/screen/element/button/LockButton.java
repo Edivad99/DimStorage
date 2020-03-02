@@ -1,14 +1,21 @@
 package edivad.dimstorage.client.screen.element.button;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.button.Button;
 
 public class LockButton extends Button {
 
-	public LockButton(int width, int height, boolean isLock, Button.IPressable onPress)
+	private TileFrequencyOwner owner;
+
+	public LockButton(int width, int height, TileFrequencyOwner owner)
 	{
-		super(width, height, 64, 20, getText(isLock), onPress);
+		super(width, height, 64, 20, getText(owner.locked), b -> {});
+		this.owner = owner;
 	}
 
 	private static String getText(boolean isLock)
@@ -17,5 +24,16 @@ public class LockButton extends Button {
 			return Translate.translateToLocal("gui." + Main.MODID + ".yes");
 		else
 			return Translate.translateToLocal("gui." + Main.MODID + ".no");
+	}
+	
+	@Override
+	public void onPress()
+	{
+		if(owner instanceof TileEntityDimChest)
+		{
+			TileEntityDimChest chest = (TileEntityDimChest) owner;
+			chest.swapLocked();
+			PacketHandler.INSTANCE.sendToServer(new UpdateBlock(chest));
+		}
 	}
 }

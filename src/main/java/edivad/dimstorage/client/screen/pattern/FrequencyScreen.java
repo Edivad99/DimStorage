@@ -5,6 +5,9 @@ import edivad.dimstorage.client.screen.element.button.ChangeButton;
 import edivad.dimstorage.client.screen.element.button.LockButton;
 import edivad.dimstorage.client.screen.element.button.OwnerButton;
 import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
+import edivad.dimstorage.network.PacketHandler;
+import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,11 +21,7 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 	
 	private String owner, freq, locked;
 	private FrequencyText freqTextField;
-	
-	protected static enum Actions {
-		OWNER, FREQ, LOCK, COLLECT
-	}
-	
+
 	public FrequencyScreen(T container, TileFrequencyOwner tileOwner, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
 	{
 		super(container, invPlayer, text, background, drawSettings);
@@ -39,18 +38,32 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 		freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency");
 		locked = Translate.translateToLocal("gui." + Main.MODID + ".locked");
 		
-		
 		clearComponent();
-		addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner.frequency.getOwner(), button -> actions(Actions.OWNER)));
-		addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, button -> actions(Actions.FREQ)));
-		addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner.locked, button -> actions(Actions.LOCK)));
+		addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));
+		addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, b -> changeFrequency()));
+		addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner));
 		
-		freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, String.valueOf(tileOwner.frequency.getChannel()));
+		freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.frequency);
 		addComponent(freqTextField);	
 		drawSettings(drawSettings);
 	}
 	
-	protected abstract void actions(Actions action);
+	private void changeFrequency()
+	{
+		int prevChannel = tileOwner.frequency.getChannel();
+		try
+		{
+			int newFreq = Math.abs(Integer.parseInt(freqTextField.getText()));
+			tileOwner.setFreq(tileOwner.frequency.copy().setChannel(newFreq));
+
+			if(tileOwner instanceof TileEntityDimChest)
+				PacketHandler.INSTANCE.sendToServer(new UpdateBlock((TileEntityDimChest)tileOwner));
+		}
+		catch(Exception e)
+		{
+			freqTextField.setText(String.valueOf(prevChannel));
+		}
+	}
 	
 	@Override
 	public void tick()
@@ -99,15 +112,5 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 			posY += 9;
 			this.hLine(185, 185 + this.font.getStringWidth(locked), posY, 0xFF333333);
 		}
-	}
-	
-	protected void setFrequencyText(int freq)
-	{
-		freqTextField.setText(String.valueOf(Math.abs(freq)));
-	}
-	
-	protected int getFrequencyText()
-	{
-		return Math.abs(Integer.parseInt(freqTextField.getText()));
 	}
 }
