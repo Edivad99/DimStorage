@@ -122,7 +122,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 	{
 		super.mouseMoved(mouseX, mouseY);
 
-		this.settingsButtonOver = false;
+		settingsButtonOver = false;
 
 		if(mouseX >= getButtonX() && mouseX <= getButtonX() + BUTTON_WIDTH)
 			if(mouseY >= getButtonY() && mouseY <= getButtonY() + BUTTON_WIDTH)
@@ -177,7 +177,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 				break;
 			}
 		}
-		this.component.clear();
+		component.clear();
 	}
 
 	protected void addComponent(Widget widget)
