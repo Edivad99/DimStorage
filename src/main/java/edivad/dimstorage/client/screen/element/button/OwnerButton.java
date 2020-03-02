@@ -8,7 +8,7 @@ import edivad.dimstorage.tools.Config;
 import net.minecraft.client.gui.widget.button.Button;
 
 public class OwnerButton extends Button {
-	
+
 	private TileFrequencyOwner owner;
 
 	public OwnerButton(int width, int height, TileFrequencyOwner owner)
@@ -17,7 +17,7 @@ public class OwnerButton extends Button {
 		this.owner = owner;
 		this.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
 	}
-	
+
 	@Override
 	public void onPress()
 	{

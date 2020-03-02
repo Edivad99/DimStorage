@@ -22,7 +22,7 @@ public class Config {
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWCONFIG;
 	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWPRIVATENETWORK;
 	public static ForgeConfigSpec.IntValue DIMCHEST_AREA;
-	public static ForgeConfigSpec.ConfigValue<String>PATTERN_DIMTABLET;
+	public static ForgeConfigSpec.ConfigValue<String> PATTERN_DIMTABLET;
 
 	static
 	{

@@ -245,7 +245,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		CompoundNBT tag = pkt.getNbtCompound();
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
-		rotation = tag.getByte("rot") & 3;	
+		rotation = tag.getByte("rot") & 3;
 		collect = tag.getBoolean("collect");
 	}
 

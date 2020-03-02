@@ -15,13 +15,13 @@ import net.minecraft.util.text.ITextComponent;
 public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
 
 	private TileEntityDimChest ownerTile;
-	
+
 	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, ITextComponent text)
 	{
 		super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimchest.png"), container.isOpen);
 		this.ownerTile = container.owner;
 	}
-	
+
 	@Override
 	protected void init()
 	{
@@ -31,7 +31,7 @@ public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
 
 		drawSettings(drawSettings);
 	}
-	
+
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{

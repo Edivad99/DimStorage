@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
 	public boolean locked;
-	
+
 	public TileFrequencyOwner(TileEntityType<?> tileEntityTypeIn)
 	{
 		super(tileEntityTypeIn);
@@ -45,7 +45,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		else
 			setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer()));
 	}
-	
+
 	public void swapLocked()
 	{
 		locked = !locked;

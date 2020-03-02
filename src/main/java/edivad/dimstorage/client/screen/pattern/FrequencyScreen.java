@@ -18,7 +18,7 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T> {
 
 	private TileFrequencyOwner tileOwner;
-	
+
 	private String owner, freq, locked;
 	private FrequencyText freqTextField;
 
@@ -27,27 +27,27 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 		super(container, invPlayer, text, background, drawSettings);
 		this.tileOwner = tileOwner;
 	}
-	
+
 	@Override
 	protected void init()
 	{
 		super.init();
-		
+
 		// Get translation
 		owner = Translate.translateToLocal("gui." + Main.MODID + ".owner");
 		freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency");
 		locked = Translate.translateToLocal("gui." + Main.MODID + ".locked");
-		
+
 		clearComponent();
 		addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));
 		addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, b -> changeFrequency()));
 		addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner));
-		
+
 		freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.frequency);
-		addComponent(freqTextField);	
+		addComponent(freqTextField);
 		drawSettings(drawSettings);
 	}
-	
+
 	private void changeFrequency()
 	{
 		int prevChannel = tileOwner.frequency.getChannel();
@@ -57,35 +57,35 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 			tileOwner.setFreq(tileOwner.frequency.copy().setChannel(newFreq));
 
 			if(tileOwner instanceof TileEntityDimChest)
-				PacketHandler.INSTANCE.sendToServer(new UpdateBlock((TileEntityDimChest)tileOwner));
+				PacketHandler.INSTANCE.sendToServer(new UpdateBlock((TileEntityDimChest) tileOwner));
 		}
 		catch(Exception e)
 		{
 			freqTextField.setText(String.valueOf(prevChannel));
 		}
 	}
-	
+
 	@Override
 	public void tick()
 	{
 		super.tick();
 		freqTextField.tick();
 	}
-	
+
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(mouseX, mouseY, partialTicks);
 		freqTextField.render(mouseX, mouseY, partialTicks);
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
 	{
 		freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
 		return super.mouseClicked(mouseX, mouseY, clickedButton);
 	}
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{

@@ -110,11 +110,11 @@ public class DimTablet extends Item implements INamedContainerProvider {
 		}
 		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
-	
+
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
 	{
-		if(!worldIn.isRemote) 
+		if(!worldIn.isRemote)
 		{
 			if(stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag().getBoolean("bound"))
 			{
@@ -123,7 +123,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 					PlayerEntity pe = (PlayerEntity) entityIn;
 					Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
 					InvWrapper chestInventory = new InvWrapper(getStorage(worldIn, f));
-					
+
 					for(int i = 0; i < pe.inventory.getSizeInventory(); i++)
 					{
 						Item item = pe.inventory.getStackInSlot(i).getItem();
@@ -133,10 +133,10 @@ public class DimTablet extends Item implements INamedContainerProvider {
 						}
 					}
 				}
-			}	
+			}
 		}
 	}
-	
+
 	private DimChestStorage getStorage(World world, Frequency frequency)
 	{
 		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
@@ -161,14 +161,14 @@ public class DimTablet extends Item implements INamedContainerProvider {
 				tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + f.getChannel()));
 				if(f.hasOwner())
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".owner") + " " + f.getOwner()));
-					
+
 				String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
 				String no = Translate.translateToLocal("gui." + Main.MODID + ".no");
 				tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".collecting") + ": " + (tag.getBoolean("autocollect") ? yes : no)));
 			}
 			else
 				tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".holdShift")));
-			
+
 			tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".pressCtrl")));
 		}
 	}

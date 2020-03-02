@@ -10,7 +10,7 @@ import net.minecraft.client.gui.widget.button.Button;
 public class CollectButton extends Button {
 
 	private TileEntityDimChest owner;
-	
+
 	public CollectButton(int width, int height, TileEntityDimChest owner)
 	{
 		super(width, height, 64, 20, getText(owner.collect), b -> {});
@@ -24,7 +24,7 @@ public class CollectButton extends Button {
 		else
 			return Translate.translateToLocal("gui." + Main.MODID + ".idle");
 	}
-	
+
 	@Override
 	public void onPress()
 	{

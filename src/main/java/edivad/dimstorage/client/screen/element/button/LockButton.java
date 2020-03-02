@@ -25,7 +25,7 @@ public class LockButton extends Button {
 		else
 			return Translate.translateToLocal("gui." + Main.MODID + ".no");
 	}
-	
+
 	@Override
 	public void onPress()
 	{
