@@ -1,6 +1,7 @@
 {
 	"result": {
-		"item": "dimstorage:dim_wall"
+		"item": "dimstorage:dim_wall",
+		"count": 4
 	},
 	"pattern": [
 		"aba",

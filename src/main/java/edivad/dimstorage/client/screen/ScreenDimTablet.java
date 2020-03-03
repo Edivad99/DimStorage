@@ -5,7 +5,7 @@ import edivad.dimstorage.client.screen.pattern.BaseScreen;
 import edivad.dimstorage.container.ContainerDimTablet;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;;
+import net.minecraft.util.text.ITextComponent;
 
 public class ScreenDimTablet extends BaseScreen<ContainerDimTablet> {
 
