@@ -18,11 +18,11 @@ public class PlayerItemTankCacheSync {
 	{
 		int size = buf.readInt();
 		for(int i = 0; i < size; i++)
-			new_visible[i] = new Frequency(buf);
+			new_visible[i] = Frequency.readFromPacket(buf);
 
 		size = buf.readInt();
 		for(int i = 0; i < size; i++)
-			old_visible[i] = new Frequency(buf);
+			old_visible[i] = Frequency.readFromPacket(buf);
 	}
 
 	public PlayerItemTankCacheSync(Sets.SetView<Frequency> new_visible, Sets.SetView<Frequency> old_visible)

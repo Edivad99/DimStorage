@@ -24,7 +24,7 @@ public class UpdateDimChest {
 	public UpdateDimChest(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
-		freq = new Frequency(buf);
+		freq = Frequency.readFromPacket(buf);
 		locked = buf.readBoolean();
 		collect = buf.readBoolean();
 	}
@@ -49,8 +49,7 @@ public class UpdateDimChest {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			if(!world.isBlockPresent(pos))

@@ -15,7 +15,7 @@ public class UpdateTankLiquid {
 
 	public UpdateTankLiquid(PacketBuffer buf)
 	{
-		freq = new Frequency(buf);
+		freq = Frequency.readFromPacket(buf);;
 		fluidStack = buf.readFluidStack();
 	}
 

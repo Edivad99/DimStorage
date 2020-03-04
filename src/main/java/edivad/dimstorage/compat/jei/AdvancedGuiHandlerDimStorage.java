@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import edivad.dimstorage.client.screen.PanelScreen;
+import edivad.dimstorage.client.screen.pattern.PanelScreen;
 import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import net.minecraft.client.renderer.Rectangle2d;

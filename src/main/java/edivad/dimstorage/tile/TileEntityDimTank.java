@@ -100,12 +100,10 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
 	public DimTankState liquidState = new DimTankState();
 	public TankFluidCap fluidCap = new TankFluidCap();
-	public boolean locked;
 
 	public TileEntityDimTank()
 	{
 		super(Registration.DIMTANK_TILE.get());
-		locked = false;
 	}
 
 	@Override
@@ -114,12 +112,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.tick();
 		ejectLiquid();
 		liquidState.update(world.isRemote);
-	}
-
-	public void swapLocked()
-	{
-		locked = !locked;
-		this.markDirty();
 	}
 
 	private void ejectLiquid()
@@ -164,7 +156,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
-		tag.putBoolean("locked", locked);
 		return tag;
 	}
 
@@ -173,7 +164,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		super.read(tag);
 		liquidState.setFrequency(frequency);
-		locked = tag.getBoolean("locked");
 	}
 
 	public int getLightValue()
@@ -227,22 +217,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		CompoundNBT tag = pkt.getNbtCompound();
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
-		locked = tag.getBoolean("locked");
-	}
-
-	//Synchronizing on chunk load
-	@Override
-	public CompoundNBT getUpdateTag()
-	{
-		CompoundNBT tag = super.getUpdateTag();
-		tag.putBoolean("locked", locked);
-		return tag;
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundNBT tag)
-	{
-		super.handleUpdateTag(tag);
 		locked = tag.getBoolean("locked");
 	}
 

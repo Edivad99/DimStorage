@@ -1,0 +1,30 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+
+    "item.dimstorage.dim_core": "Núcleo Dimensional",
+    "item.dimstorage.solid_dim_core": "Núcleo Dimensional Sólido",
+    "item.dimstorage.dim_wall": "Parede Dimensional",
+    "item.dimstorage.dimensional_tablet": "Tablet Dimensional",
+
+    "block.dimstorage.dimensional_chest": "Baú Dimensional",
+
+    "advancements.dimstorage.root": "Núcleo Dimensional",
+    "advancements.dimstorage.root.desc": "O poder das dimensões",
+    "advancements.dimstorage.dimensional_chest": "Baú Dimensional",
+    "advancements.dimstorage.dimensional_chest.desc": "Um inventário mais conectado",
+    "advancements.dimstorage.dimensional_tablet": "Tablet Dimensional",
+    "advancements.dimstorage.dimensional_tablet.desc": "Um inventário remoto",
+
+    "gui.dimstorage.change": "Alterar",
+    "gui.dimstorage.owner": "Dono(a):",
+    "gui.dimstorage.frequency": "Frequência:",
+    "gui.dimstorage.locked": "Bloquear:",
+    "gui.dimstorage.yes": "Sim",
+    "gui.dimstorage.no": "Não",
+    "gui.dimstorage.collecting": "Coletando",
+    "gui.dimstorage.idle": "Parado",
+
+    "message.dimstorage.adviceToLink": "Segure shift + clique direito do mouse para conectar a um Baú Dim.",
+
+    "tooltip.dimstorage.collect": "Quando o Coletando está ativado, significa que o Baú Dim. coletará todos os itens dos inventários em uma área de %dx%d"
+}

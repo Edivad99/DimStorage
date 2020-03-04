@@ -25,8 +25,7 @@ public class TOPCompatibility {
 			return;
 		registered = true;
 
-		InterModComms.sendTo("theoneprobe", "getTheOneProbe", () -> (Function<ITheOneProbe, Void>) iTheOneProbe ->
-		{
+		InterModComms.sendTo("theoneprobe", "getTheOneProbe", () -> (Function<ITheOneProbe, Void>) iTheOneProbe -> {
 			Main.logger.log(Level.INFO, "Enabled support for The One Probe");
 
 			iTheOneProbe.registerProvider(new IProbeInfoProvider() {

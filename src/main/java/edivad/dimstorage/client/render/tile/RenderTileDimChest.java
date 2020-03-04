@@ -1,5 +1,7 @@
 package edivad.dimstorage.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.Main;
@@ -36,11 +38,9 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		GlStateManager.popMatrix();
 	}
 
-	private void renderBlock(TileEntityDimChest te)
+	private void renderBlock(@Nonnull TileEntityDimChest te)
 	{
-		int rot = 0;
-		if(te != null)
-			rot = te.rotation;
+		int rot = te.rotation;
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(texture);
@@ -57,8 +57,8 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 		/** Ajustement **/
 		GlStateManager.translatef(0F, -2F, 0F);
 
-		this.model.setTileEntity(te);
-		this.model.render(0.0625F);
+		model.setTileEntity(te);
+		model.render();
 
 		GlStateManager.popMatrix();
 	}

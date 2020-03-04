@@ -1,8 +1,10 @@
 package edivad.dimstorage.api;
 
-import org.apache.logging.log4j.Level;
+import java.util.UUID;
 
-import edivad.dimstorage.Main;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -10,7 +12,8 @@ import net.minecraft.network.PacketBuffer;
 
 public class Frequency {
 
-	private String owner;
+	private UUID owner;
+	private String ownerText;
 	private int channel;
 
 	public Frequency()
@@ -20,16 +23,27 @@ public class Frequency {
 
 	public Frequency(int channel)
 	{
-		this("public", channel);
+		this(null, channel);
 	}
 
-	public Frequency(PacketBuffer buf)
+	public Frequency(@Nullable PlayerEntity player, int channel)
 	{
-		this(buf.readString(32767), buf.readInt());
+		if(player == null)
+		{
+			owner = null;
+			ownerText = "public";
+		}
+		else
+		{
+			owner = player.getUniqueID();
+			ownerText = player.getName().getFormattedText();
+		}
+		this.channel = channel;
 	}
 
-	public Frequency(String owner, int channel)
+	private Frequency(String ownerText, @Nullable UUID owner, int channel)
 	{
+		this.ownerText = ownerText;
 		this.owner = owner;
 		this.channel = channel;
 	}
@@ -39,20 +53,33 @@ public class Frequency {
 		read_internal(tagCompound);
 	}
 
-	public Frequency setOwner(String owner)
+	public Frequency setOwner(@Nonnull PlayerEntity player)
 	{
-		this.owner = owner;
+		owner = player.getUniqueID();
+		ownerText = player.getName().getFormattedText();
 		return this;
 	}
 
-	public String getOwner()
+	public Frequency setPublic()
+	{
+		owner = null;
+		ownerText = "public";
+		return this;
+	}
+
+	public UUID getOwnerUUID()
 	{
 		return owner;
 	}
 
+	public String getOwner()
+	{
+		return ownerText;
+	}
+
 	public boolean hasOwner()
 	{
-		return !owner.equals("public");
+		return !ownerText.equals("public") && owner != null;
 	}
 
 	public Frequency setChannel(int channel)
@@ -68,9 +95,13 @@ public class Frequency {
 
 	protected Frequency read_internal(CompoundNBT tagCompound)
 	{
-		owner = tagCompound.getString("owner");
+		ownerText = tagCompound.getString("ownerText");
+		if(!ownerText.equals("public"))
+			owner = tagCompound.getUniqueId("owner");
+		else
+			owner = null;
 		channel = tagCompound.getInt("channel");
-		Main.logger.log(Level.DEBUG, "read_internal: " + this);
+		//Main.logger.log(Level.DEBUG, "read_internal: " + this);
 		return this;
 	}
 
@@ -82,7 +113,9 @@ public class Frequency {
 
 	protected CompoundNBT write_internal(CompoundNBT tagCompound)
 	{
-		tagCompound.putString("owner", owner);
+		tagCompound.putString("ownerText", ownerText);
+		if(hasOwner())
+			tagCompound.putUniqueId("owner", owner);
 		tagCompound.putInt("channel", channel);
 		return tagCompound;
 	}
@@ -114,12 +147,12 @@ public class Frequency {
 	@Override
 	public String toString()
 	{
-		return "owner=" + owner + ",channel=" + channel;
+		return "owner=" + (hasOwner() ? owner : "public") + ",channel=" + channel;
 	}
 
 	public Frequency copy()
 	{
-		return new Frequency(owner, channel);
+		return new Frequency(ownerText, owner, channel);
 	}
 
 	@Override
@@ -129,26 +162,35 @@ public class Frequency {
 			return false;
 
 		Frequency f = (Frequency) obj;
-		return (f.channel == this.channel && f.owner == this.owner);
+		return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
 	}
 
 	public Frequency set(Frequency frequency)
 	{
+		this.ownerText = frequency.ownerText;
 		this.owner = frequency.owner;
 		this.channel = frequency.channel;
 		return this;
 	}
 
+	public static Frequency readFromPacket(PacketBuffer buf)
+	{
+		return new Frequency(buf.readString(32767), buf.readBoolean() ? buf.readUniqueId() : null, buf.readInt());
+	}
+
 	public void writeToPacket(PacketBuffer buf)
 	{
-		buf.writeString(owner);
+		buf.writeString(ownerText);
+		buf.writeBoolean(hasOwner());
+		if(hasOwner())
+			buf.writeUniqueId(owner);
 		buf.writeInt(channel);
 	}
 
-	public boolean canAccess(PlayerEntity player)
+	public boolean canAccess(@Nonnull PlayerEntity player)
 	{
 		if(!hasOwner())
 			return true;
-		return getOwner().equals(player.getDisplayName().getFormattedText());
+		return getOwnerUUID().equals(player.getUniqueID());
 	}
 }

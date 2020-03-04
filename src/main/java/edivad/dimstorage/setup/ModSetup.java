@@ -37,11 +37,7 @@ public class ModSetup {
 
 		//Compat
 		MainCompatHandler.registerTOP();
-		//OpenComputers
-		//if(Loader.isModLoaded("opencomputers"))
-		//{
-		//	Driver.add(new DriverDimChest());
-		//}
+		//MainCompatHandler.registerOC();
 	}
 
 	@SubscribeEvent

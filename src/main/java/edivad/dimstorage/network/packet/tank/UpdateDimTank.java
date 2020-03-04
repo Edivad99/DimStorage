@@ -24,7 +24,7 @@ public class UpdateDimTank {
 	public UpdateDimTank(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
-		freq = new Frequency(buf);
+		freq = Frequency.readFromPacket(buf);
 		locked = buf.readBoolean();
 	}
 

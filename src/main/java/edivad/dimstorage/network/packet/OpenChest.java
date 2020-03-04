@@ -15,7 +15,7 @@ public class OpenChest {
 
 	public OpenChest(PacketBuffer buf)
 	{
-		freq = new Frequency(buf);
+		freq = Frequency.readFromPacket(buf);
 		open = buf.readBoolean();
 	}
 
@@ -33,8 +33,7 @@ public class OpenChest {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			((DimChestStorage) DimStorageManager.instance(true).getStorage(freq, "item")).setClientOpen(open ? 1 : 0);
 		});
 		ctx.get().setPacketHandled(true);

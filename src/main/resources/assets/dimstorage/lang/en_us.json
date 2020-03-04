@@ -17,15 +17,17 @@
     "advancements.dimstorage.dimensional_tablet.desc": "A remote inventory",
 
     "gui.dimstorage.change": "Change",
-	"gui.dimstorage.owner": "Owner:",
-	"gui.dimstorage.frequency": "Frequency:",
-	"gui.dimstorage.locked": "Locked:",
-	"gui.dimstorage.yes": "Yes",
-	"gui.dimstorage.no": "No",
-	"gui.dimstorage.collecting": "Collecting",
-	"gui.dimstorage.idle": "Idle",
-    
-    "message.dimstorage.adviceToLink": "Press shift + right click to bind a DimChest",
+    "gui.dimstorage.owner": "Owner:",
+    "gui.dimstorage.frequency": "Frequency:",
+    "gui.dimstorage.locked": "Locked:",
+    "gui.dimstorage.yes": "Yes",
+    "gui.dimstorage.no": "No",
+    "gui.dimstorage.collecting": "Collecting",
+    "gui.dimstorage.idle": "Idle",
+
+    "message.dimstorage.adviceToLink": "@7Press Shift + right click to bind a DimChest",
+    "message.dimstorage.holdShift": "@7Hold @b@oShift @7for details",
+    "message.dimstorage.pressCtrl": "@7Press @b@oCtrl @7+ right click to enable/disable autocollect",
 
     "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
 
