@@ -151,6 +151,19 @@ public class DimChest extends Block implements TOPInfoProvider {
 	}
 
 	@Override
+	public boolean hasComparatorInputOverride(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
+	{
+		TileEntity te = worldIn.getTileEntity(pos);
+		return (te instanceof TileEntityDimChest) ? ((TileEntityDimChest) te).getComparatorInput() : 0;
+	}
+
+	@Override
 	public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
 	{
 		TileEntity tileentity = worldIn.getTileEntity(pos);
