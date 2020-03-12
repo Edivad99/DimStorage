@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
@@ -34,7 +35,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		this.frequency = frequency;
 		this.markDirty();
 		BlockState state = world.getBlockState(pos);
-		world.notifyBlockUpdate(pos, state, state, 3);
+		world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
 	}
 
 	@OnlyIn(Dist.CLIENT)
