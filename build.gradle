@@ -98,12 +98,12 @@ dependencies {
 	// compile against the TOP API but do not include it at runtime
 	compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}:api")
 	// at runtime, use the full TOP jar
-    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
+    //runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
 	
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
