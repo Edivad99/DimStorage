@@ -5,9 +5,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.Level;
-
-import edivad.dimstorage.Main;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -104,7 +101,7 @@ public class Frequency {
 		else
 			owner = null;
 		channel = tagCompound.getInt("channel");
-		Main.logger.log(Level.DEBUG, "read_internal: " + this);
+		//Main.logger.log(Level.DEBUG, "read_internal: " + this);
 		return this;
 	}
 
@@ -150,7 +147,7 @@ public class Frequency {
 	@Override
 	public String toString()
 	{
-		return "owner=" + (hasOwner() ? owner : ownerText) + ",channel=" + channel;
+		return "owner=" + (hasOwner() ? owner : "public") + ",channel=" + channel;
 	}
 
 	public Frequency copy()
@@ -176,15 +173,15 @@ public class Frequency {
 		return this;
 	}
 
-	public static Frequency getFromPacket(PacketBuffer buf)
+	public static Frequency readFromPacket(PacketBuffer buf)
 	{
-		String ownerT = buf.readString(32767);
-		return new Frequency(ownerT, ownerT.equals("public") ? null : buf.readUniqueId(), buf.readInt());
+		return new Frequency(buf.readString(32767), buf.readBoolean() ? buf.readUniqueId() : null, buf.readInt());
 	}
 
 	public void writeToPacket(PacketBuffer buf)
 	{
 		buf.writeString(ownerText);
+		buf.writeBoolean(hasOwner());
 		if(hasOwner())
 			buf.writeUniqueId(owner);
 		buf.writeInt(channel);

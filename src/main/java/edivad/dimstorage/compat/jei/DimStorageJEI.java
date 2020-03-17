@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.jei;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.client.screen.PanelScreen;
+import edivad.dimstorage.client.screen.pattern.PanelScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;

@@ -12,6 +12,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -24,7 +25,7 @@ public class UpdateBlock {
 	public UpdateBlock(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
-		freq = Frequency.getFromPacket(buf);
+		freq = Frequency.readFromPacket(buf);
 		locked = buf.readBoolean();
 		collect = buf.readBoolean();
 	}
@@ -49,8 +50,7 @@ public class UpdateBlock {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			if(!world.isBlockPresent(pos))
@@ -69,7 +69,7 @@ public class UpdateBlock {
 			chest.locked = locked;
 			chest.collect = collect;
 
-			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), 3);
+			world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
 		});
 		ctx.get().setPacketHandled(true);

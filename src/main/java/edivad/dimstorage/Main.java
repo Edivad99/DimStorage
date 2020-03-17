@@ -37,8 +37,7 @@ public class Main {
 
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
-		{
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 		});
 	}

@@ -1,72 +1,42 @@
 package edivad.dimstorage.client.screen;
 
+import java.util.Collections;
+
 import edivad.dimstorage.Main;
-import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.client.screen.element.button.CollectButton;
+import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimChest;
-import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlock;
 import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ScreenDimChest extends PanelScreen<ContainerDimChest> {
+public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
 
 	private TileEntityDimChest ownerTile;
 
 	public ScreenDimChest(ContainerDimChest container, PlayerInventory invPlayer, ITextComponent text)
 	{
-		super(container, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimchest.png"), container.isOpen);
+		super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimchest.png"), container.isOpen);
 		this.ownerTile = container.owner;
 	}
 
 	@Override
-	protected void actions(Actions action)
+	protected void init()
 	{
-		switch (action)
-		{
-			case OWNER:
-				ownerTile.swapOwner();
-				break;
+		super.init();
 
-			case FREQ:
-				int prevChannel = ownerTile.frequency.getChannel();
-				try
-				{
-					int freq = Math.abs(Integer.parseInt(freqTextField.getText()));
-					ownerTile.setFreq(ownerTile.frequency.copy().setChannel(freq));
-				}
-				catch(Exception e)
-				{
-					freqTextField.setText(String.valueOf(prevChannel));
-				}
-				break;
+		addComponent(new CollectButton(width / 2 + 95, height / 2 + 75, ownerTile));
 
-			case LOCK:
-				ownerTile.swapLocked();
-				break;
-			case COLLECT:
-				ownerTile.swapCollect();
-				break;
-		}
-		PacketHandler.INSTANCE.sendToServer(new UpdateBlock(ownerTile));
+		drawSettings(drawSettings);
 	}
 
 	@Override
-	protected Frequency getTileFrequency()
+	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		return ownerTile.frequency;
-	}
-
-	@Override
-	protected boolean isLocked()
-	{
-		return ownerTile.locked;
-	}
-
-	@Override
-	protected boolean isCollecting()
-	{
-		return ownerTile.collect;
+		super.render(mouseX, mouseY, partialTicks);
+		if(drawSettings && mouseX > this.width / 2 + 90 && mouseX < this.width / 2 + 164 && mouseY > this.height / 2 + 70 && mouseY < this.height / 2 + 100)
+			this.renderTooltip(Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
 	}
 }

@@ -16,12 +16,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+
+	public boolean locked;
 
 	public TileFrequencyOwner(TileEntityType<?> tileEntityTypeIn)
 	{
 		super(tileEntityTypeIn);
+		locked = false;
 	}
 
 	public Frequency frequency = new Frequency();
@@ -30,9 +34,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public void setFreq(Frequency frequency)
 	{
 		this.frequency = frequency;
-		markDirty();
+		this.markDirty();
 		BlockState state = world.getBlockState(pos);
-		world.notifyBlockUpdate(pos, state, state, 3);
+		world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -42,6 +46,12 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 			setFreq(frequency.copy().setPublic());
 		else
 			setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer()));
+	}
+
+	public void swapLocked()
+	{
+		locked = !locked;
+		this.markDirty();
 	}
 
 	public boolean canAccess(PlayerEntity player)
@@ -66,6 +76,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	{
 		super.read(tag);
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		locked = tag.getBoolean("locked");
 	}
 
 	@Override
@@ -73,6 +84,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	{
 		super.write(tag);
 		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.putBoolean("locked", locked);
 		return tag;
 	}
 
@@ -91,6 +103,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	{
 		CompoundNBT tag = super.getUpdateTag();
 		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.putBoolean("locked", locked);
 		return tag;
 	}
 
@@ -98,5 +111,6 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public void handleUpdateTag(CompoundNBT tag)
 	{
 		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		locked = tag.getBoolean("locked");
 	}
 }
