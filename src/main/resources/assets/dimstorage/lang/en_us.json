@@ -26,7 +26,7 @@
 
     "message.dimstorage.adviceToLink": "@7Press Shift + right click to bind a DimChest",
     "message.dimstorage.holdShift": "@7Hold @b@oShift @7for details",
-    "message.dimstorage.pressCtrl": "@7Press @b@oCtrl @7+ right click to enable/disable autocollect",
+    "message.dimstorage.changeAutoCollect": "@7Press @b@oShift @7+ right click on a non DimChest block to enable/disable autocollect",
 
     "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
 
