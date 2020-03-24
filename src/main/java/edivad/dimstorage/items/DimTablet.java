@@ -57,7 +57,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 		{
 			ItemStack device = player.getHeldItem(context.getHand());
 			TileEntity tile = world.getTileEntity(pos);
-			if(player.isSneaking())
+			if(player.isShiftKeyDown())
 			{
 				if(tile instanceof TileEntityDimChest)
 				{
