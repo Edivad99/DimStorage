@@ -57,21 +57,32 @@ public class DimTablet extends Item implements INamedContainerProvider {
 		{
 			ItemStack device = player.getHeldItem(context.getHand());
 			TileEntity tile = world.getTileEntity(pos);
-			if(tile instanceof TileEntityDimChest && player.isSneaking())
+			if(player.isSneaking())
 			{
-				TileEntityDimChest dimChest = (TileEntityDimChest) tile;
-				if(dimChest.canAccess(player))
+				if(tile instanceof TileEntityDimChest)
 				{
-					CompoundNBT tag = new CompoundNBT();
-					tag.put("frequency", dimChest.frequency.writeToNBT(new CompoundNBT()));
-					tag.putBoolean("bound", true);
-					tag.putBoolean("autocollect", false);
-					device.setTag(tag);
+					TileEntityDimChest dimChest = (TileEntityDimChest) tile;
+					if(dimChest.canAccess(player))
+					{
+						CompoundNBT tag = new CompoundNBT();
+						tag.put("frequency", dimChest.frequency.writeToNBT(new CompoundNBT()));
+						tag.putBoolean("bound", true);
+						tag.putBoolean("autocollect", false);
+						device.setTag(tag);
 
-					player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
-					return ActionResultType.SUCCESS;
+						player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
+						return ActionResultType.SUCCESS;
+					}
+					player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 				}
-				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
+				else
+				{
+					stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
+					if(stack.getTag().getBoolean("autocollect"))
+						player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"));
+					else
+						player.sendMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"));
+				}
 			}
 		}
 		return ActionResultType.PASS;
@@ -91,22 +102,11 @@ public class DimTablet extends Item implements INamedContainerProvider {
 				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"));
 				return new ActionResult<>(ActionResultType.PASS, stack);
 			}
-			if(Screen.hasControlDown())
-			{
-				stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
-				if(stack.getTag().getBoolean("autocollect"))
-					player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"));
-				else
-					player.sendMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"));
-			}
-			else
-			{
-				Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-				if(!f.canAccess(player))
-					return new ActionResult<>(ActionResultType.PASS, stack);
+			Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
+			if(!f.canAccess(player))
+				return new ActionResult<>(ActionResultType.PASS, stack);
 
-				NetworkHooks.openGui((ServerPlayerEntity) player, this);
-			}
+			NetworkHooks.openGui((ServerPlayerEntity) player, this);
 		}
 		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
@@ -169,7 +169,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 			else
 				tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".holdShift")));
 
-			tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".pressCtrl")));
+			tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".changeAutoCollect")));
 		}
 	}
 
