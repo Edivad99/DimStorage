@@ -2,7 +2,7 @@
   "parent": "block/cube",
   "textures": {
     "particle": "dimstorage:blocks/dimchest_top",
-    "down" : "dimstorage:blocks/dimchest_sides",
+    "down" : "dimstorage:blocks/dimchest_bottom",
     "up": "dimstorage:blocks/dimchest_top",
     "east": "dimstorage:blocks/dimchest_sides",
     "west": "dimstorage:blocks/dimchest_sides",
