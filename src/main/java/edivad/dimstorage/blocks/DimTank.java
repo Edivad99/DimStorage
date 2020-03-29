@@ -2,7 +2,13 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
+import edivad.dimstorage.compat.top.TOPInfoProvider;
+import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProgressStyle;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,13 +23,14 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DimTank extends DimBlockBase {
+public class DimTank extends DimBlockBase implements TOPInfoProvider {
 
 	private static final VoxelShape BOX = VoxelShapes.create(2 / 16D, 0 / 16D, 2 / 16D, 14 / 16D, 16 / 16D, 14 / 16D);
 
@@ -94,5 +101,38 @@ public class DimTank extends DimBlockBase {
 			return ((TileEntityDimTank) tile).getLightValue();
 		}
 		return 0;
+	}
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
+	{
+		TileEntity te = world.getTileEntity(data.getPos());
+		if(te instanceof TileEntityDimTank)
+		{
+			TileEntityDimTank tank = (TileEntityDimTank) te;
+
+			if(tank.frequency.hasOwner())
+			{
+				if(tank.canAccess(player))
+					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tank.frequency.getOwner());
+				else
+					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tank.frequency.getOwner());
+			}
+			probeInfo.horizontal().text("Frequency: " + tank.frequency.getChannel());
+			if(tank.locked)
+				probeInfo.horizontal().text("Locked: Yes");
+			
+			if(tank.liquidState.serverLiquid.getAmount() > 0)
+			{
+				String liquidText = tank.liquidState.serverLiquid.getDisplayName().getFormattedText();
+				
+				probeInfo.horizontal().text("Liquid: " + liquidText);
+				
+				int liquidColor = tank.liquidState.serverLiquid.getFluid().getAttributes().getColor();
+				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(liquidColor).alternateFilledColor(liquidColor);
+				probeInfo.horizontal()
+	            .progress(tank.liquidState.serverLiquid.getAmount(), DimTankStorage.CAPACITY, color.suffix(" mB"));
+			}
+		}
 	}
 }

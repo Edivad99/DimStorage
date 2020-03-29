@@ -1,0 +1,25 @@
+{
+	"result": {
+		"item": "dimstorage:dimensional_tank"
+	},
+	"pattern": [
+		"ada",
+		"aba",
+		"aca"
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"a": {
+			"item": "dimstorage:dim_wall"
+		},
+		"b": {
+			"item": "dimstorage:solid_dim_core"
+		},
+		"c": {
+			"item": "minecraft:cauldron"
+		},
+		"d": {
+			"item": "minecraft:bucket"
+		}
+	}
+}
