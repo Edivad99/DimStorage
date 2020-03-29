@@ -28,7 +28,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		FluidStack liquidStack = ownerTile.liquidState.c_liquid;
+		FluidStack liquidStack = ownerTile.liquidState.clientLiquid;
 		FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
 
 		if(!liquidStack.getFluid().isEquivalentTo(Fluids.EMPTY))
@@ -51,7 +51,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 	{
 		super.drawGuiContainerBackgroundLayer(f, i, j);
 
-		FluidStack fluid = ownerTile.liquidState.c_liquid;
+		FluidStack fluid = ownerTile.liquidState.clientLiquid;
 		int z = getFluidScaled(60, fluid.getAmount());
 		TextureAtlasSprite fluidTexture = this.minecraft.getTextureMap().getSprite(fluid.getFluid().getAttributes().getStillTexture());
 

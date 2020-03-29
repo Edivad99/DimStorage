@@ -10,12 +10,12 @@ import edivad.dimstorage.items.DimCore;
 import edivad.dimstorage.items.DimTablet;
 import edivad.dimstorage.items.DimWall;
 import edivad.dimstorage.items.ItemDimChest;
+import edivad.dimstorage.items.ItemDimTank;
 import edivad.dimstorage.items.SolidDimCore;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -61,7 +61,7 @@ public class Registration {
 	
 	
 	public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
-	public static final RegistryObject<Item> FANCYBLOCK_ITEM = ITEMS.register("dimensional_tank", () -> new BlockItem(DIMTANK.get(), new Item.Properties().group(ModSetup.dimStorageTab)));
+	public static final RegistryObject<Item> DIMTANK_ITEM = ITEMS.register("dimensional_tank", ItemDimTank::new);
 	public static final RegistryObject<TileEntityType<TileEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> TileEntityType.Builder.create(TileEntityDimTank::new, DIMTANK.get()).build(null));
 	public static final RegistryObject<ContainerType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) ->
 	{

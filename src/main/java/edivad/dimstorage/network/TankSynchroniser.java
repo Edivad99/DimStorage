@@ -28,8 +28,8 @@ public class TankSynchroniser {
 	public static abstract class TankState {
 
 		public Frequency frequency;
-		public FluidStack c_liquid = new FluidStack(Fluids.WATER, 0);
-		public FluidStack s_liquid = new FluidStack(Fluids.WATER, 0);
+		public FluidStack clientLiquid = new FluidStack(Fluids.WATER, 0);
+		public FluidStack serverLiquid = new FluidStack(Fluids.WATER, 0);
 		public FluidStack f_liquid = new FluidStack(Fluids.WATER, 0);
 
 		public void setFrequency(Frequency frequency)
@@ -39,46 +39,33 @@ public class TankSynchroniser {
 
 		public void update(boolean client)
 		{
-			FluidStack b_liquid;
-			FluidStack a_liquid;
+			FluidStack sampleA, sampleB;
 			if(client)
 			{
-				b_liquid = c_liquid.copy();
+				sampleB = clientLiquid.copy();
 
-				if(s_liquid.isFluidEqual(c_liquid) && c_liquid.getRawFluid() != Fluids.EMPTY)
-				{
-					c_liquid.setAmount(s_liquid.getAmount());
-				}
-//				else if(c_liquid.getAmount() > 100)
-//				{
-//					c_liquid.setAmount(f_liquid.getAmount());
-//				}
-				else
-				{
-					c_liquid = new FluidStack(s_liquid, s_liquid.getAmount());
-				}
-
-				a_liquid = c_liquid;
+				clientLiquid = new FluidStack(serverLiquid, serverLiquid.getAmount());
+				sampleA = clientLiquid;
 			}
 			else
 			{
-				s_liquid = getStorage(false).getFluidInTank(0);
-				b_liquid = s_liquid.copy();
-				if(!s_liquid.isFluidEqual(c_liquid))
+				serverLiquid = getStorage(false).getFluidInTank(0);
+				sampleB = serverLiquid.copy();
+				if(!serverLiquid.isFluidEqual(clientLiquid))
 				{
 					sendSyncPacket();
-					c_liquid = s_liquid;
+					clientLiquid = serverLiquid;
 				}
-				else if(Math.abs(c_liquid.getAmount() - s_liquid.getAmount()) > 250 || (s_liquid.getAmount() == 0 && c_liquid.getAmount() > 0))
+				else if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250 || (serverLiquid.getAmount() == 0 && clientLiquid.getAmount() > 0))
 				{
 					// Diff grater than 250 Or server no longer has liquid and client does.
 					sendSyncPacket();
-					c_liquid = s_liquid;
+					clientLiquid = serverLiquid;
 				}
 
-				a_liquid = s_liquid;
+				sampleA = serverLiquid;
 			}
-			if((b_liquid.getAmount() == 0) != (a_liquid.getAmount() == 0) || !b_liquid.isFluidEqual(a_liquid))
+			if((sampleB.getAmount() == 0) != (sampleA.getAmount() == 0) || !sampleB.isFluidEqual(sampleA))
 			{
 				onLiquidChanged();
 			}
@@ -92,10 +79,10 @@ public class TankSynchroniser {
 
 		public void sync(FluidStack liquid)
 		{
-			s_liquid = liquid;
-			if(!s_liquid.isFluidEqual(c_liquid))
+			serverLiquid = liquid;
+			if(!serverLiquid.isFluidEqual(clientLiquid))
 			{
-				f_liquid = c_liquid.copy();
+				f_liquid = clientLiquid.copy();
 			}
 		}
 
@@ -130,7 +117,7 @@ public class TankSynchroniser {
 				return;
 			}
 
-			PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateTankLiquid(getStorage(false).freq, s_liquid));
+			PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateTankLiquid(getStorage(false).freq, serverLiquid));
 		}
 
 		public void setTracking(boolean t)
@@ -222,7 +209,7 @@ public class TankSynchroniser {
 			String key = freq.toString();
 			a_visible.add(freq);
 			PlayerItemTankState state = tankStates.get(key);
-			return state == null ? new FluidStack(Fluids.WATER, 0) : state.c_liquid;
+			return state == null ? new FluidStack(Fluids.WATER, 0) : state.clientLiquid;
 		}
 
 		public void handleVisiblityPacket(Frequency[] new_visible, Frequency[] old_visible)

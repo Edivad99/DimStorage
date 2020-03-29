@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 
-	public float TANK_THICKNESS = 0.04f;
+	private static final float TANK_THICKNESS = 0.04f;
 
 	public RenderTileDimTank()
 	{
@@ -48,8 +48,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 		if(tank == null)
 			return;
 
-		FluidStack fluid = tank.liquidState.c_liquid;
-		//System.out.println(tank.frequency + " " + fluid.getFluid().getRegistryName() + " " + fluid.getAmount());
+		FluidStack fluid = tank.liquidState.clientLiquid;
 		if(fluid == null)
 			return;
 

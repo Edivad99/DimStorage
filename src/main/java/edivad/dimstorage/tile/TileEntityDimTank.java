@@ -44,7 +44,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		@Override
 		public void sendSyncPacket()
 		{
-			PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), s_liquid));
+			PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), serverLiquid));
 		}
 
 		@Override
@@ -68,9 +68,9 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		//ejectLiquid();
 		liquidState.update(world.isRemote);
 		if(world.isRemote)
-			System.out.println(liquidState.c_liquid.getAmount());
+			System.out.println(liquidState.clientLiquid.getAmount());
 		else 
-			System.out.println(liquidState.s_liquid.getAmount());
+			System.out.println(liquidState.serverLiquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -127,8 +127,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
 	public int getLightValue()
 	{
-		if(liquidState.s_liquid.getAmount() > 0)
-			return FluidUtils.getLuminosity(liquidState.c_liquid, liquidState.s_liquid.getAmount() / 16D);
+		if(liquidState.serverLiquid.getAmount() > 0)
+			return FluidUtils.getLuminosity(liquidState.clientLiquid, liquidState.serverLiquid.getAmount() / 16D);
 		return 0;
 	}
 
