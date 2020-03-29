@@ -57,7 +57,7 @@ public class TankSynchroniser {
 				}
 				else
 				{
-					c_liquid = FluidUtils.copy(s_liquid, 0);
+					c_liquid = FluidUtils.copy(s_liquid, s_liquid.getAmount());
 				}
 
 				a_liquid = c_liquid;

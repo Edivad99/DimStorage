@@ -68,7 +68,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	public FluidStack drain(int maxDrain, FluidAction action)
 	{
 		if(fluid.getAmount() == 0 || maxDrain <= 0)
-			return null;
+			return FluidStack.EMPTY;
 
 		int toDrain = Math.min(maxDrain, fluid.getAmount());
 		if(action == FluidAction.EXECUTE && toDrain > 0)
@@ -83,7 +83,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	public FluidStack drain(FluidStack resource, FluidAction action)
 	{
 		if(resource == null || !resource.isFluidEqual(fluid))
-			return null;
+			return FluidStack.EMPTY;
 
 		return drain(resource.getAmount(), action);
 	}

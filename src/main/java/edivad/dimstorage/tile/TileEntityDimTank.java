@@ -43,7 +43,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		@Override
 		public void sendSyncPacket()
 		{
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX(), pos.getZ())), new SyncLiquidTank(getPos(), s_liquid));
+			PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), s_liquid));
 		}
 
 		@Override
@@ -112,6 +112,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.tick();
 		ejectLiquid();
 		liquidState.update(world.isRemote);
+		//System.out.println(getStorage().getFluidInTank(0).getAmount());
+		System.out.println(fluidCap.getFluidInTank(0).getAmount());
 	}
 
 	private void ejectLiquid()

@@ -28,7 +28,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		FluidStack liquidStack = ownerTile.liquidState.c_liquid;
+		FluidStack liquidStack = ownerTile.fluidCap.getFluidInTank(0);
 		FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
 
 		if(!liquidStack.getFluid().isEquivalentTo(Fluids.EMPTY))
