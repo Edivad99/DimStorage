@@ -24,7 +24,9 @@
     "gui.dimstorage.collecting": "Сбор",
     "gui.dimstorage.idle": "Простой",
 
-    "message.dimstorage.adviceToLink": "Нажмите shift + ПКМ, чтобы связать Сундук измерений",
+    "message.dimstorage.adviceToLink": "@7Нажмите Shift + ПКМ, чтобы связать Сундук измерений",
+    "message.dimstorage.holdShift": "@7Удерживайте @b@oShift @7для деталей",
+    "message.dimstorage.changeAutoCollect": "@7Нажмите @b@oShift @7+ ПКМ на не Сундуке измерений чтоб включить/отключить автосбор",
 
     "tooltip.dimstorage.collect": "Когда идёт сбор, это означает, что Сундук измерений собирает все предметы в инвентарях в %dx%d радиусе"
 

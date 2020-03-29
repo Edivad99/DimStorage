@@ -28,8 +28,7 @@ public class CollectButton extends Button {
 	@Override
 	public void onPress()
 	{
-		TileEntityDimChest chest = (TileEntityDimChest) owner;
-		chest.swapCollect();
-		PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
+		owner.swapCollect();
+		PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(owner));
 	}
 }

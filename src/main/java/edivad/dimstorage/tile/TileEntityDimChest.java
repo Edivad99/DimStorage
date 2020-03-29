@@ -155,6 +155,11 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		return handler;
 	}
+	
+	public int getComparatorInput()
+	{
+		return Container.calcRedstoneFromInventory(getStorage());
+	}
 
 	public void swapCollect()
 	{

@@ -21,7 +21,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
 	public RenderTileDimChest()
 	{
-		this.model = new ModelDimChest();
+		model = new ModelDimChest();
 	}
 
 	@Override

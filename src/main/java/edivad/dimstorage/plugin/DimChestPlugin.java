@@ -14,10 +14,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DimChestPlugin implements DimStoragePlugin {
 
-	public DimChestPlugin()
-	{
-	}
-
 	@Override
 	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
 	{
