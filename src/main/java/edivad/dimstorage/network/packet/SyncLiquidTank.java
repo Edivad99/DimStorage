@@ -1,4 +1,4 @@
-package edivad.dimstorage.network.packet.tank;
+package edivad.dimstorage.network.packet;
 
 import java.util.function.Supplier;
 

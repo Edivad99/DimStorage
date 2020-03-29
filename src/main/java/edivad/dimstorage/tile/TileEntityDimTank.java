@@ -4,8 +4,8 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.TankSynchroniser;
-import edivad.dimstorage.network.packet.tank.SyncLiquidTank;
+import edivad.dimstorage.network.TankState;
+import edivad.dimstorage.network.packet.SyncLiquidTank;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
@@ -39,7 +39,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityDimTank extends TileFrequencyOwner {
 
-	public class DimTankState extends TankSynchroniser.TankState {
+	public class DimTankState extends TankState {
 
 		@Override
 		public void sendSyncPacket()

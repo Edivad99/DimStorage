@@ -7,7 +7,7 @@ import edivad.dimstorage.client.screen.element.button.OwnerButton;
 import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
-import edivad.dimstorage.network.packet.tank.UpdateDimTank;
+import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;

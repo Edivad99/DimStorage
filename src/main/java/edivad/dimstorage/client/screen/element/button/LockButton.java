@@ -3,7 +3,7 @@ package edivad.dimstorage.client.screen.element.button;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
-import edivad.dimstorage.network.packet.tank.UpdateDimTank;
+import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
