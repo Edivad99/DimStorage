@@ -67,10 +67,10 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.tick();
 		//ejectLiquid();
 		liquidState.update(world.isRemote);
-		if(world.isRemote)
-			System.out.println(liquidState.clientLiquid.getAmount());
-		else 
-			System.out.println(liquidState.serverLiquid.getAmount());
+//		if(world.isRemote)
+//			System.out.println(liquidState.clientLiquid.getAmount());
+//		else 
+//			System.out.println(liquidState.serverLiquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -175,7 +175,15 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
 	{
 		CompoundNBT tag = pkt.getNbtCompound();
-		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		//frequency.set(new Frequency(tag.getCompound("Frequency")));
+		setFreq(new Frequency(tag.getCompound("Frequency")));
+		locked = tag.getBoolean("locked");
+	}
+	
+	@Override
+	public void handleUpdateTag(CompoundNBT tag)
+	{
+		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
 	}
 

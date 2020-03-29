@@ -39,9 +39,7 @@ public class UpdateDimTank {
 	public void toBytes(PacketBuffer buf)
 	{
 		buf.writeBlockPos(pos);
-
 		freq.writeToPacket(buf);
-
 		buf.writeBoolean(locked);
 	}
 
@@ -63,7 +61,7 @@ public class UpdateDimTank {
 			}
 			
 			TileEntityDimTank tank = (TileEntityDimTank) tile;
-			tank.frequency.set(freq);
+			tank.setFreq(freq);
 			tank.locked = locked;
 
 			world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);

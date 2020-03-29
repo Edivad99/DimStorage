@@ -33,7 +33,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 
 	public void setFreq(Frequency frequency)
 	{
-		this.frequency = frequency;
+		this.frequency.set(frequency);
 		this.markDirty();
 		BlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
@@ -110,7 +110,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	@Override
 	public void handleUpdateTag(CompoundNBT tag)
 	{
-		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
 	}
 }

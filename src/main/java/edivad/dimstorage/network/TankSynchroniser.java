@@ -51,17 +51,26 @@ public class TankSynchroniser {
 			{
 				serverLiquid = getStorage(false).getFluidInTank(0);
 				sampleB = serverLiquid.copy();
-				if(!serverLiquid.isFluidEqual(clientLiquid))
-				{
-					sendSyncPacket();
-					clientLiquid = serverLiquid;
-				}
-				else if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250 || (serverLiquid.getAmount() == 0 && clientLiquid.getAmount() > 0))
-				{
-					// Diff grater than 250 Or server no longer has liquid and client does.
-					sendSyncPacket();
-					clientLiquid = serverLiquid;
-				}
+				
+				//Se aggiungo questa linea funziona tutto
+				sendSyncPacket();
+//				if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250)
+//				{
+//					sendSyncPacket();
+//					clientLiquid = serverLiquid;
+//				}
+				
+//				if(!serverLiquid.isFluidEqual(clientLiquid))
+//				{
+//					sendSyncPacket();
+//					clientLiquid = serverLiquid;
+//				}
+//				else if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250 || (serverLiquid.getAmount() == 0 && clientLiquid.getAmount() > 0))
+//				{
+//					// Diff grater than 250 Or server no longer has liquid and client does.
+//					sendSyncPacket();
+//					clientLiquid = serverLiquid;
+//				}
 
 				sampleA = serverLiquid;
 			}

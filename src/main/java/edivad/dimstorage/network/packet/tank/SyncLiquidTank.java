@@ -38,7 +38,6 @@ public class SyncLiquidTank {
 	{
 		ctx.get().enqueueWork(() ->
 		{
-			//World world = ctx.get().getSender().world;
 			World world = Main.proxy.getClientWorld();
 			if(world.isBlockPresent(pos))
 			{

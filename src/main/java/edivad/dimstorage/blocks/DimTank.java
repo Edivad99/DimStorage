@@ -49,7 +49,7 @@ public class DimTank extends DimBlockBase {
 	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
-		return BlockRenderLayer.TRANSLUCENT;//CUTOUT
+		return BlockRenderLayer.CUTOUT;//CUTOUT
 	}
 
 	@Override
