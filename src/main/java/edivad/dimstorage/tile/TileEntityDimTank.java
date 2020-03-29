@@ -27,6 +27,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -49,57 +50,11 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		@Override
 		public void onLiquidChanged()
 		{
-			//world.checkLight(pos);
-		}
-	}
-
-	public class TankFluidCap implements IFluidHandler {
-
-		@Override
-		public int getTanks()
-		{
-			return 1;
-		}
-
-		@Override
-		public FluidStack getFluidInTank(int tank)
-		{
-			return getStorage().getFluidInTank(tank);
-		}
-
-		@Override
-		public int getTankCapacity(int tank)
-		{
-			return DimTankStorage.CAPACITY;
-		}
-
-		@Override
-		public boolean isFluidValid(int tank, FluidStack stack)
-		{
-			return getStorage().isFluidValid(tank, stack);
-		}
-
-		@Override
-		public int fill(FluidStack resource, FluidAction action)
-		{
-			return getStorage().fill(resource, action);
-		}
-
-		@Override
-		public FluidStack drain(FluidStack resource, FluidAction action)
-		{
-			return getStorage().drain(resource, action);
-		}
-
-		@Override
-		public FluidStack drain(int maxDrain, FluidAction action)
-		{
-			return getStorage().drain(maxDrain, action);
+			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
 		}
 	}
 
 	public DimTankState liquidState = new DimTankState();
-	public TankFluidCap fluidCap = new TankFluidCap();
 
 	public TileEntityDimTank()
 	{
@@ -110,10 +65,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public void tick()
 	{
 		super.tick();
-		ejectLiquid();
+		//ejectLiquid();
 		liquidState.update(world.isRemote);
-		//System.out.println(getStorage().getFluidInTank(0).getAmount());
-		System.out.println(fluidCap.getFluidInTank(0).getAmount());
+		if(world.isRemote)
+			System.out.println(liquidState.c_liquid.getAmount());
+		else 
+			System.out.println(liquidState.s_liquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -199,7 +156,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> fluidCap).cast();
+			return LazyOptional.of(() -> getStorage()).cast();
 		}
 		return super.getCapability(cap, side);
 	}

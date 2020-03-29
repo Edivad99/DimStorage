@@ -19,7 +19,7 @@ public class ExtendedFluidTank implements IFluidTank {
 			type = new FluidStack(Fluids.WATER, 1000);
 			changeType = true;
 		}
-		fluid = FluidUtils.copy(type, 0);
+		fluid = new FluidStack(type, 0);
 		this.capacity = capacity;
 	}
 
@@ -56,7 +56,7 @@ public class ExtendedFluidTank implements IFluidTank {
 		if(action == FluidAction.EXECUTE && toFill > 0)
 		{
 			if(!fluid.isFluidEqual(resource))
-				fluid = FluidUtils.copy(resource, fluid.getAmount() + toFill);
+				fluid = new FluidStack(resource, fluid.getAmount() + toFill);
 			else
 				fluid.grow(toFill);
 			onLiquidChanged();
@@ -68,7 +68,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	public FluidStack drain(int maxDrain, FluidAction action)
 	{
 		if(fluid.getAmount() == 0 || maxDrain <= 0)
-			return FluidStack.EMPTY;
+			return new FluidStack(Fluids.WATER, 0);
 
 		int toDrain = Math.min(maxDrain, fluid.getAmount());
 		if(action == FluidAction.EXECUTE && toDrain > 0)
@@ -76,14 +76,15 @@ public class ExtendedFluidTank implements IFluidTank {
 			fluid.shrink(toDrain);
 			onLiquidChanged();
 		}
-		return FluidUtils.copy(fluid, toDrain);
+		return new FluidStack(fluid, toDrain);
+		
 	}
 
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action)
 	{
 		if(resource == null || !resource.isFluidEqual(fluid))
-			return FluidStack.EMPTY;
+			return new FluidStack(Fluids.WATER, 0);
 
 		return drain(resource.getAmount(), action);
 	}

@@ -7,13 +7,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
 
-	public static FluidStack copy(FluidStack liquid, int quantity)
-	{
-		liquid = liquid.copy();
-		liquid.setAmount(quantity);
-		return liquid;
-	}
-
 	public static FluidStack read(CompoundNBT tag)
 	{
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(tag);
@@ -39,20 +32,4 @@ public class FluidUtils {
 		}
 		return light;
 	}
-
-	//	public static IFluidHandler getFluidHandlerOrEmpty(World world, BlockPos pos, Direction dir)
-	//	{
-	//		return getFluidHandlerOr(world.getTileEntity(pos), dir, EmptyFluidHandler.INSTANCE);
-	//	}
-	//
-	//	public static IFluidHandler getFluidHandlerOr(TileEntity tile, Direction face, IFluidHandler fluidHandler)
-	//	{
-	//		IFluidHandler handler = hasFluidHandler(tile, face) ? getFluidHandler_Raw(tile, face) : null;
-	//		return handler != null ? handler : fluidHandler;
-	//	}
-	//
-	//	public static boolean hasFluidHandler(TileEntity tile, Direction face)
-	//	{
-	//		return tile != null && tile.hasCapability(FLUID_HANDLER, face);
-	//	}
 }

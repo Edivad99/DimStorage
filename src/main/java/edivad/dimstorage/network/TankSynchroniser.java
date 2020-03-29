@@ -12,8 +12,6 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.packet.tank.PlayerItemTankCacheSync;
 import edivad.dimstorage.network.packet.tank.UpdateTankLiquid;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tools.extra.MathHelper;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -47,17 +45,17 @@ public class TankSynchroniser {
 			{
 				b_liquid = c_liquid.copy();
 
-				if(s_liquid.isFluidEqual(c_liquid))
+				if(s_liquid.isFluidEqual(c_liquid) && c_liquid.getRawFluid() != Fluids.EMPTY)
 				{
-					c_liquid.setAmount(MathHelper.approachExpI(c_liquid.getAmount(), s_liquid.getAmount(), 0.1));
+					c_liquid.setAmount(s_liquid.getAmount());
 				}
-				else if(c_liquid.getAmount() > 100)
-				{
-					c_liquid.setAmount(MathHelper.retreatExpI(c_liquid.getAmount(), 0, f_liquid.getAmount(), 0.1, 1000));
-				}
+//				else if(c_liquid.getAmount() > 100)
+//				{
+//					c_liquid.setAmount(f_liquid.getAmount());
+//				}
 				else
 				{
-					c_liquid = FluidUtils.copy(s_liquid, s_liquid.getAmount());
+					c_liquid = new FluidStack(s_liquid, s_liquid.getAmount());
 				}
 
 				a_liquid = c_liquid;
