@@ -1,6 +1,7 @@
 package edivad.dimstorage.client.screen;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
@@ -23,6 +24,16 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 	{
 		super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimtank.png"), container.isOpen);
 		this.ownerTile = container.owner;
+	}
+	
+	@Override
+	protected void init()
+	{
+		super.init();
+		
+		addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, ownerTile));
+
+		drawSettings(drawSettings);
 	}
 
 	@Override

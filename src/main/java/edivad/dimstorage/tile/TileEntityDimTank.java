@@ -55,6 +55,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	}
 
 	public DimTankState liquidState = new DimTankState();
+	public boolean autoEject = false;
 
 	public TileEntityDimTank()
 	{
@@ -65,7 +66,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public void tick()
 	{
 		super.tick();
-		//ejectLiquid();
+		if(autoEject)
+			ejectLiquid();
 		liquidState.update(world.isRemote);
 //		if(world.isRemote)
 //			System.out.println(liquidState.clientLiquid.getAmount());
@@ -110,11 +112,18 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
 	}
+	
+	public void swapAutoEject()
+	{
+		autoEject = !autoEject;
+		this.markDirty();
+	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
+		tag.putBoolean("autoEject", autoEject);
 		return tag;
 	}
 
@@ -123,6 +132,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		super.read(tag);
 		liquidState.setFrequency(frequency);
+		autoEject = tag.getBoolean("autoEject");
 	}
 
 	public int getLightValue()
@@ -168,6 +178,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		CompoundNBT root = new CompoundNBT();
 		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
 		root.putBoolean("locked", locked);
+		root.putBoolean("autoEject", autoEject);
 		return new SUpdateTileEntityPacket(getPos(), 1, root);
 	}
 
@@ -177,6 +188,16 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		CompoundNBT tag = pkt.getNbtCompound();
 		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
+		autoEject = tag.getBoolean("autoEject");
+	}
+	
+	//Synchronizing on chunk load
+	@Override
+	public CompoundNBT getUpdateTag()
+	{
+		CompoundNBT tag = super.getUpdateTag();
+		tag.putBoolean("autoEject", autoEject);
+		return tag;
 	}
 	
 	@Override
@@ -184,6 +205,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
+		autoEject = tag.getBoolean("autoEject");
 	}
 
 	@Override

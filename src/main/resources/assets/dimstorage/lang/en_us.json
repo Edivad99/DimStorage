@@ -26,6 +26,7 @@
     "gui.dimstorage.no": "No",
     "gui.dimstorage.collecting": "Collecting",
     "gui.dimstorage.idle": "Idle",
+    "gui.dimstorage.eject": "Auto-eject",
 
     "message.dimstorage.adviceToLink": "@7Press Shift + right click to bind a DimChest",
     "message.dimstorage.holdShift": "@7Hold @b@oShift @7for details",

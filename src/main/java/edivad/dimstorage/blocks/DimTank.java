@@ -121,6 +121,8 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 			probeInfo.horizontal().text("Frequency: " + tank.frequency.getChannel());
 			if(tank.locked)
 				probeInfo.horizontal().text("Locked: Yes");
+			if(tank.autoEject)
+				probeInfo.horizontal().text("Auto-eject: Yes");
 			
 			if(tank.liquidState.serverLiquid.getAmount() > 0)
 			{
@@ -128,6 +130,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 				
 				probeInfo.horizontal().text("Liquid: " + liquidText);
 				
+				//TODO: fix the color
 				int liquidColor = tank.liquidState.serverLiquid.getFluid().getAttributes().getColor();
 				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(liquidColor).alternateFilledColor(liquidColor);
 				probeInfo.horizontal()
