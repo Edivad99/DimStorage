@@ -23,7 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 
-	private static final float TANK_THICKNESS = 0.04f;
+	private static final float TANK_THICKNESS = 0.1f;
 
 	@Override
 	public void render(TileEntityDimTank tileEntity, double x, double y, double z, float partialTicks, int destroyStage)
