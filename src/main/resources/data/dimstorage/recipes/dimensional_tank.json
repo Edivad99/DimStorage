@@ -4,8 +4,8 @@
 	},
 	"pattern": [
 		"ada",
-		"aba",
-		"aca"
+		"dcd",
+		"aba"
 	],
 	"type": "minecraft:crafting_shaped",
 	"key": {
@@ -19,7 +19,7 @@
 			"item": "minecraft:cauldron"
 		},
 		"d": {
-			"item": "minecraft:bucket"
+			"item": "minecraft:glass"
 		}
 	}
 }
