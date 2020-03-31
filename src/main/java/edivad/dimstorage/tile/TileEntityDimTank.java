@@ -145,7 +145,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	@Override
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
-		if(player.isSneaking())
+		boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
+		if(!result)
 		{
 			if(canAccess(player))
 			{
@@ -155,10 +156,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 			{
 				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
 			}
-			return true;
 		}
-		else
-			return FluidUtil.interactWithFluidHandler(player, hand, getStorage());
+		return true;
 	}
 
 	@Override
