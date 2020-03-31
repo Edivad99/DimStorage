@@ -1,11 +1,14 @@
 package edivad.dimstorage.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
@@ -22,32 +25,25 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 
 	private static final float TANK_THICKNESS = 0.04f;
 
-	public RenderTileDimTank()
-	{
-	}
-
 	@Override
 	public void render(TileEntityDimTank tileEntity, double x, double y, double z, float partialTicks, int destroyStage)
 	{
+		super.render(tileEntity, x, y, z, partialTicks, destroyStage);
 		GlStateManager.pushMatrix();
-		GlStateManager.disableRescaleNormal();
-		GlStateManager.color4f(1, 1, 1, 1);
+		//GlStateManager.disableRescaleNormal();
+		//GlStateManager.color4f(1, 1, 1, 1);
 		GlStateManager.disableBlend();
-		GlStateManager.translatef((float) x, (float) y, (float) z);
-
+		GlStateManager.translated(x, y, z);
 		bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-		renderFluid(tileEntity);
-
+		if(tileEntity != null)
+			renderFluid(tileEntity);
 		GlStateManager.popMatrix();
 
-		super.render(tileEntity, x, y, z, partialTicks, destroyStage);
+		
 	}
 
-	private void renderFluid(TileEntityDimTank tank)
+	private void renderFluid(@Nonnull TileEntityDimTank tank)
 	{
-		if(tank == null)
-			return;
-
 		FluidStack fluid = tank.liquidState.clientLiquid;
 		if(fluid == null)
 			return;
@@ -64,8 +60,6 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			ResourceLocation still = renderFluid.getAttributes().getStillTexture();
 			TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(still);
 			RenderHelper.disableStandardItemLighting();
-
-			GlStateManager.color4f(1, 1, 1, .5f);
 			renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
 			float u1 = sprite.getMinU();
@@ -74,43 +68,50 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			float v2 = sprite.getMaxV();
 
 			float margin = 0.9f;
+			float offset = 0.1f;
+			
+			int color = fluid.getFluid().getAttributes().getColor(fluid);
+			float r = FluidUtils.getRed(color);
+			float g = FluidUtils.getGreen(color);
+			float b = FluidUtils.getBlue(color);
+			float a = FluidUtils.getAlpha(color);
 
 			// Top
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u2, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v1).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u2, v1).color(r, g, b, a).endVertex();
 
 			// Bottom
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u2, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u2, v1).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v1).color(r, g, b, a).endVertex();
 
 			// Sides
 			//NORTH
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v1).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(r, g, b, a).endVertex();
 
 			//SOUTH
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u2, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u2, v1).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v1).color(r, g, b, a).endVertex();
 
 			//WEAST
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v1).color(r, g, b, a).endVertex();
 
 			//EAST
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v1).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, TANK_THICKNESS + 0.1f).tex(u1, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(255, 255, 255, 128).endVertex();
-			renderer.pos(TANK_THICKNESS + 0.1f, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(255, 255, 255, 128).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v1).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).tex(u1, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v2).color(r, g, b, a).endVertex();
+			renderer.pos(TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).tex(u2, v1).color(r, g, b, a).endVertex();
 
 			tessellator.draw();
 

@@ -1,5 +1,9 @@
 package edivad.dimstorage.tools.extra.fluid;
 
+import javax.annotation.Nonnull;
+
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
@@ -31,5 +35,39 @@ public class FluidUtils {
 			light = (int) (light * density);
 		}
 		return light;
+	}
+
+	//Render liquid
+	public static float getRed(int color)
+	{
+		return (color >> 16 & 0xFF) / 255.0F;
+	}
+
+	public static float getGreen(int color)
+	{
+		return (color >> 8 & 0xFF) / 255.0F;
+	}
+
+	public static float getBlue(int color)
+	{
+		return (color & 0xFF) / 255.0F;
+	}
+
+	public static float getAlpha(int color)
+	{
+		return (color >> 24 & 0xFF) / 255.0F;
+	}
+
+	public static void color(int color)
+	{
+		GlStateManager.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+	}
+
+	public static void color(@Nonnull FluidStack fluid)
+	{
+		if(!fluid.isEmpty())
+		{
+			color(fluid.getFluid().getAttributes().getColor(fluid));
+		}
 	}
 }

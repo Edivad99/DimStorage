@@ -68,7 +68,6 @@ public abstract class TankState {
 
 	public void sync(FluidStack liquid)
 	{
-		//Forse qua ci vuole clientLiquid
 		serverLiquid = liquid;
 	}
 

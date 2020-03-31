@@ -5,6 +5,7 @@ import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
@@ -56,6 +57,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		TextureAtlasSprite fluidTexture = this.minecraft.getTextureMap().getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
 		this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+		FluidUtils.color(fluid);
 		ScreenDimTank.blit(this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);
 	}
 

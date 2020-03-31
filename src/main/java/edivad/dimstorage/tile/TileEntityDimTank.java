@@ -84,7 +84,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 				if(handler != null)
 				{
 					FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
-					if(liquid != null)
+					if(liquid.getAmount() > 0)
 					{
 						int qty = handler.fill(liquid, FluidAction.EXECUTE);
 						if(qty > 0)
@@ -175,7 +175,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
 	{
 		CompoundNBT tag = pkt.getNbtCompound();
-		//frequency.set(new Frequency(tag.getCompound("Frequency")));
 		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
 	}
