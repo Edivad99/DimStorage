@@ -27,6 +27,12 @@
     "gui.dimstorage.collecting": "Collecting",
     "gui.dimstorage.idle": "Idle",
     "gui.dimstorage.eject": "Auto-eject",
+    "gui.dimstorage.liquid": "Liquid:",
+    "gui.dimstorage.amount": "Amount:",
+    "gui.dimstorage.temperature": "Temperature:",
+    "gui.dimstorage.luminosity": "Luminosity:",
+    "gui.dimstorage.gas": "Gaseous:",
+    "gui.dimstorage.empty": "Empty",
 
     "message.dimstorage.adviceToLink": "@7Press Shift + right click to bind a DimChest",
     "message.dimstorage.holdShift": "@7Hold @b@oShift @7for details",

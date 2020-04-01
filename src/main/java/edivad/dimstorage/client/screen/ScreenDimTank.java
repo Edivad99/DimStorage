@@ -6,6 +6,7 @@ import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.tools.Translate;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
 	private TileEntityDimTank ownerTile;
+	private String liquid, amount, temperature, luminosity, gaseous, empty, yes, no;
 
 	public ScreenDimTank(ContainerDimTank container, PlayerInventory invPlayer, ITextComponent text)
 	{
@@ -34,6 +36,15 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, ownerTile));
 
 		drawSettings(drawSettings);
+
+		liquid = Translate.translateToLocal("gui." + Main.MODID + ".liquid");
+		amount = Translate.translateToLocal("gui." + Main.MODID + ".amount");
+		temperature = Translate.translateToLocal("gui." + Main.MODID + ".temperature");
+		luminosity = Translate.translateToLocal("gui." + Main.MODID + ".luminosity");
+		gaseous = Translate.translateToLocal("gui." + Main.MODID + ".gas");
+		empty = Translate.translateToLocal("gui." + Main.MODID + ".empty");
+		yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
+		no = Translate.translateToLocal("gui." + Main.MODID + ".no");
 	}
 
 	@Override
@@ -45,15 +56,15 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
 		if(!liquidStack.getFluid().isEquivalentTo(Fluids.EMPTY))
 		{
-			this.font.drawString("Liquid: " + liquidStack.getDisplayName().getFormattedText(), 50, 25, 4210752);
-			this.font.drawString("Amount: " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
-			this.font.drawString("Temperature: " + (liquidAttributes.getTemperature() - 273) + "°C", 50, 45, 4210752);
-			this.font.drawString("Luminosity: " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
-			this.font.drawString("Gaseous: " + liquidAttributes.isGaseous(), 50, 65, 4210752);
+			this.font.drawString(liquid + " " + liquidStack.getDisplayName().getFormattedText(), 50, 25, 4210752);
+			this.font.drawString(amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
+			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "°C", 50, 45, 4210752);
+			this.font.drawString(luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
+			this.font.drawString(gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
 		}
 		else
 		{
-			this.font.drawString("Liquid: Empty", 50, 25, 4210752);
+			this.font.drawString(liquid + " " + empty, 50, 25, 4210752);
 		}
 
 	}
