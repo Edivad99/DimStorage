@@ -11,11 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class DimTankPlugin implements DimStoragePlugin {
 
-	public DimTankPlugin()
-	{
-
-	}
-
 	@Override
 	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
 	{
