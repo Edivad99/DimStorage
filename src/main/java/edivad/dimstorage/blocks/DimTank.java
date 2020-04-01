@@ -56,7 +56,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
-		return BlockRenderLayer.CUTOUT;//CUTOUT
+		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -130,9 +130,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 				
 				probeInfo.horizontal().text("Liquid: " + liquidText);
 				
-				//TODO: fix the color
-				int liquidColor = tank.liquidState.serverLiquid.getFluid().getAttributes().getColor();
-				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(liquidColor).alternateFilledColor(liquidColor);
+				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(0xff00ddff).alternateFilledColor(0xff00ddff);
 				probeInfo.horizontal()
 	            .progress(tank.liquidState.serverLiquid.getAmount(), DimTankStorage.CAPACITY, color.suffix(" mB"));
 			}
