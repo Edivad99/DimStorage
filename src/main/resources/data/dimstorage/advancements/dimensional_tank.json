@@ -1,0 +1,26 @@
+{
+    "parent": "dimstorage:root",
+    "display": {
+        "icon": {
+            "item": "dimstorage:dimensional_tank"
+        },
+        "title": {
+            "translate": "advancements.dimstorage.dimensional_tank"
+        },
+        "description": {
+            "translate": "advancements.dimstorage.dimensional_tank.desc"
+        }
+    },
+    "criteria": {
+        "certus": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dimstorage:dimensional_tank"
+                    }
+                ]
+            }
+        }
+    }
+}

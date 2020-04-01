@@ -2,8 +2,10 @@ package edivad.dimstorage.client.screen.element.button;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.network.packet.UpdateDimChest;
+import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.button.Button;
@@ -33,7 +35,13 @@ public class LockButton extends Button {
 		{
 			TileEntityDimChest chest = (TileEntityDimChest) owner;
 			chest.swapLocked();
-			PacketHandler.INSTANCE.sendToServer(new UpdateBlock(chest));
+			PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
+		}
+		else if(owner instanceof TileEntityDimTank)
+		{
+			TileEntityDimTank tank = (TileEntityDimTank) owner;
+			tank.swapLocked();
+			PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
 		}
 	}
 }

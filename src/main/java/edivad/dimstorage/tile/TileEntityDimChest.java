@@ -28,6 +28,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -154,7 +155,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		}
 		return handler;
 	}
-	
+
 	public int getComparatorInput()
 	{
 		return Container.calcRedstoneFromInventory(getStorage());
@@ -207,7 +208,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		if(canAccess(player))
 		{
