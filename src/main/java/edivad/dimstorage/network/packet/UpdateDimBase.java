@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public abstract class UpdateDimBase {
+
 	protected BlockPos pos;
 	protected Frequency freq;
 	protected boolean locked;
@@ -35,13 +36,12 @@ public abstract class UpdateDimBase {
 		freq.writeToPacket(buf);
 		buf.writeBoolean(locked);
 	}
-	
+
 	public abstract void customHandle(World world, PlayerEntity player);
-	
+
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			if(world.isBlockPresent(pos))

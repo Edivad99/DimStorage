@@ -21,7 +21,7 @@ public class DimTankDataProvider implements IServerDataProvider<TileEntity> {
 			compoundNBT.putInt("Frequency", tile.frequency.getChannel());
 			compoundNBT.putBoolean("Locked", tile.locked);
 			compoundNBT.putBoolean("AutoEject", tile.autoEject);
-			
+
 			String liquidName = tile.liquidState.serverLiquid.getDisplayName().getFormattedText();
 			int liquidLevel = tile.liquidState.serverLiquid.getAmount();
 			compoundNBT.putString("Liquid", liquidName);

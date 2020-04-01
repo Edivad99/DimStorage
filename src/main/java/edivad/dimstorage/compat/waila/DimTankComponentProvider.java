@@ -27,7 +27,7 @@ public class DimTankComponentProvider implements IComponentProvider {
 			String locked = Translate.translateToLocal("gui." + Main.MODID + ".locked") + " ";
 			String autoEject = Translate.translateToLocal("gui." + Main.MODID + ".eject") + ": ";
 			String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-			
+
 			if(data.getBoolean("HasOwner"))
 			{
 				if(data.getBoolean("CanAccess"))
@@ -45,7 +45,7 @@ public class DimTankComponentProvider implements IComponentProvider {
 				tooltip.add(new StringTextComponent("Liquid: " + data.getString("Liquid")));
 				tooltip.add(new StringTextComponent("Amount: " + data.getInt("Amount") + " mB"));
 			}
-			
+
 		}
 	}
 }

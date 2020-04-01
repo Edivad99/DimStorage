@@ -36,8 +36,7 @@ public class SyncLiquidTank {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() ->
-		{
+		ctx.get().enqueueWork(() -> {
 			World world = Main.proxy.getClientWorld();
 			if(world.isBlockPresent(pos))
 			{

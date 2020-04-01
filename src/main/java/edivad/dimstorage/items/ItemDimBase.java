@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemDimBase extends BlockItem{
+public class ItemDimBase extends BlockItem {
 
 	public ItemDimBase(Block blockIn)
 	{
@@ -49,7 +49,7 @@ public class ItemDimBase extends BlockItem{
 		}
 		return false;
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)

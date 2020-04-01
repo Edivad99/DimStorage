@@ -77,7 +77,7 @@ public class ExtendedFluidTank implements IFluidTank {
 			onLiquidChanged();
 		}
 		return new FluidStack(fluid, toDrain);
-		
+
 	}
 
 	@Override

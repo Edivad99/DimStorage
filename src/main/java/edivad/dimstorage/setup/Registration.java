@@ -58,13 +58,11 @@ public class Registration {
 		TileEntityDimChest tile = (TileEntityDimChest) te;
 		return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
 	}));
-	
-	
+
 	public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
 	public static final RegistryObject<Item> DIMTANK_ITEM = ITEMS.register("dimensional_tank", ItemDimTank::new);
 	public static final RegistryObject<TileEntityType<TileEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> TileEntityType.Builder.create(TileEntityDimTank::new, DIMTANK.get()).build(null));
-	public static final RegistryObject<ContainerType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) ->
-	{
+	public static final RegistryObject<ContainerType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		BlockPos pos = data.readBlockPos();
 		TileEntity te = Main.proxy.getClientWorld().getTileEntity(pos);
 		boolean isOpen = data.readBoolean();

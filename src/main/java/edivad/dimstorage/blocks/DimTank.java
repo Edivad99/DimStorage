@@ -51,7 +51,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 	{
 		return new TileEntityDimTank();
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer()
@@ -73,7 +73,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 
 		return owner.activate(player, worldIn, pos, handIn);
 	}
-	
+
 	@Override
 	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face)
 	{
@@ -91,7 +91,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 	{
 		return BOX;
 	}
-	
+
 	@Override
 	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
 	{
@@ -123,16 +123,15 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 				probeInfo.horizontal().text("Locked: Yes");
 			if(tank.autoEject)
 				probeInfo.horizontal().text("Auto-eject: Yes");
-			
+
 			if(tank.liquidState.serverLiquid.getAmount() > 0)
 			{
 				String liquidText = tank.liquidState.serverLiquid.getDisplayName().getFormattedText();
-				
+
 				probeInfo.horizontal().text("Liquid: " + liquidText);
-				
+
 				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(0xff00ddff).alternateFilledColor(0xff00ddff);
-				probeInfo.horizontal()
-	            .progress(tank.liquidState.serverLiquid.getAmount(), DimTankStorage.CAPACITY, color.suffix(" mB"));
+				probeInfo.horizontal().progress(tank.liquidState.serverLiquid.getAmount(), DimTankStorage.CAPACITY, color.suffix(" mB"));
 			}
 		}
 	}

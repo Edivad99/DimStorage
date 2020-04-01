@@ -16,7 +16,7 @@ public class WailaCompatibility implements IWailaPlugin {
 	{
 		iRegistrar.registerBlockDataProvider(new DimChestDataProvider(), DimChest.class);
 		iRegistrar.registerComponentProvider(new DimChestComponentProvider(), TooltipPosition.BODY, DimChest.class);
-		
+
 		iRegistrar.registerBlockDataProvider(new DimTankDataProvider(), DimTank.class);
 		iRegistrar.registerComponentProvider(new DimTankComponentProvider(), TooltipPosition.BODY, DimTank.class);
 	}

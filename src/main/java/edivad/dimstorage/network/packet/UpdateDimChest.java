@@ -44,7 +44,7 @@ public class UpdateDimChest extends UpdateDimBase {
 			Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
 			return;
 		}
-		
+
 		TileEntityDimChest chest = (TileEntityDimChest) tile;
 		chest.setFreq(freq);
 		chest.locked = locked;

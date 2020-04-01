@@ -21,7 +21,7 @@ public class DimBlockBase extends Block {
 	{
 		super(properties);
 	}
-	
+
 	@Override
 	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
 	{
@@ -39,7 +39,7 @@ public class DimBlockBase extends Block {
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
 	{
@@ -52,7 +52,7 @@ public class DimBlockBase extends Block {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
 	{

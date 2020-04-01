@@ -14,7 +14,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class UpdateDimTank extends UpdateDimBase {
 
 	protected boolean autoEject;
-	
+
 	public UpdateDimTank(PacketBuffer buf)
 	{
 		super(buf);
@@ -26,7 +26,7 @@ public class UpdateDimTank extends UpdateDimBase {
 		super(tile);
 		autoEject = tile.autoEject;
 	}
-	
+
 	@Override
 	public void toBytes(PacketBuffer buf)
 	{
@@ -44,7 +44,7 @@ public class UpdateDimTank extends UpdateDimBase {
 			Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
 			return;
 		}
-		
+
 		TileEntityDimTank tank = (TileEntityDimTank) tile;
 		tank.setFreq(freq);
 		tank.locked = locked;

@@ -69,10 +69,10 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		if(autoEject)
 			ejectLiquid();
 		liquidState.update(world.isRemote);
-//		if(world.isRemote)
-//			System.out.println(liquidState.clientLiquid.getAmount());
-//		else 
-//			System.out.println(liquidState.serverLiquid.getAmount());
+		//		if(world.isRemote)
+		//			System.out.println(liquidState.clientLiquid.getAmount());
+		//		else 
+		//			System.out.println(liquidState.serverLiquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -112,7 +112,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
 	}
-	
+
 	public void swapAutoEject()
 	{
 		autoEject = !autoEject;
@@ -189,7 +189,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		locked = tag.getBoolean("locked");
 		autoEject = tag.getBoolean("autoEject");
 	}
-	
+
 	//Synchronizing on chunk load
 	@Override
 	public CompoundNBT getUpdateTag()
@@ -198,7 +198,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		tag.putBoolean("autoEject", autoEject);
 		return tag;
 	}
-	
+
 	@Override
 	public void handleUpdateTag(CompoundNBT tag)
 	{

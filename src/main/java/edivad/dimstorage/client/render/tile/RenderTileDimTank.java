@@ -39,7 +39,6 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			renderFluid(tileEntity);
 		GlStateManager.popMatrix();
 
-		
 	}
 
 	private void renderFluid(@Nonnull TileEntityDimTank tank)
@@ -69,7 +68,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 
 			float margin = 0.9f;
 			float offset = 0.1f;
-			
+
 			int color = fluid.getFluid().getAttributes().getColor(fluid);
 			float r = FluidUtils.getRed(color);
 			float g = FluidUtils.getGreen(color);
