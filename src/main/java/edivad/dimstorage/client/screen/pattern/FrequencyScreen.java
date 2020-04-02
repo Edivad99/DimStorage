@@ -6,8 +6,10 @@ import edivad.dimstorage.client.screen.element.button.LockButton;
 import edivad.dimstorage.client.screen.element.button.OwnerButton;
 import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateBlock;
+import edivad.dimstorage.network.packet.UpdateDimChest;
+import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
@@ -57,7 +59,9 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 			tileOwner.setFreq(tileOwner.frequency.copy().setChannel(newFreq));
 
 			if(tileOwner instanceof TileEntityDimChest)
-				PacketHandler.INSTANCE.sendToServer(new UpdateBlock((TileEntityDimChest) tileOwner));
+				PacketHandler.INSTANCE.sendToServer(new UpdateDimChest((TileEntityDimChest) tileOwner));
+			else if(tileOwner instanceof TileEntityDimTank)
+				PacketHandler.INSTANCE.sendToServer(new UpdateDimTank((TileEntityDimTank) tileOwner));
 		}
 		catch(Exception e)
 		{

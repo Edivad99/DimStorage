@@ -29,6 +29,7 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -208,7 +209,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	}
 
 	@Override
-	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		if(canAccess(player))
 		{

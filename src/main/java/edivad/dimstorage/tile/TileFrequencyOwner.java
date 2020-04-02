@@ -12,6 +12,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,7 +34,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 
 	public void setFreq(Frequency frequency)
 	{
-		this.frequency = frequency;
+		this.frequency.set(frequency);
 		this.markDirty();
 		BlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
@@ -88,7 +89,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		return tag;
 	}
 
-	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos)
+	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		return ActionResultType.FAIL;
 	}
@@ -110,7 +111,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	@Override
 	public void handleUpdateTag(CompoundNBT tag)
 	{
-		frequency.set(new Frequency(tag.getCompound("Frequency")));
+		setFreq(new Frequency(tag.getCompound("Frequency")));
 		locked = tag.getBoolean("locked");
 	}
 }
