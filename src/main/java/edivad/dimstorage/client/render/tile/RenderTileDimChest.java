@@ -35,7 +35,6 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 			return;
 
 		matrixStackIn.push();
-		matrixStackIn.translate(0D, 0D, 0D);
 		renderBlock(te, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.pop();
 	}

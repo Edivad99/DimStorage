@@ -5,13 +5,14 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import edivad.dimstorage.Main;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
@@ -78,7 +79,8 @@ public class FluidUtils {
 	
 	@Nullable
     public static TextureAtlasSprite getFluidTexture(FluidStack stack) {
-        TextureAtlasSprite[] sprites = ForgeHooksClient.getFluidSprites(Main.proxy.getClientWorld(), BlockPos.ZERO, stack.getFluid().getDefaultState());
-        return sprites.length > 0 ? sprites[0] : null;
+		FluidAttributes fa = stack.getFluid().getAttributes();
+		ResourceLocation still = fa.getStillTexture(stack);
+		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
     }
 }

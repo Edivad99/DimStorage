@@ -8,11 +8,10 @@ import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.Translate;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -79,7 +78,8 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		int z = getFluidScaled(60, fluid.getAmount());
 		TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-		Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+		this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+		
 		FluidUtils.color(fluid);
 		ScreenDimTank.blit(this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);
 	}
