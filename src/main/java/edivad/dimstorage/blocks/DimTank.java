@@ -62,7 +62,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 
 		return owner.activate(player, worldIn, pos, handIn);
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
@@ -74,7 +74,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 	{
 		return BOX;
 	}
-	
+
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{

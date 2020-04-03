@@ -51,7 +51,6 @@ public class DimChest extends DimBlockBase implements TOPInfoProvider {
 		return BlockRenderType.INVISIBLE;
 	}
 
-
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{

@@ -76,11 +76,12 @@ public class FluidUtils {
 			color(fluid.getFluid().getAttributes().getColor(fluid));
 		}
 	}
-	
+
 	@Nullable
-    public static TextureAtlasSprite getFluidTexture(FluidStack stack) {
+	public static TextureAtlasSprite getFluidTexture(FluidStack stack)
+	{
 		FluidAttributes fa = stack.getFluid().getAttributes();
 		ResourceLocation still = fa.getStillTexture(stack);
 		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
-    }
+	}
 }

@@ -79,7 +79,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
 		this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-		
+
 		FluidUtils.color(fluid);
 		ScreenDimTank.blit(this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);
 	}
