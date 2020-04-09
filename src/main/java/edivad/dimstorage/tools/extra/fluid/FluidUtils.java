@@ -1,12 +1,17 @@
 package edivad.dimstorage.tools.extra.fluid;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
@@ -69,5 +74,13 @@ public class FluidUtils {
 		{
 			color(fluid.getFluid().getAttributes().getColor(fluid));
 		}
+	}
+
+	@Nullable
+	public static TextureAtlasSprite getFluidTexture(FluidStack stack)
+	{
+		FluidAttributes fa = stack.getFluid().getAttributes();
+		ResourceLocation still = fa.getStillTexture();
+		return Minecraft.getInstance().getTextureMap().getSprite(still);
 	}
 }

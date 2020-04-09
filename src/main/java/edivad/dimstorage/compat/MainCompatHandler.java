@@ -1,6 +1,7 @@
 package edivad.dimstorage.compat;
 
-import edivad.dimstorage.compat.top.TOPCompatibility;
+import edivad.dimstorage.compat.top.TOPProvider;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 
 public class MainCompatHandler {
@@ -9,7 +10,7 @@ public class MainCompatHandler {
 	{
 		if(ModList.get().isLoaded("theoneprobe"))
 		{
-			TOPCompatibility.register();
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
 		}
 	}
 

@@ -2,12 +2,12 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
+import edivad.dimstorage.compat.top.FluidElement;
 import edivad.dimstorage.compat.top.TOPInfoProvider;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProgressStyle;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -126,12 +126,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider {
 
 			if(tank.liquidState.serverLiquid.getAmount() > 0)
 			{
-				String liquidText = tank.liquidState.serverLiquid.getDisplayName().getFormattedText();
-
-				probeInfo.horizontal().text("Liquid: " + liquidText);
-
-				IProgressStyle color = probeInfo.defaultProgressStyle().filledColor(0xff00ddff).alternateFilledColor(0xff00ddff);
-				probeInfo.horizontal().progress(tank.liquidState.serverLiquid.getAmount(), DimTankStorage.CAPACITY, color.suffix(" mB"));
+				probeInfo.element(new FluidElement(tank.liquidState.serverLiquid, DimTankStorage.CAPACITY));
 			}
 		}
 	}

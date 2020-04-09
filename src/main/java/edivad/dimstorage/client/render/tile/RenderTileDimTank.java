@@ -9,7 +9,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,8 +16,6 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
@@ -28,36 +25,28 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 	@Override
 	public void render(TileEntityDimTank tileEntity, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		super.render(tileEntity, x, y, z, partialTicks, destroyStage);
+		if(tileEntity == null || tileEntity.isRemoved() || tileEntity.liquidState.clientLiquid == null)
+			return;
+
 		GlStateManager.pushMatrix();
-		//GlStateManager.disableRescaleNormal();
-		//GlStateManager.color4f(1, 1, 1, 1);
 		GlStateManager.disableBlend();
 		GlStateManager.translated(x, y, z);
 		bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 		if(tileEntity != null)
-			renderFluid(tileEntity);
+			renderFluid(tileEntity.liquidState.clientLiquid);
 		GlStateManager.popMatrix();
-
 	}
 
-	private void renderFluid(@Nonnull TileEntityDimTank tank)
+	private void renderFluid(@Nonnull FluidStack fluid)
 	{
-		FluidStack fluid = tank.liquidState.clientLiquid;
-		if(fluid == null)
-			return;
-
-		Fluid renderFluid = fluid.getFluid();
-		if(renderFluid == null)
-			return;
-
 		float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
 		if(scale > 0.0f)
 		{
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder renderer = tessellator.getBuffer();
-			ResourceLocation still = renderFluid.getAttributes().getStillTexture();
-			TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(still);
+			TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
+			if(sprite == null)
+				return;
 			RenderHelper.disableStandardItemLighting();
 			renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
