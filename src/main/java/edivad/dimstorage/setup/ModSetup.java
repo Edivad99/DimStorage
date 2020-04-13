@@ -6,6 +6,7 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
 import edivad.dimstorage.plugin.DimTankPlugin;
+import edivad.dimstorage.tools.DimCommands;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -13,6 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
@@ -42,5 +44,11 @@ public class ModSetup {
 	public static void preServerStart(final FMLServerStartedEvent event)
 	{
 		DimStorageManager.reloadManager(false);
+	}
+
+	@SubscribeEvent
+	public static void serverLoad(final FMLServerStartingEvent event)
+	{
+		DimCommands.init(event.getCommandDispatcher());
 	}
 }
