@@ -80,7 +80,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		for(Direction side : Direction.values())
 		{
 			TileEntity tile = world.getTileEntity(pos.offset(side));
-			if(tile != null)
+			if(tile != null && !(tile instanceof TileEntityDimTank))
 			{
 				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
 				if(handler != null)
