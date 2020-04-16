@@ -162,7 +162,10 @@ public class Frequency {
 			return false;
 
 		Frequency f = (Frequency) obj;
-		return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
+		if(f.hasOwner())
+			return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
+		else
+			return (f.channel == this.channel && f.ownerText.equals(ownerText));
 	}
 
 	public Frequency set(Frequency frequency)

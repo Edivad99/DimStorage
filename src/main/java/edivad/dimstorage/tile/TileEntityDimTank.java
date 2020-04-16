@@ -80,7 +80,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		for(Direction side : Direction.values())
 		{
 			TileEntity tile = world.getTileEntity(pos.offset(side));
-			if(tile != null && !(tile instanceof TileEntityDimTank))
+			if(tile != null && checkSameFrequency(tile))
 			{
 				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
 				if(handler != null)
@@ -97,6 +97,17 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 				}
 			}
 		}
+	}
+
+	private boolean checkSameFrequency(TileEntity tile)
+	{
+		if(tile instanceof TileEntityDimTank)
+		{
+			TileEntityDimTank otherTank = (TileEntityDimTank) tile;
+
+			return !frequency.equals(otherTank.frequency);
+		}
+		return true;
 	}
 
 	@Override

@@ -134,10 +134,8 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLogg
 			if(tank.autoEject)
 				probeInfo.horizontal().text("Auto-eject: Yes");
 
-			if(tank.liquidState.serverLiquid.getAmount() > 0)
-			{
+			if(!tank.liquidState.serverLiquid.isEmpty())
 				probeInfo.element(new FluidElement(tank.liquidState.serverLiquid, DimTankStorage.CAPACITY));
-			}
 		}
 	}
 
