@@ -139,6 +139,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLogg
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public IFluidState getFluidState(BlockState state)
 	{

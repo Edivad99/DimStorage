@@ -77,7 +77,6 @@ public class Config {
 		blocks.add(getNamespace(Blocks.GRANITE));
 		blocks.add(getNamespace(Blocks.DIORITE));
 		blocks.add(getNamespace(Blocks.ANDESITE));
-		blocks.add(getNamespace(Blocks.MOSSY_COBBLESTONE));
 		blocks.add(getNamespace(Blocks.SAND));
 		blocks.add(getNamespace(Blocks.SANDSTONE));
 		blocks.add(getNamespace(Blocks.NETHERRACK));

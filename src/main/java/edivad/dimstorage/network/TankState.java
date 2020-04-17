@@ -32,7 +32,7 @@ public abstract class TankState {
 			serverLiquid = getFluidStorageServer();
 			sampleB = serverLiquid.copy();
 
-			//Se aggiungo questa linea funziona tutto
+			//TODO: Fix the spam of packet
 			sendSyncPacket();
 			//			if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250)
 			//			{
