@@ -69,10 +69,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		if(autoEject)
 			ejectLiquid();
 		liquidState.update(world.isRemote);
-		//		if(world.isRemote)
-		//			System.out.println(liquidState.clientLiquid.getAmount());
-		//		else 
-		//			System.out.println(liquidState.serverLiquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -122,6 +118,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public DimTankStorage getStorage()
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
+	}
+	
+	public int getComparatorInput()
+	{
+		int amount = getStorage().getFluidInTank(0).getAmount();
+		return amount / 1000;
 	}
 
 	public void swapAutoEject()

@@ -3,14 +3,13 @@ package edivad.dimstorage.network;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimTankStorage;
-import net.minecraft.fluid.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class TankState {
 
 	public Frequency frequency;
-	public FluidStack clientLiquid = new FluidStack(Fluids.WATER, 0);
-	public FluidStack serverLiquid = new FluidStack(Fluids.WATER, 0);
+	public FluidStack clientLiquid = FluidStack.EMPTY;
+	public FluidStack serverLiquid = FluidStack.EMPTY;
 
 	public void setFrequency(Frequency frequency)
 	{
@@ -19,42 +18,22 @@ public abstract class TankState {
 
 	public void update(boolean client)
 	{
-		FluidStack sampleA, sampleB;
+		FluidStack prec, succ;
 		if(client)
 		{
-			sampleB = clientLiquid.copy();
-
-			clientLiquid = new FluidStack(serverLiquid, serverLiquid.getAmount());
-			sampleA = clientLiquid;
+			prec = clientLiquid.copy();
+			clientLiquid = serverLiquid.copy();
+			succ = clientLiquid;
 		}
 		else
 		{
+			prec = serverLiquid.copy();
 			serverLiquid = getFluidStorageServer();
-			sampleB = serverLiquid.copy();
-
-			//TODO: Fix the spam of packet
+			succ = serverLiquid;
 			sendSyncPacket();
-			//			if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250)
-			//			{
-			//				sendSyncPacket();
-			//				clientLiquid = serverLiquid;
-			//			}
-
-			//			if(!serverLiquid.isFluidEqual(clientLiquid))
-			//			{
-			//				sendSyncPacket();
-			//				clientLiquid = serverLiquid;
-			//			}
-			//			else if(Math.abs(clientLiquid.getAmount() - serverLiquid.getAmount()) > 250 || (serverLiquid.getAmount() == 0 && clientLiquid.getAmount() > 0))
-			//			{
-			//				// Diff grater than 250 Or server no longer has liquid and client does.
-			//				sendSyncPacket();
-			//				clientLiquid = serverLiquid;
-			//			}
-
-			sampleA = serverLiquid;
+			clientLiquid = serverLiquid.copy();
 		}
-		if((sampleB.getAmount() == 0) != (sampleA.getAmount() == 0) || !sampleB.isFluidEqual(sampleA))
+		if(!succ.isFluidStackIdentical(prec))
 		{
 			onLiquidChanged();
 		}

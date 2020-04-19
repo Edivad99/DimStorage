@@ -112,6 +112,19 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLogg
 		}
 		return 0;
 	}
+	
+	@Override
+	public boolean hasComparatorInputOverride(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
+	{
+		TileEntity te = worldIn.getTileEntity(pos);
+		return (te instanceof TileEntityDimTank) ? ((TileEntityDimTank) te).getComparatorInput() : 0;
+	}
 
 	@Override
 	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
