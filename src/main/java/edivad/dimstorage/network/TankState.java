@@ -33,7 +33,7 @@ public abstract class TankState {
 			sendSyncPacket();
 			clientLiquid = serverLiquid.copy();
 		}
-		if(!succ.isFluidStackIdentical(prec))
+		if((prec.getAmount() == 0) != (succ.getAmount() == 0) || !prec.isFluidEqual(succ))
 		{
 			onLiquidChanged();
 		}

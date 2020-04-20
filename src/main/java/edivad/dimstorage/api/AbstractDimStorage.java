@@ -13,7 +13,7 @@ public abstract class AbstractDimStorage {
 	public AbstractDimStorage(DimStorageManager manager, Frequency freq)
 	{
 		this.manager = manager;
-		this.freq = freq;
+		this.freq = freq.copy();
 
 		this.dirty = false;
 		this.changeCount = 0;

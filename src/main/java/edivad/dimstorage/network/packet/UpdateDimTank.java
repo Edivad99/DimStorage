@@ -49,6 +49,7 @@ public class UpdateDimTank extends UpdateDimBase {
 		tank.setFreq(freq);
 		tank.locked = locked;
 		tank.autoEject = autoEject;
+		tank.markDirty();
 
 		world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
 		NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
