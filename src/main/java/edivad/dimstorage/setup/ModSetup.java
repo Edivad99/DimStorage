@@ -37,7 +37,6 @@ public class ModSetup {
 
 		//Compat
 		MainCompatHandler.registerTOP();
-		//MainCompatHandler.registerOC();
 	}
 
 	@SubscribeEvent

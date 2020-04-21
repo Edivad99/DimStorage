@@ -2,13 +2,7 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
-import edivad.dimstorage.compat.top.FluidElement;
-import edivad.dimstorage.compat.top.TOPInfoProvider;
-import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -30,7 +24,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorld;
@@ -38,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLoggable {
+public class DimTank extends DimBlockBase implements IWaterLoggable {
 
 	private static final VoxelShape BOX = VoxelShapes.create(2 / 16D, 0 / 16D, 2 / 16D, 14 / 16D, 16 / 16D, 14 / 16D);
 	private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
@@ -124,32 +117,6 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLogg
 	{
 		TileEntity te = worldIn.getTileEntity(pos);
 		return (te instanceof TileEntityDimTank) ? ((TileEntityDimTank) te).getComparatorInput() : 0;
-	}
-
-	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
-	{
-		TileEntity te = world.getTileEntity(data.getPos());
-		if(te instanceof TileEntityDimTank)
-		{
-			TileEntityDimTank tank = (TileEntityDimTank) te;
-
-			if(tank.frequency.hasOwner())
-			{
-				if(tank.canAccess(player))
-					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tank.frequency.getOwner());
-				else
-					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tank.frequency.getOwner());
-			}
-			probeInfo.horizontal().text("Frequency: " + tank.frequency.getChannel());
-			if(tank.locked)
-				probeInfo.horizontal().text("Locked: Yes");
-			if(tank.autoEject)
-				probeInfo.horizontal().text("Auto-eject: Yes");
-
-			if(!tank.liquidState.serverLiquid.isEmpty())
-				probeInfo.element(new FluidElement(tank.liquidState.serverLiquid, DimTankStorage.CAPACITY));
-		}
 	}
 
 	@SuppressWarnings("deprecation")
