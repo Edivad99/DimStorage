@@ -127,7 +127,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
 					for(int i = 0; i < pe.inventory.getSizeInventory(); i++)
 					{
 						Item item = pe.inventory.getStackInSlot(i).getItem();
-						if(item.toString().matches(Config.PATTERN_DIMTABLET.get()))
+						if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString()))
 						{
 							InventoryUtils.mergeItemStack(pe.inventory.getStackInSlot(i), 0, getStorage(worldIn, f).getSizeInventory(), chestInventory);
 						}

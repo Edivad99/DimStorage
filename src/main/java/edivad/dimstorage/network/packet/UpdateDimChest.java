@@ -49,6 +49,7 @@ public class UpdateDimChest extends UpdateDimBase {
 		chest.setFreq(freq);
 		chest.locked = locked;
 		chest.collect = collect;
+		chest.markDirty();
 
 		world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
 		NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));

@@ -1,0 +1,43 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+
+    "item.dimstorage.dim_core": "Nucleo Dimensionale",
+    "item.dimstorage.solid_dim_core": "Nucleo Dimensionale Solido",
+    "item.dimstorage.dim_wall": "Muro Dimensionale",
+    "item.dimstorage.dimensional_tablet": "Tablet Dimensionale",
+
+    "block.dimstorage.dimensional_chest": "Baule Dimensionale",
+    "block.dimstorage.dimensional_tank": "Tanica Dimensionale",
+
+    "advancements.dimstorage.root": "Nucleo Dimensionale",
+    "advancements.dimstorage.root.desc": "La potenza delle dimensioni",
+    "advancements.dimstorage.dimensional_chest": "Baule Dimensionale",
+    "advancements.dimstorage.dimensional_chest.desc": "Un inventario piu' connesso",
+    "advancements.dimstorage.dimensional_tablet": "Tablet Dimensionale",
+    "advancements.dimstorage.dimensional_tablet.desc": "Un inventario remoto",
+    "advancements.dimstorage.dimensional_tank": "Tanica Dimensionale",
+    "advancements.dimstorage.dimensional_tank.desc": "Una tanica multi-dimensionale",
+
+    "gui.dimstorage.change": "Cambia",
+    "gui.dimstorage.owner": "Propietario:",
+    "gui.dimstorage.frequency": "Frequenza:",
+    "gui.dimstorage.locked": "Bloccato:",
+    "gui.dimstorage.yes": "Si",
+    "gui.dimstorage.no": "No",
+    "gui.dimstorage.collecting": "Raccogli",
+    "gui.dimstorage.idle": "Idle",
+    "gui.dimstorage.eject": "Auto-espelli",
+    "gui.dimstorage.liquid": "Liquido:",
+    "gui.dimstorage.amount": "Quantita':",
+    "gui.dimstorage.temperature": "Temperatura:",
+    "gui.dimstorage.luminosity": "Luminosita':",
+    "gui.dimstorage.gas": "Gassoso:",
+    "gui.dimstorage.empty": "Vuoto",
+
+    "message.dimstorage.adviceToLink": "@7Premi Shift + tasto destro per collegarti alla DimChest",
+    "message.dimstorage.holdShift": "@7Premi @b@oShift @7per i dettagli",
+    "message.dimstorage.changeAutoCollect": "@7Premi @b@oShift @7+ tasto destro su un blocco non DimChest per abilitare/disabilitare il raccoglimento automatico",
+
+    "tooltip.dimstorage.collect": "Quando sei su Raccogli significa che la DimChest prelevera' tutti gli oggetti dai blocchi vicini in un area %dx%d"
+
+}

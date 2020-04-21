@@ -162,7 +162,10 @@ public class Frequency {
 			return false;
 
 		Frequency f = (Frequency) obj;
-		return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
+		if(f.hasOwner())
+			return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
+		else
+			return (f.channel == this.channel && f.ownerText.equals(ownerText));
 	}
 
 	public Frequency set(Frequency frequency)
@@ -175,7 +178,7 @@ public class Frequency {
 
 	public static Frequency readFromPacket(PacketBuffer buf)
 	{
-		return new Frequency(buf.readString(32767), buf.readBoolean() ? buf.readUniqueId() : null, buf.readInt());
+		return new Frequency(buf.readString(32767), buf.readBoolean() ? buf.readUniqueId() : null, buf.readVarInt());
 	}
 
 	public void writeToPacket(PacketBuffer buf)
@@ -184,7 +187,7 @@ public class Frequency {
 		buf.writeBoolean(hasOwner());
 		if(hasOwner())
 			buf.writeUniqueId(owner);
-		buf.writeInt(channel);
+		buf.writeVarInt(channel);
 	}
 
 	public boolean canAccess(@Nonnull PlayerEntity player)

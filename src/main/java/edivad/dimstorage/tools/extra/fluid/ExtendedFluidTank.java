@@ -1,6 +1,5 @@
 package edivad.dimstorage.tools.extra.fluid;
 
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
@@ -16,7 +15,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	{
 		if(type == null)
 		{
-			type = new FluidStack(Fluids.WATER, 1000);
+			type = FluidStack.EMPTY;
 			changeType = true;
 		}
 		fluid = new FluidStack(type, 0);
@@ -68,7 +67,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	public FluidStack drain(int maxDrain, FluidAction action)
 	{
 		if(fluid.getAmount() == 0 || maxDrain <= 0)
-			return new FluidStack(Fluids.WATER, 0);
+			return FluidStack.EMPTY;
 
 		int toDrain = Math.min(maxDrain, fluid.getAmount());
 		if(action == FluidAction.EXECUTE && toDrain > 0)
@@ -84,7 +83,7 @@ public class ExtendedFluidTank implements IFluidTank {
 	public FluidStack drain(FluidStack resource, FluidAction action)
 	{
 		if(resource == null || !resource.isFluidEqual(fluid))
-			return new FluidStack(Fluids.WATER, 0);
+			return FluidStack.EMPTY;
 
 		return drain(resource.getAmount(), action);
 	}

@@ -8,7 +8,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +19,7 @@ public class FluidUtils {
 	public static FluidStack read(CompoundNBT tag)
 	{
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(tag);
-		return stack == null ? new FluidStack(Fluids.WATER, 0) : stack;
+		return stack == null ? FluidStack.EMPTY : stack;
 	}
 
 	public static CompoundNBT write(FluidStack fluid, CompoundNBT tag)

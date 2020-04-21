@@ -70,10 +70,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		if(autoEject)
 			ejectLiquid();
 		liquidState.update(world.isRemote);
-		//		if(world.isRemote)
-		//			System.out.println(liquidState.clientLiquid.getAmount());
-		//		else 
-		//			System.out.println(liquidState.serverLiquid.getAmount());
 	}
 
 	private void ejectLiquid()
@@ -81,7 +77,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		for(Direction side : Direction.values())
 		{
 			TileEntity tile = world.getTileEntity(pos.offset(side));
-			if(tile != null)
+			if(tile != null && checkSameFrequency(tile))
 			{
 				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
 				if(handler != null)
@@ -100,6 +96,17 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		}
 	}
 
+	private boolean checkSameFrequency(TileEntity tile)
+	{
+		if(tile instanceof TileEntityDimTank)
+		{
+			TileEntityDimTank otherTank = (TileEntityDimTank) tile;
+
+			return !frequency.equals(otherTank.frequency);
+		}
+		return true;
+	}
+
 	@Override
 	public void setFreq(Frequency frequency)
 	{
@@ -112,6 +119,12 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public DimTankStorage getStorage()
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
+	}
+
+	public int getComparatorInput()
+	{
+		int amount = getStorage().getFluidInTank(0).getAmount();
+		return amount / 1000;
 	}
 
 	public void swapAutoEject()

@@ -13,12 +13,4 @@ public class MainCompatHandler {
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
 		}
 	}
-
-	//	public static void registerOC()
-	//	{
-	//		if(ModList.get().isLoaded("opencomputers"))
-	//		{
-	//			Driver.add(new DriverDimChest());
-	//		}
-	//	}
 }
