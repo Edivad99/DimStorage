@@ -86,7 +86,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 		synchronized(this)
 		{
 			open++;
-			if(open == 1)
+			if(open >= 1)
 			{
 				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, true));
 			}
@@ -101,7 +101,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 		synchronized(this)
 		{
 			open--;
-			if(open == 0)
+			if(open <= 0)
 			{
 				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, false));
 			}

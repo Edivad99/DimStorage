@@ -46,7 +46,6 @@ public class UpdateDimChest extends UpdateDimBase {
 		}
 
 		TileEntityDimChest chest = (TileEntityDimChest) tile;
-		chest.getStorage().closeInventory();
 		chest.setFreq(freq);
 		chest.locked = locked;
 		chest.collect = collect;
