@@ -2,12 +2,8 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
-import edivad.dimstorage.compat.top.TOPInfoProvider;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -21,11 +17,10 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class DimChest extends DimBlockBase implements TOPInfoProvider {
+public class DimChest extends DimBlockBase {
 
 	public DimChest()
 	{
@@ -95,27 +90,5 @@ public class DimChest extends DimBlockBase implements TOPInfoProvider {
 	{
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
-	}
-
-	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
-	{
-		TileEntity te = world.getTileEntity(data.getPos());
-		if(te instanceof TileEntityDimChest)
-		{
-			TileEntityDimChest tile = (TileEntityDimChest) te;
-
-			if(tile.frequency.hasOwner())
-			{
-				if(tile.canAccess(player))
-					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + tile.frequency.getOwner());
-				else
-					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + tile.frequency.getOwner());
-			}
-			probeInfo.horizontal().text("Frequency: " + tile.frequency.getChannel());
-			if(tile.locked)
-				probeInfo.horizontal().text("Locked: Yes");
-			probeInfo.horizontal().text("Collecting: " + (tile.collect ? "Yes" : "No"));
-		}
 	}
 }
