@@ -112,7 +112,7 @@ public class DimTank extends DimBlockBase implements TOPInfoProvider, IWaterLogg
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public boolean hasComparatorInputOverride(BlockState state)
 	{

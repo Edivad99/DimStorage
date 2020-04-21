@@ -119,7 +119,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
 	}
-	
+
 	public int getComparatorInput()
 	{
 		int amount = getStorage().getFluidInTank(0).getAmount();
