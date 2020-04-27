@@ -13,6 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
@@ -49,5 +50,12 @@ public class ModSetup {
 	public static void serverLoad(final FMLServerStartingEvent event)
 	{
 		DimCommands.init(event.getCommandDispatcher());
+	}
+
+	@SubscribeEvent
+	public static void onFingerprintViolation(final FMLFingerprintViolationEvent event)
+	{
+		String file = event.getSource() == null ? "" : event.getSource().getName();
+		Main.logger.warn("Invalid fingerprint detected! The file " + file + " may have been tampered with. This version will NOT be supported by the author!");
 	}
 }

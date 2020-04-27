@@ -26,9 +26,11 @@ public class DimCommands {
 			{
 				String itemNameSpace = item.getRegistryName().toString();
 				List<String> originalList = Config.DIMTABLET_LIST.get();
-				originalList.add(itemNameSpace);
-
-				Config.DIMTABLET_LIST.set(originalList);
+				if(!originalList.contains(itemNameSpace))
+				{
+					originalList.add(itemNameSpace);
+					Config.DIMTABLET_LIST.set(originalList);
+				}
 
 				context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added " + itemNameSpace + " to the list"));
 			}

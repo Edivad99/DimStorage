@@ -2,6 +2,7 @@ package edivad.dimstorage.compat.top;
 
 import javax.annotation.Nonnull;
 
+import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
@@ -16,17 +17,24 @@ public class FluidElement extends TOPElement {
 	@Nonnull
 	protected final FluidStack fluid;
 	protected final int capacity;
-
-	public FluidElement(@Nonnull FluidStack fluid, int capacity)
+	protected final int colorLiquid;
+	
+	protected FluidElement(@Nonnull FluidStack fluid, int capacity, int colorLiquid)
 	{
 		super(0xFF000000, 0xFFFFFF);
 		this.fluid = fluid;
 		this.capacity = capacity;
+		this.colorLiquid = colorLiquid;
+	}
+
+	public FluidElement(@Nonnull TileEntityDimTank tile, int capacity)
+	{
+		this(tile.liquidState.serverLiquid, capacity, FluidUtils.getLiquidColorWithBiome(tile.liquidState.serverLiquid, tile));
 	}
 
 	public FluidElement(PacketBuffer buf)
 	{
-		this(buf.readFluidStack(), buf.readInt());
+		this(buf.readFluidStack(), buf.readInt(), buf.readInt());
 	}
 
 	@Override
@@ -34,6 +42,7 @@ public class FluidElement extends TOPElement {
 	{
 		buf.writeFluidStack(fluid);
 		buf.writeInt(capacity);
+		buf.writeInt(colorLiquid);
 	}
 
 	@Override
@@ -63,7 +72,7 @@ public class FluidElement extends TOPElement {
 	@Override
 	protected boolean applyRenderColor()
 	{
-		FluidUtils.color(fluid);
+		FluidUtils.color(colorLiquid);
 		return true;
 	}
 

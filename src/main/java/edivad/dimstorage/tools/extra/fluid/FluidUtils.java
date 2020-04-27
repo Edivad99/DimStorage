@@ -8,9 +8,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -68,19 +73,26 @@ public class FluidUtils {
 		RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
 	}
 
-	public static void color(@Nonnull FluidStack fluid)
-	{
-		if(!fluid.isEmpty())
-		{
-			color(fluid.getFluid().getAttributes().getColor(fluid));
-		}
-	}
-
 	@Nullable
-	public static TextureAtlasSprite getFluidTexture(FluidStack stack)
+	public static TextureAtlasSprite getFluidTexture(@Nonnull FluidStack stack)
 	{
 		FluidAttributes fa = stack.getFluid().getAttributes();
 		ResourceLocation still = fa.getStillTexture(stack);
 		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
+	}
+	
+	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull World world, @Nonnull BlockPos pos)
+	{
+		int color;
+		if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
+			color = BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+		else
+			color = fluid.getFluid().getAttributes().getColor(fluid);
+		return color;
+	}
+	
+	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
+	{
+		return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
 	}
 }

@@ -33,13 +33,15 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 	{
 		if(tileEntityIn == null || tileEntityIn.isRemoved() || tileEntityIn.liquidState.clientLiquid == null)
 			return;
+
 		matrixStackIn.push();
-		renderFluid(tileEntityIn.liquidState.clientLiquid, matrixStackIn, bufferIn);
+		renderFluid(tileEntityIn, matrixStackIn, bufferIn);
 		matrixStackIn.pop();
 	}
 
-	private void renderFluid(@Nonnull FluidStack fluid, MatrixStack matrix, IRenderTypeBuffer bufferIn)
+	private void renderFluid(@Nonnull TileEntityDimTank tileEntity, MatrixStack matrix, IRenderTypeBuffer bufferIn)
 	{
+		FluidStack fluid = tileEntity.liquidState.clientLiquid;
 		float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
 		if(scale > 0.0f)
 		{
@@ -57,7 +59,8 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			float margin = 0.9f;
 			float offset = 0.1f;
 
-			int color = fluid.getFluid().getAttributes().getColor(fluid);
+			int color = FluidUtils.getLiquidColorWithBiome(fluid, tileEntity);
+			
 			float r = FluidUtils.getRed(color);
 			float g = FluidUtils.getGreen(color);
 			float b = FluidUtils.getBlue(color);

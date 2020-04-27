@@ -13,14 +13,18 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
+import net.minecraftforge.gradle.common.task.SignJar
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 version = "${mod_version}"
-group = "edivad.dimstorage"
+group = 'edivad.dimstorage'
 archivesBaseName = "DimStorage-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: "snapshot", version: "${mappings_version}"
+    mappings channel: 'snapshot', version: "${mappings_version}"
 	
     runs {
         client {
@@ -77,16 +81,16 @@ minecraft {
 
 repositories {
 	maven {
-        name = "Waila"
-        url "https://tehnut.info/maven"
+        name 'Waila'
+        url 'https://tehnut.info/maven'
     }
     maven {
-        name = "TOP"
-        url "https://maven.tterrag.com/"
+        name 'TOP'
+        url 'https://maven.tterrag.com/'
     }
 	maven {
-        name = "JEI"
-        url = "https://dvs1.progwml6.com/files/maven"
+        name 'JEI'
+        url 'https://dvs1.progwml6.com/files/maven'
     }
 }
 
@@ -110,13 +114,34 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "DimStorage",
-            "Specification-Vendor": "edivad",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"edivad",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            'Specification-Title': 'DimStorage',
+            'Specification-Vendor': 'edivad',
+            'Specification-Version': '1', // We are version 1 of ourselves
+            'Implementation-Title': project.name,
+            'Implementation-Version': "${version}",
+            'Implementation-Vendor' :'edivad',
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
+
+task signJar(type: SignJar, dependsOn: jar) {
+
+	//Skips if the keyStore property is missing.
+    onlyIf {
+        project.hasProperty('keyStore')
+    }
+
+    project.logger.lifecycle('Signing jar ' + jar.archivePath.getName());
+    // findProperty allows us to reference the property without it existing. 
+    // Using project.propName would cause the script to fail validation if 
+    // the property did not exist. 
+    keyStore = project.findProperty('keyStore')
+    alias = project.findProperty('keyStoreAlias')
+    storePass = project.findProperty('keyStorePass')
+    keyPass = project.findProperty('keyStoreKeyPass')
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
