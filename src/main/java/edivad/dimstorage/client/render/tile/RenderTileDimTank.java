@@ -32,13 +32,13 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 		GlStateManager.disableBlend();
 		GlStateManager.translated(x, y, z);
 		bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-		if(tileEntity != null)
-			renderFluid(tileEntity.liquidState.clientLiquid);
+		renderFluid(tileEntity);
 		GlStateManager.popMatrix();
 	}
 
-	private void renderFluid(@Nonnull FluidStack fluid)
+	private void renderFluid(@Nonnull TileEntityDimTank tileEntity)
 	{
+		FluidStack fluid = tileEntity.liquidState.clientLiquid;
 		float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
 		if(scale > 0.0f)
 		{
@@ -58,7 +58,8 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			float margin = 0.9f;
 			float offset = 0.1f;
 
-			int color = fluid.getFluid().getAttributes().getColor(fluid);
+			int color = FluidUtils.getLiquidColorWithBiome(fluid, tileEntity);
+			
 			float r = FluidUtils.getRed(color);
 			float g = FluidUtils.getGreen(color);
 			float b = FluidUtils.getBlue(color);

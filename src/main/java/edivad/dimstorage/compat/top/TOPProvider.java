@@ -60,7 +60,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 					probeInfo.horizontal().text("Auto-eject: Yes");
 
 				if(!tank.liquidState.serverLiquid.isEmpty())
-					probeInfo.element(new FluidElement(tank.liquidState.serverLiquid, DimTankStorage.CAPACITY));
+					probeInfo.element(new FluidElement(tank, DimTankStorage.CAPACITY));
 			}
 		}
 	}
