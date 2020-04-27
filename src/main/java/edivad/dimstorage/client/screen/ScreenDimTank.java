@@ -58,7 +58,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		{
 			this.font.drawString(liquid + " " + liquidStack.getDisplayName().getFormattedText(), 50, 25, 4210752);
 			this.font.drawString(amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
-			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "ï¿½C", 50, 45, 4210752);
+			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "°C", 50, 45, 4210752);
 			this.font.drawString(luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
 			this.font.drawString(gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
 		}

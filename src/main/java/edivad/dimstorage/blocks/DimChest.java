@@ -57,7 +57,7 @@ public class DimChest extends DimBlockBase {
 			return ActionResultType.FAIL;
 
 		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
-		if(!player.isShiftKeyDown())
+		if(!player.isCrouching())
 			return owner.activate(player, worldIn, pos, handIn);
 		return ActionResultType.SUCCESS;
 	}
