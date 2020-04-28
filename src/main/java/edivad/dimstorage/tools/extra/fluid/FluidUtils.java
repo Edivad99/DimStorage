@@ -80,14 +80,12 @@ public class FluidUtils {
 		return Minecraft.getInstance().getTextureMap().getSprite(still);
 	}
 	
-	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull World world, @Nonnull BlockPos pos)
+	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
 	{
-		int color;
 		if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-			color = BiomeColors.getWaterColor(world, pos) | 0xFF000000;
-		else
-			color = fluid.getFluid().getAttributes().getColor(fluid);
-		return color;
+			return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+		
+		return fluid.getFluid().getAttributes().getColor(fluid);
 	}
 	
 	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
