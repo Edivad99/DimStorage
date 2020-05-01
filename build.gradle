@@ -25,7 +25,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 minecraft {
     mappings channel: 'snapshot', version: "${mappings_version}"
-	
+
     runs {
         client {
             workingDirectory project.file('run')
@@ -80,7 +80,7 @@ minecraft {
 }
 
 repositories {
-	maven {
+    maven {
         name 'Waila'
         url 'https://tehnut.info/maven'
     }
@@ -88,24 +88,24 @@ repositories {
         name 'TOP'
         url 'https://maven.tterrag.com/'
     }
-	maven {
+    maven {
         name 'JEI'
         url 'https://dvs1.progwml6.com/files/maven'
     }
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	
-	compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
+    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
         transitive = false
     })
-	// at runtime, use the full TOP jar
-	//compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+    // at runtime, use the full TOP jar
+    //compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
     //    transitive = false
     //})
-    
+
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     // at runtime, use the full JEI jar
@@ -129,7 +129,7 @@ jar {
 
 task signJar(type: SignJar, dependsOn: jar) {
 
-	//Skips if the keyStore property is missing.
+    //Skips if the keyStore property is missing.
     onlyIf {
         project.hasProperty('keyStore')
     }
