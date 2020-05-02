@@ -24,8 +24,11 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.ILightReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 
 public class DimTank extends DimBlockBase implements IWaterLoggable {
 
@@ -77,14 +80,20 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
 	{
 		return BOX;
 	}
-
+	
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		TileEntity tile = world.getTileEntity(pos);
 		if(tile instanceof TileEntityDimTank)
 		{
-			return ((TileEntityDimTank) tile).getLightValue();
+			TileEntityDimTank tank = (TileEntityDimTank) tile;
+			FluidStack fluid = tank.liquidState.clientLiquid;
+			if(!fluid.isEmpty())
+			{
+				FluidAttributes attributes = fluid.getFluid().getAttributes();
+				return world instanceof ILightReader ? attributes.getLuminosity((ILightReader) world, pos) : attributes.getLuminosity(fluid);
+			}
 		}
 		return 0;
 	}

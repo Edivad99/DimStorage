@@ -149,13 +149,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		autoEject = tag.getBoolean("autoEject");
 	}
 
-	public int getLightValue()
-	{
-		if(liquidState.serverLiquid.getAmount() > 0)
-			return FluidUtils.getLuminosity(liquidState.clientLiquid, liquidState.serverLiquid.getAmount() / 16D);
-		return 0;
-	}
-
 	@Override
 	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{

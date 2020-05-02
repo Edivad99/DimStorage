@@ -7,7 +7,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.nbt.CompoundNBT;
@@ -30,21 +29,6 @@ public class FluidUtils {
 	public static CompoundNBT write(FluidStack fluid, CompoundNBT tag)
 	{
 		return fluid == null || fluid.getFluid() == null ? tag : fluid.writeToNBT(tag);
-	}
-
-	public static int getLuminosity(FluidStack stack, double density)
-	{
-		Fluid fluid = stack.getFluid();
-		if(fluid == null)
-		{
-			return 0;
-		}
-		int light = fluid.getAttributes().getLuminosity(stack);
-		if(fluid.getAttributes().isGaseous())
-		{
-			light = (int) (light * density);
-		}
-		return light;
 	}
 
 	//Render liquid
