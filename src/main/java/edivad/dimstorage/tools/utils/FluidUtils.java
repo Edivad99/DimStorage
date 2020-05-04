@@ -1,4 +1,4 @@
-package edivad.dimstorage.tools.extra.fluid;
+package edivad.dimstorage.tools.utils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -7,9 +7,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,32 +17,6 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
-
-	public static FluidStack read(CompoundNBT tag)
-	{
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(tag);
-		return stack == null ? FluidStack.EMPTY : stack;
-	}
-
-	public static CompoundNBT write(FluidStack fluid, CompoundNBT tag)
-	{
-		return fluid == null || fluid.getFluid() == null ? tag : fluid.writeToNBT(tag);
-	}
-
-	public static int getLuminosity(FluidStack stack, double density)
-	{
-		Fluid fluid = stack.getFluid();
-		if(fluid == null)
-		{
-			return 0;
-		}
-		int light = fluid.getAttributes().getLuminosity(stack);
-		if(fluid.getAttributes().isGaseous())
-		{
-			light = (int) (light * density);
-		}
-		return light;
-	}
 
 	//Render liquid
 	public static float getRed(int color)

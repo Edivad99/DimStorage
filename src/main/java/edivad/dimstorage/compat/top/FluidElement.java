@@ -3,7 +3,7 @@ package edivad.dimstorage.compat.top;
 import javax.annotation.Nonnull;
 
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
+import edivad.dimstorage.tools.utils.FluidUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;

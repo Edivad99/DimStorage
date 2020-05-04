@@ -1,12 +1,13 @@
 package edivad.dimstorage.storage;
 
+import java.util.Arrays;
+
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
-import edivad.dimstorage.tools.extra.ArrayUtils;
-import edivad.dimstorage.tools.extra.InventoryUtils;
+import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -122,7 +123,10 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 	@Override
 	public boolean isEmpty()
 	{
-		return ArrayUtils.count(items, (stack -> !stack.isEmpty())) <= 0;
+		for(ItemStack itemStack : items)
+			if(!itemStack.isEmpty())
+				return false;
+		return true;
 	}
 
 	public ItemStack decrStackSize(int slot, int size)
@@ -156,7 +160,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 		synchronized(this)
 		{
 			items = new ItemStack [getSizeInventory()];
-			ArrayUtils.fill(items, ItemStack.EMPTY);
+			Arrays.fill(items, ItemStack.EMPTY);
 		}
 	}
 

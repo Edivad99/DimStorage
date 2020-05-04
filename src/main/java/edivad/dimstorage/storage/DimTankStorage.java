@@ -3,14 +3,14 @@ package edivad.dimstorage.storage;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
-import edivad.dimstorage.tools.extra.fluid.ExtendedFluidTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class DimTankStorage extends AbstractDimStorage implements IFluidHandler {
 
-	private class Tank extends ExtendedFluidTank {
+	private class Tank extends FluidTank {
 
 		public Tank(int capacity)
 		{
@@ -18,7 +18,7 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
 		}
 
 		@Override
-		public void onLiquidChanged()
+		protected void onContentsChanged()
 		{
 			setDirty();
 		}
@@ -92,13 +92,13 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
 	public CompoundNBT saveToTag()
 	{
 		CompoundNBT compound = new CompoundNBT();
-		compound.put("tank", tank.toTag());
+		compound.put("tank", tank.writeToNBT(new CompoundNBT()));
 		return compound;
 	}
 
 	@Override
 	public void loadFromTag(CompoundNBT tag)
 	{
-		tank.fromTag(tag.getCompound("tank"));
+		tank.readFromNBT(tag.getCompound("tank"));
 	}
 }

@@ -12,7 +12,7 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Config;
-import edivad.dimstorage.tools.extra.InventoryUtils;
+import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

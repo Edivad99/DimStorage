@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import edivad.dimstorage.tools.extra.GuiUtils;
+import edivad.dimstorage.tools.utils.GuiUtils;
 import mcjty.theoneprobe.api.IElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;

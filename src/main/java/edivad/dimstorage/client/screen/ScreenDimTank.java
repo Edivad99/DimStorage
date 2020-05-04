@@ -7,11 +7,10 @@ import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.Translate;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
+import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -52,13 +51,14 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		FluidStack liquidStack = ownerTile.liquidState.clientLiquid;
-		FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
 
-		if(!liquidStack.getFluid().isEquivalentTo(Fluids.EMPTY))
+		if(!liquidStack.isEmpty())
 		{
-			this.font.drawString(liquid + " " + liquidStack.getDisplayName().getFormattedText(), 50, 25, 4210752);
+			FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
+			String liquidName = liquidStack.getDisplayName().getFormattedText();
+			this.font.drawString(liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
 			this.font.drawString(amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
-			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "°C", 50, 45, 4210752);
+			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
 			this.font.drawString(luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
 			this.font.drawString(gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
 		}

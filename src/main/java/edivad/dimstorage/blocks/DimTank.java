@@ -29,6 +29,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 
 public class DimTank extends DimBlockBase implements IWaterLoggable {
 
@@ -100,7 +102,13 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
 		TileEntity tile = world.getTileEntity(pos);
 		if(tile instanceof TileEntityDimTank)
 		{
-			return ((TileEntityDimTank) tile).getLightValue();
+			TileEntityDimTank tank = (TileEntityDimTank) tile;
+			FluidStack fluid = tank.liquidState.clientLiquid;
+			if(!fluid.isEmpty())
+			{
+				FluidAttributes attributes = fluid.getFluid().getAttributes();
+				return attributes.getLuminosity(fluid);
+			}
 		}
 		return 0;
 	}

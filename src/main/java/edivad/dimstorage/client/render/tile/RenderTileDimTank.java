@@ -8,7 +8,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
+import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;

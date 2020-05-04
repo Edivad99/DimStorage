@@ -11,7 +11,7 @@ import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.Translate;
-import edivad.dimstorage.tools.extra.InventoryUtils;
+import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
