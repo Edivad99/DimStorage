@@ -28,7 +28,7 @@ public class Registration {
 	private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Main.MODID);
 	private static final DeferredRegister<TileEntityType<?>> TILES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, Main.MODID);
 	private static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, Main.MODID);
-	
+
 	public static Item.Properties globalProperties = new Item.Properties().group(ModSetup.dimStorageTab).maxStackSize(64);
 
 	public static void init()
@@ -73,7 +73,6 @@ public class Registration {
 		TileEntityDimTank tile = (TileEntityDimTank) te;
 		return new ContainerDimTank(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
 	}));
-
 
 	public static final RegistryObject<Item> DIMCORE = ITEMS.register("dim_core", () -> new Item(globalProperties));
 	public static final RegistryObject<Item> DIMWALL = ITEMS.register("dim_wall", () -> new Item(globalProperties));

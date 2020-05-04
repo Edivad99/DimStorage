@@ -51,15 +51,15 @@ public class FluidUtils {
 		ResourceLocation still = fa.getStillTexture();
 		return Minecraft.getInstance().getTextureMap().getSprite(still);
 	}
-	
+
 	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
 	{
 		if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
 			return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
-		
+
 		return fluid.getFluid().getAttributes().getColor(fluid);
 	}
-	
+
 	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
 	{
 		return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
