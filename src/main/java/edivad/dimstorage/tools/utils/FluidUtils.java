@@ -1,4 +1,4 @@
-package edivad.dimstorage.tools.extra.fluid;
+package edivad.dimstorage.tools.utils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,17 +18,6 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
-
-	public static FluidStack read(CompoundNBT tag)
-	{
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(tag);
-		return stack == null ? FluidStack.EMPTY : stack;
-	}
-
-	public static CompoundNBT write(FluidStack fluid, CompoundNBT tag)
-	{
-		return fluid == null || fluid.getFluid() == null ? tag : fluid.writeToNBT(tag);
-	}
 
 	//Render liquid
 	public static float getRed(int color)
@@ -64,17 +52,15 @@ public class FluidUtils {
 		ResourceLocation still = fa.getStillTexture(stack);
 		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
 	}
-	
-	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull World world, @Nonnull BlockPos pos)
+
+	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
 	{
-		int color;
 		if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-			color = BiomeColors.getWaterColor(world, pos) | 0xFF000000;
-		else
-			color = fluid.getFluid().getAttributes().getColor(fluid);
-		return color;
+			return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+
+		return fluid.getFluid().getAttributes().getColor(fluid);
 	}
-	
+
 	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
 	{
 		return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());

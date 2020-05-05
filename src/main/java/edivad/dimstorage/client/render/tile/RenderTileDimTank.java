@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
+import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderType;
@@ -60,7 +60,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
 			float offset = 0.1f;
 
 			int color = FluidUtils.getLiquidColorWithBiome(fluid, tileEntity);
-			
+
 			float r = FluidUtils.getRed(color);
 			float g = FluidUtils.getGreen(color);
 			float b = FluidUtils.getBlue(color);

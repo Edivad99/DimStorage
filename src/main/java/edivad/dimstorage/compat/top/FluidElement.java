@@ -3,7 +3,7 @@ package edivad.dimstorage.compat.top;
 import javax.annotation.Nonnull;
 
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
+import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
@@ -18,7 +18,7 @@ public class FluidElement extends TOPElement {
 	protected final FluidStack fluid;
 	protected final int capacity;
 	protected final int colorLiquid;
-	
+
 	protected FluidElement(@Nonnull FluidStack fluid, int capacity, int colorLiquid)
 	{
 		super(0xFF000000, 0xFFFFFF);

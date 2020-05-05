@@ -1,4 +1,4 @@
-package edivad.dimstorage.tools.extra;
+package edivad.dimstorage.tools.utils;
 
 import javax.annotation.Nonnull;
 

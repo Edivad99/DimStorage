@@ -22,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ILightReader;
 import net.minecraft.world.IWorld;
@@ -32,12 +31,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class DimTank extends DimBlockBase implements IWaterLoggable {
 
-	private static final VoxelShape BOX = VoxelShapes.create(2 / 16D, 0 / 16D, 2 / 16D, 14 / 16D, 16 / 16D, 14 / 16D);
+	private static final VoxelShape BOX = makeCuboidShape(2, 0, 2, 14, 16, 14);
 	private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
 	public DimTank()
 	{
-		super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(5.0F).notSolid());
+		super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(1.0F).notSolid());
 		this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
 	}
 
@@ -80,7 +79,7 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
 	{
 		return BOX;
 	}
-	
+
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{

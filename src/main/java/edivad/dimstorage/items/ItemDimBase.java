@@ -4,7 +4,7 @@ import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.setup.ModSetup;
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Translate;
 import net.minecraft.block.Block;
@@ -12,7 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -26,10 +25,10 @@ public class ItemDimBase extends BlockItem {
 
 	public ItemDimBase(Block blockIn)
 	{
-		super(blockIn, new Item.Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
+		super(blockIn, Registration.globalProperties);
 	}
 
-	protected Frequency getFreq(ItemStack stack)
+	private Frequency getFreq(ItemStack stack)
 	{
 		return Frequency.readFromStack(stack);
 	}

@@ -8,7 +8,6 @@ import edivad.dimstorage.network.TankState;
 import edivad.dimstorage.network.packet.SyncLiquidTank;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tools.extra.fluid.FluidUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -52,6 +51,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		public void onLiquidChanged()
 		{
 			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
+			world.getChunkProvider().getLightManager().checkBlock(getPos());
 		}
 	}
 
