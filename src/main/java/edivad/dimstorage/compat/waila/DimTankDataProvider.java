@@ -7,21 +7,16 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class DimTankDataProvider implements IServerDataProvider<TileEntity> {
+public class DimTankDataProvider extends DimBlockBaseProvider implements IServerDataProvider<TileEntity> {
 
 	@Override
 	public void appendServerData(CompoundNBT compoundNBT, ServerPlayerEntity serverPlayerEntity, World world, TileEntity tileEntity)
 	{
+		super.appendServerData(compoundNBT, serverPlayerEntity, world, tileEntity);
 		if(tileEntity instanceof TileEntityDimTank)
 		{
 			TileEntityDimTank tile = (TileEntityDimTank) tileEntity;
-			compoundNBT.putBoolean("HasOwner", tile.frequency.hasOwner());
-			compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
-			compoundNBT.putString("Owner", tile.frequency.getOwner());
-			compoundNBT.putInt("Frequency", tile.frequency.getChannel());
-			compoundNBT.putBoolean("Locked", tile.locked);
 			compoundNBT.putBoolean("AutoEject", tile.autoEject);
-
 			String liquidName = tile.liquidState.serverLiquid.getDisplayName().getFormattedText();
 			int liquidLevel = tile.liquidState.serverLiquid.getAmount();
 			compoundNBT.putString("Liquid", liquidName);
