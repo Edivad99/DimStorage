@@ -98,9 +98,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
-	//runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
+    //runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
 
-	compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
+    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}:api") {
         transitive = false
     })
     //compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
