@@ -28,7 +28,7 @@ public class ClientSetup {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDimTank.class, new RenderTileDimTank());
 
 		ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-		ScreenManager.registerFactory(Registration.DIMPAD_CONTAINER.get(), ScreenDimTablet::new);
+		ScreenManager.registerFactory(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
 		ScreenManager.registerFactory(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
 	}
 }

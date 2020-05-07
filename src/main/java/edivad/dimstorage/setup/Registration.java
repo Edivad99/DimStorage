@@ -78,8 +78,8 @@ public class Registration {
 	public static final RegistryObject<Item> DIMWALL = ITEMS.register("dim_wall", () -> new Item(globalProperties));
 	public static final RegistryObject<Item> SOLIDDIMCORE = ITEMS.register("solid_dim_core", () -> new Item(globalProperties));
 
-	public static final RegistryObject<DimTablet> DIMPAD = ITEMS.register("dimensional_tablet", DimTablet::new);
-	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMPAD_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) -> {
+	public static final RegistryObject<DimTablet> DIMTABLET = ITEMS.register("dimensional_tablet", DimTablet::new);
+	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMTABLET_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		return new ContainerDimTablet(windowId, Main.proxy.getClientPlayer().inventory, Main.proxy.getClientWorld());
 	}));
 }
