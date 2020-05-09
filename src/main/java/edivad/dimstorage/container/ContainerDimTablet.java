@@ -19,7 +19,7 @@ public class ContainerDimTablet extends Container {
 
 	public ContainerDimTablet(int windowId, PlayerInventory playerInventory, World world)
 	{
-		super(Registration.DIMPAD_CONTAINER.get(), windowId);
+		super(Registration.DIMTABLET_CONTAINER.get(), windowId);
 
 		ItemStack item = playerInventory.player.getHeldItem(Hand.MAIN_HAND);
 		Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));
