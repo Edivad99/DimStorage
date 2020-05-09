@@ -40,10 +40,11 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-public class TileEntityDimChest extends TileFrequencyOwner {
+public class TileEntityDimChest extends TileFrequencyOwner implements INamedContainerProvider {
 
 	private static final float MIN_MOVABLE_POSITION = 0f;
 	private static final float MAX_MOVABLE_POSITION = 0.5f;
@@ -56,6 +57,9 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public static final int AREA = Config.DIMCHEST_AREA.get();
 	public boolean collect;
 	private List<BlockPos> blockNeighbors;
+	
+	//Work on Capabilities
+	private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
 	public TileEntityDimChest()
 	{
@@ -158,7 +162,22 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
 	public int getComparatorInput()
 	{
-		return Container.calcRedstoneFromInventory(getStorage());
+		return itemHandler.map(ItemHandlerHelper::calcRedstoneFromInventory).orElse(0);
+	}
+	
+	@Override
+	public void setFreq(Frequency frequency)
+	{
+		super.setFreq(frequency);
+		itemHandler.invalidate();
+		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
+	}
+	
+	@Override
+	public void remove()
+	{
+		super.remove();
+		itemHandler.invalidate();
 	}
 
 	public void swapCollect()
@@ -184,7 +203,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
 	}
 
-	@Override
 	public void onPlaced(LivingEntity entity)
 	{
 		rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
@@ -222,13 +240,12 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
 	{
 		if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> (T) new InvWrapper(getStorage()));
+			return itemHandler.cast();
 		}
 		return super.getCapability(capability, facing);
 	}
@@ -238,7 +255,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 	public final SUpdateTileEntityPacket getUpdatePacket()
 	{
 		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.put("Frequency", frequency.serializeNBT());
 		root.putBoolean("locked", locked);
 		root.putByte("rot", (byte) rotation);
 		root.putBoolean("collect", collect);

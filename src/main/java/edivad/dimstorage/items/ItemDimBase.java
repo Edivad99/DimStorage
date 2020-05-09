@@ -13,6 +13,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -30,7 +31,15 @@ public class ItemDimBase extends BlockItem {
 
 	private Frequency getFreq(ItemStack stack)
 	{
-		return Frequency.readFromStack(stack);
+		if(stack.hasTag())
+		{
+			CompoundNBT stackTag = stack.getChildTag("DimStorage");
+			if(stackTag != null && stackTag.contains("Frequency"))
+			{
+				return new Frequency(stackTag.getCompound("Frequency"));
+			}
+		}
+		return new Frequency();
 	}
 
 	@Override
@@ -58,6 +67,5 @@ public class ItemDimBase extends BlockItem {
 			tooltip.add(new StringTextComponent(TextFormatting.DARK_RED + Translate.translateToLocal("gui." + Main.MODID + ".owner") + " " + frequency.getOwner()));
 		if(stack.hasTag())
 			tooltip.add(new StringTextComponent(Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + frequency.getChannel()));
-
 	}
 }

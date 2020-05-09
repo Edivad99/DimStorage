@@ -1,25 +1,25 @@
 {
-	"result": {
-		"item": "dimstorage:dimensional_tank"
-	},
-	"pattern": [
-		"ada",
-		"dcd",
-		"aba"
-	],
-	"type": "minecraft:crafting_shaped",
-	"key": {
-		"a": {
-			"item": "dimstorage:dim_wall"
-		},
-		"b": {
-			"item": "dimstorage:solid_dim_core"
-		},
-		"c": {
-			"item": "minecraft:cauldron"
-		},
-		"d": {
-			"item": "minecraft:glass"
-		}
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ada",
+    "dcd",
+    "aba"
+  ],
+  "key": {
+    "a": {
+      "item": "dimstorage:dim_wall"
+    },
+    "b": {
+      "item": "dimstorage:solid_dim_core"
+    },
+    "c": {
+      "item": "minecraft:cauldron"
+    },
+    "d": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "dimstorage:dimensional_tank"
+  }
 }

@@ -20,5 +20,4 @@ build
 # other
 eclipse
 run
-Todo.txt
-img/license.png
+src/generated
