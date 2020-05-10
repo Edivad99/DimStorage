@@ -4,9 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
-public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity {
 
 	public boolean locked;
 
@@ -91,10 +89,6 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public boolean activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
 	{
 		return false;
-	}
-
-	public void onPlaced(LivingEntity entity)
-	{
 	}
 
 	//Synchronizing on chunk load

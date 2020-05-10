@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
@@ -70,12 +69,11 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
 			return true;
 
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(!(tile instanceof TileEntityDimTank) || !(tile instanceof INamedContainerProvider))
-			return false;
-
-		TileEntityDimTank owner = (TileEntityDimTank) tile;
-
-		return owner.activate(player, worldIn, pos, handIn);
+		if(tile instanceof TileEntityDimTank)
+		{
+			return ((TileEntityDimTank) tile).activate(player, worldIn, pos, handIn);
+		}
+		return false;
 	}
 
 	@Override

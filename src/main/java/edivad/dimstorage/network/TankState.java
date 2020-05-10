@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class TankState {
 
-	public Frequency frequency;
+	private Frequency frequency;
 	public FluidStack clientLiquid = FluidStack.EMPTY;
 	public FluidStack serverLiquid = FluidStack.EMPTY;
 

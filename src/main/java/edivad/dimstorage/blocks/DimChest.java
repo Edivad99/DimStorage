@@ -3,14 +3,12 @@ package edivad.dimstorage.blocks;
 import javax.annotation.Nullable;
 
 import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tile.TileFrequencyOwner;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
@@ -52,21 +50,20 @@ public class DimChest extends DimBlockBase {
 			return true;
 
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(!(tile instanceof TileFrequencyOwner) || !(tile instanceof INamedContainerProvider))
-			return false;
-
-		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
-
-		return !player.isSneaking() && owner.activate(player, worldIn, pos, handIn);
+		if(tile instanceof TileEntityDimChest)
+		{
+			return !player.isSneaking() && ((TileEntityDimChest) tile).activate(player, worldIn, pos, handIn);
+		}
+		return false;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile instanceof TileFrequencyOwner)
+		if(tile instanceof TileEntityDimChest)
 		{
-			((TileFrequencyOwner) tile).onPlaced(placer);
+			((TileEntityDimChest) tile).onPlaced(placer);
 		}
 	}
 

@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityDimTank extends TileFrequencyOwner {
+public class TileEntityDimTank extends TileFrequencyOwner implements INamedContainerProvider {
 
 	public class DimTankState extends TankState {
 

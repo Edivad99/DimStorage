@@ -43,7 +43,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-public class TileEntityDimChest extends TileFrequencyOwner {
+public class TileEntityDimChest extends TileFrequencyOwner implements INamedContainerProvider {
 
 	private static final float MIN_MOVABLE_POSITION = 0f;
 	private static final float MAX_MOVABLE_POSITION = 0.5f;
@@ -184,7 +184,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
 	}
 
-	@Override
 	public void onPlaced(LivingEntity entity)
 	{
 		rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
