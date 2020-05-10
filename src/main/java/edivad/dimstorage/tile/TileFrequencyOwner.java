@@ -81,7 +81,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
-		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.put("Frequency", frequency.serializeNBT());
 		tag.putBoolean("locked", locked);
 		return tag;
 	}
@@ -96,7 +96,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT getUpdateTag()
 	{
 		CompoundNBT tag = super.getUpdateTag();
-		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.put("Frequency", frequency.serializeNBT());
 		tag.putBoolean("locked", locked);
 		return tag;
 	}

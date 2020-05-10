@@ -195,7 +195,7 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
 	public final SUpdateTileEntityPacket getUpdatePacket()
 	{
 		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.put("Frequency", frequency.serializeNBT());
 		root.putBoolean("locked", locked);
 		root.putBoolean("autoEject", autoEject);
 		return new SUpdateTileEntityPacket(getPos(), 1, root);

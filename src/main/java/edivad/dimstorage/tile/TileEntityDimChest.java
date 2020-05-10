@@ -257,7 +257,7 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 	public final SUpdateTileEntityPacket getUpdatePacket()
 	{
 		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.put("Frequency", frequency.serializeNBT());
 		root.putBoolean("locked", locked);
 		root.putByte("rot", (byte) rotation);
 		root.putBoolean("collect", collect);

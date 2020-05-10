@@ -88,6 +88,8 @@ public class DimBlockBase extends Block {
 			stack.setTag(new CompoundNBT());
 		}
 
-		return freq.writeToStack(stack);
+		CompoundNBT tagCompound = stack.getTag();
+		tagCompound.put("Frequency", freq.serializeNBT());
+		return stack;
 	}
 }
