@@ -40,6 +40,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
@@ -57,6 +58,9 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 	public boolean collect;
 	private List<BlockPos> blockNeighbors;
 
+	//Set the Capability
+	private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
+
 	public TileEntityDimChest()
 	{
 		super(Registration.DIMCHEST_TILE.get());
@@ -64,6 +68,8 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 		collect = false;
 
 		blockNeighbors = new ArrayList<>();
+		itemHandler.invalidate();
+		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
 	}
 
 	@Override
@@ -158,7 +164,22 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 
 	public int getComparatorInput()
 	{
-		return Container.calcRedstoneFromInventory(getStorage());
+		return itemHandler.map(ItemHandlerHelper::calcRedstoneFromInventory).orElse(0);
+	}
+
+	@Override
+	public void setFreq(Frequency frequency)
+	{
+		super.setFreq(frequency);
+		itemHandler.invalidate();
+		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
+	}
+
+	@Override
+	public void remove()
+	{
+		super.remove();
+		itemHandler.invalidate();
 	}
 
 	public void swapCollect()
@@ -221,13 +242,12 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
 	{
 		if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> (T) new InvWrapper(getStorage()));
+			return itemHandler.cast();
 		}
 		return super.getCapability(capability, facing);
 	}

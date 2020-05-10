@@ -57,9 +57,14 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
 	public DimTankState liquidState = new DimTankState();
 	public boolean autoEject = false;
 
+	//Set the Capability
+	private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+
 	public TileEntityDimTank()
 	{
 		super(Registration.DIMTANK_TILE.get());
+		fluidHandler.invalidate();
+		fluidHandler = LazyOptional.of(this::getStorage);
 	}
 
 	@Override
@@ -112,6 +117,15 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
 		super.setFreq(frequency);
 		if(!world.isRemote)
 			liquidState.setFrequency(frequency);
+		fluidHandler.invalidate();
+		fluidHandler = LazyOptional.of(this::getStorage);
+	}
+
+	@Override
+	public void remove()
+	{
+		super.remove();
+		fluidHandler.invalidate();
 	}
 
 	@Override
@@ -171,7 +185,7 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
 	{
 		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> getStorage()).cast();
+			return fluidHandler.cast();
 		}
 		return super.getCapability(cap, side);
 	}
