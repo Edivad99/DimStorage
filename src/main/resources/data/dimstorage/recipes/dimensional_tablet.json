@@ -1,25 +1,25 @@
 {
-	"result": {
-		"item": "dimstorage:dimensional_tablet"
-	},
-	"pattern": [
-		"cdc",
-		"cdc",
-		"aba"
-	],
-	"type": "minecraft:crafting_shaped",
-	"key": {
-		"a": {
-			"item": "minecraft:obsidian"
-		},
-		"b": {
-			"item": "dimstorage:solid_dim_core"
-		},
-		"c": {
-			"item": "minecraft:iron_ingot"
-		},
-		"d": {
-			"item": "minecraft:glass_pane"
-		}
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "cdc",
+    "cdc",
+    "aba"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:obsidian"
+    },
+    "b": {
+      "item": "dimstorage:solid_dim_core"
+    },
+    "c": {
+      "item": "minecraft:iron_ingot"
+    },
+    "d": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "result": {
+    "item": "dimstorage:dimensional_tablet"
+  }
 }

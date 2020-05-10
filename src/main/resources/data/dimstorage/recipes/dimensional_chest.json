@@ -1,19 +1,19 @@
 {
-	"result": {
-		"item": "dimstorage:dimensional_chest"
-	},
-	"pattern": [
-		"aaa",
-		"aba",
-		"aaa"
-	],
-	"type": "minecraft:crafting_shaped",
-	"key": {
-		"a": {
-			"item": "dimstorage:dim_wall"
-		},
-		"b": {
-			"item": "dimstorage:solid_dim_core"
-		}
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "dimstorage:dim_wall"
+    },
+    "b": {
+      "item": "dimstorage:solid_dim_core"
+    }
+  },
+  "result": {
+    "item": "dimstorage:dimensional_chest"
+  }
 }
