@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dimstorage:dimensional_chest"
+    ]
+  },
+  "criteria": {
+    "solid_dim_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "dimstorage:solid_dim_core"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dimstorage:dimensional_chest"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "solid_dim_core",
+      "has_the_recipe"
+    ]
+  ]
+}
