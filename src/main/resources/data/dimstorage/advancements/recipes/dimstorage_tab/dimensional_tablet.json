@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dimstorage:dimensional_tablet"
+    ]
+  },
+  "criteria": {
+    "dimensional_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "dimstorage:dimensional_chest"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dimstorage:dimensional_tablet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "dimensional_chest",
+      "has_the_recipe"
+    ]
+  ]
+}

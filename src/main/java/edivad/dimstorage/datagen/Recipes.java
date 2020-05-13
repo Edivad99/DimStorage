@@ -61,7 +61,6 @@ public class Recipes extends RecipeProvider {
 	        .key('b', Registration.SOLIDDIMCORE.get())
 	        //.setGroup(Main.MODID)
 	        .addCriterion(Registration.SOLIDDIMCORE.getId().getPath(), hasItem(Registration.SOLIDDIMCORE.get()))
-	        .addCriterion(Registration.DIMWALL.getId().getPath(), hasItem(Registration.DIMWALL.get()))
 	        .build(consumer);
 
         ShapedRecipeBuilder.shapedRecipe(Registration.DIMTABLET.get())
@@ -73,7 +72,7 @@ public class Recipes extends RecipeProvider {
 	        .key('c', Items.IRON_INGOT)
 	        .key('d', Tags.Items.GLASS_PANES)
 	        //.setGroup(Main.MODID)
-	        .addCriterion(Registration.SOLIDDIMCORE.getId().getPath(), hasItem(Registration.SOLIDDIMCORE.get()))
+	        .addCriterion(Registration.DIMCHEST.getId().getPath(), hasItem(Registration.DIMCHEST.get()))
 	        .build(consumer);
 
         ShapedRecipeBuilder.shapedRecipe(Registration.DIMTANK.get())
@@ -85,7 +84,7 @@ public class Recipes extends RecipeProvider {
 	        .key('c', Items.CAULDRON)
 	        .key('d', Tags.Items.GLASS)
 	        //.setGroup(Main.MODID)
-	        .addCriterion(Registration.SOLIDDIMCORE.getId().getPath(), hasItem(Registration.SOLIDDIMCORE.get()))
+	        .addCriterion("cauldron", hasItem(Items.CAULDRON))
 	        .build(consumer);
         //@formatter:on
 	}
