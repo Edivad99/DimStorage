@@ -63,6 +63,8 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
 	public TileEntityDimTank()
 	{
 		super(Registration.DIMTANK_TILE.get());
+
+		//TODO: Remove next lines in 1.16
 		fluidHandler.invalidate();
 		fluidHandler = LazyOptional.of(this::getStorage);
 	}

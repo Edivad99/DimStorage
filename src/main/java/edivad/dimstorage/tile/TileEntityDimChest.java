@@ -68,6 +68,8 @@ public class TileEntityDimChest extends TileFrequencyOwner implements INamedCont
 		collect = false;
 
 		blockNeighbors = new ArrayList<>();
+
+		//TODO: Remove next lines in 1.16
 		itemHandler.invalidate();
 		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
 	}

@@ -22,7 +22,7 @@ public class Recipes extends RecipeProvider {
 	{
 		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(Registration.DIMCORE.get())
-	        .patternLine("aba")
+			.patternLine("aba")
 	        .patternLine("bcb")
 	        .patternLine("aba")
 	        .key('a', Items.IRON_INGOT)
