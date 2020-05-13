@@ -1,19 +1,19 @@
 {
-	"result": {
-		"item": "dimstorage:solid_dim_core"
-	},
-	"pattern": [
-		"aaa",
-		"aba",
-		"aaa"
-	],
-	"type": "minecraft:crafting_shaped",
-	"key": {
-		"a": {
-			"item": "minecraft:iron_ingot"
-		},
-		"b": {
-			"item": "dimstorage:dim_core"
-		}
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "dimstorage:dim_core"
+    }
+  },
+  "result": {
+    "item": "dimstorage:solid_dim_core"
+  }
 }

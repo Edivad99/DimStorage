@@ -6,11 +6,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public class Frequency {
+public class Frequency implements INBTSerializable<CompoundNBT> {
 
 	private UUID owner;
 	private String ownerText;
@@ -50,7 +50,20 @@ public class Frequency {
 
 	public Frequency(CompoundNBT tagCompound)
 	{
-		read_internal(tagCompound);
+		deserializeNBT(tagCompound);
+	}
+
+	public Frequency set(Frequency frequency)
+	{
+		this.ownerText = frequency.ownerText;
+		this.owner = frequency.owner;
+		this.channel = frequency.channel;
+		return this;
+	}
+
+	public Frequency copy()
+	{
+		return new Frequency(ownerText, owner, channel);
 	}
 
 	public Frequency setOwner(@Nonnull PlayerEntity player)
@@ -67,6 +80,12 @@ public class Frequency {
 		return this;
 	}
 
+	public Frequency setChannel(int channel)
+	{
+		this.channel = channel;
+		return this;
+	}
+
 	public UUID getOwnerUUID()
 	{
 		return owner;
@@ -77,82 +96,20 @@ public class Frequency {
 		return ownerText;
 	}
 
-	public boolean hasOwner()
-	{
-		return !ownerText.equals("public") && owner != null;
-	}
-
-	public Frequency setChannel(int channel)
-	{
-		this.channel = channel;
-		return this;
-	}
-
 	public int getChannel()
 	{
 		return channel;
 	}
 
-	protected Frequency read_internal(CompoundNBT tagCompound)
+	public boolean hasOwner()
 	{
-		ownerText = tagCompound.getString("ownerText");
-		if(!ownerText.equals("public"))
-			owner = tagCompound.getUniqueId("owner");
-		else
-			owner = null;
-		channel = tagCompound.getInt("channel");
-		//Main.logger.log(Level.DEBUG, "read_internal: " + this);
-		return this;
-	}
-
-	public CompoundNBT writeToNBT(CompoundNBT tagCompound)
-	{
-		write_internal(tagCompound);
-		return tagCompound;
-	}
-
-	protected CompoundNBT write_internal(CompoundNBT tagCompound)
-	{
-		tagCompound.putString("ownerText", ownerText);
-		if(hasOwner())
-			tagCompound.putUniqueId("owner", owner);
-		tagCompound.putInt("channel", channel);
-		return tagCompound;
-	}
-
-	public static Frequency readFromStack(ItemStack stack)
-	{
-		if(stack.hasTag())
-		{
-			CompoundNBT stackTag = stack.getTag();
-			if(stackTag.contains("Frequency"))
-			{
-				return new Frequency(stackTag.getCompound("Frequency"));
-			}
-		}
-		return new Frequency();
-	}
-
-	public ItemStack writeToStack(ItemStack stack)
-	{
-		CompoundNBT tagCompound;
-		if(!stack.hasTag())
-			stack.setTag(new CompoundNBT());
-
-		tagCompound = stack.getTag();
-		tagCompound.put("Frequency", write_internal(new CompoundNBT()));
-		return stack;
+		return !ownerText.equals("public") && owner != null;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "owner=" + (hasOwner() ? owner : "public") + ",channel=" + channel;
-	}
-
-	public Frequency copy()
-	{
-		return new Frequency(ownerText, owner, channel);
 	}
 
 	@Override
@@ -166,14 +123,6 @@ public class Frequency {
 			return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
 		else
 			return (f.channel == this.channel && f.ownerText.equals(ownerText));
-	}
-
-	public Frequency set(Frequency frequency)
-	{
-		this.ownerText = frequency.ownerText;
-		this.owner = frequency.owner;
-		this.channel = frequency.channel;
-		return this;
 	}
 
 	public static Frequency readFromPacket(PacketBuffer buf)
@@ -195,5 +144,27 @@ public class Frequency {
 		if(!hasOwner())
 			return true;
 		return getOwnerUUID().equals(player.getUniqueID());
+	}
+
+	@Override
+	public CompoundNBT serializeNBT()
+	{
+		CompoundNBT tagCompound = new CompoundNBT();
+		tagCompound.putString("ownerText", ownerText);
+		if(hasOwner())
+			tagCompound.putUniqueId("owner", owner);
+		tagCompound.putInt("channel", channel);
+		return tagCompound;
+	}
+
+	@Override
+	public void deserializeNBT(CompoundNBT tagCompound)
+	{
+		ownerText = tagCompound.getString("ownerText");
+		if(!ownerText.equals("public"))
+			owner = tagCompound.getUniqueId("owner");
+		else
+			owner = null;
+		channel = tagCompound.getInt("channel");
 	}
 }

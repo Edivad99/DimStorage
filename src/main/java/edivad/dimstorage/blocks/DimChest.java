@@ -3,14 +3,12 @@ package edivad.dimstorage.blocks;
 import javax.annotation.Nullable;
 
 import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tile.TileFrequencyOwner;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -43,7 +41,7 @@ public class DimChest extends DimBlockBase {
 	@Override
 	public BlockRenderType getRenderType(BlockState state)
 	{
-		return BlockRenderType.INVISIBLE;
+		return BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -53,22 +51,22 @@ public class DimChest extends DimBlockBase {
 			return ActionResultType.SUCCESS;
 
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(!(tile instanceof TileFrequencyOwner) || !(tile instanceof INamedContainerProvider))
-			return ActionResultType.FAIL;
 
-		TileFrequencyOwner owner = (TileFrequencyOwner) tile;
-		if(!player.isCrouching())
-			return owner.activate(player, worldIn, pos, handIn);
-		return ActionResultType.SUCCESS;
+		if(tile instanceof TileEntityDimChest)
+		{
+			if(!player.isCrouching())
+				return ((TileEntityDimChest) tile).activate(player, worldIn, pos, handIn);
+		}
+		return ActionResultType.FAIL;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile instanceof TileFrequencyOwner)
+		if(tile instanceof TileEntityDimChest)
 		{
-			((TileFrequencyOwner) tile).onPlaced(placer);
+			((TileEntityDimChest) tile).onPlaced(placer);
 		}
 	}
 

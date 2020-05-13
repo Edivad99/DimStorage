@@ -55,8 +55,9 @@ public class FluidUtils {
 
 	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
 	{
-		if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-			return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+		if(world.isRemote)
+			if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
+				return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
 
 		return fluid.getFluid().getAttributes().getColor(fluid);
 	}

@@ -42,7 +42,7 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
 	@Override
 	public FluidStack getFluidInTank(int tank)
 	{
-		return this.tank.getFluid();
+		return this.tank.getFluid().copy();
 	}
 
 	@Override

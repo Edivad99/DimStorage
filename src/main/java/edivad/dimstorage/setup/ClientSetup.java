@@ -30,7 +30,7 @@ public class ClientSetup {
 		RenderTypeLookup.setRenderLayer(Registration.DIMTANK.get(), RenderType.getCutout());
 
 		ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-		ScreenManager.registerFactory(Registration.DIMPAD_CONTAINER.get(), ScreenDimTablet::new);
+		ScreenManager.registerFactory(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
 		ScreenManager.registerFactory(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
 	}
 }

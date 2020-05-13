@@ -42,7 +42,7 @@ public class DimBlockBase extends Block {
 		{
 			TileFrequencyOwner block = (TileFrequencyOwner) tile;
 			if(block.canAccess(player) || player.isCreative())
-				return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 		}
 		return false;
 	}
@@ -82,6 +82,8 @@ public class DimBlockBase extends Block {
 			stack.setTag(new CompoundNBT());
 		}
 
-		return freq.writeToStack(stack);
+		CompoundNBT tagCompound = stack.getTag();
+		tagCompound.put("Frequency", freq.serializeNBT());
+		return stack;
 	}
 }

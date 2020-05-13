@@ -4,9 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
-public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity {
 
 	public boolean locked;
 
@@ -84,7 +82,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
-		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.put("Frequency", frequency.serializeNBT());
 		tag.putBoolean("locked", locked);
 		return tag;
 	}
@@ -94,16 +92,12 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
 		return ActionResultType.FAIL;
 	}
 
-	public void onPlaced(LivingEntity entity)
-	{
-	}
-
 	//Synchronizing on chunk load
 	@Override
 	public CompoundNBT getUpdateTag()
 	{
 		CompoundNBT tag = super.getUpdateTag();
-		tag.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		tag.put("Frequency", frequency.serializeNBT());
 		tag.putBoolean("locked", locked);
 		return tag;
 	}

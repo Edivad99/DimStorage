@@ -37,7 +37,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityDimTank extends TileFrequencyOwner {
+public class TileEntityDimTank extends TileFrequencyOwner implements INamedContainerProvider {
 
 	public class DimTankState extends TankState {
 
@@ -58,9 +58,16 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public DimTankState liquidState = new DimTankState();
 	public boolean autoEject = false;
 
+	//Set the Capability
+	private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+
 	public TileEntityDimTank()
 	{
 		super(Registration.DIMTANK_TILE.get());
+
+		//TODO: Remove next lines in 1.16
+		fluidHandler.invalidate();
+		fluidHandler = LazyOptional.of(this::getStorage);
 	}
 
 	@Override
@@ -113,6 +120,15 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 		super.setFreq(frequency);
 		if(!world.isRemote)
 			liquidState.setFrequency(frequency);
+		fluidHandler.invalidate();
+		fluidHandler = LazyOptional.of(this::getStorage);
+	}
+
+	@Override
+	public void remove()
+	{
+		super.remove();
+		fluidHandler.invalidate();
 	}
 
 	@Override
@@ -172,7 +188,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	{
 		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 		{
-			return LazyOptional.of(() -> getStorage()).cast();
+			return fluidHandler.cast();
 		}
 		return super.getCapability(cap, side);
 	}
@@ -182,7 +198,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 	public final SUpdateTileEntityPacket getUpdatePacket()
 	{
 		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.writeToNBT(new CompoundNBT()));
+		root.put("Frequency", frequency.serializeNBT());
 		root.putBoolean("locked", locked);
 		root.putBoolean("autoEject", autoEject);
 		return new SUpdateTileEntityPacket(getPos(), 1, root);

@@ -7,19 +7,15 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class DimChestDataProvider implements IServerDataProvider<TileEntity> {
+public class DimChestDataProvider extends DimBlockBaseProvider implements IServerDataProvider<TileEntity> {
 
 	@Override
 	public void appendServerData(CompoundNBT compoundNBT, ServerPlayerEntity serverPlayerEntity, World world, TileEntity tileEntity)
 	{
+		super.appendServerData(compoundNBT, serverPlayerEntity, world, tileEntity);
 		if(tileEntity instanceof TileEntityDimChest)
 		{
 			TileEntityDimChest tile = (TileEntityDimChest) tileEntity;
-			compoundNBT.putBoolean("HasOwner", tile.frequency.hasOwner());
-			compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
-			compoundNBT.putString("Owner", tile.frequency.getOwner());
-			compoundNBT.putInt("Frequency", tile.frequency.getChannel());
-			compoundNBT.putBoolean("Locked", tile.locked);
 			compoundNBT.putBoolean("Collecting", tile.collect);
 		}
 	}
