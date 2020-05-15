@@ -62,7 +62,7 @@ public class DimStorageManager {
 
 	private Map<String, AbstractDimStorage> storageMap;
 	private Map<String, List<AbstractDimStorage>> storageList;
-	public final boolean client;
+	private final boolean client;
 
 	private File saveDir;
 	private File[] saveFiles;
@@ -79,11 +79,16 @@ public class DimStorageManager {
 		dirtyStorage = Collections.synchronizedList(new LinkedList<AbstractDimStorage>());
 
 		for(String key : plugins.keySet())
-			this.storageList.put(key, new ArrayList<AbstractDimStorage>());
+			storageList.put(key, new ArrayList<AbstractDimStorage>());
 
 		if(!client)
 			load();
 
+	}
+
+	public boolean isServer()
+	{
+		return !client;
 	}
 
 	private void sendClientInfo(PlayerEntity player)
@@ -96,24 +101,24 @@ public class DimStorageManager {
 
 	private void load()
 	{
-		this.saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
+		saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
 		try
 		{
-			if(!this.saveDir.exists())
-				this.saveDir.mkdirs();
+			if(!saveDir.exists())
+				saveDir.mkdirs();
 
-			this.saveFiles = new File [] { new File(saveDir, "data1.dat"), new File(saveDir, "data2.dat"), new File(saveDir, "lock.dat") };
+			saveFiles = new File [] { new File(saveDir, "data1.dat"), new File(saveDir, "data2.dat"), new File(saveDir, "lock.dat") };
 
-			if(this.saveFiles[2].exists() && this.saveFiles[2].length() > 0)
+			if(saveFiles[2].exists() && saveFiles[2].length() > 0)
 			{
 				FileInputStream fin = new FileInputStream(this.saveFiles[2]);
-				this.saveTo = fin.read() ^ 1;
+				saveTo = fin.read() ^ 1;
 				fin.close();
 
-				if(this.saveFiles[this.saveTo ^ 1].exists())
+				if(saveFiles[saveTo ^ 1].exists())
 				{
-					DataInputStream din = new DataInputStream(new FileInputStream(this.saveFiles[this.saveTo ^ 1]));
-					this.saveTag = CompressedStreamTools.readCompressed(din);
+					DataInputStream din = new DataInputStream(new FileInputStream(saveFiles[saveTo ^ 1]));
+					saveTag = CompressedStreamTools.readCompressed(din);
 					din.close();
 				}
 				else
@@ -130,9 +135,9 @@ public class DimStorageManager {
 
 	private void save(boolean force)
 	{
-		if(!this.dirtyStorage.isEmpty() || force)
+		if(!dirtyStorage.isEmpty() || force)
 		{
-			for(AbstractDimStorage inv : this.dirtyStorage)
+			for(AbstractDimStorage inv : dirtyStorage)
 			{
 				saveTag.put(inv.freq + ",type=" + inv.type(), inv.saveToTag());
 				inv.setClean();
