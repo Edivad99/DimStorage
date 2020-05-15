@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
@@ -174,11 +172,6 @@ public class DimStorageManager {
 
 	}
 
-	public File getSaveDir()
-	{
-		return saveDir;
-	}
-
 	public static DimStorageManager instance(boolean client)
 	{
 		DimStorageManager manager = client ? clientManager : serverManager;
@@ -216,16 +209,6 @@ public class DimStorageManager {
 			serverManager.storageList.put(plugin.identifer(), new ArrayList<AbstractDimStorage>());
 		if(clientManager != null)
 			clientManager.storageList.put(plugin.identifer(), new ArrayList<AbstractDimStorage>());
-	}
-
-	public static DimStoragePlugin getPlugin(String identifier)
-	{
-		return plugins.get(identifier);
-	}
-
-	public static Map<String, DimStoragePlugin> getPlugins()
-	{
-		return ImmutableMap.copyOf(plugins);
 	}
 
 	public void requestSave(AbstractDimStorage storage)
