@@ -26,7 +26,7 @@ public class DimBlockBaseComponentProvider implements IComponentProvider {
 			String freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " ";
 			String locked = Translate.translateToLocal("gui." + Main.MODID + ".locked") + " ";
 			String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-			
+
 			if(data.getBoolean("HasOwner"))
 			{
 				if(data.getBoolean("CanAccess"))

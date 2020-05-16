@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class DimBlockBaseProvider implements IServerDataProvider<TileEntity>{
+public class DimBlockBaseProvider implements IServerDataProvider<TileEntity> {
 
 	@Override
 	public void appendServerData(CompoundNBT compoundNBT, ServerPlayerEntity serverPlayerEntity, World world, TileEntity tileEntity)
