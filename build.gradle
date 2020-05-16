@@ -24,7 +24,7 @@ archivesBaseName = "DimStorage-${minecraft_version}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: "${mappings_version}"
+    mappings channel: 'stable', version: "${mappings_version}"
 
     runs {
         client {
