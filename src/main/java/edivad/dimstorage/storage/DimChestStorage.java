@@ -81,30 +81,30 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 
 	public void openInventory()
 	{
-		if(manager.client)
-			return;
-
-		synchronized(this)
+		if(manager.isServer())
 		{
-			open++;
-			if(open >= 1)
+			synchronized(this)
 			{
-				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, true));
+				open++;
+				if(open >= 1)
+				{
+					PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, true));
+				}
 			}
 		}
 	}
 
 	public void closeInventory()
 	{
-		if(manager.client)
-			return;
-
-		synchronized(this)
+		if(manager.isServer())
 		{
-			open--;
-			if(open <= 0)
+			synchronized(this)
 			{
-				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, false));
+				open--;
+				if(open <= 0)
+				{
+					PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, false));
+				}
 			}
 		}
 	}
@@ -166,7 +166,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
 
 	public void setClientOpen(int i)
 	{
-		if(manager.client)
+		if(!manager.isServer())
 			open = i;
 	}
 

@@ -21,16 +21,16 @@ public abstract class AbstractDimStorage {
 
 	public void setDirty()
 	{
-		if(manager.client)
-			return;
-
-		if(!dirty)
+		if(manager.isServer())
 		{
-			dirty = true;
-			manager.requestSave(this);
-		}
+			if(!dirty)
+			{
+				dirty = true;
+				manager.requestSave(this);
+			}
 
-		changeCount++;
+			changeCount++;
+		}
 	}
 
 	public void setClean()
