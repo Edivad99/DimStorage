@@ -42,7 +42,7 @@ public class DimBlockBase extends Block {
 		{
 			TileFrequencyOwner block = (TileFrequencyOwner) tile;
 			if(block.canAccess(player) || player.isCreative())
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+				return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 		}
 		return false;
 	}
