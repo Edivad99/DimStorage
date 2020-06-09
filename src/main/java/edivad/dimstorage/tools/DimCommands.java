@@ -1,5 +1,6 @@
 package edivad.dimstorage.tools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -53,6 +54,12 @@ public class DimCommands {
 			}
 			else
 				context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.RED + "You must select a valid item"));
+			return 0;
+		}));
+
+		root.then(Commands.literal("removeAll").requires(cs -> cs.hasPermissionLevel(0)).executes(context -> {
+			Config.DIMTABLET_LIST.set(new ArrayList<String>());
+			context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Removed all items from the list"));
 			return 0;
 		}));
 
