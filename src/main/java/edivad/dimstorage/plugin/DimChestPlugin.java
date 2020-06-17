@@ -21,7 +21,7 @@ public class DimChestPlugin implements DimStoragePlugin {
 	}
 
 	@Override
-	public String identifer()
+	public String identifier()
 	{
 		return "item";
 	}

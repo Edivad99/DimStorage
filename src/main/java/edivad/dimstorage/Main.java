@@ -11,7 +11,6 @@ import edivad.dimstorage.setup.proxy.Proxy;
 import edivad.dimstorage.setup.proxy.ProxyClient;
 import edivad.dimstorage.tools.Config;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
@@ -21,12 +20,13 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Main.MODID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Main {
 
 	public static final String MODID = "dimstorage";
 	public static final String MODNAME = "DimStorage";
 
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ProxyClient(), () -> () -> new Proxy());
+	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ProxyClient::new, () -> Proxy::new);
 
 	public static final Logger logger = LogManager.getLogger();
 
@@ -37,9 +37,7 @@ public class Main {
 
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
-		});
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 	}
 
 	public static MinecraftServer getServer()

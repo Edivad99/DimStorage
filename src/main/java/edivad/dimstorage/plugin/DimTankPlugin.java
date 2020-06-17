@@ -18,7 +18,7 @@ public class DimTankPlugin implements DimStoragePlugin {
 	}
 
 	@Override
-	public String identifer()
+	public String identifier()
 	{
 		return "fluid";
 	}

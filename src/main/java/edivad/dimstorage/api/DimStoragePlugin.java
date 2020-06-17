@@ -9,7 +9,7 @@ public interface DimStoragePlugin {
 
 	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq);
 
-	public String identifer();
+	public String identifier();
 
 	void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list);
 

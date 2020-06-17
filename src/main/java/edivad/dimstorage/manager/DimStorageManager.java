@@ -208,12 +208,12 @@ public class DimStorageManager {
 
 	public static void registerPlugin(DimStoragePlugin plugin)
 	{
-		plugins.put(plugin.identifer(), plugin);
+		plugins.put(plugin.identifier(), plugin);
 
 		if(serverManager != null)
-			serverManager.storageList.put(plugin.identifer(), new ArrayList<AbstractDimStorage>());
+			serverManager.storageList.put(plugin.identifier(), new ArrayList<AbstractDimStorage>());
 		if(clientManager != null)
-			clientManager.storageList.put(plugin.identifer(), new ArrayList<AbstractDimStorage>());
+			clientManager.storageList.put(plugin.identifier(), new ArrayList<AbstractDimStorage>());
 	}
 
 	public void requestSave(AbstractDimStorage storage)
