@@ -1,5 +1,6 @@
 # DimStorage
-[![CircleCI](https://circleci.com/gh/Edivad99/DimStorage/tree/1.15.x.svg?style=svg)](https://circleci.com/gh/Edivad99/DimStorage/tree/1.15.x)
+![DimStorage CI](https://github.com/Edivad99/DimStorage/workflows/DimStorage%20CI/badge.svg?branch=1.15.x)
+[![CurseForge](http://cf.way2muchnoise.eu/full_353882_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/dimstorage)
 ## Table of Contents
 
 * [About](#about)
