@@ -97,13 +97,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    compileOnly "mcp.mobius.waila:Hwyla:${waila_version}:api"
+    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
     //compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
 
-    compileOnly "mcjty.theoneprobe:TheOneProbe-${top_version}:api"
-    //runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
+    compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}:api")
+    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
 
-    compileOnly "mezz.jei:jei-${jei_version}:api"
+    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 

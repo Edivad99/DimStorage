@@ -15,6 +15,7 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -40,24 +41,24 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 			if(owner.frequency.hasOwner())
 			{
 				if(owner.canAccess(player))
-					probeInfo.horizontal().text(TextFormatting.GREEN + "Owner: " + owner.frequency.getOwner());
+					probeInfo.horizontal().text(new StringTextComponent(TextFormatting.GREEN + "Owner: " + owner.frequency.getOwner()));
 				else
-					probeInfo.horizontal().text(TextFormatting.RED + "Owner: " + owner.frequency.getOwner());
+					probeInfo.horizontal().text(new StringTextComponent(TextFormatting.RED + "Owner: " + owner.frequency.getOwner()));
 			}
-			probeInfo.horizontal().text("Frequency: " + owner.frequency.getChannel());
+			probeInfo.horizontal().text(new StringTextComponent("Frequency: " + owner.frequency.getChannel()));
 			if(owner.locked)
-				probeInfo.horizontal().text("Locked: Yes");
+				probeInfo.horizontal().text(new StringTextComponent("Locked: Yes"));
 
 			if(te instanceof TileEntityDimChest)
 			{
 				TileEntityDimChest chest = (TileEntityDimChest) te;
-				probeInfo.horizontal().text("Collecting: " + (chest.collect ? "Yes" : "No"));
+				probeInfo.horizontal().text(new StringTextComponent("Collecting: " + (chest.collect ? "Yes" : "No")));
 			}
 			else if(te instanceof TileEntityDimTank)
 			{
 				TileEntityDimTank tank = (TileEntityDimTank) te;
 				if(tank.autoEject)
-					probeInfo.horizontal().text("Auto-eject: Yes");
+					probeInfo.horizontal().text(new StringTextComponent("Auto-eject: Yes"));
 
 				if(!tank.liquidState.serverLiquid.isEmpty())
 					probeInfo.element(new FluidElement(tank, DimTankStorage.CAPACITY));
