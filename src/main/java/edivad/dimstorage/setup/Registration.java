@@ -45,7 +45,7 @@ public class Registration {
 
 	public static final RegistryObject<ContainerType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		BlockPos pos = data.readBlockPos();
-		TileEntity te = Main.proxy.getClientWorld().getTileEntity(pos);
+		TileEntity te = inv.player.getEntityWorld().getTileEntity(pos);
 		boolean isOpen = data.readBoolean();
 		if(!(te instanceof TileEntityDimChest))
 		{
@@ -54,7 +54,7 @@ public class Registration {
 		}
 
 		TileEntityDimChest tile = (TileEntityDimChest) te;
-		return new ContainerDimChest(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
+		return new ContainerDimChest(windowId, inv.player.inventory, tile, isOpen);
 	}));
 
 	public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
@@ -62,7 +62,7 @@ public class Registration {
 	public static final RegistryObject<TileEntityType<TileEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> TileEntityType.Builder.create(TileEntityDimTank::new, DIMTANK.get()).build(null));
 	public static final RegistryObject<ContainerType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) -> {
 		BlockPos pos = data.readBlockPos();
-		TileEntity te = Main.proxy.getClientWorld().getTileEntity(pos);
+		TileEntity te = inv.player.getEntityWorld().getTileEntity(pos);
 		boolean isOpen = data.readBoolean();
 		if(!(te instanceof TileEntityDimTank))
 		{
@@ -71,7 +71,7 @@ public class Registration {
 		}
 
 		TileEntityDimTank tile = (TileEntityDimTank) te;
-		return new ContainerDimTank(windowId, Main.proxy.getClientPlayer().inventory, tile, isOpen);
+		return new ContainerDimTank(windowId, inv.player.inventory, tile, isOpen);
 	}));
 
 	public static final RegistryObject<Item> DIMCORE = ITEMS.register("dim_core", () -> new Item(globalProperties));
@@ -80,6 +80,6 @@ public class Registration {
 
 	public static final RegistryObject<DimTablet> DIMTABLET = ITEMS.register("dimensional_tablet", DimTablet::new);
 	public static final RegistryObject<ContainerType<ContainerDimTablet>> DIMTABLET_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) -> {
-		return new ContainerDimTablet(windowId, Main.proxy.getClientPlayer().inventory, Main.proxy.getClientWorld());
+		return new ContainerDimTablet(windowId, inv.player.inventory, inv.player.getEntityWorld());
 	}));
 }

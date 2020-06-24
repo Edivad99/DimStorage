@@ -2,7 +2,6 @@ package edivad.dimstorage.network.packet;
 
 import java.util.function.Supplier;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +36,7 @@ public class SyncLiquidTank {
 	public void handle(Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			World world = Main.proxy.getClientWorld();
+			World world = ctx.get().getSender().world;
 			if(world.isBlockPresent(pos))
 			{
 				TileEntity te = world.getTileEntity(pos);
