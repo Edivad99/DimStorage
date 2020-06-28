@@ -39,206 +39,206 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityDimTank extends TileFrequencyOwner implements INamedContainerProvider {
 
-	public class DimTankState extends TankState {
+    public class DimTankState extends TankState {
 
-		@Override
-		public void sendSyncPacket()
-		{
-			PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), serverLiquid));
-		}
+        @Override
+        public void sendSyncPacket()
+        {
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), serverLiquid));
+        }
 
-		@Override
-		public void onLiquidChanged()
-		{
-			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
-			world.getChunkProvider().getLightManager().checkBlock(getPos());
-		}
-	}
+        @Override
+        public void onLiquidChanged()
+        {
+            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
+            world.getChunkProvider().getLightManager().checkBlock(getPos());
+        }
+    }
 
-	public DimTankState liquidState = new DimTankState();
-	public boolean autoEject = false;
+    public DimTankState liquidState = new DimTankState();
+    public boolean autoEject = false;
 
-	//Set the Capability
-	private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+    //Set the Capability
+    private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
 
-	public TileEntityDimTank()
-	{
-		super(Registration.DIMTANK_TILE.get());
+    public TileEntityDimTank()
+    {
+        super(Registration.DIMTANK_TILE.get());
 
-		//TODO: Remove next lines in 1.16
-		fluidHandler.invalidate();
-		fluidHandler = LazyOptional.of(this::getStorage);
-	}
+        //TODO: Remove next lines in 1.16
+        fluidHandler.invalidate();
+        fluidHandler = LazyOptional.of(this::getStorage);
+    }
 
-	@Override
-	public void tick()
-	{
-		super.tick();
-		if(autoEject)
-			ejectLiquid();
-		liquidState.update(world.isRemote);
-	}
+    @Override
+    public void tick()
+    {
+        super.tick();
+        if(autoEject)
+            ejectLiquid();
+        liquidState.update(world.isRemote);
+    }
 
-	private void ejectLiquid()
-	{
-		for(Direction side : Direction.values())
-		{
-			TileEntity tile = world.getTileEntity(pos.offset(side));
-			if(tile != null && checkSameFrequency(tile))
-			{
-				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
-				if(handler != null)
-				{
-					FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
-					if(liquid.getAmount() > 0)
-					{
-						int qty = handler.fill(liquid, FluidAction.EXECUTE);
-						if(qty > 0)
-						{
-							getStorage().drain(qty, FluidAction.EXECUTE);
-						}
-					}
-				}
-			}
-		}
-	}
+    private void ejectLiquid()
+    {
+        for(Direction side : Direction.values())
+        {
+            TileEntity tile = world.getTileEntity(pos.offset(side));
+            if(tile != null && checkSameFrequency(tile))
+            {
+                IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
+                if(handler != null)
+                {
+                    FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
+                    if(liquid.getAmount() > 0)
+                    {
+                        int qty = handler.fill(liquid, FluidAction.EXECUTE);
+                        if(qty > 0)
+                        {
+                            getStorage().drain(qty, FluidAction.EXECUTE);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	private boolean checkSameFrequency(TileEntity tile)
-	{
-		if(tile instanceof TileEntityDimTank)
-		{
-			TileEntityDimTank otherTank = (TileEntityDimTank) tile;
+    private boolean checkSameFrequency(TileEntity tile)
+    {
+        if(tile instanceof TileEntityDimTank)
+        {
+            TileEntityDimTank otherTank = (TileEntityDimTank) tile;
 
-			return !frequency.equals(otherTank.frequency);
-		}
-		return true;
-	}
+            return !frequency.equals(otherTank.frequency);
+        }
+        return true;
+    }
 
-	@Override
-	public void setFreq(Frequency frequency)
-	{
-		super.setFreq(frequency);
-		if(!world.isRemote)
-			liquidState.setFrequency(frequency);
-		fluidHandler.invalidate();
-		fluidHandler = LazyOptional.of(this::getStorage);
-	}
+    @Override
+    public void setFreq(Frequency frequency)
+    {
+        super.setFreq(frequency);
+        if(!world.isRemote)
+            liquidState.setFrequency(frequency);
+        fluidHandler.invalidate();
+        fluidHandler = LazyOptional.of(this::getStorage);
+    }
 
-	@Override
-	public void remove()
-	{
-		super.remove();
-		fluidHandler.invalidate();
-	}
+    @Override
+    public void remove()
+    {
+        super.remove();
+        fluidHandler.invalidate();
+    }
 
-	@Override
-	public DimTankStorage getStorage()
-	{
-		return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
-	}
+    @Override
+    public DimTankStorage getStorage()
+    {
+        return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
+    }
 
-	public int getComparatorInput()
-	{
-		int amount = getStorage().getFluidInTank(0).getAmount();
-		return amount / 1000;
-	}
+    public int getComparatorInput()
+    {
+        int amount = getStorage().getFluidInTank(0).getAmount();
+        return amount / 1000;
+    }
 
-	public void swapAutoEject()
-	{
-		autoEject = !autoEject;
-		this.markDirty();
-	}
+    public void swapAutoEject()
+    {
+        autoEject = !autoEject;
+        this.markDirty();
+    }
 
-	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
-		super.write(tag);
-		tag.putBoolean("autoEject", autoEject);
-		return tag;
-	}
+    @Override
+    public CompoundNBT write(CompoundNBT tag)
+    {
+        super.write(tag);
+        tag.putBoolean("autoEject", autoEject);
+        return tag;
+    }
 
-	@Override
-	public void read(CompoundNBT tag)
-	{
-		super.read(tag);
-		liquidState.setFrequency(frequency);
-		autoEject = tag.getBoolean("autoEject");
-	}
+    @Override
+    public void read(CompoundNBT tag)
+    {
+        super.read(tag);
+        liquidState.setFrequency(frequency);
+        autoEject = tag.getBoolean("autoEject");
+    }
 
-	@Override
-	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
-	{
-		boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
-		if(!result)
-		{
-			if(canAccess(player))
-			{
-				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
-			}
-			else
-			{
-				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
-			}
-		}
-		return ActionResultType.SUCCESS;
-	}
+    @Override
+    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
+    {
+        boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
+        if(!result)
+        {
+            if(canAccess(player))
+            {
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
+            }
+            else
+            {
+                player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
+            }
+        }
+        return ActionResultType.SUCCESS;
+    }
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
-	{
-		if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-		{
-			return fluidHandler.cast();
-		}
-		return super.getCapability(cap, side);
-	}
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+    {
+        if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return fluidHandler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
 
-	//Synchronizing on block update
-	@Override
-	public final SUpdateTileEntityPacket getUpdatePacket()
-	{
-		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.serializeNBT());
-		root.putBoolean("locked", locked);
-		root.putBoolean("autoEject", autoEject);
-		return new SUpdateTileEntityPacket(getPos(), 1, root);
-	}
+    //Synchronizing on block update
+    @Override
+    public final SUpdateTileEntityPacket getUpdatePacket()
+    {
+        CompoundNBT root = new CompoundNBT();
+        root.put("Frequency", frequency.serializeNBT());
+        root.putBoolean("locked", locked);
+        root.putBoolean("autoEject", autoEject);
+        return new SUpdateTileEntityPacket(getPos(), 1, root);
+    }
 
-	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-	{
-		CompoundNBT tag = pkt.getNbtCompound();
-		setFreq(new Frequency(tag.getCompound("Frequency")));
-		locked = tag.getBoolean("locked");
-		autoEject = tag.getBoolean("autoEject");
-	}
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    {
+        CompoundNBT tag = pkt.getNbtCompound();
+        setFreq(new Frequency(tag.getCompound("Frequency")));
+        locked = tag.getBoolean("locked");
+        autoEject = tag.getBoolean("autoEject");
+    }
 
-	//Synchronizing on chunk load
-	@Override
-	public CompoundNBT getUpdateTag()
-	{
-		CompoundNBT tag = super.getUpdateTag();
-		tag.putBoolean("autoEject", autoEject);
-		return tag;
-	}
+    //Synchronizing on chunk load
+    @Override
+    public CompoundNBT getUpdateTag()
+    {
+        CompoundNBT tag = super.getUpdateTag();
+        tag.putBoolean("autoEject", autoEject);
+        return tag;
+    }
 
-	@Override
-	public void handleUpdateTag(CompoundNBT tag)
-	{
-		setFreq(new Frequency(tag.getCompound("Frequency")));
-		locked = tag.getBoolean("locked");
-		autoEject = tag.getBoolean("autoEject");
-	}
+    @Override
+    public void handleUpdateTag(CompoundNBT tag)
+    {
+        setFreq(new Frequency(tag.getCompound("Frequency")));
+        locked = tag.getBoolean("locked");
+        autoEject = tag.getBoolean("autoEject");
+    }
 
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
-	}
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
+    }
 
-	@Override
-	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
-	{
-		return new ContainerDimTank(id, playerInventory, this, false);
-	}
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    {
+        return new ContainerDimTank(id, playerInventory, this, false);
+    }
 }

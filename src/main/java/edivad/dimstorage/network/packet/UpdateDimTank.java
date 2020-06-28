@@ -13,45 +13,45 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UpdateDimTank extends UpdateDimBase {
 
-	protected boolean autoEject;
+    protected boolean autoEject;
 
-	public UpdateDimTank(PacketBuffer buf)
-	{
-		super(buf);
-		autoEject = buf.readBoolean();
-	}
+    public UpdateDimTank(PacketBuffer buf)
+    {
+        super(buf);
+        autoEject = buf.readBoolean();
+    }
 
-	public UpdateDimTank(TileEntityDimTank tile)
-	{
-		super(tile);
-		autoEject = tile.autoEject;
-	}
+    public UpdateDimTank(TileEntityDimTank tile)
+    {
+        super(tile);
+        autoEject = tile.autoEject;
+    }
 
-	@Override
-	public void toBytes(PacketBuffer buf)
-	{
-		super.toBytes(buf);
-		buf.writeBoolean(autoEject);
-	}
+    @Override
+    public void toBytes(PacketBuffer buf)
+    {
+        super.toBytes(buf);
+        buf.writeBoolean(autoEject);
+    }
 
-	@Override
-	public void customHandle(World world, PlayerEntity player)
-	{
-		TileEntity tile = world.getTileEntity(pos);
+    @Override
+    public void customHandle(World world, PlayerEntity player)
+    {
+        TileEntity tile = world.getTileEntity(pos);
 
-		if(!(tile instanceof TileEntityDimTank))
-		{
-			Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
-			return;
-		}
+        if(!(tile instanceof TileEntityDimTank))
+        {
+            Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
+            return;
+        }
 
-		TileEntityDimTank tank = (TileEntityDimTank) tile;
-		tank.setFreq(freq);
-		tank.locked = locked;
-		tank.autoEject = autoEject;
-		tank.markDirty();
+        TileEntityDimTank tank = (TileEntityDimTank) tile;
+        tank.setFreq(freq);
+        tank.locked = locked;
+        tank.autoEject = autoEject;
+        tank.markDirty();
 
-		world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
-		NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
-	}
+        world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
+        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+    }
 }

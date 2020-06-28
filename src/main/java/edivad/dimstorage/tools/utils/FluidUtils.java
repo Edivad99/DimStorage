@@ -19,51 +19,51 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class FluidUtils {
 
-	//Render liquid
-	public static float getRed(int color)
-	{
-		return (color >> 16 & 0xFF) / 255.0F;
-	}
+    //Render liquid
+    public static float getRed(int color)
+    {
+        return (color >> 16 & 0xFF) / 255.0F;
+    }
 
-	public static float getGreen(int color)
-	{
-		return (color >> 8 & 0xFF) / 255.0F;
-	}
+    public static float getGreen(int color)
+    {
+        return (color >> 8 & 0xFF) / 255.0F;
+    }
 
-	public static float getBlue(int color)
-	{
-		return (color & 0xFF) / 255.0F;
-	}
+    public static float getBlue(int color)
+    {
+        return (color & 0xFF) / 255.0F;
+    }
 
-	public static float getAlpha(int color)
-	{
-		return (color >> 24 & 0xFF) / 255.0F;
-	}
+    public static float getAlpha(int color)
+    {
+        return (color >> 24 & 0xFF) / 255.0F;
+    }
 
-	public static void color(int color)
-	{
-		RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
-	}
+    public static void color(int color)
+    {
+        RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+    }
 
-	@Nullable
-	public static TextureAtlasSprite getFluidTexture(@Nonnull FluidStack stack)
-	{
-		FluidAttributes fa = stack.getFluid().getAttributes();
-		ResourceLocation still = fa.getStillTexture(stack);
-		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
-	}
+    @Nullable
+    public static TextureAtlasSprite getFluidTexture(@Nonnull FluidStack stack)
+    {
+        FluidAttributes fa = stack.getFluid().getAttributes();
+        ResourceLocation still = fa.getStillTexture(stack);
+        return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
+    }
 
-	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
-	{
-		if(world.isRemote)
-			if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-				return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
+    {
+        if(world.isRemote)
+            if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
+                return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
 
-		return fluid.getFluid().getAttributes().getColor(fluid);
-	}
+        return fluid.getFluid().getAttributes().getColor(fluid);
+    }
 
-	public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
-	{
-		return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
-	}
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
+    {
+        return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
+    }
 }

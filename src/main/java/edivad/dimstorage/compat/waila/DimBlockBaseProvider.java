@@ -9,17 +9,17 @@ import net.minecraft.world.World;
 
 public class DimBlockBaseProvider implements IServerDataProvider<TileEntity> {
 
-	@Override
-	public void appendServerData(CompoundNBT compoundNBT, ServerPlayerEntity serverPlayerEntity, World world, TileEntity tileEntity)
-	{
-		if(tileEntity instanceof TileFrequencyOwner)
-		{
-			TileFrequencyOwner tile = (TileFrequencyOwner) tileEntity;
-			compoundNBT.putBoolean("HasOwner", tile.frequency.hasOwner());
-			compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
-			compoundNBT.putString("Owner", tile.frequency.getOwner());
-			compoundNBT.putInt("Frequency", tile.frequency.getChannel());
-			compoundNBT.putBoolean("Locked", tile.locked);
-		}
-	}
+    @Override
+    public void appendServerData(CompoundNBT compoundNBT, ServerPlayerEntity serverPlayerEntity, World world, TileEntity tileEntity)
+    {
+        if(tileEntity instanceof TileFrequencyOwner)
+        {
+            TileFrequencyOwner tile = (TileFrequencyOwner) tileEntity;
+            compoundNBT.putBoolean("HasOwner", tile.frequency.hasOwner());
+            compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
+            compoundNBT.putString("Owner", tile.frequency.getOwner());
+            compoundNBT.putInt("Frequency", tile.frequency.getChannel());
+            compoundNBT.putBoolean("Locked", tile.locked);
+        }
+    }
 }

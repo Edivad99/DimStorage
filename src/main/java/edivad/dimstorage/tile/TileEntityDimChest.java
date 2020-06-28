@@ -47,263 +47,263 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class TileEntityDimChest extends TileFrequencyOwner implements INamedContainerProvider {
 
-	private static final float MIN_MOVABLE_POSITION = 0f;
-	private static final float MAX_MOVABLE_POSITION = 0.5f;
-	private static final float OPENING_SPEED = 0.05f;
+    private static final float MIN_MOVABLE_POSITION = 0f;
+    private static final float MAX_MOVABLE_POSITION = 0.5f;
+    private static final float OPENING_SPEED = 0.05f;
 
-	private int openCount;
-	public float movablePartState;
-	public int rotation;
+    private int openCount;
+    public float movablePartState;
+    public int rotation;
 
-	public static final int AREA = Config.DIMCHEST_AREA.get();
-	public boolean collect;
-	private List<BlockPos> blockNeighbors;
+    public static final int AREA = Config.DIMCHEST_AREA.get();
+    public boolean collect;
+    private List<BlockPos> blockNeighbors;
 
-	//Set the Capability
-	private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
+    //Set the Capability
+    private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
-	public TileEntityDimChest()
-	{
-		super(Registration.DIMCHEST_TILE.get());
-		movablePartState = MIN_MOVABLE_POSITION;
-		collect = false;
+    public TileEntityDimChest()
+    {
+        super(Registration.DIMCHEST_TILE.get());
+        movablePartState = MIN_MOVABLE_POSITION;
+        collect = false;
 
-		blockNeighbors = new ArrayList<>();
+        blockNeighbors = new ArrayList<>();
 
-		//TODO: Remove next lines in 1.16
-		itemHandler.invalidate();
-		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
-	}
+        //TODO: Remove next lines in 1.16
+        itemHandler.invalidate();
+        itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
+    }
 
-	@Override
-	public void tick()
-	{
-		super.tick();
+    @Override
+    public void tick()
+    {
+        super.tick();
 
-		if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
-		{
-			openCount = getStorage().getNumOpen();
-			world.addBlockEvent(getPos(), this.getBlockState().getBlock(), 1, openCount);
-			world.notifyNeighborsOfStateChange(pos, this.getBlockState().getBlock());
-			if(collect)
-				checkNeighbors();
-		}
+        if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
+        {
+            openCount = getStorage().getNumOpen();
+            world.addBlockEvent(getPos(), this.getBlockState().getBlock(), 1, openCount);
+            world.notifyNeighborsOfStateChange(pos, this.getBlockState().getBlock());
+            if(collect)
+                checkNeighbors();
+        }
 
-		if(this.openCount > 0)
-		{
-			if(this.movablePartState < MAX_MOVABLE_POSITION)
-				this.movablePartState += OPENING_SPEED;
-			else
-				this.movablePartState = MAX_MOVABLE_POSITION;
-		}
-		else
-		{
-			if(this.movablePartState > MIN_MOVABLE_POSITION)
-				this.movablePartState -= OPENING_SPEED;
-			else
-				this.movablePartState = MIN_MOVABLE_POSITION;
-		}
-	}
+        if(this.openCount > 0)
+        {
+            if(this.movablePartState < MAX_MOVABLE_POSITION)
+                this.movablePartState += OPENING_SPEED;
+            else
+                this.movablePartState = MAX_MOVABLE_POSITION;
+        }
+        else
+        {
+            if(this.movablePartState > MIN_MOVABLE_POSITION)
+                this.movablePartState -= OPENING_SPEED;
+            else
+                this.movablePartState = MIN_MOVABLE_POSITION;
+        }
+    }
 
-	private List<BlockPos> getChunkNeighbors(int area)
-	{
-		int range = area / 2;
-		return BlockPos.getAllInBox(getPos().add(-range, 0, -range), getPos().add(range, 0, range)).map(BlockPos::toImmutable).collect(Collectors.toList());
-	}
+    private List<BlockPos> getChunkNeighbors(int area)
+    {
+        int range = area / 2;
+        return BlockPos.getAllInBox(getPos().add(-range, 0, -range), getPos().add(range, 0, range)).map(BlockPos::toImmutable).collect(Collectors.toList());
+    }
 
-	private void checkNeighbors()
-	{
-		if(blockNeighbors.isEmpty())
-			blockNeighbors = getChunkNeighbors(AREA);
+    private void checkNeighbors()
+    {
+        if(blockNeighbors.isEmpty())
+            blockNeighbors = getChunkNeighbors(AREA);
 
-		for(BlockPos pos : blockNeighbors)
-		{
-			BlockState block = world.getBlockState(pos);
-			if(block.hasTileEntity())
-			{
-				TileEntity te = world.getTileEntity(pos);
-				if(!(te instanceof TileFrequencyOwner))
-				{
-					processInventory(te);
-				}
-			}
-		}
-	}
+        for(BlockPos pos : blockNeighbors)
+        {
+            BlockState block = world.getBlockState(pos);
+            if(block.hasTileEntity())
+            {
+                TileEntity te = world.getTileEntity(pos);
+                if(!(te instanceof TileFrequencyOwner))
+                {
+                    processInventory(te);
+                }
+            }
+        }
+    }
 
-	private void processInventory(TileEntity te)
-	{
-		IItemHandler handler = getItemHandler(te);
-		if(handler != null)
-		{
-			InvWrapper myInventory = new InvWrapper(getStorage());
-			int size = handler.getSlots();
-			//TODO: To avoid that DimChest find fuel inside the furnace
-			if(te instanceof AbstractFurnaceTileEntity)
-				size--;
-			for(int i = 0; i < size; i++)
-			{
-				if(!handler.getStackInSlot(i).isEmpty())
-					InventoryUtils.mergeItemStack(handler.getStackInSlot(i), 0, getStorage().getSizeInventory(), myInventory);
-			}
-		}
-	}
+    private void processInventory(TileEntity te)
+    {
+        IItemHandler handler = getItemHandler(te);
+        if(handler != null)
+        {
+            InvWrapper myInventory = new InvWrapper(getStorage());
+            int size = handler.getSlots();
+            //TODO: To avoid that DimChest find fuel inside the furnace
+            if(te instanceof AbstractFurnaceTileEntity)
+                size--;
+            for(int i = 0; i < size; i++)
+            {
+                if(!handler.getStackInSlot(i).isEmpty())
+                    InventoryUtils.mergeItemStack(handler.getStackInSlot(i), 0, getStorage().getSizeInventory(), myInventory);
+            }
+        }
+    }
 
-	private IItemHandler getItemHandler(@Nonnull TileEntity tile)
-	{
-		IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
-		if(handler == null)
-		{
-			if(tile instanceof ISidedInventory)
-			{
-				handler = new SidedInvWrapper((ISidedInventory) tile, Direction.DOWN);
-			}
-			else if(tile instanceof IInventory)
-			{
-				handler = new InvWrapper((IInventory) tile);
-			}
-		}
-		return handler;
-	}
+    private IItemHandler getItemHandler(@Nonnull TileEntity tile)
+    {
+        IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN).orElse(null);
+        if(handler == null)
+        {
+            if(tile instanceof ISidedInventory)
+            {
+                handler = new SidedInvWrapper((ISidedInventory) tile, Direction.DOWN);
+            }
+            else if(tile instanceof IInventory)
+            {
+                handler = new InvWrapper((IInventory) tile);
+            }
+        }
+        return handler;
+    }
 
-	public int getComparatorInput()
-	{
-		return itemHandler.map(ItemHandlerHelper::calcRedstoneFromInventory).orElse(0);
-	}
+    public int getComparatorInput()
+    {
+        return itemHandler.map(ItemHandlerHelper::calcRedstoneFromInventory).orElse(0);
+    }
 
-	@Override
-	public void setFreq(Frequency frequency)
-	{
-		super.setFreq(frequency);
-		itemHandler.invalidate();
-		itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
-	}
+    @Override
+    public void setFreq(Frequency frequency)
+    {
+        super.setFreq(frequency);
+        itemHandler.invalidate();
+        itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
+    }
 
-	@Override
-	public void remove()
-	{
-		super.remove();
-		itemHandler.invalidate();
-	}
+    @Override
+    public void remove()
+    {
+        super.remove();
+        itemHandler.invalidate();
+    }
 
-	public void swapCollect()
-	{
-		collect = !collect;
-		this.markDirty();
-	}
+    public void swapCollect()
+    {
+        collect = !collect;
+        this.markDirty();
+    }
 
-	@Override
-	public boolean receiveClientEvent(int id, int type)
-	{
-		if(id == 1)
-		{
-			openCount = type;
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean receiveClientEvent(int id, int type)
+    {
+        if(id == 1)
+        {
+            openCount = type;
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public DimChestStorage getStorage()
-	{
-		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
-	}
+    @Override
+    public DimChestStorage getStorage()
+    {
+        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+    }
 
-	public void onPlaced(LivingEntity entity)
-	{
-		rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
-	}
+    public void onPlaced(LivingEntity entity)
+    {
+        rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
+    }
 
-	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
-		super.write(tag);
-		tag.putByte("rot", (byte) rotation);
-		tag.putBoolean("collect", collect);
-		return tag;
-	}
+    @Override
+    public CompoundNBT write(CompoundNBT tag)
+    {
+        super.write(tag);
+        tag.putByte("rot", (byte) rotation);
+        tag.putBoolean("collect", collect);
+        return tag;
+    }
 
-	@Override
-	public void read(CompoundNBT tag)
-	{
-		super.read(tag);
-		rotation = tag.getByte("rot") & 3;
-		collect = tag.getBoolean("collect");
-	}
+    @Override
+    public void read(CompoundNBT tag)
+    {
+        super.read(tag);
+        rotation = tag.getByte("rot") & 3;
+        collect = tag.getBoolean("collect");
+    }
 
-	@Override
-	public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
-	{
-		if(canAccess(player))
-		{
-			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
-		}
-		else
-		{
-			player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
-		}
+    @Override
+    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
+    {
+        if(canAccess(player))
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
+        }
+        else
+        {
+            player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
+        }
 
-		return ActionResultType.SUCCESS;
-	}
+        return ActionResultType.SUCCESS;
+    }
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
-	{
-		if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			return itemHandler.cast();
-		}
-		return super.getCapability(capability, facing);
-	}
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
+    {
+        if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return itemHandler.cast();
+        }
+        return super.getCapability(capability, facing);
+    }
 
-	//Synchronizing on block update
-	@Override
-	public final SUpdateTileEntityPacket getUpdatePacket()
-	{
-		CompoundNBT root = new CompoundNBT();
-		root.put("Frequency", frequency.serializeNBT());
-		root.putBoolean("locked", locked);
-		root.putByte("rot", (byte) rotation);
-		root.putBoolean("collect", collect);
-		return new SUpdateTileEntityPacket(getPos(), 1, root);
-	}
+    //Synchronizing on block update
+    @Override
+    public final SUpdateTileEntityPacket getUpdatePacket()
+    {
+        CompoundNBT root = new CompoundNBT();
+        root.put("Frequency", frequency.serializeNBT());
+        root.putBoolean("locked", locked);
+        root.putByte("rot", (byte) rotation);
+        root.putBoolean("collect", collect);
+        return new SUpdateTileEntityPacket(getPos(), 1, root);
+    }
 
-	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-	{
-		CompoundNBT tag = pkt.getNbtCompound();
-		frequency.set(new Frequency(tag.getCompound("Frequency")));
-		locked = tag.getBoolean("locked");
-		rotation = tag.getByte("rot") & 3;
-		collect = tag.getBoolean("collect");
-	}
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    {
+        CompoundNBT tag = pkt.getNbtCompound();
+        frequency.set(new Frequency(tag.getCompound("Frequency")));
+        locked = tag.getBoolean("locked");
+        rotation = tag.getByte("rot") & 3;
+        collect = tag.getBoolean("collect");
+    }
 
-	//Synchronizing on chunk load
-	@Override
-	public CompoundNBT getUpdateTag()
-	{
-		CompoundNBT tag = super.getUpdateTag();
-		tag.putByte("rot", (byte) rotation);
-		tag.putBoolean("collect", collect);
-		return tag;
-	}
+    //Synchronizing on chunk load
+    @Override
+    public CompoundNBT getUpdateTag()
+    {
+        CompoundNBT tag = super.getUpdateTag();
+        tag.putByte("rot", (byte) rotation);
+        tag.putBoolean("collect", collect);
+        return tag;
+    }
 
-	@Override
-	public void handleUpdateTag(CompoundNBT tag)
-	{
-		super.handleUpdateTag(tag);
-		rotation = tag.getByte("rot") & 3;
-		collect = tag.getBoolean("collect");
-	}
+    @Override
+    public void handleUpdateTag(CompoundNBT tag)
+    {
+        super.handleUpdateTag(tag);
+        rotation = tag.getByte("rot") & 3;
+        collect = tag.getBoolean("collect");
+    }
 
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
-	}
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
+    }
 
-	@Override
-	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
-	{
-		return new ContainerDimChest(id, playerInventory, this, false);
-	}
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    {
+        return new ContainerDimChest(id, playerInventory, this, false);
+    }
 }

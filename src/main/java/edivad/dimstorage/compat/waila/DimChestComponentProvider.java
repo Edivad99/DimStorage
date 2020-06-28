@@ -14,19 +14,19 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class DimChestComponentProvider extends DimBlockBaseComponentProvider implements IComponentProvider {
 
-	@Override
-	public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
-	{
-		super.appendBody(tooltip, accessor, config);
-		if(accessor.getTileEntity() instanceof TileEntityDimChest)
-		{
-			CompoundNBT data = accessor.getServerData();
+    @Override
+    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
+    {
+        super.appendBody(tooltip, accessor, config);
+        if(accessor.getTileEntity() instanceof TileEntityDimChest)
+        {
+            CompoundNBT data = accessor.getServerData();
 
-			String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-			String no = Translate.translateToLocal("gui." + Main.MODID + ".no");
-			String collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting") + ": ";
+            String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
+            String no = Translate.translateToLocal("gui." + Main.MODID + ".no");
+            String collecting = Translate.translateToLocal("gui." + Main.MODID + ".collecting") + ": ";
 
-			tooltip.add(new StringTextComponent(collecting + (data.getBoolean("Collecting") ? yes : no)));
-		}
-	}
+            tooltip.add(new StringTextComponent(collecting + (data.getBoolean("Collecting") ? yes : no)));
+        }
+    }
 }

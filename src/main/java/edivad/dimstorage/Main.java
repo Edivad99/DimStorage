@@ -23,25 +23,25 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Main {
 
-	public static final String MODID = "dimstorage";
-	public static final String MODNAME = "DimStorage";
+    public static final String MODID = "dimstorage";
+    public static final String MODNAME = "DimStorage";
 
-	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ProxyClient::new, () -> Proxy::new);
+    public static IProxy proxy = DistExecutor.safeRunForDist(() -> ProxyClient::new, () -> Proxy::new);
 
-	public static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
 
-	public Main()
-	{
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-		Registration.init();
+    public Main()
+    {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        Registration.init();
 
-		// Register the setup method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
-	}
+        // Register the setup method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+    }
 
-	public static MinecraftServer getServer()
-	{
-		return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
-	}
+    public static MinecraftServer getServer()
+    {
+        return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
+    }
 }
