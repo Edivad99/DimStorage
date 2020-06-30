@@ -32,7 +32,7 @@ public class Main {
 
 	public Main()
 	{
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
 		Registration.init();
 
 		// Register the setup method for modloading
