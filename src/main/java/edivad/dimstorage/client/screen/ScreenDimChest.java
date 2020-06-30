@@ -2,6 +2,8 @@ package edivad.dimstorage.client.screen;
 
 import java.util.Collections;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.CollectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
@@ -23,20 +25,20 @@ public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
     }
 
     @Override
-    protected void init()
+    protected void func_231160_c_()//init
     {
-        super.init();
+        super.func_231160_c_();
 
-        addComponent(new CollectButton(width / 2 + 95, height / 2 + 75, ownerTile));
+        addComponent(new CollectButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 + 75, ownerTile));
 
         drawSettings(drawSettings);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
     {
-        super.render(mouseX, mouseY, partialTicks);
-        if(drawSettings && mouseX > this.width / 2 + 90 && mouseX < this.width / 2 + 164 && mouseY > this.height / 2 + 70 && mouseY < this.height / 2 + 100)
-            this.renderTooltip(Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
+        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);
+        if(drawSettings && mouseX > field_230708_k_ / 2 + 90 && mouseX < field_230708_k_ / 2 + 164 && mouseY > field_230709_l_ / 2 + 70 && mouseY < field_230709_l_ / 2 + 100)
+            this.func_238654_b_(mStack, Collections.singletonList(Translate.translateToLocal("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, field_230712_o_);//renderToolTip font
     }
 }

@@ -1,5 +1,7 @@
 package edivad.dimstorage.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.pattern.BaseScreen;
 import edivad.dimstorage.container.ContainerDimTablet;
@@ -15,9 +17,9 @@ public class ScreenDimTablet extends BaseScreen<ContainerDimTablet> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
+    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
     {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
-        this.blit(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
+        super.func_230450_a_(mStack, partialTicks, mouseX, mouseY);
+        this.func_238474_b_(mStack, this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize + 2);//this.blit //Space to see the border
     }
 }

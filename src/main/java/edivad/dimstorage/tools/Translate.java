@@ -3,6 +3,7 @@ package edivad.dimstorage.tools;
 import java.util.regex.Pattern;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
 
 public class Translate {
 
@@ -15,10 +16,10 @@ public class Translate {
         return translated;
     }
 
-    public static String translateToLocal(String key, Object... parameters)
+    public static StringTextComponent translateToLocal(String key, Object... parameters)
     {
         String translated = I18n.format(key, parameters);
         translated = COMPILE.matcher(translated).replaceAll("\u00a7");
-        return translated;
+        return new StringTextComponent(translated);
     }
 }

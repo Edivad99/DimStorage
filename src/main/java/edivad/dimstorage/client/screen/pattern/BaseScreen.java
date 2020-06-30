@@ -1,13 +1,14 @@
 package edivad.dimstorage.client.screen.pattern;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 
@@ -22,24 +23,24 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
+    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(background);
+        this.field_230706_i_.getTextureManager().bindTexture(background);//this.minecraft
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    protected void func_230451_b_(MatrixStack mStack, int mouseX, int mouseY)//drawGuiContainerForegroundLayer
     {
-        this.font.drawString(this.getTitle().getFormattedText(), 8, 6, 4210752);
-        this.font.drawString(Translate.translateToLocal("container.inventory"), 8, 128, 4210752);
+        this.field_230712_o_.func_238422_b_(mStack, this.func_231171_q_(), 8, 6, 4210752);//this.font.drawString
+        this.field_230712_o_.func_238422_b_(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
     {
-        this.renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        this.func_230446_a_(mStack);//this.renderBackground();
+        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);//super.render(mStack, mouseX, mouseY, partialTicks);
+        this.func_230459_a_(mStack, mouseX, mouseY);//this.renderHoveredToolTip(mStack, mouseX, mouseY);
     }
 }

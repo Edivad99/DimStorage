@@ -12,7 +12,7 @@ public class FrequencyText extends TextFieldWidget {
         super(Minecraft.getInstance().fontRenderer, width, height, 64, 15, new StringTextComponent(""));
         setMaxStringLength(3);
         setVisible(true);
-        setFocused(false);
+        func_230996_d_(false);//setFocused(false);
         setText(String.valueOf(frequency.getChannel()));
     }
 }

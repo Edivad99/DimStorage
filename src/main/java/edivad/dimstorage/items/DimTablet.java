@@ -70,18 +70,18 @@ public class DimTablet extends Item implements INamedContainerProvider {
                         tag.putBoolean("autocollect", false);
                         device.setTag(tag);
 
-                        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"), false);
                         return ActionResultType.SUCCESS;
                     }
-                    player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
+                    player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
                 }
                 else
                 {
                     stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
                     if(stack.getTag().getBoolean("autocollect"))
-                        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"));
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"), false);
                     else
-                        player.sendMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"));
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"), false);
                 }
             }
         }
@@ -99,7 +99,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
                 return super.onItemRightClick(world, player, hand);
             if(!stack.getOrCreateTag().getBoolean("bound"))
             {
-                player.sendMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"));
+                player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"), false);
                 return new ActionResult<>(ActionResultType.PASS, stack);
             }
             Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
@@ -155,7 +155,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
             }
 
             CompoundNBT tag = stack.getTag();
-            if(Screen.hasShiftDown())
+            if(Screen.func_231173_s_())//hasShiftDown
             {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
                 tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + f.getChannel()));

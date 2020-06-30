@@ -3,6 +3,8 @@ package edivad.dimstorage.client.screen.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import edivad.dimstorage.tools.Config;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
@@ -54,9 +56,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks)
+    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
     {
-        super.render(mouseX, mouseY, partialTicks);
+        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);
 
         if(state == SettingsState.STATE_OPENNING)
         {
@@ -91,9 +93,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
+    public boolean func_231044_a_(double mouseX, double mouseY, int clickedButton)//mouseClicked
     {
-        super.mouseClicked(mouseX, mouseY, clickedButton);
+        super.func_231044_a_(mouseX, mouseY, clickedButton);
 
         if(allowConfig)
         {
@@ -130,32 +132,32 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
+    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
     {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+        super.func_230450_a_(mStack, partialTicks, mouseX, mouseY);
         int settingsX = guiLeft + (this.xSize - SETTINGS_WIDTH);
 
         if(allowConfig)
-            this.blit(settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
+            this.func_238474_b_(mStack, settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);//this.blit
 
-        this.blit(guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
+        this.func_238474_b_(mStack, guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
 
         // button background
-        this.blit(getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
+        this.func_238474_b_(mStack, getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
         if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENNING)
         {
             if(settingsButtonOver)
-                this.blit(getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
+                this.func_238474_b_(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
+                this.func_238474_b_(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
         }
         else if(state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING)
         {
             if(settingsButtonOver)
-                this.blit(getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
+                this.func_238474_b_(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
+                this.func_238474_b_(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
         }
     }
 
@@ -173,7 +175,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
         {
             if(widget instanceof Button)
             {
-                this.buttons.clear();
+                this.field_230710_m_.clear();//this.buttons
                 break;
             }
         }
@@ -184,15 +186,15 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     {
         component.add(widget);
         if(widget instanceof Button)
-            addButton((Button) widget);
+            func_230480_a_((Button) widget);//addButton
         else if(widget instanceof TextFieldWidget)
-            children.add((TextFieldWidget) widget);
+            field_230705_e_.add((TextFieldWidget) widget);//children
     }
 
     protected void drawSettings(boolean draw)
     {
         drawSettings = draw;
         for(Widget widget : component)
-            widget.visible = draw;
+            widget.field_230694_p_ = draw;//visible
     }
 }

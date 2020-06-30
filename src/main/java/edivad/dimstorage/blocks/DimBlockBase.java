@@ -1,18 +1,13 @@
 package edivad.dimstorage.blocks;
 
-import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class DimBlockBase extends Block {
@@ -50,40 +45,8 @@ public class DimBlockBase extends Block {
     @Override
     public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
     {
-        TileFrequencyOwner tile = (TileFrequencyOwner) worldIn.getTileEntity(pos);
-        if(tile != null)
-        {
-            ItemStack item = createItem(tile.frequency);
-
-            float xOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-            float yOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-            float zOffset = worldIn.rand.nextFloat() * 0.8F + 0.1F;
-
-            ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, item);
-            worldIn.addEntity(entityitem);
-        }
-
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
         worldIn.removeTileEntity(pos);
         worldIn.removeBlock(pos, false);
-    }
-
-    @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-    {
-        TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-        return createItem(tile.frequency);
-    }
-
-    private ItemStack createItem(Frequency freq)
-    {
-        ItemStack stack = new ItemStack(this, 1);
-        if(!stack.hasTag())
-        {
-            stack.setTag(new CompoundNBT());
-        }
-
-        CompoundNBT tagCompound = stack.getTag();
-        tagCompound.put("Frequency", freq.serializeNBT());
-        return stack;
     }
 }

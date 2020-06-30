@@ -15,6 +15,7 @@ public class DataGenerators {
         if(event.includeServer())
         {
             generator.addProvider(new Recipes(generator));
+            generator.addProvider(new LootTables(generator));
         }
         if(event.includeClient())
         {

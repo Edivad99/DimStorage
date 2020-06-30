@@ -8,11 +8,10 @@ import edivad.dimstorage.network.TankState;
 import edivad.dimstorage.network.packet.SyncLiquidTank;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -22,8 +21,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,10 +31,9 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityDimTank extends TileFrequencyOwner implements INamedContainerProvider {
+public class TileEntityDimTank extends TileFrequencyOwner {
 
     public class DimTankState extends TankState {
 
@@ -64,10 +60,6 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
     public TileEntityDimTank()
     {
         super(Registration.DIMTANK_TILE.get());
-
-        //TODO: Remove next lines in 1.16
-        fluidHandler.invalidate();
-        fluidHandler = LazyOptional.of(this::getStorage);
     }
 
     @Override
@@ -158,9 +150,9 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
     }
 
     @Override
-    public void read(CompoundNBT tag)
+    public void func_230337_a_(BlockState state, CompoundNBT tag)//read
     {
-        super.read(tag);
+        super.func_230337_a_(state, tag);
         liquidState.setFrequency(frequency);
         autoEject = tag.getBoolean("autoEject");
     }
@@ -170,16 +162,7 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
     {
         boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
         if(!result)
-        {
-            if(canAccess(player))
-            {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
-            }
-            else
-            {
-                player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
-            }
-        }
+            return super.activate(player, worldIn, pos, hand);
         return ActionResultType.SUCCESS;
     }
 
@@ -223,7 +206,7 @@ public class TileEntityDimTank extends TileFrequencyOwner implements INamedConta
     }
 
     @Override
-    public void handleUpdateTag(CompoundNBT tag)
+    public void handleUpdateTag(BlockState state, CompoundNBT tag)
     {
         setFreq(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");

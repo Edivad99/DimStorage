@@ -8,9 +8,9 @@ public class MainCompatHandler {
 
     public static void registerTOP()
     {
-        if(ModList.get().isLoaded("theoneprobe"))
-        {
-            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
-        }
+//        if(ModList.get().isLoaded("theoneprobe"))
+//        {
+//            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
+//        }
     }
 }

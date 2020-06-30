@@ -33,10 +33,10 @@ public class DimCommands {
                     Config.DIMTABLET_LIST.set(originalList);
                 }
 
-                context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Added " + itemNameSpace + " to the list"));
+                context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Added " + itemNameSpace + " to the list"), false);
             }
             else
-                context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.RED + "You must select a valid item"));
+                context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.RED + "You must select a valid item"), false);
             return 0;
         }));
 
@@ -50,23 +50,23 @@ public class DimCommands {
 
                 Config.DIMTABLET_LIST.set(originalList);
 
-                context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Removed " + itemNameSpace + " to the list"));
+                context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Removed " + itemNameSpace + " to the list"), false);
             }
             else
-                context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.RED + "You must select a valid item"));
+                context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.RED + "You must select a valid item"), false);
             return 0;
         }));
 
         root.then(Commands.literal("removeAll").requires(cs -> cs.hasPermissionLevel(0)).executes(context -> {
             Config.DIMTABLET_LIST.set(new ArrayList<String>());
-            context.getSource().asPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Removed all items from the list"));
+            context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Removed all items from the list"), false);
             return 0;
         }));
 
         root.then(Commands.literal("list").requires(cs -> cs.hasPermissionLevel(0)).executes(context -> {
-            context.getSource().asPlayer().sendMessage(new StringTextComponent("These are the items that the DimTablet will move"));
+            context.getSource().asPlayer().sendStatusMessage(new StringTextComponent("These are the items that the DimTablet will move"), false);
             for(String items : Config.DIMTABLET_LIST.get())
-                context.getSource().asPlayer().sendMessage(new StringTextComponent(items));
+                context.getSource().asPlayer().sendStatusMessage(new StringTextComponent(items), false);
             return 0;
         }));
 

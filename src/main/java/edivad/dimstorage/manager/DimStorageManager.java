@@ -19,7 +19,10 @@ import edivad.dimstorage.api.Frequency;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -101,7 +104,7 @@ public class DimStorageManager {
 
     private void load()
     {
-        saveDir = new File(Main.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory(), "DimStorage");
+        saveDir = new File(Main.getServer().getWorld((RegistryKey<World>) World.field_234918_g_).getServer().getDataDirectory()/*.getSaveHandler().getWorldDirectory()*/, "DimStorage");
         try
         {
             if(!saveDir.exists())

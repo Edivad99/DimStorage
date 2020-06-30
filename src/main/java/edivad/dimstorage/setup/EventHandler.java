@@ -22,8 +22,8 @@ public class EventHandler {
 
         if(!(result.equals(Status.UP_TO_DATE) || result.equals(Status.PENDING) || result.equals(Status.AHEAD)))
         {
-            event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "A new version is available (" + versionRAW.target + "), please update!"), null);
-            event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.YELLOW + "Changelog:"), null);
+            event.getPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "A new version is available (" + versionRAW.target + "), please update!"), false);
+            event.getPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.YELLOW + "Changelog:"), false);
 
             String changes = versionRAW.changes.get(versionRAW.target);
             if(changes != null)
@@ -32,17 +32,17 @@ public class EventHandler {
 
                 for(String change : changesFormat)
                 {
-                    event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.WHITE + "- " + change), null);
+                    event.getPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.WHITE + "- " + change), false);
                 }
                 if(versionRAW.changes.size() > 1)
                 {
-                    event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.WHITE + "- And more..."), null);
+                    event.getPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.WHITE + "- And more..."), false);
                 }
             }
         }
         if(result.equals(Status.AHEAD))
         {
-            event.getPlayer().sendMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "Version not released yet"), null);
+            event.getPlayer().sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "[" + Main.MODNAME + "] " + TextFormatting.WHITE + "Version not released yet"), false);
         }
     }
 }
