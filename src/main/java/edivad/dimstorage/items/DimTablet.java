@@ -150,7 +150,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
         {
             if(!stack.hasTag() || !stack.getTag().getBoolean("bound"))
             {
-                tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".adviceToLink")));
+                tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".adviceToLink"));
                 return;
             }
 
@@ -167,9 +167,9 @@ public class DimTablet extends Item implements INamedContainerProvider {
                 tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".collecting") + ": " + (tag.getBoolean("autocollect") ? yes : no)));
             }
             else
-                tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".holdShift")));
+                tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".holdShift"));
 
-            tooltip.add(new StringTextComponent(Translate.translateToLocal("message." + Main.MODID + ".changeAutoCollect")));
+            tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".changeAutoCollect"));
         }
     }
 

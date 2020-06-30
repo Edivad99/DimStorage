@@ -4,7 +4,6 @@ import java.util.List;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import edivad.dimstorage.tools.Translate;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
 import mcp.mobius.waila.api.IPluginConfig;
@@ -12,6 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class DimBlockBaseComponentProvider implements IComponentProvider {
 
@@ -22,10 +22,10 @@ public class DimBlockBaseComponentProvider implements IComponentProvider {
         {
             CompoundNBT data = accessor.getServerData();
 
-            String owner = Translate.translateToLocal("gui." + Main.MODID + ".owner") + " ";
-            String freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " ";
-            String locked = Translate.translateToLocal("gui." + Main.MODID + ".locked") + " ";
-            String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
+            String owner = new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " ";
+            String freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " ";
+            String locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").getString() + " ";
+            String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
 
             if(data.getBoolean("HasOwner"))
             {
