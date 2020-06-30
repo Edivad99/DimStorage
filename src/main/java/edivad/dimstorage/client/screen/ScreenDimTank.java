@@ -14,7 +14,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -23,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
     private TileEntityDimTank ownerTile;
-    private ITextProperties liquid, amount, temperature, luminosity, gaseous, empty, yes, no;
+    private String liquid, amount, temperature, luminosity, gaseous, empty, yes, no;
 
     public ScreenDimTank(ContainerDimTank container, PlayerInventory invPlayer, ITextComponent text)
     {
@@ -40,14 +39,14 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
         drawSettings(drawSettings);
 
-        liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid");
-        amount = new TranslationTextComponent("gui." + Main.MODID + ".amount");
-        temperature = new TranslationTextComponent("gui." + Main.MODID + ".temperature");
-        luminosity = new TranslationTextComponent("gui." + Main.MODID + ".luminosity");
-        gaseous = new TranslationTextComponent("gui." + Main.MODID + ".gas");
-        empty = new TranslationTextComponent("gui." + Main.MODID + ".empty");
-        yes = new TranslationTextComponent("gui." + Main.MODID + ".yes");
-        no = new TranslationTextComponent("gui." + Main.MODID + ".no");
+        liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
+        amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
+        temperature = new TranslationTextComponent("gui." + Main.MODID + ".temperature").getString();
+        luminosity = new TranslationTextComponent("gui." + Main.MODID + ".luminosity").getString();
+        gaseous = new TranslationTextComponent("gui." + Main.MODID + ".gas").getString();
+        empty = new TranslationTextComponent("gui." + Main.MODID + ".empty").getString();
+        yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+        no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
     }
 
     @Override
