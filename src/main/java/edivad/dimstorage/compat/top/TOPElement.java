@@ -74,7 +74,7 @@ public abstract class TOPElement implements IElementNew {
 
     protected static void renderScaledText(Minecraft mc, int x, int y, int color, int maxWidth, ITextComponent component)
     {
-        String text = component.getFormattedText();
+        String text = component.getString();
         int length = mc.fontRenderer.getStringWidth(text);
         if(length <= maxWidth)
         {

@@ -10,7 +10,6 @@ import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Config;
-import edivad.dimstorage.tools.Translate;
 import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -158,13 +157,13 @@ public class DimTablet extends Item implements INamedContainerProvider {
             if(Screen.func_231173_s_())//hasShiftDown
             {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + f.getChannel()));
+                tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " " + f.getChannel()));
                 if(f.hasOwner())
-                    tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".owner") + " " + f.getOwner()));
+                    tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " " + f.getOwner()));
 
-                String yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-                String no = Translate.translateToLocal("gui." + Main.MODID + ".no");
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY + Translate.translateToLocal("gui." + Main.MODID + ".collecting") + ": " + (tag.getBoolean("autocollect") ? yes : no)));
+                String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+                String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
+                tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".collecting").getString() + ": " + (tag.getBoolean("autocollect") ? yes : no)));
             }
             else
                 tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".holdShift"));

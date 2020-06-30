@@ -64,7 +64,7 @@ public class FluidElement extends TOPElement {
     @Override
     public ITextComponent getText()
     {
-        String liquidText = fluid.getDisplayName().getFormattedText();
+        String liquidText = fluid.getDisplayName().getString();
         int amount = fluid.getAmount();
         return new StringTextComponent(String.format("%s: %dmB", liquidText, amount));
     }

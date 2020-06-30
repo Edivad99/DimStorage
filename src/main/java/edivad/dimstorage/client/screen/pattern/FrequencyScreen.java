@@ -22,7 +22,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T> {
 
-    private TileFrequencyOwner tileOwner;
+    protected TileFrequencyOwner tileOwner;
 
     private ITextProperties owner, freq, locked;
     private FrequencyText freqTextField;

@@ -6,7 +6,6 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -64,8 +64,8 @@ public class ItemDimBase extends BlockItem {
     {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new StringTextComponent(TextFormatting.DARK_RED + Translate.translateToLocal("gui." + Main.MODID + ".owner") + " " + frequency.getOwner()));
+            tooltip.add(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " " + frequency.getOwner()));
         if(stack.hasTag())
-            tooltip.add(new StringTextComponent(Translate.translateToLocal("gui." + Main.MODID + ".frequency") + " " + frequency.getChannel()));
+            tooltip.add(new StringTextComponent(new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " " + frequency.getChannel()));
     }
 }
