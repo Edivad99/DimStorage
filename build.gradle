@@ -82,7 +82,7 @@ minecraft {
 repositories {
     maven {
         name 'Waila'
-        url 'https://tehnut.info/maven'
+        url 'http://maven.tehnut.info'
     }
     maven {
         name 'TOP'
@@ -101,7 +101,7 @@ dependencies {
     //compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
 
     compileOnly "mcjty.theoneprobe:TheOneProbe-${top_version}:api"
-    runtimeOnly "mcjty.theoneprobe:TheOneProbe-${top_version}"
+    //runtimeOnly "mcjty.theoneprobe:TheOneProbe-${top_version}"
 
     compileOnly "mezz.jei:jei-${jei_version}:api"
     //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
