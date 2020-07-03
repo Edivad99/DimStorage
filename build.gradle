@@ -23,6 +23,7 @@ archivesBaseName = "DimStorage-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     mappings channel: 'snapshot', version: "${mappings_version}"
 
@@ -82,7 +83,7 @@ minecraft {
 repositories {
     maven {
         name 'Waila'
-        url 'https://tehnut.info/maven'
+        url 'https://maven.tehnut.info'
     }
     maven {
         name 'TOP'
