@@ -4,8 +4,8 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class AutoEjectButton extends Button {
 
@@ -20,9 +20,9 @@ public class AutoEjectButton extends Button {
 	private static String getText(boolean autoEject)
 	{
 		if(autoEject)
-			return Translate.translateToLocal("gui." + Main.MODID + ".eject");
+			return new TranslationTextComponent("gui." + Main.MODID + ".eject").getString();
 		else
-			return Translate.translateToLocal("gui." + Main.MODID + ".idle");
+			return new TranslationTextComponent("gui." + Main.MODID + ".idle").getString();
 	}
 
 	@Override

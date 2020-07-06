@@ -2,12 +2,12 @@ package edivad.dimstorage.client.screen.pattern;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 
@@ -32,7 +32,7 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		this.font.drawString(this.getTitle().getFormattedText(), 8, 6, 4210752);
-		this.font.drawString(Translate.translateToLocal("container.inventory"), 8, 128, 4210752);
+		this.font.drawString(new TranslationTextComponent("container.inventory").getString(), 8, 128, 4210752);
 	}
 
 	@Override

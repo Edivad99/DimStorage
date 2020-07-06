@@ -6,13 +6,13 @@ import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tools.Translate;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -36,14 +36,14 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
 		drawSettings(drawSettings);
 
-		liquid = Translate.translateToLocal("gui." + Main.MODID + ".liquid");
-		amount = Translate.translateToLocal("gui." + Main.MODID + ".amount");
-		temperature = Translate.translateToLocal("gui." + Main.MODID + ".temperature");
-		luminosity = Translate.translateToLocal("gui." + Main.MODID + ".luminosity");
-		gaseous = Translate.translateToLocal("gui." + Main.MODID + ".gas");
-		empty = Translate.translateToLocal("gui." + Main.MODID + ".empty");
-		yes = Translate.translateToLocal("gui." + Main.MODID + ".yes");
-		no = Translate.translateToLocal("gui." + Main.MODID + ".no");
+		liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
+		amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
+		temperature = new TranslationTextComponent("gui." + Main.MODID + ".temperature").getString();
+		luminosity = new TranslationTextComponent("gui." + Main.MODID + ".luminosity").getString();
+		gaseous = new TranslationTextComponent("gui." + Main.MODID + ".gas").getString();
+		empty = new TranslationTextComponent("gui." + Main.MODID + ".empty").getString();
+		yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+		no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 		if(!liquidStack.isEmpty())
 		{
 			FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
-			String liquidName = liquidStack.getDisplayName().getFormattedText();
+			String liquidName = liquidStack.getDisplayName().getString();
 			this.font.drawString(liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
 			this.font.drawString(amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
 			this.font.drawString(temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);

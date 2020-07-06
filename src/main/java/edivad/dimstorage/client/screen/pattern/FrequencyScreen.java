@@ -11,11 +11,11 @@ import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T> {
 
@@ -36,9 +36,9 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
 		super.init();
 
 		// Get translation
-		owner = Translate.translateToLocal("gui." + Main.MODID + ".owner");
-		freq = Translate.translateToLocal("gui." + Main.MODID + ".frequency");
-		locked = Translate.translateToLocal("gui." + Main.MODID + ".locked");
+		owner = new TranslationTextComponent("gui." + Main.MODID + ".owner").getString();
+		freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString();
+		locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").getString();
 
 		clearComponent();
 		addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));

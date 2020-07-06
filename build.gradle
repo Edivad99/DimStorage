@@ -82,7 +82,7 @@ minecraft {
 repositories {
     maven {
         name 'Waila'
-        url 'http://maven.tehnut.info'
+        url 'https://maven.tehnut.info'
     }
     maven {
         name 'TOP'

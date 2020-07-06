@@ -4,8 +4,8 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tools.Translate;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class CollectButton extends Button {
 
@@ -20,9 +20,9 @@ public class CollectButton extends Button {
 	private static String getText(boolean isCollecting)
 	{
 		if(isCollecting)
-			return Translate.translateToLocal("gui." + Main.MODID + ".collecting");
+			return new TranslationTextComponent("gui." + Main.MODID + ".collecting").getString();
 		else
-			return Translate.translateToLocal("gui." + Main.MODID + ".idle");
+			return new TranslationTextComponent("gui." + Main.MODID + ".idle").getString();
 	}
 
 	@Override
