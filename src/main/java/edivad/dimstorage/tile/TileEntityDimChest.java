@@ -25,13 +25,10 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -219,12 +216,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
         super.func_230337_a_(state, tag);
         rotation = tag.getByte("rot") & 3;
         collect = tag.getBoolean("collect");
-    }
-
-    @Override
-    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
-    {
-        return super.activate(player, worldIn, pos, hand);
     }
 
     @Override

@@ -10,6 +10,7 @@ import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tools.Config;
+import edivad.dimstorage.tools.CustomTranslate;
 import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -149,7 +150,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
         {
             if(!stack.hasTag() || !stack.getTag().getBoolean("bound"))
             {
-                tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".adviceToLink"));
+                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".adviceToLink"));
                 return;
             }
 
@@ -166,9 +167,9 @@ public class DimTablet extends Item implements INamedContainerProvider {
                 tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".collecting").getString() + ": " + (tag.getBoolean("autocollect") ? yes : no)));
             }
             else
-                tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".holdShift"));
+                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
 
-            tooltip.add(new TranslationTextComponent("message." + Main.MODID + ".changeAutoCollect"));
+            tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".changeAutoCollect"));
         }
     }
 
