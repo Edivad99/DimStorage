@@ -11,22 +11,22 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class Config {
 
-	public static final String CATEGORY_GENERAL = "general";
+    public static final String CATEGORY_GENERAL = "general";
 
-	public static ForgeConfigSpec SERVER_CONFIG;
+    public static ForgeConfigSpec SERVER_CONFIG;
 
-	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWCONFIG;
-	public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWPRIVATENETWORK;
-	public static ForgeConfigSpec.IntValue DIMCHEST_AREA;
-	public static ForgeConfigSpec.ConfigValue<List<String>> DIMTABLET_LIST;
+    public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWCONFIG;
+    public static ForgeConfigSpec.BooleanValue DIMCHEST_ALLOWPRIVATENETWORK;
+    public static ForgeConfigSpec.IntValue DIMCHEST_AREA;
+    public static ForgeConfigSpec.ConfigValue<List<String>> DIMTABLET_LIST;
 
-	static
-	{
-		ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
-		
-		SERVER_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
+    static
+    {
+        ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
-		//@formatter:off
+        SERVER_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
+
+        //@formatter:off
 		DIMCHEST_ALLOWCONFIG = SERVER_BUILDER
 						.comment("Allow players to change the DimChest's frequency, default: true")
 						.define("allowFrequency", true);
@@ -44,30 +44,30 @@ public class Config {
 						.define("list", getListofBlock());
 
 		//@formatter:on
-		SERVER_BUILDER.pop();
+        SERVER_BUILDER.pop();
 
-		SERVER_CONFIG = SERVER_BUILDER.build();
-	}
+        SERVER_CONFIG = SERVER_BUILDER.build();
+    }
 
-	private static ArrayList<String> getListofBlock()
-	{
-		ArrayList<String> blocks = new ArrayList<>();
+    private static ArrayList<String> getListofBlock()
+    {
+        ArrayList<String> blocks = new ArrayList<>();
 
-		blocks.add(getNamespace(Blocks.DIRT));
-		blocks.add(getNamespace(Blocks.GRAVEL));
-		blocks.add(getNamespace(Blocks.COBBLESTONE));
-		blocks.add(getNamespace(Blocks.GRANITE));
-		blocks.add(getNamespace(Blocks.DIORITE));
-		blocks.add(getNamespace(Blocks.ANDESITE));
-		blocks.add(getNamespace(Blocks.SAND));
-		blocks.add(getNamespace(Blocks.SANDSTONE));
-		blocks.add(getNamespace(Blocks.NETHERRACK));
-		blocks.add(getNamespace(Blocks.END_STONE));
-		return blocks;
-	}
+        blocks.add(getNamespace(Blocks.DIRT));
+        blocks.add(getNamespace(Blocks.GRAVEL));
+        blocks.add(getNamespace(Blocks.COBBLESTONE));
+        blocks.add(getNamespace(Blocks.GRANITE));
+        blocks.add(getNamespace(Blocks.DIORITE));
+        blocks.add(getNamespace(Blocks.ANDESITE));
+        blocks.add(getNamespace(Blocks.SAND));
+        blocks.add(getNamespace(Blocks.SANDSTONE));
+        blocks.add(getNamespace(Blocks.NETHERRACK));
+        blocks.add(getNamespace(Blocks.END_STONE));
+        return blocks;
+    }
 
-	private static String getNamespace(Block block)
-	{
-		return block.getRegistryName().toString();
-	}
+    private static String getNamespace(Block block)
+    {
+        return block.getRegistryName().toString();
+    }
 }

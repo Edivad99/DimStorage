@@ -7,10 +7,10 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public interface DimStoragePlugin {
 
-	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq);
+    public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq);
 
-	public String identifier();
+    public String identifier();
 
-	void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list);
+    void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list);
 
 }

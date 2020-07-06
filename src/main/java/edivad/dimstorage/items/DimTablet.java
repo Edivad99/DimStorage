@@ -41,147 +41,147 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class DimTablet extends Item implements INamedContainerProvider {
 
-	public DimTablet()
-	{
-		super(new Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
-	}
+    public DimTablet()
+    {
+        super(new Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
+    }
 
-	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context)
-	{
-		World world = context.getWorld();
-		PlayerEntity player = context.getPlayer();
-		BlockPos pos = context.getPos();
+    @Override
+    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context)
+    {
+        World world = context.getWorld();
+        PlayerEntity player = context.getPlayer();
+        BlockPos pos = context.getPos();
 
-		if(!world.isRemote)
-		{
-			ItemStack device = player.getHeldItem(context.getHand());
-			TileEntity tile = world.getTileEntity(pos);
-			if(player.isCrouching())
-			{
-				if(tile instanceof TileEntityDimChest)
-				{
-					TileEntityDimChest dimChest = (TileEntityDimChest) tile;
-					if(dimChest.canAccess(player))
-					{
-						CompoundNBT tag = new CompoundNBT();
-						tag.put("frequency", dimChest.frequency.serializeNBT());
-						tag.putBoolean("bound", true);
-						tag.putBoolean("autocollect", false);
-						device.setTag(tag);
+        if(!world.isRemote)
+        {
+            ItemStack device = player.getHeldItem(context.getHand());
+            TileEntity tile = world.getTileEntity(pos);
+            if(player.isCrouching())
+            {
+                if(tile instanceof TileEntityDimChest)
+                {
+                    TileEntityDimChest dimChest = (TileEntityDimChest) tile;
+                    if(dimChest.canAccess(player))
+                    {
+                        CompoundNBT tag = new CompoundNBT();
+                        tag.put("frequency", dimChest.frequency.serializeNBT());
+                        tag.putBoolean("bound", true);
+                        tag.putBoolean("autocollect", false);
+                        device.setTag(tag);
 
-						player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
-						return ActionResultType.SUCCESS;
-					}
-					player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
-				}
-				else
-				{
-					stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
-					if(stack.getTag().getBoolean("autocollect"))
-						player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"));
-					else
-						player.sendMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"));
-				}
-			}
-		}
-		return ActionResultType.PASS;
-	}
+                        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"));
+                        return ActionResultType.SUCCESS;
+                    }
+                    player.sendMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"));
+                }
+                else
+                {
+                    stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
+                    if(stack.getTag().getBoolean("autocollect"))
+                        player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"));
+                    else
+                        player.sendMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"));
+                }
+            }
+        }
+        return ActionResultType.PASS;
+    }
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
-	{
-		ItemStack stack = player.getHeldItem(hand);
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote && hand.compareTo(Hand.MAIN_HAND) == 0)
-		{
-			if(player.isCrouching())
-				return super.onItemRightClick(world, player, hand);
-			if(!stack.getOrCreateTag().getBoolean("bound"))
-			{
-				player.sendMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"));
-				return new ActionResult<>(ActionResultType.PASS, stack);
-			}
-			Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-			if(!f.canAccess(player))
-				return new ActionResult<>(ActionResultType.PASS, stack);
+        if(!world.isRemote && hand.compareTo(Hand.MAIN_HAND) == 0)
+        {
+            if(player.isCrouching())
+                return super.onItemRightClick(world, player, hand);
+            if(!stack.getOrCreateTag().getBoolean("bound"))
+            {
+                player.sendMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"));
+                return new ActionResult<>(ActionResultType.PASS, stack);
+            }
+            Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
+            if(!f.canAccess(player))
+                return new ActionResult<>(ActionResultType.PASS, stack);
 
-			NetworkHooks.openGui((ServerPlayerEntity) player, this);
-		}
-		return new ActionResult<>(ActionResultType.SUCCESS, stack);
-	}
+            NetworkHooks.openGui((ServerPlayerEntity) player, this);
+        }
+        return new ActionResult<>(ActionResultType.SUCCESS, stack);
+    }
 
-	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
-	{
-		if(!worldIn.isRemote)
-		{
-			if(stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag().getBoolean("bound"))
-			{
-				if(entityIn instanceof PlayerEntity)
-				{
-					PlayerEntity pe = (PlayerEntity) entityIn;
-					Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-					InvWrapper chestInventory = new InvWrapper(getStorage(worldIn, f));
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if(!worldIn.isRemote)
+        {
+            if(stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag().getBoolean("bound"))
+            {
+                if(entityIn instanceof PlayerEntity)
+                {
+                    PlayerEntity pe = (PlayerEntity) entityIn;
+                    Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
+                    InvWrapper chestInventory = new InvWrapper(getStorage(worldIn, f));
 
-					for(int i = 0; i < pe.inventory.getSizeInventory(); i++)
-					{
-						Item item = pe.inventory.getStackInSlot(i).getItem();
-						if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString()))
-						{
-							InventoryUtils.mergeItemStack(pe.inventory.getStackInSlot(i), 0, getStorage(worldIn, f).getSizeInventory(), chestInventory);
-						}
-					}
-				}
-			}
-		}
-	}
+                    for(int i = 0; i < pe.inventory.getSizeInventory(); i++)
+                    {
+                        Item item = pe.inventory.getStackInSlot(i).getItem();
+                        if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString()))
+                        {
+                            InventoryUtils.mergeItemStack(pe.inventory.getStackInSlot(i), 0, getStorage(worldIn, f).getSizeInventory(), chestInventory);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	private DimChestStorage getStorage(World world, Frequency frequency)
-	{
-		return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
-	}
+    private DimChestStorage getStorage(World world, Frequency frequency)
+    {
+        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
-	{
-		if(worldIn != null)
-		{
-			if(!stack.hasTag() || !stack.getTag().getBoolean("bound"))
-			{
-				tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".adviceToLink"));
-				return;
-			}
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    {
+        if(worldIn != null)
+        {
+            if(!stack.hasTag() || !stack.getTag().getBoolean("bound"))
+            {
+                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".adviceToLink"));
+                return;
+            }
 
-			CompoundNBT tag = stack.getTag();
-			if(Screen.hasShiftDown())
-			{
-				Frequency f = new Frequency(tag.getCompound("frequency"));
-				tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendText( " " + f.getChannel()).applyTextStyles(TextFormatting.GRAY));
-				if(f.hasOwner())
-					tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").appendText(" " + f.getOwner()).applyTextStyle(TextFormatting.GRAY));
+            CompoundNBT tag = stack.getTag();
+            if(Screen.hasShiftDown())
+            {
+                Frequency f = new Frequency(tag.getCompound("frequency"));
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendText(" " + f.getChannel()).applyTextStyles(TextFormatting.GRAY));
+                if(f.hasOwner())
+                    tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").appendText(" " + f.getOwner()).applyTextStyle(TextFormatting.GRAY));
 
-				String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
-				String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
-				tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".collecting").appendText(": " + (tag.getBoolean("autocollect") ? yes : no)).applyTextStyle(TextFormatting.GRAY));
-			}
-			else
-				tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
+                String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+                String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".collecting").appendText(": " + (tag.getBoolean("autocollect") ? yes : no)).applyTextStyle(TextFormatting.GRAY));
+            }
+            else
+                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
 
-			tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".changeAutoCollect"));
-		}
-	}
+            tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".changeAutoCollect"));
+        }
+    }
 
-	@Override
-	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
-	{
-		return new ContainerDimTablet(id, playerInventory, playerEntity.world);
-	}
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    {
+        return new ContainerDimTablet(id, playerInventory, playerEntity.world);
+    }
 
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return new TranslationTextComponent(this.getTranslationKey());
-	}
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent(this.getTranslationKey());
+    }
 }

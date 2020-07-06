@@ -20,48 +20,48 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
-	private ModelDimChest model;
+    private ModelDimChest model;
 
-	public RenderTileDimChest(TileEntityRendererDispatcher dispatcher)
-	{
-		super(dispatcher);
-		model = new ModelDimChest();
-	}
+    public RenderTileDimChest(TileEntityRendererDispatcher dispatcher)
+    {
+        super(dispatcher);
+        model = new ModelDimChest();
+    }
 
-	@Override
-	public void render(TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
-	{
-		if(te == null || te.isRemoved())
-			return;
+    @Override
+    public void render(TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    {
+        if(te == null || te.isRemoved())
+            return;
 
-		matrixStackIn.push();
-		renderBlock(te, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.pop();
-	}
+        matrixStackIn.push();
+        renderBlock(te, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        matrixStackIn.pop();
+    }
 
-	private void renderBlock(@Nonnull TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
-	{
-		int rot = te.rotation;
+    private void renderBlock(@Nonnull TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    {
+        int rot = te.rotation;
 
-		matrixStackIn.push();
+        matrixStackIn.push();
 
-		matrixStackIn.translate(0.5D, -0.5D, 0.5D);
-		//This line actually rotates the renderer.
+        matrixStackIn.translate(0.5D, -0.5D, 0.5D);
+        //This line actually rotates the renderer.
 
-		/** direction **/
-		matrixStackIn.rotate(new Quaternion(0F, 360 - rot * 90, 0F, true));
+        /** direction **/
+        matrixStackIn.rotate(new Quaternion(0F, 360 - rot * 90, 0F, true));
 
-		/** sens **/
-		matrixStackIn.rotate(new Quaternion(180F, 0F, 0F, true));
+        /** sens **/
+        matrixStackIn.rotate(new Quaternion(180F, 0F, 0F, true));
 
-		/** Ajustement **/
-		matrixStackIn.translate(0D, -2D, 0D);
+        /** Ajustement **/
+        matrixStackIn.translate(0D, -2D, 0D);
 
-		model.setTileEntity(te);
+        model.setTileEntity(te);
 
-		IVertexBuilder buffer = bufferIn.getBuffer(RenderType.getEntitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
-		model.render(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
+        IVertexBuilder buffer = bufferIn.getBuffer(RenderType.getEntitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
+        model.render(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
-		matrixStackIn.pop();
-	}
+        matrixStackIn.pop();
+    }
 }

@@ -11,20 +11,20 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class DimTankPlugin implements DimStoragePlugin {
 
-	@Override
-	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
-	{
-		return new DimTankStorage(manager, freq);
-	}
+    @Override
+    public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
+    {
+        return new DimTankStorage(manager, freq);
+    }
 
-	@Override
-	public String identifier()
-	{
-		return "fluid";
-	}
+    @Override
+    public String identifier()
+    {
+        return "fluid";
+    }
 
-	@Override
-	public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
-	{
-	}
+    @Override
+    public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
+    {
+    }
 }

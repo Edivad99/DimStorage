@@ -14,19 +14,19 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class DimChestComponentProvider extends DimBlockBaseComponentProvider implements IComponentProvider {
 
-	@Override
-	public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
-	{
-		super.appendBody(tooltip, accessor, config);
-		if(accessor.getTileEntity() instanceof TileEntityDimChest)
-		{
-			CompoundNBT data = accessor.getServerData();
+    @Override
+    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
+    {
+        super.appendBody(tooltip, accessor, config);
+        if(accessor.getTileEntity() instanceof TileEntityDimChest)
+        {
+            CompoundNBT data = accessor.getServerData();
 
-			String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
-			String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
-			String collecting = new TranslationTextComponent("gui." + Main.MODID + ".collecting").appendText(": ").getString();
+            String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+            String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
+            String collecting = new TranslationTextComponent("gui." + Main.MODID + ".collecting").appendText(": ").getString();
 
-			tooltip.add(new StringTextComponent(collecting + (data.getBoolean("Collecting") ? yes : no)));
-		}
-	}
+            tooltip.add(new StringTextComponent(collecting + (data.getBoolean("Collecting") ? yes : no)));
+        }
+    }
 }

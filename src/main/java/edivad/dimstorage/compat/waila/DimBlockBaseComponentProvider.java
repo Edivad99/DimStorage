@@ -15,28 +15,28 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class DimBlockBaseComponentProvider implements IComponentProvider {
 
-	@Override
-	public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
-	{
-		if(accessor.getTileEntity() instanceof TileFrequencyOwner)
-		{
-			CompoundNBT data = accessor.getServerData();
+    @Override
+    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
+    {
+        if(accessor.getTileEntity() instanceof TileFrequencyOwner)
+        {
+            CompoundNBT data = accessor.getServerData();
 
-			String owner = new TranslationTextComponent("gui." + Main.MODID + ".owner").appendText(" ").getString();
-			String freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendText(" ").getString();
-			String locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").appendText(" ").getString();
-			String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+            String owner = new TranslationTextComponent("gui." + Main.MODID + ".owner").appendText(" ").getString();
+            String freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendText(" ").getString();
+            String locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").appendText(" ").getString();
+            String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
 
-			if(data.getBoolean("HasOwner"))
-			{
-				if(data.getBoolean("CanAccess"))
-					tooltip.add(new StringTextComponent(TextFormatting.GREEN + owner + data.getString("Owner")));
-				else
-					tooltip.add(new StringTextComponent(TextFormatting.RED + owner + data.getString("Owner")));
-			}
-			tooltip.add(new StringTextComponent(freq + data.getInt("Frequency")));
-			if(data.getBoolean("Locked"))
-				tooltip.add(new StringTextComponent(locked + yes));
-		}
-	}
+            if(data.getBoolean("HasOwner"))
+            {
+                if(data.getBoolean("CanAccess"))
+                    tooltip.add(new StringTextComponent(TextFormatting.GREEN + owner + data.getString("Owner")));
+                else
+                    tooltip.add(new StringTextComponent(TextFormatting.RED + owner + data.getString("Owner")));
+            }
+            tooltip.add(new StringTextComponent(freq + data.getInt("Frequency")));
+            if(data.getBoolean("Locked"))
+                tooltip.add(new StringTextComponent(locked + yes));
+        }
+    }
 }

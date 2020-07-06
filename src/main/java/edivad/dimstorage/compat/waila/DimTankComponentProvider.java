@@ -14,27 +14,27 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class DimTankComponentProvider extends DimBlockBaseComponentProvider implements IComponentProvider {
 
-	@Override
-	public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
-	{
-		super.appendBody(tooltip, accessor, config);
-		if(accessor.getTileEntity() instanceof TileEntityDimTank)
-		{
-			CompoundNBT data = accessor.getServerData();
+    @Override
+    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
+    {
+        super.appendBody(tooltip, accessor, config);
+        if(accessor.getTileEntity() instanceof TileEntityDimTank)
+        {
+            CompoundNBT data = accessor.getServerData();
 
-			String autoEject = new TranslationTextComponent("gui." + Main.MODID + ".eject").appendText(": ").getString();
-			String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
-			String liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
-			String amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
+            String autoEject = new TranslationTextComponent("gui." + Main.MODID + ".eject").appendText(": ").getString();
+            String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
+            String liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
+            String amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
 
-			if(data.getBoolean("AutoEject"))
-				tooltip.add(new StringTextComponent(autoEject + yes));
-			if(data.getInt("Amount") > 0)
-			{
-				tooltip.add(new StringTextComponent(liquid + " " + data.getString("Liquid")));
-				tooltip.add(new StringTextComponent(amount + " " + data.getInt("Amount") + " mB"));
-			}
+            if(data.getBoolean("AutoEject"))
+                tooltip.add(new StringTextComponent(autoEject + yes));
+            if(data.getInt("Amount") > 0)
+            {
+                tooltip.add(new StringTextComponent(liquid + " " + data.getString("Liquid")));
+                tooltip.add(new StringTextComponent(amount + " " + data.getInt("Amount") + " mB"));
+            }
 
-		}
-	}
+        }
+    }
 }

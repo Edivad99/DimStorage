@@ -13,42 +13,42 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncLiquidTank {
 
-	private BlockPos pos;
-	private FluidStack fluidStack;
+    private BlockPos pos;
+    private FluidStack fluidStack;
 
-	public SyncLiquidTank(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-		fluidStack = buf.readFluidStack();
-	}
+    public SyncLiquidTank(PacketBuffer buf)
+    {
+        pos = buf.readBlockPos();
+        fluidStack = buf.readFluidStack();
+    }
 
-	public SyncLiquidTank(BlockPos pos, FluidStack fluidStack)
-	{
-		this.pos = pos;
-		this.fluidStack = fluidStack;
-	}
+    public SyncLiquidTank(BlockPos pos, FluidStack fluidStack)
+    {
+        this.pos = pos;
+        this.fluidStack = fluidStack;
+    }
 
-	public void toBytes(PacketBuffer buf)
-	{
-		buf.writeBlockPos(pos);
-		buf.writeFluidStack(fluidStack);
-	}
+    public void toBytes(PacketBuffer buf)
+    {
+        buf.writeBlockPos(pos);
+        buf.writeFluidStack(fluidStack);
+    }
 
-	public void handle(Supplier<NetworkEvent.Context> ctx)
-	{
-		ctx.get().enqueueWork(() -> {
-			World world = Main.proxy.getClientWorld();
-			if(world.isBlockPresent(pos))
-			{
-				TileEntity te = world.getTileEntity(pos);
-				if(te instanceof TileEntityDimTank)
-				{
-					TileEntityDimTank tank = (TileEntityDimTank) te;
-					tank.liquidState.sync(fluidStack);
-				}
-			}
-		});
-		ctx.get().setPacketHandled(true);
-	}
+    public void handle(Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() -> {
+            World world = Main.proxy.getClientWorld();
+            if(world.isBlockPresent(pos))
+            {
+                TileEntity te = world.getTileEntity(pos);
+                if(te instanceof TileEntityDimTank)
+                {
+                    TileEntityDimTank tank = (TileEntityDimTank) te;
+                    tank.liquidState.sync(fluidStack);
+                }
+            }
+        });
+        ctx.get().setPacketHandled(true);
+    }
 
 }

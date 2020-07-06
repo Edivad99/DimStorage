@@ -14,19 +14,19 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
 
-	public static void init(FMLClientSetupEvent event)
-	{
-		//Version checker
-		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+    public static void init(FMLClientSetupEvent event)
+    {
+        //Version checker
+        MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 
-		//Special render & GUI
+        //Special render & GUI
 
-		ClientRegistry.bindTileEntityRenderer(Registration.DIMCHEST_TILE.get(), RenderTileDimChest::new);
-		ClientRegistry.bindTileEntityRenderer(Registration.DIMTANK_TILE.get(), RenderTileDimTank::new);
-		RenderTypeLookup.setRenderLayer(Registration.DIMTANK.get(), RenderType.getCutout());
+        ClientRegistry.bindTileEntityRenderer(Registration.DIMCHEST_TILE.get(), RenderTileDimChest::new);
+        ClientRegistry.bindTileEntityRenderer(Registration.DIMTANK_TILE.get(), RenderTileDimTank::new);
+        RenderTypeLookup.setRenderLayer(Registration.DIMTANK.get(), RenderType.getCutout());
 
-		ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-		ScreenManager.registerFactory(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
-		ScreenManager.registerFactory(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
-	}
+        ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
+        ScreenManager.registerFactory(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
+        ScreenManager.registerFactory(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
+    }
 }

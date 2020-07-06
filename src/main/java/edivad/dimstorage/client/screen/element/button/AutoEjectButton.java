@@ -9,26 +9,26 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class AutoEjectButton extends Button {
 
-	private TileEntityDimTank tank;
+    private TileEntityDimTank tank;
 
-	public AutoEjectButton(int width, int height, TileEntityDimTank tank)
-	{
-		super(width, height, 64, 20, getText(tank.autoEject), b -> {});
-		this.tank = tank;
-	}
+    public AutoEjectButton(int width, int height, TileEntityDimTank tank)
+    {
+        super(width, height, 64, 20, getText(tank.autoEject), b -> {});
+        this.tank = tank;
+    }
 
-	private static String getText(boolean autoEject)
-	{
-		if(autoEject)
-			return new TranslationTextComponent("gui." + Main.MODID + ".eject").getString();
-		else
-			return new TranslationTextComponent("gui." + Main.MODID + ".idle").getString();
-	}
+    private static String getText(boolean autoEject)
+    {
+        if(autoEject)
+            return new TranslationTextComponent("gui." + Main.MODID + ".eject").getString();
+        else
+            return new TranslationTextComponent("gui." + Main.MODID + ".idle").getString();
+    }
 
-	@Override
-	public void onPress()
-	{
-		tank.swapAutoEject();
-		PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
-	}
+    @Override
+    public void onPress()
+    {
+        tank.swapAutoEject();
+        PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
+    }
 }

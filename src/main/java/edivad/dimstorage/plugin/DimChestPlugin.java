@@ -14,27 +14,27 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DimChestPlugin implements DimStoragePlugin {
 
-	@Override
-	public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
-	{
-		return new DimChestStorage(manager, freq);
-	}
+    @Override
+    public AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq)
+    {
+        return new DimChestStorage(manager, freq);
+    }
 
-	@Override
-	public String identifier()
-	{
-		return "item";
-	}
+    @Override
+    public String identifier()
+    {
+        return "item";
+    }
 
-	@Override
-	public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
-	{
-		for(AbstractDimStorage inv : list)
-		{
-			if(((DimChestStorage) inv).getNumOpen() > 0)
-			{
-				PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(inv.freq, true));
-			}
-		}
-	}
+    @Override
+    public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
+    {
+        for(AbstractDimStorage inv : list)
+        {
+            if(((DimChestStorage) inv).getNumOpen() > 0)
+            {
+                PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(inv.freq, true));
+            }
+        }
+    }
 }

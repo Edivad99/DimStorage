@@ -9,15 +9,15 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ProxyClient implements IProxy {
 
-	@Override
-	public PlayerEntity getClientPlayer()
-	{
-		return Minecraft.getInstance().player;
-	}
+    @Override
+    public PlayerEntity getClientPlayer()
+    {
+        return Minecraft.getInstance().player;
+    }
 
-	@Override
-	public World getClientWorld()
-	{
-		return Minecraft.getInstance().world;
-	}
+    @Override
+    public World getClientWorld()
+    {
+        return Minecraft.getInstance().world;
+    }
 }

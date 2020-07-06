@@ -12,15 +12,15 @@ import net.minecraftforge.common.Tags;
 
 public class Recipes extends RecipeProvider {
 
-	public Recipes(DataGenerator generatorIn)
-	{
-		super(generatorIn);
-	}
+    public Recipes(DataGenerator generatorIn)
+    {
+        super(generatorIn);
+    }
 
-	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer)
-	{
-		//@formatter:off
+    @Override
+    protected void registerRecipes(Consumer<IFinishedRecipe> consumer)
+    {
+        //@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(Registration.DIMCORE.get())
 			.patternLine("aba")
 	        .patternLine("bcb")
@@ -87,5 +87,5 @@ public class Recipes extends RecipeProvider {
 	        .addCriterion("cauldron", hasItem(Items.CAULDRON))
 	        .build(consumer);
         //@formatter:on
-	}
+    }
 }

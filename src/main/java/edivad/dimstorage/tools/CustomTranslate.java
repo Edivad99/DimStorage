@@ -7,12 +7,12 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class CustomTranslate {
 
-	private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
+    private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
 
-	public static StringTextComponent translateToLocal(String key)
-	{
-		String translated = I18n.format(key);
-		translated = COMPILE.matcher(translated).replaceAll("\u00a7");
-		return new StringTextComponent(translated);
-	}
+    public static StringTextComponent translateToLocal(String key)
+    {
+        String translated = I18n.format(key);
+        translated = COMPILE.matcher(translated).replaceAll("\u00a7");
+        return new StringTextComponent(translated);
+    }
 }

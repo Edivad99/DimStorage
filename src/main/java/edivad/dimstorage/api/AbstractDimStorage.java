@@ -5,55 +5,55 @@ import net.minecraft.nbt.CompoundNBT;
 
 public abstract class AbstractDimStorage {
 
-	public final DimStorageManager manager;
-	public final Frequency freq;
-	private boolean dirty;
-	private int changeCount;
+    public final DimStorageManager manager;
+    public final Frequency freq;
+    private boolean dirty;
+    private int changeCount;
 
-	public AbstractDimStorage(DimStorageManager manager, Frequency freq)
-	{
-		this.manager = manager;
-		this.freq = freq.copy();
+    public AbstractDimStorage(DimStorageManager manager, Frequency freq)
+    {
+        this.manager = manager;
+        this.freq = freq.copy();
 
-		this.dirty = false;
-		this.changeCount = 0;
-	}
+        this.dirty = false;
+        this.changeCount = 0;
+    }
 
-	public void setDirty()
-	{
-		if(manager.isServer())
-		{
-			if(!dirty)
-			{
-				dirty = true;
-				manager.requestSave(this);
-			}
+    public void setDirty()
+    {
+        if(manager.isServer())
+        {
+            if(!dirty)
+            {
+                dirty = true;
+                manager.requestSave(this);
+            }
 
-			changeCount++;
-		}
-	}
+            changeCount++;
+        }
+    }
 
-	public void setClean()
-	{
-		dirty = false;
-	}
+    public void setClean()
+    {
+        dirty = false;
+    }
 
-	public int getChangeCount()
-	{
-		return changeCount;
-	}
+    public int getChangeCount()
+    {
+        return changeCount;
+    }
 
-	public abstract void clearStorage();
+    public abstract void clearStorage();
 
-	public abstract String type();
+    public abstract String type();
 
-	public abstract CompoundNBT saveToTag();
+    public abstract CompoundNBT saveToTag();
 
-	public abstract void loadFromTag(CompoundNBT tag);
+    public abstract void loadFromTag(CompoundNBT tag);
 
-	@Override
-	public String toString()
-	{
-		return freq + ",type=" + type();
-	}
+    @Override
+    public String toString()
+    {
+        return freq + ",type=" + type();
+    }
 }
