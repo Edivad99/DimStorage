@@ -105,7 +105,7 @@ dependencies {
     //runtimeOnly "mcjty.theoneprobe:TheOneProbe-${top_version}"
 
     compileOnly "mezz.jei:jei-${jei_version}:api"
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
