@@ -33,8 +33,8 @@ public class ItemDimBase extends BlockItem {
     {
         if(stack.hasTag())
         {
-            CompoundNBT stackTag = stack.getTag();
-            if(stackTag.contains("Frequency"))
+            CompoundNBT stackTag = stack.getChildTag("DimStorage");
+            if(stackTag != null && stackTag.contains("Frequency"))
             {
                 return new Frequency(stackTag.getCompound("Frequency"));
             }
