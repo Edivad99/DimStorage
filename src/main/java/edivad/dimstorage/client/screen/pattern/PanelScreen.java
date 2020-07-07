@@ -56,9 +56,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
+    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);
+        super.render(mStack, mouseX, mouseY, partialTicks);
 
         if(state == SettingsState.STATE_OPENNING)
         {
@@ -93,9 +93,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    public boolean func_231044_a_(double mouseX, double mouseY, int clickedButton)//mouseClicked
+    public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
     {
-        super.func_231044_a_(mouseX, mouseY, clickedButton);
+        super.mouseClicked(mouseX, mouseY, clickedButton);
 
         if(allowConfig)
         {
@@ -138,26 +138,26 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
         int settingsX = guiLeft + (this.xSize - SETTINGS_WIDTH);
 
         if(allowConfig)
-            this.func_238474_b_(mStack, settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);//this.blit
+            this.blit(mStack, settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
 
-        this.func_238474_b_(mStack, guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
+        this.blit(mStack, guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
 
         // button background
-        this.func_238474_b_(mStack, getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
+        this.blit(mStack, getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
         if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENNING)
         {
             if(settingsButtonOver)
-                this.func_238474_b_(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
             else
-                this.func_238474_b_(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
         }
         else if(state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING)
         {
             if(settingsButtonOver)
-                this.func_238474_b_(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
             else
-                this.func_238474_b_(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
         }
     }
 
@@ -175,7 +175,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
         {
             if(widget instanceof Button)
             {
-                this.field_230710_m_.clear();//this.buttons
+                this.buttons.clear();
                 break;
             }
         }
@@ -186,15 +186,15 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     {
         component.add(widget);
         if(widget instanceof Button)
-            func_230480_a_((Button) widget);//addButton
+            addButton((Button) widget);
         else if(widget instanceof TextFieldWidget)
-            field_230705_e_.add((TextFieldWidget) widget);//children
+            children.add((TextFieldWidget) widget);
     }
 
     protected void drawSettings(boolean draw)
     {
         drawSettings = draw;
         for(Widget widget : component)
-            widget.field_230694_p_ = draw;//visible
+            widget.visible = draw;
     }
 }

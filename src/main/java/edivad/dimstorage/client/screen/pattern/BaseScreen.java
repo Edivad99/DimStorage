@@ -26,21 +26,21 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.field_230706_i_.getTextureManager().bindTexture(background);//this.minecraft
+        this.minecraft.getTextureManager().bindTexture(background);
     }
 
     @Override
     protected void func_230451_b_(MatrixStack mStack, int mouseX, int mouseY)//drawGuiContainerForegroundLayer
     {
-        this.field_230712_o_.func_238422_b_(mStack, this.func_231171_q_(), 8, 6, 4210752);//this.font.drawString
-        this.field_230712_o_.func_238422_b_(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
+        this.font.func_238422_b_(mStack, this.getTitle(), 8, 6, 4210752);//this.font.drawString
+        this.font.func_238422_b_(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
     }
 
     @Override
-    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
+    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
     {
-        this.func_230446_a_(mStack);//this.renderBackground();
-        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);//super.render(mStack, mouseX, mouseY, partialTicks);
+        this.renderBackground(mStack);
+        super.render(mStack, mouseX, mouseY, partialTicks);
         this.func_230459_a_(mStack, mouseX, mouseY);//this.renderHoveredToolTip(mStack, mouseX, mouseY);
     }
 }

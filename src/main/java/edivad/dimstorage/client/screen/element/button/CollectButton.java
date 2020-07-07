@@ -23,7 +23,7 @@ public class CollectButton extends Button {
     }
 
     @Override
-    public void func_230930_b_() //onPress()
+    public void onPress()
     {
         owner.swapCollect();
         PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(owner));

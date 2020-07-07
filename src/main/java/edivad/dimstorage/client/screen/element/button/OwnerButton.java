@@ -18,11 +18,11 @@ public class OwnerButton extends Button {
     {
         super(width, height, 64, 20, new StringTextComponent(owner.frequency.getOwner()), b -> {});
         this.owner = owner;
-        this.field_230693_o_ = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();//this.active
+        this.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
     }
 
     @Override
-    public void func_230930_b_() //onPress()
+    public void onPress()
     {
         if(owner instanceof TileEntityDimChest)
         {

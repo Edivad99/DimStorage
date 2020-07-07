@@ -23,7 +23,7 @@ public class AutoEjectButton extends Button {
     }
 
     @Override
-    public void func_230930_b_() //onPress()
+    public void onPress()
     {
         tank.swapAutoEject();
         PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));

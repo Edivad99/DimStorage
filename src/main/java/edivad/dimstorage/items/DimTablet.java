@@ -155,7 +155,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
             }
 
             CompoundNBT tag = stack.getTag();
-            if(Screen.func_231173_s_())//hasShiftDown
+            if(Screen.hasShiftDown())
             {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
                 tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " " + f.getChannel()));

@@ -32,21 +32,11 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         super(container, invPlayer, text, background, drawSettings);
         this.tileOwner = tileOwner;
     }
-    /*
-    field_230708_k_ width 
-    field_230709_l_ height 
-    field_230690_l_ x 
-    field_230691_m_ y 
-    field_230685_b_ wasHovered 
-    field_230692_n_ isHovered 
-    field_230693_o_ active 
-    field_230694_p_ visible
-    func_238465_a_ hLine*/
 
     @Override
-    protected void func_231160_c_()//init
+    protected void init()
     {
-        super.func_231160_c_();
+        super.init();
 
         // Get translation
         owner = new TranslationTextComponent("gui." + Main.MODID + ".owner");
@@ -54,11 +44,11 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         locked = new TranslationTextComponent("gui." + Main.MODID + ".locked");
 
         clearComponent();
-        addComponent(new OwnerButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 - 53, tileOwner));
-        addComponent(new ChangeButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 + 7, b -> changeFrequency()));
-        addComponent(new LockButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 + 46, tileOwner));
+        addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));
+        addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, b -> changeFrequency()));
+        addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner));
 
-        freqTextField = new FrequencyText(field_230708_k_ / 2 + 95, field_230709_l_ / 2 - 12, tileOwner.frequency);
+        freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.frequency);
         addComponent(freqTextField);
         drawSettings(drawSettings);
     }
@@ -83,24 +73,24 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
     }
 
     @Override
-    public void func_231023_e_()//tick
+    public void tick()
     {
-        super.func_231023_e_();
+        super.tick();
         freqTextField.tick();
     }
 
     @Override
-    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
+    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);
-        freqTextField.func_230430_a_(mStack, mouseX, mouseY, partialTicks);//render
+        super.render(mStack, mouseX, mouseY, partialTicks);
+        freqTextField.render(mStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public boolean func_231044_a_(double mouseX, double mouseY, int clickedButton)//mouseClicked
+    public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
     {
-        freqTextField.func_231044_a_(mouseX, mouseY, clickedButton);//mouseClicked
-        return super.func_231044_a_(mouseX, mouseY, clickedButton);
+        freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
+        return super.mouseClicked(mouseX, mouseY, clickedButton);
     }
 
     @Override
@@ -113,21 +103,21 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
             int posY = 45;
 
             // owner
-            this.field_230712_o_.func_238422_b_(mStack, owner, 185, posY, 4210752);//this.font.drawString
+            this.font.func_238422_b_(mStack, owner, 185, posY, 4210752);//this.font.drawString
             posY += 9;
-            this.func_238465_a_(mStack, 185, 185 + this.field_230712_o_.func_238414_a_(owner), posY, 0xFF333333);//hLine getStringWidth
+            this.hLine(mStack, 185, 185 + this.font.func_238414_a_(owner), posY, 0xFF333333);//getStringWidth
             posY += 31;
 
             // freq
-            this.field_230712_o_.func_238422_b_(mStack, freq, 185, posY, 4210752);//this.font.drawString
+            this.font.func_238422_b_(mStack, freq, 185, posY, 4210752);//this.font.drawString
             posY += 9;
-            this.func_238465_a_(mStack, 185, 185 + this.field_230712_o_.func_238414_a_(freq), posY, 0xFF333333);//hLine getStringWidth
+            this.hLine(mStack, 185, 185 + this.font.func_238414_a_(freq), posY, 0xFF333333);//getStringWidth
             posY += 50;
 
             // locked
-            this.field_230712_o_.func_238422_b_(mStack, locked, 185, posY, 4210752);//this.font.drawString
+            this.font.func_238422_b_(mStack, locked, 185, posY, 4210752);//this.font.drawString
             posY += 9;
-            this.func_238465_a_(mStack, 185, 185 + this.field_230712_o_.func_238414_a_(locked), posY, 0xFF333333);//hLine getStringWidth
+            this.hLine(mStack, 185, 185 + this.font.func_238414_a_(locked), posY, 0xFF333333);//getStringWidth
         }
     }
 }

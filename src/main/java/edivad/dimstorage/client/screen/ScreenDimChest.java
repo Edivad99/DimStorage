@@ -22,20 +22,20 @@ public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
     }
 
     @Override
-    protected void func_231160_c_()//init
+    protected void init()
     {
-        super.func_231160_c_();
+        super.init();
 
-        addComponent(new CollectButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 + 75, (TileEntityDimChest) tileOwner));
+        addComponent(new CollectButton(width / 2 + 95, height / 2 + 75, (TileEntityDimChest) tileOwner));
 
         drawSettings(drawSettings);
     }
 
     @Override
-    public void func_230430_a_(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)//render
+    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.func_230430_a_(mStack, mouseX, mouseY, partialTicks);
-        if(drawSettings && mouseX > field_230708_k_ / 2 + 90 && mouseX < field_230708_k_ / 2 + 164 && mouseY > field_230709_l_ / 2 + 70 && mouseY < field_230709_l_ / 2 + 100)
-            this.func_238654_b_(mStack, Collections.singletonList(new TranslationTextComponent("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, field_230712_o_);//renderToolTip font
+        super.render(mStack, mouseX, mouseY, partialTicks);
+        if(drawSettings && mouseX > width / 2 + 90 && mouseX < width / 2 + 164 && mouseY > height / 2 + 70 && mouseY < height / 2 + 100)
+            this.renderTooltip(mStack, Collections.singletonList(new TranslationTextComponent("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
     }
 }

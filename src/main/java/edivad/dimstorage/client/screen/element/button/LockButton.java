@@ -26,7 +26,7 @@ public class LockButton extends Button {
     }
 
     @Override
-    public void func_230930_b_() //onPress()
+    public void onPress()
     {
         if(owner instanceof TileEntityDimChest)
         {

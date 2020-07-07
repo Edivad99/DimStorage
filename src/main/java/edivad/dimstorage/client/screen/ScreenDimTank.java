@@ -14,7 +14,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,11 +28,11 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void func_231160_c_()//init
+    protected void init()
     {
-        super.func_231160_c_();
+        super.init();
 
-        addComponent(new AutoEjectButton(field_230708_k_ / 2 + 95, field_230709_l_ / 2 + 75, (TileEntityDimTank) tileOwner));
+        addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (TileEntityDimTank) tileOwner));
 
         drawSettings(drawSettings);
 
@@ -57,15 +56,15 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
         {
             FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
             String liquidName = liquidStack.getDisplayName().getString();
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length()))), 50, 25, 4210752);//this.font.drawString
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(amount + " " + liquidStack.getAmount() + " mB"), 50, 35, 4210752);
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(temperature + " " + (liquidAttributes.getTemperature() - 273) + "C"), 50, 45, 4210752);
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(luminosity + " " + liquidAttributes.getLuminosity()), 50, 55, 4210752);
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(gaseous + " " + (liquidAttributes.isGaseous() ? yes : no)), 50, 65, 4210752);
+            this.font.drawString(mStack, liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
+            this.font.drawString(mStack, amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
+            this.font.drawString(mStack, temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
+            this.font.drawString(mStack, luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
+            this.font.drawString(mStack, gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
         }
         else
         {
-            this.field_230712_o_.func_238422_b_(mStack, new StringTextComponent(liquid + " " + empty), 50, 25, 4210752);
+            this.font.drawString(mStack, liquid + " " + empty, 50, 25, 4210752);
         }
 
     }
@@ -79,10 +78,10 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-        this.field_230706_i_.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);//this.minecraft
+        this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 
         FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((TileEntityDimTank) tileOwner)));
-        ScreenDimTank.func_238470_a_(mStack, this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);//this.blit
+        ScreenDimTank.blit(mStack, this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 
     private static int getFluidScaled(int pixels, int currentLiquidAmount)

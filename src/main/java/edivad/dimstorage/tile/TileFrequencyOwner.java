@@ -76,9 +76,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     public abstract AbstractDimStorage getStorage();
 
     @Override
-    public void func_230337_a_(BlockState state, CompoundNBT tag)//read
+    public void read(BlockState state, CompoundNBT tag)
     {
-        super.func_230337_a_(state, tag);
+        super.read(state, tag);
         frequency.set(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
     }
