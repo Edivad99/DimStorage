@@ -158,13 +158,13 @@ public class DimTablet extends Item implements INamedContainerProvider {
             if(Screen.hasShiftDown())
             {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " " + f.getChannel()));
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").func_240702_b_(" " + f.getChannel()).func_240701_a_(TextFormatting.GRAY));
                 if(f.hasOwner())
-                    tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " " + f.getOwner()));
+                    tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").func_240702_b_(" " + f.getOwner()).func_240701_a_(TextFormatting.GRAY));
 
                 String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
                 String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("gui." + Main.MODID + ".collecting").getString() + ": " + (tag.getBoolean("autocollect") ? yes : no)));
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".collecting").func_240702_b_(": " + (tag.getBoolean("autocollect") ? yes : no)).func_240701_a_(TextFormatting.GRAY));
             }
             else
                 tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));

@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -64,8 +63,8 @@ public class ItemDimBase extends BlockItem {
     {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " " + frequency.getOwner()));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").func_240702_b_(" " + frequency.getOwner()).func_240701_a_(TextFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(new StringTextComponent(new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " " + frequency.getChannel()));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").func_240702_b_(" " + frequency.getChannel()));
     }
 }
