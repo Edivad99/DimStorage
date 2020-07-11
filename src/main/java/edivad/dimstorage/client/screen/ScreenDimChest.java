@@ -36,6 +36,6 @@ public class ScreenDimChest extends FrequencyScreen<ContainerDimChest> {
     {
         super.render(mStack, mouseX, mouseY, partialTicks);
         if(drawSettings && mouseX > width / 2 + 90 && mouseX < width / 2 + 164 && mouseY > height / 2 + 70 && mouseY < height / 2 + 100)
-            this.renderTooltip(mStack, Collections.singletonList(new TranslationTextComponent("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY, font);
+            this.renderTooltip(mStack, Collections.singletonList(new TranslationTextComponent("tooltip." + Main.MODID + ".collect", TileEntityDimChest.AREA, TileEntityDimChest.AREA)), mouseX, mouseY);
     }
 }
