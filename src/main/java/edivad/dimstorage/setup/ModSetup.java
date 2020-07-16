@@ -10,12 +10,12 @@ import edivad.dimstorage.tools.DimCommands;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
@@ -47,9 +47,9 @@ public class ModSetup {
     }
 
     @SubscribeEvent
-    public static void serverLoad(final FMLServerStartingEvent event)
+    public static void registerCommands(final RegisterCommandsEvent event)
     {
-        DimCommands.init(event.getCommandDispatcher());
+        DimCommands.init(event.getDispatcher());
     }
 
     @SubscribeEvent
