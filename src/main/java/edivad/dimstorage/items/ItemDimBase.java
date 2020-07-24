@@ -63,8 +63,8 @@ public class ItemDimBase extends BlockItem {
     {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").func_240702_b_(" " + frequency.getOwner()).func_240701_a_(TextFormatting.DARK_RED));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").appendString(" " + frequency.getOwner()).mergeStyle(TextFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").func_240702_b_(" " + frequency.getChannel()));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendString(" " + frequency.getChannel()));
     }
 }

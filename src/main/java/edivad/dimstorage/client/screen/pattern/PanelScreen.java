@@ -132,9 +132,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
+    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.func_230450_a_(mStack, partialTicks, mouseX, mouseY);
+        super.drawGuiContainerBackgroundLayer(mStack, partialTicks, mouseX, mouseY);
         int settingsX = guiLeft + (this.xSize - SETTINGS_WIDTH);
 
         if(allowConfig)

@@ -23,14 +23,14 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
+    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(background);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack mStack, int mouseX, int mouseY)//drawGuiContainerForegroundLayer
+    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
     {
         this.font.func_238422_b_(mStack, this.getTitle(), 8, 6, 4210752);//this.font.drawString
         this.font.func_238422_b_(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);

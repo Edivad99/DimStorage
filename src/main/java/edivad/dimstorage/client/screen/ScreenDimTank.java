@@ -47,9 +47,9 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack mStack, int mouseX, int mouseY)//drawGuiContainerForegroundLayer
+    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
     {
-        super.func_230451_b_(mStack, mouseX, mouseY);
+        super.drawGuiContainerForegroundLayer(mStack, mouseX, mouseY);
         FluidStack liquidStack = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
 
         if(!liquidStack.isEmpty())
@@ -70,9 +70,9 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
+    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.func_230450_a_(mStack, partialTicks, mouseX, mouseY);
+        super.drawGuiContainerBackgroundLayer(mStack, partialTicks, mouseX, mouseY);
 
         FluidStack fluid = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());

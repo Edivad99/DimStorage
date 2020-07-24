@@ -94,9 +94,9 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack mStack, int mouseX, int mouseY)//drawGuiContainerForegroundLayer
+    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
     {
-        super.func_230451_b_(mStack, mouseX, mouseY);
+        super.drawGuiContainerForegroundLayer(mStack, mouseX, mouseY);
 
         if(drawSettings)
         {

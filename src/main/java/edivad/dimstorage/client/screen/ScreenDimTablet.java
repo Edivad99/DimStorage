@@ -17,9 +17,9 @@ public class ScreenDimTablet extends BaseScreen<ContainerDimTablet> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)//drawGuiContainerBackgroundLayer
+    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.func_230450_a_(mStack, partialTicks, mouseX, mouseY);
+        super.drawGuiContainerBackgroundLayer(mStack, partialTicks, mouseX, mouseY);
         this.blit(mStack, this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
     }
 }
