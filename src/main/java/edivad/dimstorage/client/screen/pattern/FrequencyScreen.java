@@ -17,14 +17,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T> {
 
     protected TileFrequencyOwner tileOwner;
 
-    private ITextProperties owner, freq, locked;
+    private ITextComponent owner, freq, locked;
     private FrequencyText freqTextField;
 
     public FrequencyScreen(T container, TileFrequencyOwner tileOwner, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
@@ -103,19 +102,19 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
             int posY = 45;
 
             // owner
-            this.font.func_238422_b_(mStack, owner, 185, posY, 4210752);//this.font.drawString
+            this.font.func_243248_b(mStack, owner, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.func_238414_a_(owner), posY, 0xFF333333);//getStringWidth
             posY += 31;
 
             // freq
-            this.font.func_238422_b_(mStack, freq, 185, posY, 4210752);//this.font.drawString
+            this.font.func_243248_b(mStack, freq, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.func_238414_a_(freq), posY, 0xFF333333);//getStringWidth
             posY += 50;
 
             // locked
-            this.font.func_238422_b_(mStack, locked, 185, posY, 4210752);//this.font.drawString
+            this.font.func_243248_b(mStack, locked, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.func_238414_a_(locked), posY, 0xFF333333);//getStringWidth
         }

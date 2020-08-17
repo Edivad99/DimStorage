@@ -32,14 +32,14 @@ public class DimStorageManager {
         @SubscribeEvent
         public void onWorldLoad(Load event)
         {
-            if(event.getWorld().getWorld().isRemote)
+            if(event.getWorld().isRemote())
                 reloadManager(true);
         }
 
         @SubscribeEvent
         public void onWorldSave(Save event)
         {
-            if(!event.getWorld().getWorld().isRemote && instance(false) != null)
+            if(!event.getWorld().isRemote() && instance(false) != null)
                 instance(false).save(false);
         }
 

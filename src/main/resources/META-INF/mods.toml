@@ -1,9 +1,9 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[32,)" #mandatory (32 is current forge version)
+loaderVersion="[33,)" #mandatory (33 is current forge version)
 
-license="MIT" #mandatory
+license="GNU GPLv3" #mandatory
 
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
@@ -42,7 +42,7 @@ description="DimStorage add a technologic version of ender chest system with own
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[32.0.67,)" #mandatory
+    versionRange="[33,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -51,7 +51,7 @@ description="DimStorage add a technologic version of ender chest system with own
 [[dependencies.dimstorage]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1]"
+    versionRange="[1.16.2]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.dimstorage]]

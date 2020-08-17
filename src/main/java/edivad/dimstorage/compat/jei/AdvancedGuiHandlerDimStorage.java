@@ -9,28 +9,22 @@ import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import net.minecraft.client.renderer.Rectangle2d;
 
-@SuppressWarnings("rawtypes")
-public class AdvancedGuiHandlerDimStorage implements IGuiContainerHandler<PanelScreen> {
+public class AdvancedGuiHandlerDimStorage <Panel extends PanelScreen<?>> implements IGuiContainerHandler<Panel> {
 
-    public AdvancedGuiHandlerDimStorage()
-    {
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    public List<Rectangle2d> getGuiExtraAreas(PanelScreen containerScreen)
+    public List<Rectangle2d> getGuiExtraAreas(Panel containerScreen)
     {
         return containerScreen.getAreas();
     }
 
     @Override
-    public Object getIngredientUnderMouse(PanelScreen containerScreen, double mouseX, double mouseY)
+    public Object getIngredientUnderMouse(Panel containerScreen, double mouseX, double mouseY)
     {
         return null;
     }
 
     @Override
-    public Collection<IGuiClickableArea> getGuiClickableAreas(PanelScreen containerScreen, double mouseX, double mouseY)
+    public Collection<IGuiClickableArea> getGuiClickableAreas(Panel containerScreen, double mouseX, double mouseY)
     {
         return Collections.emptyList();
     }

@@ -20,4 +20,4 @@ jobs:
           path: ~/.gradle/caches
           key: gradle-${{ hashFiles('**/*.gradle') }}
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build --no-daemon --max-workers 1
