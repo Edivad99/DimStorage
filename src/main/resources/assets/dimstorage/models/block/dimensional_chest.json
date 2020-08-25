@@ -1,5 +1,5 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube",
   "textures": {
     "particle": "dimstorage:blocks/dimchest_top",
     "down" : "dimstorage:blocks/dimchest_bottom",
@@ -10,7 +10,7 @@
     "south": "dimstorage:blocks/dimchest_sides"
   },
   "display": {
-  	"gui": {
+    "gui": {
       "rotation": [ 25.0, 45.0, 0.0 ],
       "translation": [ 0.0, 0.0, 0.0 ],
       "scale": [ 0.625, 0.625, 0.625 ]
