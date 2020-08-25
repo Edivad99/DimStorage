@@ -102,7 +102,7 @@ public class ModelDimChest extends Model {
         // check state
         if(tileEntity.locked)
             indicatorRed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        else if(tileEntity.frequency.hasOwner())
+        else if(tileEntity.getFrequency().hasOwner())
             indicatorBlue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         else if(tileEntity.collect)
             indicatorYellow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);

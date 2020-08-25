@@ -65,7 +65,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
                     if(dimChest.canAccess(player))
                     {
                         CompoundNBT tag = new CompoundNBT();
-                        tag.put("frequency", dimChest.frequency.serializeNBT());
+                        tag.put("frequency", dimChest.getFrequency().serializeNBT());
                         tag.putBoolean("bound", true);
                         tag.putBoolean("autocollect", false);
                         device.setTag(tag);

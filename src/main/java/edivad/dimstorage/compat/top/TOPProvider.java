@@ -3,6 +3,7 @@ package edivad.dimstorage.compat.top;
 import java.util.function.Function;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
@@ -37,15 +38,16 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
         if(te instanceof TileFrequencyOwner)
         {
             TileFrequencyOwner owner = (TileFrequencyOwner) te;
+            Frequency frequency = owner.getFrequency();
 
-            if(owner.frequency.hasOwner())
+            if(frequency.hasOwner())
             {
                 if(owner.canAccess(player))
-                    probeInfo.horizontal().text(new StringTextComponent(TextFormatting.GREEN + "Owner: " + owner.frequency.getOwner()));
+                    probeInfo.horizontal().text(new StringTextComponent(TextFormatting.GREEN + "Owner: " + frequency.getOwner()));
                 else
-                    probeInfo.horizontal().text(new StringTextComponent(TextFormatting.RED + "Owner: " + owner.frequency.getOwner()));
+                    probeInfo.horizontal().text(new StringTextComponent(TextFormatting.RED + "Owner: " + frequency.getOwner()));
             }
-            probeInfo.horizontal().text(new StringTextComponent("Frequency: " + owner.frequency.getChannel()));
+            probeInfo.horizontal().text(new StringTextComponent("Frequency: " + frequency.getChannel()));
             if(owner.locked)
                 probeInfo.horizontal().text(new StringTextComponent("Locked: Yes"));
 

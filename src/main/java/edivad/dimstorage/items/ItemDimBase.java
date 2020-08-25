@@ -51,7 +51,7 @@ public class ItemDimBase extends BlockItem {
             ItemStack stack = context.getItem();
 
             TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
-            tile.setFreq(getFreq(stack));
+            tile.setFrequency(getFreq(stack));
             return true;
         }
         return false;

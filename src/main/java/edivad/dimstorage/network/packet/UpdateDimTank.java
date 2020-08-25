@@ -46,7 +46,7 @@ public class UpdateDimTank extends UpdateDimBase {
         }
 
         TileEntityDimTank tank = (TileEntityDimTank) tile;
-        tank.setFreq(freq);
+        tank.setFrequency(freq);
         tank.locked = locked;
         tank.autoEject = autoEject;
         tank.markDirty();

@@ -32,10 +32,10 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
         locked = false;
     }
 
-    public Frequency frequency = new Frequency();
+    private Frequency frequency = new Frequency();
     private int changeCount;
 
-    public void setFreq(Frequency frequency)
+    public void setFrequency(Frequency frequency)
     {
         this.frequency.set(frequency);
         this.markDirty();
@@ -43,13 +43,18 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
         world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
     }
 
+    public Frequency getFrequency()
+    {
+        return frequency.copy();
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void swapOwner()
     {
         if(frequency.hasOwner())
-            setFreq(frequency.copy().setPublic());
+            setFrequency(getFrequency().setPublic());
         else
-            setFreq(frequency.copy().setOwner(Main.proxy.getClientPlayer()));
+            setFrequency(getFrequency().setOwner(Main.proxy.getClientPlayer()));
     }
 
     public void swapLocked()
@@ -96,7 +101,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     {
         if(canAccess(player))
         {
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
+            NetworkHooks.openGui((ServerPlayerEntity) player, this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
         }
         else
         {
@@ -118,7 +123,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag)
     {
-        setFreq(new Frequency(tag.getCompound("Frequency")));
+        setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
     }
 }

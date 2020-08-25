@@ -26,7 +26,7 @@ public abstract class UpdateDimBase {
     public UpdateDimBase(TileFrequencyOwner tile)
     {
         pos = tile.getPos();
-        freq = tile.frequency;
+        freq = tile.getFrequency();
         locked = tile.locked;
     }
 

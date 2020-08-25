@@ -47,18 +47,18 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, b -> changeFrequency()));
         addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner));
 
-        freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.frequency);
+        freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.getFrequency());
         addComponent(freqTextField);
         drawSettings(drawSettings);
     }
 
     private void changeFrequency()
     {
-        int prevChannel = tileOwner.frequency.getChannel();
+        int prevChannel = tileOwner.getFrequency().getChannel();
         try
         {
             int newFreq = Math.abs(Integer.parseInt(freqTextField.getText()));
-            tileOwner.setFreq(tileOwner.frequency.copy().setChannel(newFreq));
+            tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
 
             if(tileOwner instanceof TileEntityDimChest)
                 PacketHandler.INSTANCE.sendToServer(new UpdateDimChest((TileEntityDimChest) tileOwner));

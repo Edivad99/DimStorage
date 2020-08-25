@@ -159,9 +159,9 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     }
 
     @Override
-    public void setFreq(Frequency frequency)
+    public void setFrequency(Frequency frequency)
     {
-        super.setFreq(frequency);
+        super.setFrequency(frequency);
         itemHandler.invalidate();
         itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
     }
@@ -193,7 +193,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     @Override
     public DimChestStorage getStorage()
     {
-        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(getFrequency(), "item");
     }
 
     public void onPlaced(LivingEntity entity)
@@ -233,7 +233,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     public final SUpdateTileEntityPacket getUpdatePacket()
     {
         CompoundNBT root = new CompoundNBT();
-        root.put("Frequency", frequency.serializeNBT());
+        root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putByte("rot", (byte) rotation);
         root.putBoolean("collect", collect);
@@ -244,7 +244,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
         CompoundNBT tag = pkt.getNbtCompound();
-        frequency.set(new Frequency(tag.getCompound("Frequency")));
+        setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         rotation = tag.getByte("rot") & 3;
         collect = tag.getBoolean("collect");

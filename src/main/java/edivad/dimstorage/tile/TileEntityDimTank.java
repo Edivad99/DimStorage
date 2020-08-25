@@ -19,6 +19,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -78,19 +80,17 @@ public class TileEntityDimTank extends TileFrequencyOwner {
             TileEntity tile = world.getTileEntity(pos.offset(side));
             if(tile != null && checkSameFrequency(tile))
             {
-                IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
-                if(handler != null)
-                {
+                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).ifPresent(h -> {
                     FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
                     if(liquid.getAmount() > 0)
                     {
-                        int qty = handler.fill(liquid, FluidAction.EXECUTE);
+                        int qty = h.fill(liquid, FluidAction.EXECUTE);
                         if(qty > 0)
                         {
                             getStorage().drain(qty, FluidAction.EXECUTE);
                         }
                     }
-                }
+                });
             }
         }
     }
@@ -101,15 +101,15 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         {
             TileEntityDimTank otherTank = (TileEntityDimTank) tile;
 
-            return !frequency.equals(otherTank.frequency);
+            return !getFrequency().equals(otherTank.getFrequency());
         }
         return true;
     }
 
     @Override
-    public void setFreq(Frequency frequency)
+    public void setFrequency(Frequency frequency)
     {
-        super.setFreq(frequency);
+        super.setFrequency(frequency);
         if(!world.isRemote)
             liquidState.setFrequency(frequency);
         fluidHandler.invalidate();
@@ -126,7 +126,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     @Override
     public DimTankStorage getStorage()
     {
-        return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "fluid");
+        return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(getFrequency(), "fluid");
     }
 
     public int getComparatorInput()
@@ -153,7 +153,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public void read(BlockState state, CompoundNBT tag)
     {
         super.read(state, tag);
-        liquidState.setFrequency(frequency);
+        liquidState.setFrequency(getFrequency());
         autoEject = tag.getBoolean("autoEject");
     }
 
@@ -163,6 +163,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
         if(!result)
             return super.activate(player, worldIn, pos, hand);
+        worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return ActionResultType.SUCCESS;
     }
 
@@ -181,7 +182,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public final SUpdateTileEntityPacket getUpdatePacket()
     {
         CompoundNBT root = new CompoundNBT();
-        root.put("Frequency", frequency.serializeNBT());
+        root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putBoolean("autoEject", autoEject);
         return new SUpdateTileEntityPacket(getPos(), 1, root);
@@ -191,7 +192,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
         CompoundNBT tag = pkt.getNbtCompound();
-        setFreq(new Frequency(tag.getCompound("Frequency")));
+        setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         autoEject = tag.getBoolean("autoEject");
     }
@@ -208,7 +209,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag)
     {
-        setFreq(new Frequency(tag.getCompound("Frequency")));
+        setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         autoEject = tag.getBoolean("autoEject");
     }
