@@ -68,6 +68,9 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     {
         super.tick();
 
+        if(!itemHandler.isPresent() && !world.isRemote)
+            setFrequency(getFrequency());
+
         if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
         {
             openCount = getStorage().getNumOpen();
