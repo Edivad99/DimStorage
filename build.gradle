@@ -13,10 +13,6 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-import net.minecraftforge.gradle.common.task.SignJar
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
-
 version = "${mod_version}"
 group = 'edivad.dimstorage'
 archivesBaseName = "DimStorage-${minecraft_version}"
@@ -99,13 +95,13 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}:api")
-    //runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
+    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
 
     compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}:api")
-    //runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
+    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
 
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -122,24 +118,3 @@ jar {
         ])
     }
 }
-
-task signJar(type: SignJar, dependsOn: jar) {
-
-    //Skips if the keyStore property is missing.
-    onlyIf {
-        project.hasProperty('keyStore')
-    }
-
-    project.logger.lifecycle('Signing jar ' + jar.archivePath.getName());
-    // findProperty allows us to reference the property without it existing. 
-    // Using project.propName would cause the script to fail validation if 
-    // the property did not exist. 
-    keyStore = project.findProperty('keyStore')
-    alias = project.findProperty('keyStoreAlias')
-    storePass = project.findProperty('keyStorePass')
-    keyPass = project.findProperty('keyStoreKeyPass')
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
-}
-
-build.dependsOn signJar

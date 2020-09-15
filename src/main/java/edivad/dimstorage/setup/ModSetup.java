@@ -18,9 +18,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ModSetup {
+public class ModSetup
+{
 
-    public static final ItemGroup dimStorageTab = new ItemGroup(Main.MODID + "_tab") {
+    public static final ItemGroup dimStorageTab = new ItemGroup(Main.MODID + "_tab")
+    {
 
         @Override
         public ItemStack createIcon()
@@ -50,12 +52,5 @@ public class ModSetup {
     public static void registerCommands(final RegisterCommandsEvent event)
     {
         DimCommands.init(event.getDispatcher());
-    }
-
-    @SubscribeEvent
-    public static void onFingerprintViolation(final FMLFingerprintViolationEvent event)
-    {
-        String file = event.getSource() == null ? "" : event.getSource().getName();
-        Main.logger.warn("Invalid fingerprint detected! The file " + file + " may have been tampered with. This version will NOT be supported by the author!");
     }
 }
