@@ -2,9 +2,7 @@ package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -35,7 +33,7 @@ public class UpdateDimTank extends UpdateDimBase {
     }
 
     @Override
-    public void customHandle(World world, PlayerEntity player)
+    public void customHandle(World world, ServerPlayerEntity player)
     {
         TileEntity tile = world.getTileEntity(pos);
 
@@ -52,6 +50,6 @@ public class UpdateDimTank extends UpdateDimBase {
         tank.markDirty();
 
         world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
-        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+        NetworkHooks.openGui(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

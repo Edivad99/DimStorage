@@ -68,9 +68,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     {
         super.tick();
 
-        if(!itemHandler.isPresent() && !world.isRemote)
-            setFrequency(getFrequency());
-
         if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
         {
             openCount = getStorage().getNumOpen();
@@ -226,6 +223,8 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     {
         if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
+            if(!itemHandler.isPresent())
+                setFrequency(getFrequency());
             return itemHandler.cast();
         }
         return super.getCapability(capability, facing);

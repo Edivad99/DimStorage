@@ -68,8 +68,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public void tick()
     {
         super.tick();
-        if(!fluidHandler.isPresent() && !world.isRemote)
-            setFrequency(getFrequency());
         if(autoEject)
             ejectLiquid();
         liquidState.update(world.isRemote);
@@ -174,6 +172,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     {
         if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
+            if(!fluidHandler.isPresent())
+                setFrequency(getFrequency());
             return fluidHandler.cast();
         }
         return super.getCapability(cap, side);

@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -37,12 +37,12 @@ public abstract class UpdateDimBase {
         buf.writeBoolean(locked);
     }
 
-    public abstract void customHandle(World world, PlayerEntity player);
+    public abstract void customHandle(World world, ServerPlayerEntity player);
 
     public void handle(Supplier<NetworkEvent.Context> ctx)
     {
         ctx.get().enqueueWork(() -> {
-            PlayerEntity player = ctx.get().getSender();
+            ServerPlayerEntity player = ctx.get().getSender();
             World world = player.world;
             if(world.isBlockPresent(pos))
                 customHandle(world, player);
