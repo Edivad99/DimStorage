@@ -41,6 +41,6 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     {
         this.renderBackground(mStack);
         super.render(mStack, mouseX, mouseY, partialTicks);
-        this.func_230459_a_(mStack, mouseX, mouseY);//this.renderHoveredToolTip(mStack, mouseX, mouseY);
+        this.renderHoveredTooltip(mStack, mouseX, mouseY);
     }
 }

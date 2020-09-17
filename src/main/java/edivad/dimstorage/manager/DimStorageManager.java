@@ -101,7 +101,7 @@ public class DimStorageManager {
 
     private void load()
     {
-        saveDir = new File(Main.getServer().func_241755_D_().getServer().func_240776_a_(FolderName.field_237253_i_).toFile(), "DimStorage");
+        saveDir = new File(Main.getServer().func_241755_D_().getServer().func_240776_a_(FolderName.DOT).toFile(), "DimStorage");
         try
         {
             if(!saveDir.exists())
