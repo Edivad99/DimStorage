@@ -224,7 +224,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
         if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
             if(!itemHandler.isPresent())
-                setFrequency(getFrequency());
+                itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
             return itemHandler.cast();
         }
         return super.getCapability(capability, facing);

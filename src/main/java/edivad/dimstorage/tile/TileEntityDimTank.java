@@ -173,7 +173,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
             if(!fluidHandler.isPresent())
-                setFrequency(getFrequency());
+                fluidHandler = LazyOptional.of(this::getStorage);
             return fluidHandler.cast();
         }
         return super.getCapability(cap, side);
