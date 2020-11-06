@@ -117,6 +117,14 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     @Override
+    public void setWorldAndPos(World world, BlockPos pos)
+    {
+        super.setWorldAndPos(world, pos);
+        fluidHandler.invalidate();
+        fluidHandler = LazyOptional.of(this::getStorage);
+    }
+
+    @Override
     public void remove()
     {
         super.remove();
@@ -171,11 +179,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
     {
         if(!locked && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            if(!fluidHandler.isPresent())
-                fluidHandler = LazyOptional.of(this::getStorage);
             return fluidHandler.cast();
-        }
         return super.getCapability(cap, side);
     }
 
@@ -214,12 +218,6 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         autoEject = tag.getBoolean("autoEject");
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
     }
 
     @Override

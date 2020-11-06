@@ -14,8 +14,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -125,5 +127,11 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     {
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
     }
 }

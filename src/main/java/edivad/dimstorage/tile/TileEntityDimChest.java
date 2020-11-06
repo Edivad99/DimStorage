@@ -27,8 +27,7 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -167,6 +166,14 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     }
 
     @Override
+    public void setWorldAndPos(World world, BlockPos pos)
+    {
+        super.setWorldAndPos(world, pos);
+        itemHandler.invalidate();
+        itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
+    }
+
+    @Override
     public void remove()
     {
         super.remove();
@@ -222,11 +229,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
     {
         if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            if(!itemHandler.isPresent())
-                itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
             return itemHandler.cast();
-        }
         return super.getCapability(capability, facing);
     }
 
@@ -268,12 +271,6 @@ public class TileEntityDimChest extends TileFrequencyOwner {
         super.handleUpdateTag(state, tag);
         rotation = tag.getByte("rot") & 3;
         collect = tag.getBoolean("collect");
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
     }
 
     @Override

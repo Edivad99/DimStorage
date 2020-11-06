@@ -23,7 +23,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     private static final int BUTTON_WIDTH = 20;
 
     private static enum SettingsState {
-        STATE_CLOSED, STATE_OPENNING, STATE_OPENED, STATE_CLOSING
+        STATE_CLOSED, STATE_OPENING, STATE_OPENED, STATE_CLOSING
     }
 
     private SettingsState state;
@@ -60,7 +60,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     {
         super.render(mStack, mouseX, mouseY, partialTicks);
 
-        if(state == SettingsState.STATE_OPENNING)
+        if(state == SettingsState.STATE_OPENING)
         {
             animationState += ANIMATION_SPEED;
             if(animationState >= SETTINGS_WIDTH)
@@ -105,7 +105,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
                 {
                     if(state == SettingsState.STATE_CLOSED)
                     {
-                        state = SettingsState.STATE_OPENNING;
+                        state = SettingsState.STATE_OPENING;
                     }
                     else if(state == SettingsState.STATE_OPENED)
                     {
@@ -145,7 +145,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
         // button background
         this.blit(mStack, getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
-        if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENNING)
+        if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENING)
         {
             if(settingsButtonOver)
                 this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);

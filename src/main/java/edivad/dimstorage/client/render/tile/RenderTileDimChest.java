@@ -48,13 +48,13 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
         matrixStackIn.translate(0.5D, -0.5D, 0.5D);
         //This line actually rotates the renderer.
 
-        /** direction **/
+        // direction
         matrixStackIn.rotate(new Quaternion(0F, 360 - rot * 90, 0F, true));
 
-        /** sens **/
+        // sens
         matrixStackIn.rotate(new Quaternion(180F, 0F, 0F, true));
 
-        /** Ajustement **/
+        // Ajustement
         matrixStackIn.translate(0D, -2D, 0D);
 
         model.setTileEntity(te);
