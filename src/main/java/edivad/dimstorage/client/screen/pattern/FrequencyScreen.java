@@ -102,19 +102,19 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
             int posY = 45;
 
             // owner
-            this.font.func_243248_b(mStack, owner, 185, posY, 4210752);
+            this.font.drawText(mStack, owner, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(owner), posY, 0xFF333333);
             posY += 31;
 
             // freq
-            this.font.func_243248_b(mStack, freq, 185, posY, 4210752);
+            this.font.drawText(mStack, freq, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(freq), posY, 0xFF333333);
             posY += 50;
 
             // locked
-            this.font.func_243248_b(mStack, locked, 185, posY, 4210752);
+            this.font.drawText(mStack, locked, 185, posY, 4210752);
             posY += 9;
             this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(locked), posY, 0xFF333333);
         }

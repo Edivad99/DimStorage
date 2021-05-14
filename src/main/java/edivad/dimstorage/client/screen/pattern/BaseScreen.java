@@ -32,8 +32,8 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
     {
-        this.font.func_243248_b(mStack, this.getTitle(), 8, 6, 4210752);
-        this.font.func_243248_b(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
+        this.font.drawText(mStack, this.getTitle(), 8, 6, 4210752);
+        this.font.drawText(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
     }
 
     @Override
