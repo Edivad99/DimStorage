@@ -22,11 +22,11 @@ public class InventoryUtils {
         {
             CompoundNBT tag = tagList.getCompound(i);
             int b = tag.getShort("Slot");
-            items[b] = ItemStack.read(tag);
+            items[b] = ItemStack.of(tag);
             INBT quant = tag.get("Quantity");
             if(quant instanceof NumberNBT)
             {
-                items[b].setCount(((NumberNBT) quant).getInt());
+                items[b].setCount(((NumberNBT) quant).getAsInt());
             }
         }
     }
@@ -49,7 +49,7 @@ public class InventoryUtils {
         {
             CompoundNBT tag = new CompoundNBT();
             tag.putShort("Slot", (short) i);
-            items[i].write(tag);
+            items[i].save(tag);
 
             if(maxQuantity > Short.MAX_VALUE)
             {
@@ -70,8 +70,8 @@ public class InventoryUtils {
      */
     public static ItemStack removeStackFromSlot(IInventory inv, int slot)
     {
-        ItemStack stack = inv.getStackInSlot(slot);
-        inv.setInventorySlotContents(slot, ItemStack.EMPTY);
+        ItemStack stack = inv.getItem(slot);
+        inv.setItem(slot, ItemStack.EMPTY);
         return stack;
     }
 
@@ -81,27 +81,27 @@ public class InventoryUtils {
     @Nonnull
     public static ItemStack decrStackSize(IInventory inv, int slot, int size)
     {
-        ItemStack item = inv.getStackInSlot(slot);
+        ItemStack item = inv.getItem(slot);
 
         if(!item.isEmpty())
         {
             if(item.getCount() <= size)
             {
-                inv.setInventorySlotContents(slot, ItemStack.EMPTY);
-                inv.markDirty();
+                inv.setItem(slot, ItemStack.EMPTY);
+                inv.setChanged();
                 return item;
             }
             ItemStack itemstack1 = item.split(size);
             if(item.getCount() == 0)
             {
-                inv.setInventorySlotContents(slot, ItemStack.EMPTY);
+                inv.setItem(slot, ItemStack.EMPTY);
             }
             else
             {
-                inv.setInventorySlotContents(slot, item);
+                inv.setItem(slot, item);
             }
 
-            inv.markDirty();
+            inv.setChanged();
             return itemstack1;
         }
         return ItemStack.EMPTY;
@@ -117,7 +117,7 @@ public class InventoryUtils {
             while(!stack.isEmpty() && i < endIndex)
             {
                 ItemStack itemstack = wrapper.getStackInSlot(i);
-                if(!itemstack.isEmpty() && Container.areItemsAndTagsEqual(stack, itemstack))
+                if(!itemstack.isEmpty() && Container.consideredTheSameItem(stack, itemstack))
                 {
                     int j = itemstack.getCount() + stack.getCount();
                     int maxSize = stack.getMaxStackSize();

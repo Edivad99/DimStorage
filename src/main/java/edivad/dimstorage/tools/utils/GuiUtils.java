@@ -20,21 +20,21 @@ public class GuiUtils {
         {
             return;
         }
-        Minecraft.getInstance().textureManager.bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getInstance().textureManager.bind(PlayerContainer.BLOCK_ATLAS);
         int xTileCount = desiredWidth / textureWidth;
         int xRemainder = desiredWidth - (xTileCount * textureWidth);
         int yTileCount = desiredHeight / textureHeight;
         int yRemainder = desiredHeight - (yTileCount * textureHeight);
         int yStart = yPosition + yOffset;
-        float uMin = sprite.getMinU();
-        float uMax = sprite.getMaxU();
-        float vMin = sprite.getMinV();
-        float vMax = sprite.getMaxV();
+        float uMin = sprite.getU0();
+        float uMax = sprite.getU1();
+        float vMin = sprite.getV0();
+        float vMax = sprite.getV1();
         float uDif = uMax - uMin;
         float vDif = vMax - vMin;
         RenderSystem.enableBlend();
         RenderSystem.enableAlphaTest();
-        BufferBuilder vertexBuffer = Tessellator.getInstance().getBuffer();
+        BufferBuilder vertexBuffer = Tessellator.getInstance().getBuilder();
         vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         for(int xTile = 0; xTile <= xTileCount; xTile++)
         {
@@ -59,14 +59,14 @@ public class GuiUtils {
                 int y = yStart - ((yTile + 1) * textureHeight);
                 int maskTop = textureHeight - height;
                 float vMaxLocal = vMax - (vDif * maskTop / textureHeight);
-                vertexBuffer.pos(x, y + textureHeight, zLevel).tex(uMin, vMaxLocal).endVertex();
-                vertexBuffer.pos(shiftedX, y + textureHeight, zLevel).tex(uMaxLocal, vMaxLocal).endVertex();
-                vertexBuffer.pos(shiftedX, y + maskTop, zLevel).tex(uMaxLocal, vMin).endVertex();
-                vertexBuffer.pos(x, y + maskTop, zLevel).tex(uMin, vMin).endVertex();
+                vertexBuffer.vertex(x, y + textureHeight, zLevel).uv(uMin, vMaxLocal).endVertex();
+                vertexBuffer.vertex(shiftedX, y + textureHeight, zLevel).uv(uMaxLocal, vMaxLocal).endVertex();
+                vertexBuffer.vertex(shiftedX, y + maskTop, zLevel).uv(uMaxLocal, vMin).endVertex();
+                vertexBuffer.vertex(x, y + maskTop, zLevel).uv(uMin, vMin).endVertex();
             }
         }
-        vertexBuffer.finishDrawing();
-        WorldVertexBufferUploader.draw(vertexBuffer);
+        vertexBuffer.end();
+        WorldVertexBufferUploader.end(vertexBuffer);
         RenderSystem.disableAlphaTest();
         RenderSystem.disableBlend();
     }

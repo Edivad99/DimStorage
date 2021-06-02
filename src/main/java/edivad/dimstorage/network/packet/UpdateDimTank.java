@@ -35,7 +35,7 @@ public class UpdateDimTank extends UpdateDimBase {
     @Override
     public void customHandle(World world, ServerPlayerEntity player)
     {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
 
         if(!(tile instanceof TileEntityDimTank))
         {
@@ -47,9 +47,9 @@ public class UpdateDimTank extends UpdateDimBase {
         tank.setFrequency(freq);
         tank.locked = locked;
         tank.autoEject = autoEject;
-        tank.markDirty();
+        tank.setChanged();
 
-        world.notifyBlockUpdate(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
+        world.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
         NetworkHooks.openGui(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

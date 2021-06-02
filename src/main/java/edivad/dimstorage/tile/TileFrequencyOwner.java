@@ -40,9 +40,9 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     public void setFrequency(Frequency frequency)
     {
         this.frequency.set(frequency);
-        this.markDirty();
-        BlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, BlockFlags.DEFAULT);
+        this.setChanged();
+        BlockState state = level.getBlockState(worldPosition);
+        level.sendBlockUpdated(worldPosition, state, state, BlockFlags.DEFAULT);
     }
 
     public Frequency getFrequency()
@@ -62,7 +62,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     public void swapLocked()
     {
         locked = !locked;
-        this.markDirty();
+        this.setChanged();
     }
 
     public boolean canAccess(PlayerEntity player)
@@ -75,7 +75,7 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     {
         if(getStorage().getChangeCount() > changeCount)
         {
-            world.updateComparatorOutputLevel(pos, this.getBlockState().getBlock());
+            level.updateNeighbourForOutputSignal(worldPosition, this.getBlockState().getBlock());
             changeCount = getStorage().getChangeCount();
         }
     }
@@ -83,17 +83,17 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     public abstract AbstractDimStorage getStorage();
 
     @Override
-    public void read(BlockState state, CompoundNBT tag)
+    public void load(BlockState state, CompoundNBT tag)
     {
-        super.read(state, tag);
+        super.load(state, tag);
         frequency.set(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
+    public CompoundNBT save(CompoundNBT tag)
     {
-        super.write(tag);
+        super.save(tag);
         tag.put("Frequency", frequency.serializeNBT());
         tag.putBoolean("locked", locked);
         return tag;
@@ -103,11 +103,11 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     {
         if(canAccess(player))
         {
-            NetworkHooks.openGui((ServerPlayerEntity) player, this, buf -> buf.writeBlockPos(getPos()).writeBoolean(false));
+            NetworkHooks.openGui((ServerPlayerEntity) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
         else
         {
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
         }
         return ActionResultType.SUCCESS;
     }
@@ -132,6 +132,6 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
+        return new TranslationTextComponent(this.getBlockState().getBlock().getDescriptionId());
     }
 }

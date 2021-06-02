@@ -34,34 +34,34 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
         if(te == null || te.isRemoved())
             return;
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         renderBlock(te, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     private void renderBlock(@Nonnull TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         int rot = te.rotation;
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
 
         matrixStackIn.translate(0.5D, -0.5D, 0.5D);
         //This line actually rotates the renderer.
 
         // direction
-        matrixStackIn.rotate(new Quaternion(0F, 360 - rot * 90, 0F, true));
+        matrixStackIn.mulPose(new Quaternion(0F, 360 - rot * 90, 0F, true));
 
         // sens
-        matrixStackIn.rotate(new Quaternion(180F, 0F, 0F, true));
+        matrixStackIn.mulPose(new Quaternion(180F, 0F, 0F, true));
 
         // Ajustement
         matrixStackIn.translate(0D, -2D, 0D);
 
         model.setTileEntity(te);
 
-        IVertexBuilder buffer = bufferIn.getBuffer(RenderType.getEntitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
-        model.render(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
+        IVertexBuilder buffer = bufferIn.getBuffer(RenderType.entitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
+        model.renderToBuffer(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 }

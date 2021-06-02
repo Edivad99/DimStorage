@@ -36,7 +36,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         }
         else
         {
-            owner = player.getUniqueID();
+            owner = player.getUUID();
             ownerText = ((StringTextComponent) player.getName()).getText();
         }
         this.channel = channel;
@@ -69,7 +69,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
 
     public Frequency setOwner(@Nonnull PlayerEntity player)
     {
-        owner = player.getUniqueID();
+        owner = player.getUUID();
         ownerText = ((StringTextComponent) player.getName()).getText();
         return this;
     }
@@ -128,15 +128,15 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
 
     public static Frequency readFromPacket(PacketBuffer buf)
     {
-        return new Frequency(buf.readString(32767), buf.readBoolean() ? buf.readUniqueId() : null, buf.readVarInt());
+        return new Frequency(buf.readUtf(32767), buf.readBoolean() ? buf.readUUID() : null, buf.readVarInt());
     }
 
     public void writeToPacket(PacketBuffer buf)
     {
-        buf.writeString(ownerText);
+        buf.writeUtf(ownerText);
         buf.writeBoolean(hasOwner());
         if(hasOwner())
-            buf.writeUniqueId(owner);
+            buf.writeUUID(owner);
         buf.writeVarInt(channel);
     }
 
@@ -144,7 +144,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
     {
         if(!hasOwner())
             return true;
-        return getOwnerUUID().equals(player.getUniqueID());
+        return getOwnerUUID().equals(player.getUUID());
     }
 
     @Override
@@ -153,7 +153,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         CompoundNBT tagCompound = new CompoundNBT();
         tagCompound.putString("ownerText", ownerText);
         if(hasOwner())
-            tagCompound.putUniqueId("owner", owner);
+            tagCompound.putUUID("owner", owner);
         tagCompound.putInt("channel", channel);
         return tagCompound;
     }
@@ -163,7 +163,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
     {
         ownerText = tagCompound.getString("ownerText");
         if(!ownerText.equals("public"))
-            owner = tagCompound.getUniqueId("owner");
+            owner = tagCompound.getUUID("owner");
         else
             owner = null;
         channel = tagCompound.getInt("channel");

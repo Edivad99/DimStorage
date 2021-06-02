@@ -57,7 +57,7 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         int prevChannel = tileOwner.getFrequency().getChannel();
         try
         {
-            int newFreq = Math.abs(Integer.parseInt(freqTextField.getText()));
+            int newFreq = Math.abs(Integer.parseInt(freqTextField.getValue()));
             tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
 
             if(tileOwner instanceof TileEntityDimChest)
@@ -67,7 +67,7 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         }
         catch(Exception e)
         {
-            freqTextField.setText(String.valueOf(prevChannel));
+            freqTextField.setValue(String.valueOf(prevChannel));
         }
     }
 
@@ -93,30 +93,30 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack mStack, int mouseX, int mouseY)
     {
-        super.drawGuiContainerForegroundLayer(mStack, mouseX, mouseY);
+        super.renderLabels(mStack, mouseX, mouseY);
 
         if(drawSettings)
         {
             int posY = 45;
 
             // owner
-            this.font.drawText(mStack, owner, 185, posY, 4210752);
+            this.font.draw(mStack, owner, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(owner), posY, 0xFF333333);
+            this.hLine(mStack, 185, 185 + this.font.width(owner), posY, 0xFF333333);
             posY += 31;
 
             // freq
-            this.font.drawText(mStack, freq, 185, posY, 4210752);
+            this.font.draw(mStack, freq, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(freq), posY, 0xFF333333);
+            this.hLine(mStack, 185, 185 + this.font.width(freq), posY, 0xFF333333);
             posY += 50;
 
             // locked
-            this.font.drawText(mStack, locked, 185, posY, 4210752);
+            this.font.draw(mStack, locked, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.getStringPropertyWidth(locked), posY, 0xFF333333);
+            this.hLine(mStack, 185, 185 + this.font.width(locked), posY, 0xFF333333);
         }
     }
 }

@@ -18,7 +18,7 @@ public class DimBlockBase extends Block {
     }
 
     @Override
-    public boolean isVariableOpacity()
+    public boolean hasDynamicShape()
     {
         return false;
     }
@@ -26,7 +26,7 @@ public class DimBlockBase extends Block {
     @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
     {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
         if(tile instanceof TileFrequencyOwner)
         {
             TileFrequencyOwner block = (TileFrequencyOwner) tile;
@@ -37,10 +37,10 @@ public class DimBlockBase extends Block {
     }
 
     @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
+    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
     {
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
-        worldIn.removeTileEntity(pos);
+        super.playerDestroy(worldIn, player, pos, state, te, stack);
+        worldIn.removeBlockEntity(pos);
         worldIn.removeBlock(pos, false);
     }
 }

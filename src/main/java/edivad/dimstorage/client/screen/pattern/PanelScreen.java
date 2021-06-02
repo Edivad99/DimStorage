@@ -84,12 +84,12 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
 
     private int getButtonX()
     {
-        return guiLeft + xSize;
+        return leftPos + imageWidth;
     }
 
     private int getButtonY()
     {
-        return guiTop + 16;
+        return topPos + 16;
     }
 
     @Override
@@ -132,40 +132,40 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(mStack, partialTicks, mouseX, mouseY);
-        int settingsX = guiLeft + (this.xSize - SETTINGS_WIDTH);
+        super.renderBg(mStack, partialTicks, mouseX, mouseY);
+        int settingsX = leftPos + (this.imageWidth - SETTINGS_WIDTH);
 
         if(allowConfig)
-            this.blit(mStack, settingsX + this.animationState, guiTop + 36, this.xSize, 36, SETTINGS_WIDTH, this.ySize);
+            this.blit(mStack, settingsX + this.animationState, topPos + 36, this.imageWidth, 36, SETTINGS_WIDTH, this.imageHeight);
 
-        this.blit(mStack, guiLeft, guiTop, 0, 0, this.xSize, this.ySize + 2);//Space to see the border
+        this.blit(mStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight + 2);//Space to see the border
 
         // button background
-        this.blit(mStack, getButtonX(), getButtonY(), this.xSize, 16, BUTTON_WIDTH, BUTTON_WIDTH);
+        this.blit(mStack, getButtonX(), getButtonY(), this.imageWidth, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
         if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENING)
         {
             if(settingsButtonOver)
-                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 28, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 28, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.xSize + 20, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 20, 16, 8, BUTTON_WIDTH);
         }
         else if(state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING)
         {
             if(settingsButtonOver)
-                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 44, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 44, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.xSize + 36, 16, 8, BUTTON_WIDTH);
+                this.blit(mStack, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 36, 16, 8, BUTTON_WIDTH);
         }
     }
 
     public List<Rectangle2d> getAreas()
     {
         List<Rectangle2d> extraAreas = new ArrayList<>();
-        extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
-        extraAreas.add(new Rectangle2d(guiLeft + xSize, getButtonY() + BUTTON_WIDTH, animationState, SETTINGS_HEIGHT));
+        extraAreas.add(new Rectangle2d(leftPos + imageWidth, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
+        extraAreas.add(new Rectangle2d(leftPos + imageWidth, getButtonY() + BUTTON_WIDTH, animationState, SETTINGS_HEIGHT));
         return extraAreas;
     }
 

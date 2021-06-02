@@ -32,14 +32,14 @@ public class DimStorageManager {
         @SubscribeEvent
         public void onWorldLoad(Load event)
         {
-            if(event.getWorld().isRemote())
+            if(event.getWorld().isClientSide())
                 reloadManager(true);
         }
 
         @SubscribeEvent
         public void onWorldSave(Save event)
         {
-            if(!event.getWorld().isRemote() && instance(false) != null)
+            if(!event.getWorld().isClientSide() && instance(false) != null)
                 instance(false).save(false);
         }
 
@@ -101,7 +101,7 @@ public class DimStorageManager {
 
     private void load()
     {
-        saveDir = new File(Main.getServer().func_241755_D_().getServer().func_240776_a_(FolderName.DOT).toFile(), "DimStorage");
+        saveDir = new File(Main.getServer().overworld().getServer().getWorldPath(FolderName.ROOT).toFile(), "DimStorage");
         try
         {
             if(!saveDir.exists())

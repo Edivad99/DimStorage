@@ -24,7 +24,7 @@ public class UpdateDimChest extends UpdateDimBase {
     @Override
     public void customHandle(World world, ServerPlayerEntity player)
     {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
 
         if(!(tile instanceof TileEntityDimChest))
         {
@@ -35,9 +35,9 @@ public class UpdateDimChest extends UpdateDimBase {
         TileEntityDimChest chest = (TileEntityDimChest) tile;
         chest.setFrequency(freq);
         chest.locked = locked;
-        chest.markDirty();
+        chest.setChanged();
 
-        world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
+        world.sendBlockUpdated(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
         NetworkHooks.openGui(player, chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

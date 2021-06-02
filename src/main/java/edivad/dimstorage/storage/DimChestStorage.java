@@ -54,7 +54,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         return compound;
     }
 
-    public ItemStack getStackInSlot(int slot)
+    public ItemStack getItem(int slot)
     {
         synchronized(this)
         {
@@ -62,7 +62,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         }
     }
 
-    public ItemStack removeStackFromSlot(int index)
+    public ItemStack removeItemNoUpdate(int index)
     {
         synchronized(this)
         {
@@ -70,12 +70,12 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         }
     }
 
-    public void setInventorySlotContents(int slot, ItemStack stack)
+    public void setItem(int slot, ItemStack stack)
     {
         synchronized(this)
         {
             items[slot] = stack;
-            markDirty();
+            setChanged();
         }
     }
 
@@ -115,7 +115,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     }
 
     @Override
-    public int getSizeInventory()
+    public int getContainerSize()
     {
         return 54;
     }
@@ -129,7 +129,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         return true;
     }
 
-    public ItemStack decrStackSize(int slot, int size)
+    public ItemStack removeItem(int slot, int size)
     {
         synchronized(this)
         {
@@ -138,19 +138,19 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     }
 
     @Override
-    public int getInventoryStackLimit()
+    public int getMaxStackSize()
     {
         return 64;
     }
 
     @Override
-    public void markDirty()
+    public void setChanged()
     {
         setDirty();
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player)
+    public boolean stillValid(PlayerEntity player)
     {
         return true;
     }
@@ -159,7 +159,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     {
         synchronized(this)
         {
-            items = new ItemStack [getSizeInventory()];
+            items = new ItemStack [getContainerSize()];
             Arrays.fill(items, ItemStack.EMPTY);
         }
     }
@@ -171,23 +171,23 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     }
 
     @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack)
+    public boolean canPlaceItem(int i, ItemStack itemstack)
     {
         return true;
     }
 
     @Override
-    public void clear()
+    public void clearContent()
     {
     }
 
     @Override
-    public void openInventory(PlayerEntity player)
+    public void startOpen(PlayerEntity player)
     {
     }
 
     @Override
-    public void closeInventory(PlayerEntity player)
+    public void stopOpen(PlayerEntity player)
     {
     }
 }

@@ -47,11 +47,11 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     {
         super.tick();
 
-        if(!world.isRemote && (world.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
+        if(!level.isClientSide && (level.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
         {
             openCount = getStorage().getNumOpen();
-            world.addBlockEvent(getPos(), this.getBlockState().getBlock(), 1, openCount);
-            world.notifyNeighborsOfStateChange(pos, this.getBlockState().getBlock());
+            level.blockEvent(getBlockPos(), this.getBlockState().getBlock(), 1, openCount);
+            level.updateNeighborsAt(worldPosition, this.getBlockState().getBlock());
         }
 
         if(this.openCount > 0)
@@ -84,22 +84,22 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     }
 
     @Override
-    public void setWorldAndPos(World world, BlockPos pos)
+    public void setLevelAndPosition(World world, BlockPos pos)
     {
-        super.setWorldAndPos(world, pos);
+        super.setLevelAndPosition(world, pos);
         itemHandler.invalidate();
         itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
     }
 
     @Override
-    public void remove()
+    public void setRemoved()
     {
-        super.remove();
+        super.setRemoved();
         itemHandler.invalidate();
     }
 
     @Override
-    public boolean receiveClientEvent(int id, int type)
+    public boolean triggerEvent(int id, int type)
     {
         if(id == 1)
         {
@@ -112,26 +112,26 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     @Override
     public DimChestStorage getStorage()
     {
-        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(getFrequency(), "item");
+        return (DimChestStorage) DimStorageManager.instance(level.isClientSide).getStorage(getFrequency(), "item");
     }
 
     public void onPlaced(LivingEntity entity)
     {
-        rotation = (int) Math.floor(entity.rotationYaw * 4 / 360 + 2.5D) & 3;
+        rotation = (int) Math.floor(entity.yRot * 4 / 360 + 2.5D) & 3;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
+    public CompoundNBT save(CompoundNBT tag)
     {
-        super.write(tag);
+        super.save(tag);
         tag.putByte("rot", (byte) rotation);
         return tag;
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag)
+    public void load(BlockState state, CompoundNBT tag)
     {
-        super.read(state, tag);
+        super.load(state, tag);
         rotation = tag.getByte("rot") & 3;
     }
 
@@ -151,13 +151,13 @@ public class TileEntityDimChest extends TileFrequencyOwner {
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putByte("rot", (byte) rotation);
-        return new SUpdateTileEntityPacket(getPos(), 1, root);
+        return new SUpdateTileEntityPacket(getBlockPos(), 1, root);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
-        CompoundNBT tag = pkt.getNbtCompound();
+        CompoundNBT tag = pkt.getTag();
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         rotation = tag.getByte("rot") & 3;

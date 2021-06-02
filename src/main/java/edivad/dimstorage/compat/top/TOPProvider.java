@@ -33,7 +33,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     @Override
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
     {
-        TileEntity te = world.getTileEntity(data.getPos());
+        TileEntity te = world.getBlockEntity(data.getPos());
 
         if(te instanceof TileFrequencyOwner)
         {

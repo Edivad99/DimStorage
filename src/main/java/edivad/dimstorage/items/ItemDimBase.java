@@ -32,7 +32,7 @@ public class ItemDimBase extends BlockItem {
     {
         if(stack.hasTag())
         {
-            CompoundNBT stackTag = stack.getChildTag("DimStorage");
+            CompoundNBT stackTag = stack.getTagElement("DimStorage");
             if(stackTag != null && stackTag.contains("Frequency"))
             {
                 return new Frequency(stackTag.getCompound("Frequency"));
@@ -46,11 +46,11 @@ public class ItemDimBase extends BlockItem {
     {
         if(super.placeBlock(context, state))
         {
-            World world = context.getWorld();
-            BlockPos pos = context.getPos();
-            ItemStack stack = context.getItem();
+            World world = context.getLevel();
+            BlockPos pos = context.getClickedPos();
+            ItemStack stack = context.getItemInHand();
 
-            TileFrequencyOwner tile = (TileFrequencyOwner) world.getTileEntity(pos);
+            TileFrequencyOwner tile = (TileFrequencyOwner) world.getBlockEntity(pos);
             tile.setFrequency(getFreq(stack));
             return true;
         }
@@ -59,12 +59,12 @@ public class ItemDimBase extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").appendString(" " + frequency.getOwner()).mergeStyle(TextFormatting.DARK_RED));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(TextFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendString(" " + frequency.getChannel()));
+            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
     }
 }

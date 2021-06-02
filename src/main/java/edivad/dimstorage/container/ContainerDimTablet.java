@@ -21,10 +21,10 @@ public class ContainerDimTablet extends Container {
     {
         super(Registration.DIMTABLET_CONTAINER.get(), windowId);
 
-        ItemStack item = playerInventory.player.getHeldItem(Hand.MAIN_HAND);
+        ItemStack item = playerInventory.player.getItemInHand(Hand.MAIN_HAND);
         Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));
 
-        this.chestInv = (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+        this.chestInv = (DimChestStorage) DimStorageManager.instance(world.isClientSide).getStorage(frequency, "item");
         this.chestInv.openInventory();
 
         addOwnSlots();
@@ -50,44 +50,44 @@ public class ContainerDimTablet extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn)
+    public boolean stillValid(PlayerEntity playerIn)
     {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int position)
+    public ItemStack quickMoveStack(PlayerEntity player, int position)
     {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(position);
+        Slot slot = (Slot) this.slots.get(position);
 
-        if(slot != null && slot.getHasStack())
+        if(slot != null && slot.hasItem())
         {
-            ItemStack itemstack1 = slot.getStack();
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             // chest to inventory
             if(position < 54)
             {
-                if(!this.mergeItemStack(itemstack1, 54, this.inventorySlots.size(), true))
+                if(!this.moveItemStackTo(itemstack1, 54, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
             // inventory to chest
-            else if(!this.mergeItemStack(itemstack1, 0, 54, false))
+            else if(!this.moveItemStackTo(itemstack1, 0, 54, false))
                 return ItemStack.EMPTY;
 
             if(itemstack1.getCount() == 0)
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             else
-                slot.onSlotChanged();
+                slot.setChanged();
         }
         return itemstack;
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity entityplayer)
+    public void removed(PlayerEntity entityplayer)
     {
-        super.onContainerClosed(entityplayer);
+        super.removed(entityplayer);
         chestInv.closeInventory();
     }
 }

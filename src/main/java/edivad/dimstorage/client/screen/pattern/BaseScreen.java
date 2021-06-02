@@ -18,22 +18,22 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     {
         super(container, invPlayer, text);
         this.background = background;
-        this.xSize = 176;
-        this.ySize = 220;
+        this.imageWidth = 176;
+        this.imageHeight = 220;
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(background);
+        this.minecraft.getTextureManager().bind(background);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack mStack, int mouseX, int mouseY)
     {
-        this.font.drawText(mStack, this.getTitle(), 8, 6, 4210752);
-        this.font.drawText(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
+        this.font.draw(mStack, this.getTitle(), 8, 6, 4210752);
+        this.font.draw(mStack, new TranslationTextComponent("container.inventory"), 8, 128, 4210752);
     }
 
     @Override
@@ -41,6 +41,6 @@ public class BaseScreen<T extends Container> extends ContainerScreen<T> {
     {
         this.renderBackground(mStack);
         super.render(mStack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(mStack, mouseX, mouseY);
+        this.renderTooltip(mStack, mouseX, mouseY);
     }
 }

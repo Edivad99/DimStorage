@@ -47,41 +47,41 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack mStack, int mouseX, int mouseY)
     {
-        super.drawGuiContainerForegroundLayer(mStack, mouseX, mouseY);
+        super.renderLabels(mStack, mouseX, mouseY);
         FluidStack liquidStack = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
 
         if(!liquidStack.isEmpty())
         {
             FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
             String liquidName = liquidStack.getDisplayName().getString();
-            this.font.drawString(mStack, liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
-            this.font.drawString(mStack, amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
-            this.font.drawString(mStack, temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
-            this.font.drawString(mStack, luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
-            this.font.drawString(mStack, gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
+            this.font.draw(mStack, liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
+            this.font.draw(mStack, amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
+            this.font.draw(mStack, temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
+            this.font.draw(mStack, luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
+            this.font.draw(mStack, gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
         }
         else
         {
-            this.font.drawString(mStack, liquid + " " + empty, 50, 25, 4210752);
+            this.font.draw(mStack, liquid + " " + empty, 50, 25, 4210752);
         }
 
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(mStack, partialTicks, mouseX, mouseY);
+        super.renderBg(mStack, partialTicks, mouseX, mouseY);
 
         FluidStack fluid = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-        this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+        this.minecraft.getTextureManager().bind(PlayerContainer.BLOCK_ATLAS);
 
         FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((TileEntityDimTank) tileOwner)));
-        ScreenDimTank.blit(mStack, this.guiLeft + 11, this.guiTop + 21 + z, 176, 16, 60 - z, fluidTexture);
+        ScreenDimTank.blit(mStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 
     private static int getFluidScaled(int pixels, int currentLiquidAmount)

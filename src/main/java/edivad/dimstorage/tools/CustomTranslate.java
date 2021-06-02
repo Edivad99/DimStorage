@@ -11,7 +11,7 @@ public class CustomTranslate {
 
     public static StringTextComponent translateToLocal(String key)
     {
-        String translated = I18n.format(key);
+        String translated = I18n.get(key);
         translated = COMPILE.matcher(translated).replaceAll("\u00a7");
         return new StringTextComponent(translated);
     }

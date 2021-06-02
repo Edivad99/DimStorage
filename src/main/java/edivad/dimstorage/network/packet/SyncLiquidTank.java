@@ -38,9 +38,9 @@ public class SyncLiquidTank {
     {
         ctx.get().enqueueWork(() -> {
             World world = Main.proxy.getClientWorld();
-            if(world.isBlockPresent(pos))
+            if(world.isLoaded(pos))
             {
-                TileEntity te = world.getTileEntity(pos);
+                TileEntity te = world.getBlockEntity(pos);
                 if(te instanceof TileEntityDimTank)
                 {
                     TileEntityDimTank tank = (TileEntityDimTank) te;

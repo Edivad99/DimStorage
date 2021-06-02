@@ -50,20 +50,20 @@ public class FluidUtils {
     {
         FluidAttributes fa = stack.getFluid().getAttributes();
         ResourceLocation still = fa.getStillTexture(stack);
-        return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(still);
+        return Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(still);
     }
 
     public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
     {
-        if(world.isRemote)
+        if(world.isClientSide)
             if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-                return BiomeColors.getWaterColor(world, pos) | 0xFF000000;
+                return BiomeColors.getAverageWaterColor(world, pos) | 0xFF000000;
 
         return fluid.getFluid().getAttributes().getColor(fluid);
     }
 
     public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
     {
-        return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
+        return getLiquidColorWithBiome(fluid, tileEntity.getLevel(), tileEntity.getBlockPos());
     }
 }

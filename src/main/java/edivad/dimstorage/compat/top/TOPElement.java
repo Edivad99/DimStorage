@@ -76,20 +76,20 @@ public abstract class TOPElement implements IElement {
     protected static void renderScaledText(MatrixStack mStack, Minecraft mc, int x, int y, int color, int maxWidth, ITextComponent component)
     {
         String text = component.getString();
-        int length = mc.fontRenderer.getStringWidth(text);
+        int length = mc.font.width(text);
         if(length <= maxWidth)
         {
-            mc.fontRenderer.drawString(mStack, text, x, y, color);
+            mc.font.draw(mStack, text, x, y, color);
         }
         else
         {
             float scale = (float) maxWidth / length;
             float reverse = 1 / scale;
             float yAdd = 4 - (scale * 8) / 2F;
-            mStack.push();
+            mStack.pushPose();
             mStack.scale(scale, scale, scale);
-            mc.fontRenderer.drawString(mStack, text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
-            mStack.pop();
+            mc.font.draw(mStack, text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
+            mStack.popPose();
         }
         //Make sure the color does not leak from having drawn the string
         RenderSystem.color4f(1, 1, 1, 1);

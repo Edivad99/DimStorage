@@ -9,10 +9,10 @@ public class FrequencyText extends TextFieldWidget {
 
     public FrequencyText(int width, int height, Frequency frequency)
     {
-        super(Minecraft.getInstance().fontRenderer, width, height, 64, 15, new StringTextComponent(""));
-        setMaxStringLength(3);
+        super(Minecraft.getInstance().font, width, height, 64, 15, new StringTextComponent(""));
+        setMaxLength(3);
         setVisible(true);
         setFocused(false);
-        setText(String.valueOf(frequency.getChannel()));
+        setValue(String.valueOf(frequency.getChannel()));
     }
 }

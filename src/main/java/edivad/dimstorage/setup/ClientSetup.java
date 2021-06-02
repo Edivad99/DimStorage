@@ -23,10 +23,10 @@ public class ClientSetup {
 
         ClientRegistry.bindTileEntityRenderer(Registration.DIMCHEST_TILE.get(), RenderTileDimChest::new);
         ClientRegistry.bindTileEntityRenderer(Registration.DIMTANK_TILE.get(), RenderTileDimTank::new);
-        RenderTypeLookup.setRenderLayer(Registration.DIMTANK.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(Registration.DIMTANK.get(), RenderType.cutout());
 
-        ScreenManager.registerFactory(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-        ScreenManager.registerFactory(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
-        ScreenManager.registerFactory(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
+        ScreenManager.register(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
+        ScreenManager.register(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
+        ScreenManager.register(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
     }
 }

@@ -43,20 +43,20 @@ public class DimTablet extends Item implements INamedContainerProvider {
 
     public DimTablet()
     {
-        super(new Properties().group(ModSetup.dimStorageTab).maxStackSize(1));
+        super(new Properties().tab(ModSetup.dimStorageTab).stacksTo(1));
     }
 
     @Override
     public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context)
     {
-        World world = context.getWorld();
+        World world = context.getLevel();
         PlayerEntity player = context.getPlayer();
-        BlockPos pos = context.getPos();
+        BlockPos pos = context.getClickedPos();
 
-        if(!world.isRemote)
+        if(!world.isClientSide)
         {
-            ItemStack device = player.getHeldItem(context.getHand());
-            TileEntity tile = world.getTileEntity(pos);
+            ItemStack device = player.getItemInHand(context.getHand());
+            TileEntity tile = world.getBlockEntity(pos);
             if(player.isCrouching())
             {
                 if(tile instanceof TileEntityDimChest)
@@ -70,18 +70,18 @@ public class DimTablet extends Item implements INamedContainerProvider {
                         tag.putBoolean("autocollect", false);
                         device.setTag(tag);
 
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"), false);
+                        player.displayClientMessage(new StringTextComponent(TextFormatting.GREEN + "Linked to chest"), false);
                         return ActionResultType.SUCCESS;
                     }
-                    player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
+                    player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
                 }
                 else
                 {
                     stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
                     if(stack.getTag().getBoolean("autocollect"))
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"), false);
+                        player.displayClientMessage(new StringTextComponent(TextFormatting.GREEN + "Enabled autocollect"), false);
                     else
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"), false);
+                        player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Disabled autocollect"), false);
                 }
             }
         }
@@ -89,17 +89,17 @@ public class DimTablet extends Item implements INamedContainerProvider {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
     {
-        ItemStack stack = player.getHeldItem(hand);
+        ItemStack stack = player.getItemInHand(hand);
 
-        if(!world.isRemote && hand.compareTo(Hand.MAIN_HAND) == 0)
+        if(!world.isClientSide && hand.compareTo(Hand.MAIN_HAND) == 0)
         {
             if(player.isCrouching())
-                return super.onItemRightClick(world, player, hand);
+                return super.use(world, player, hand);
             if(!stack.getOrCreateTag().getBoolean("bound"))
             {
-                player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"), false);
+                player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Dimensional Tablet not connected to any DimChest"), false);
                 return new ActionResult<>(ActionResultType.PASS, stack);
             }
             Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
@@ -114,7 +114,7 @@ public class DimTablet extends Item implements INamedContainerProvider {
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if(!worldIn.isRemote)
+        if(!worldIn.isClientSide)
         {
             if(stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag().getBoolean("bound"))
             {
@@ -124,12 +124,12 @@ public class DimTablet extends Item implements INamedContainerProvider {
                     Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
                     InvWrapper chestInventory = new InvWrapper(getStorage(worldIn, f));
 
-                    for(int i = 0; i < pe.inventory.getSizeInventory(); i++)
+                    for(int i = 0; i < pe.inventory.getContainerSize(); i++)
                     {
-                        Item item = pe.inventory.getStackInSlot(i).getItem();
+                        Item item = pe.inventory.getItem(i).getItem();
                         if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString()))
                         {
-                            InventoryUtils.mergeItemStack(pe.inventory.getStackInSlot(i), 0, getStorage(worldIn, f).getSizeInventory(), chestInventory);
+                            InventoryUtils.mergeItemStack(pe.inventory.getItem(i), 0, getStorage(worldIn, f).getContainerSize(), chestInventory);
                         }
                     }
                 }
@@ -139,12 +139,12 @@ public class DimTablet extends Item implements INamedContainerProvider {
 
     private DimChestStorage getStorage(World world, Frequency frequency)
     {
-        return (DimChestStorage) DimStorageManager.instance(world.isRemote).getStorage(frequency, "item");
+        return (DimChestStorage) DimStorageManager.instance(world.isClientSide).getStorage(frequency, "item");
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         if(worldIn != null)
         {
@@ -158,13 +158,13 @@ public class DimTablet extends Item implements INamedContainerProvider {
             if(Screen.hasShiftDown())
             {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
-                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").appendString(" " + f.getChannel()).mergeStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").append(" " + f.getChannel()).withStyle(TextFormatting.GRAY));
                 if(f.hasOwner())
-                    tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").appendString(" " + f.getOwner()).mergeStyle(TextFormatting.GRAY));
+                    tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").append(" " + f.getOwner()).withStyle(TextFormatting.GRAY));
 
                 String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
                 String no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
-                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".collecting").appendString(": " + (tag.getBoolean("autocollect") ? yes : no)).mergeStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".collecting").append(": " + (tag.getBoolean("autocollect") ? yes : no)).withStyle(TextFormatting.GRAY));
             }
             else
                 tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
@@ -176,12 +176,12 @@ public class DimTablet extends Item implements INamedContainerProvider {
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
     {
-        return new ContainerDimTablet(id, playerInventory, playerEntity.world);
+        return new ContainerDimTablet(id, playerInventory, playerEntity.level);
     }
 
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TranslationTextComponent(this.getTranslationKey());
+        return new TranslationTextComponent(this.getDescriptionId());
     }
 }

@@ -42,14 +42,14 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         @Override
         public void sendSyncPacket()
         {
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getPos(), serverLiquid));
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getBlockPos(), serverLiquid));
         }
 
         @Override
         public void onLiquidChanged()
         {
-            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
-            world.getChunkProvider().getLightManager().checkBlock(getPos());
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
+            level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
         }
     }
 
@@ -70,14 +70,14 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         super.tick();
         if(autoEject)
             ejectLiquid();
-        liquidState.update(world.isRemote);
+        liquidState.update(level.isClientSide);
     }
 
     private void ejectLiquid()
     {
         for(Direction side : Direction.values())
         {
-            TileEntity tile = world.getTileEntity(pos.offset(side));
+            TileEntity tile = level.getBlockEntity(worldPosition.relative(side));
             if(tile != null && checkSameFrequency(tile))
             {
                 tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).ifPresent(h -> {
@@ -110,31 +110,31 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public void setFrequency(Frequency frequency)
     {
         super.setFrequency(frequency);
-        if(!world.isRemote)
+        if(!level.isClientSide)
             liquidState.setFrequency(frequency);
         fluidHandler.invalidate();
         fluidHandler = LazyOptional.of(this::getStorage);
     }
 
     @Override
-    public void setWorldAndPos(World world, BlockPos pos)
+    public void setLevelAndPosition(World world, BlockPos pos)
     {
-        super.setWorldAndPos(world, pos);
+        super.setLevelAndPosition(world, pos);
         fluidHandler.invalidate();
         fluidHandler = LazyOptional.of(this::getStorage);
     }
 
     @Override
-    public void remove()
+    public void setRemoved()
     {
-        super.remove();
+        super.setRemoved();
         fluidHandler.invalidate();
     }
 
     @Override
     public DimTankStorage getStorage()
     {
-        return (DimTankStorage) DimStorageManager.instance(world.isRemote).getStorage(getFrequency(), "fluid");
+        return (DimTankStorage) DimStorageManager.instance(level.isClientSide).getStorage(getFrequency(), "fluid");
     }
 
     public int getComparatorInput()
@@ -146,21 +146,21 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     public void swapAutoEject()
     {
         autoEject = !autoEject;
-        this.markDirty();
+        this.setChanged();
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
+    public CompoundNBT save(CompoundNBT tag)
     {
-        super.write(tag);
+        super.save(tag);
         tag.putBoolean("autoEject", autoEject);
         return tag;
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag)
+    public void load(BlockState state, CompoundNBT tag)
     {
-        super.read(state, tag);
+        super.load(state, tag);
         liquidState.setFrequency(getFrequency());
         autoEject = tag.getBoolean("autoEject");
     }
@@ -171,7 +171,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
         if(!result)
             return super.activate(player, worldIn, pos, hand);
-        worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        worldIn.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return ActionResultType.SUCCESS;
     }
 
@@ -191,13 +191,13 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putBoolean("autoEject", autoEject);
-        return new SUpdateTileEntityPacket(getPos(), 1, root);
+        return new SUpdateTileEntityPacket(getBlockPos(), 1, root);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
-        CompoundNBT tag = pkt.getNbtCompound();
+        CompoundNBT tag = pkt.getTag();
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         autoEject = tag.getBoolean("autoEject");

@@ -25,7 +25,7 @@ public abstract class UpdateDimBase {
 
     public UpdateDimBase(TileFrequencyOwner tile)
     {
-        pos = tile.getPos();
+        pos = tile.getBlockPos();
         freq = tile.getFrequency();
         locked = tile.locked;
     }
@@ -43,8 +43,8 @@ public abstract class UpdateDimBase {
     {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            World world = player.world;
-            if(world.isBlockPresent(pos))
+            World world = player.level;
+            if(world.isLoaded(pos))
                 customHandle(world, player);
         });
         ctx.get().setPacketHandled(true);

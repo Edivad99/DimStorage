@@ -22,7 +22,7 @@ public class DimChest extends DimBlockBase {
 
     public DimChest()
     {
-        super(Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5.0F).notSolid());
+        super(Properties.of(Material.STONE).sound(SoundType.STONE).strength(5.0F).noOcclusion());
     }
 
     @Override
@@ -39,18 +39,18 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public BlockRenderType getRenderShape(BlockState state)
     {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if(worldIn.isRemote)
+        if(worldIn.isClientSide)
             return ActionResultType.SUCCESS;
 
-        TileEntity tile = worldIn.getTileEntity(pos);
+        TileEntity tile = worldIn.getBlockEntity(pos);
 
         if(tile instanceof TileEntityDimChest)
         {
@@ -61,9 +61,9 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        TileEntity tile = worldIn.getTileEntity(pos);
+        TileEntity tile = worldIn.getBlockEntity(pos);
         if(tile instanceof TileEntityDimChest)
         {
             ((TileEntityDimChest) tile).onPlaced(placer);
@@ -71,22 +71,22 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public boolean hasComparatorInputOverride(BlockState state)
+    public boolean hasAnalogOutputSignal(BlockState state)
     {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
+    public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos)
     {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
         return (te instanceof TileEntityDimChest) ? ((TileEntityDimChest) te).getComparatorInput() : 0;
     }
 
     @Override
-    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
+    public boolean triggerEvent(BlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
     {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
+        return tileentity != null && tileentity.triggerEvent(eventID, eventParam);
     }
 }

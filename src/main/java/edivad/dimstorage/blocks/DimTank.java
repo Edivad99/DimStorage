@@ -30,13 +30,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class DimTank extends DimBlockBase implements IWaterLoggable {
 
-    private static final VoxelShape BOX = makeCuboidShape(2, 0, 2, 14, 16, 14);
+    private static final VoxelShape BOX = box(2, 0, 2, 14, 16, 14);
     private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
     public DimTank()
     {
-        super(Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(1.0F).notSolid());
-        this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
+        super(Properties.of(Material.GLASS).sound(SoundType.GLASS).strength(1.0F).noOcclusion());
+        this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -53,12 +53,12 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {
-        if(worldIn.isRemote)
+        if(worldIn.isClientSide)
             return ActionResultType.SUCCESS;
 
-        TileEntity tile = worldIn.getTileEntity(pos);
+        TileEntity tile = worldIn.getBlockEntity(pos);
 
         if(tile instanceof TileEntityDimTank)
         {
@@ -82,7 +82,7 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
     {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
         if(tile instanceof TileEntityDimTank)
         {
             TileEntityDimTank tank = (TileEntityDimTank) tile;
@@ -97,15 +97,15 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     }
 
     @Override
-    public boolean hasComparatorInputOverride(BlockState state)
+    public boolean hasAnalogOutputSignal(BlockState state)
     {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
+    public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos)
     {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
         return (te instanceof TileEntityDimTank) ? ((TileEntityDimTank) te).getComparatorInput() : 0;
     }
 
@@ -113,25 +113,25 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     @Override
     public FluidState getFluidState(BlockState state)
     {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
-        return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
-        return IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
+        return IWaterLoggable.super.canPlaceLiquid(worldIn, pos, state, fluidIn);
     }
 
     @Override
-    protected void fillStateContainer(Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
 }

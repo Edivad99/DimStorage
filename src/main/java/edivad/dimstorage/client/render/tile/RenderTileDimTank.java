@@ -34,9 +34,9 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
         if(tileEntityIn == null || tileEntityIn.isRemoved() || tileEntityIn.liquidState.clientLiquid == null)
             return;
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         renderFluid(tileEntityIn, matrixStackIn, bufferIn);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     private void renderFluid(@Nonnull TileEntityDimTank tileEntity, MatrixStack matrix, IRenderTypeBuffer bufferIn)
@@ -45,16 +45,16 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
         float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
         if(scale > 0.0f)
         {
-            Matrix4f matrix4f = matrix.getLast().getMatrix();
+            Matrix4f matrix4f = matrix.last().pose();
             TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
             if(sprite == null)
                 return;
-            IVertexBuilder renderer = bufferIn.getBuffer(RenderType.getText(sprite.getAtlasTexture().getTextureLocation()));
+            IVertexBuilder renderer = bufferIn.getBuffer(RenderType.text(sprite.atlas().location()));
 
-            float u1 = sprite.getMinU();
-            float v1 = sprite.getMinV();
-            float u2 = sprite.getMaxU();
-            float v2 = sprite.getMaxV();
+            float u1 = sprite.getU0();
+            float v1 = sprite.getV0();
+            float u2 = sprite.getU1();
+            float v2 = sprite.getV1();
 
             float margin = 0.9f;
             float offset = 0.1f;
@@ -68,41 +68,41 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
             int light = 15728880;
 
             // Top
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
 
             // Bottom
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
 
             // Sides
             //NORTH
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
 
             //SOUTH
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
 
             //WEAST
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, margin - TANK_THICKNESS, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
 
             //EAST
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v1).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).tex(u1, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v2).lightmap(light).endVertex();
-            renderer.pos(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).tex(u2, v1).lightmap(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v2).uv2(light).endVertex();
+            renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, margin - TANK_THICKNESS).color(r, g, b, a).uv(u2, v1).uv2(light).endVertex();
         }
     }
 }
