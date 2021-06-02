@@ -27,15 +27,15 @@ public class DimBlockBaseComponentProvider implements IComponentProvider {
             String locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").getString() + " ";
             String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
 
-            if(data.getBoolean("HasOwner"))
+            if(data.getBoolean(Main.MODID + ".HasOwner"))
             {
-                if(data.getBoolean("CanAccess"))
-                    tooltip.add(new StringTextComponent(TextFormatting.GREEN + owner + data.getString("Owner")));
+                if(data.getBoolean(Main.MODID + ".CanAccess"))
+                    tooltip.add(new StringTextComponent(TextFormatting.GREEN + owner + data.getString(Main.MODID + ".Owner")));
                 else
-                    tooltip.add(new StringTextComponent(TextFormatting.RED + owner + data.getString("Owner")));
+                    tooltip.add(new StringTextComponent(TextFormatting.RED + owner + data.getString(Main.MODID + ".Owner")));
             }
-            tooltip.add(new StringTextComponent(freq + data.getInt("Frequency")));
-            if(data.getBoolean("Locked"))
+            tooltip.add(new StringTextComponent(freq + data.getInt(Main.MODID + ".Frequency")));
+            if(data.getBoolean(Main.MODID + ".Locked"))
                 tooltip.add(new StringTextComponent(locked + yes));
         }
     }

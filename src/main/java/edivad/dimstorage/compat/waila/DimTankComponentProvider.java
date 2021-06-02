@@ -27,12 +27,12 @@ public class DimTankComponentProvider extends DimBlockBaseComponentProvider impl
             String liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
             String amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
 
-            if(data.getBoolean("AutoEject"))
+            if(data.getBoolean(Main.MODID + ".AutoEject"))
                 tooltip.add(new StringTextComponent(autoEject + yes));
-            if(data.getInt("Amount") > 0)
+            if(data.getInt(Main.MODID + ".Amount") > 0)
             {
-                tooltip.add(new StringTextComponent(liquid + " " + data.getString("Liquid")));
-                tooltip.add(new StringTextComponent(amount + " " + data.getInt("Amount") + " mB"));
+                tooltip.add(new StringTextComponent(liquid + " " + data.getString(Main.MODID + ".Liquid")));
+                tooltip.add(new StringTextComponent(amount + " " + data.getInt(Main.MODID + ".Amount") + " mB"));
             }
 
         }

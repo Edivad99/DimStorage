@@ -1,5 +1,6 @@
 package edivad.dimstorage.compat.waila;
 
+import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import mcp.mobius.waila.api.IServerDataProvider;
@@ -17,11 +18,11 @@ public class DimBlockBaseProvider implements IServerDataProvider<TileEntity> {
         {
             TileFrequencyOwner tile = (TileFrequencyOwner) tileEntity;
             Frequency frequency = tile.getFrequency();
-            compoundNBT.putBoolean("HasOwner", frequency.hasOwner());
-            compoundNBT.putBoolean("CanAccess", tile.canAccess(serverPlayerEntity));
-            compoundNBT.putString("Owner", frequency.getOwner());
-            compoundNBT.putInt("Frequency", frequency.getChannel());
-            compoundNBT.putBoolean("Locked", tile.locked);
+            compoundNBT.putBoolean(Main.MODID + ".HasOwner", frequency.hasOwner());
+            compoundNBT.putBoolean(Main.MODID + ".CanAccess", tile.canAccess(serverPlayerEntity));
+            compoundNBT.putString(Main.MODID + ".Owner", frequency.getOwner());
+            compoundNBT.putInt(Main.MODID + ".Frequency", frequency.getChannel());
+            compoundNBT.putBoolean(Main.MODID + ".Locked", tile.locked);
         }
     }
 }

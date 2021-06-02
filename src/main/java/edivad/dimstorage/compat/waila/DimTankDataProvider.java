@@ -1,5 +1,6 @@
 package edivad.dimstorage.compat.waila;
 
+import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import mcp.mobius.waila.api.IServerDataProvider;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -16,11 +17,11 @@ public class DimTankDataProvider extends DimBlockBaseProvider implements IServer
         if(tileEntity instanceof TileEntityDimTank)
         {
             TileEntityDimTank tile = (TileEntityDimTank) tileEntity;
-            compoundNBT.putBoolean("AutoEject", tile.autoEject);
+            compoundNBT.putBoolean(Main.MODID + ".AutoEject", tile.autoEject);
             String liquidName = tile.liquidState.serverLiquid.getDisplayName().getString();
             int liquidLevel = tile.liquidState.serverLiquid.getAmount();
-            compoundNBT.putString("Liquid", liquidName);
-            compoundNBT.putInt("Amount", liquidLevel);
+            compoundNBT.putString(Main.MODID + ".Liquid", liquidName);
+            compoundNBT.putInt(Main.MODID + ".Amount", liquidLevel);
         }
     }
 }
