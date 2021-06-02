@@ -51,12 +51,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             if(owner.locked)
                 probeInfo.horizontal().text(new StringTextComponent("Locked: Yes"));
 
-            if(te instanceof TileEntityDimChest)
-            {
-                TileEntityDimChest chest = (TileEntityDimChest) te;
-                probeInfo.horizontal().text(new StringTextComponent("Collecting: " + (chest.collect ? "Yes" : "No")));
-            }
-            else if(te instanceof TileEntityDimTank)
+            if(te instanceof TileEntityDimTank)
             {
                 TileEntityDimTank tank = (TileEntityDimTank) te;
                 if(tank.autoEject)

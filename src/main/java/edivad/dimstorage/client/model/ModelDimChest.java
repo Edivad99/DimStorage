@@ -19,7 +19,7 @@ public class ModelDimChest extends Model {
     private ModelRenderer top4;
     private ModelRenderer top5;
     private ModelRenderer movable;
-    private ModelRenderer indicatorGreen, indicatorBlue, indicatorRed, indicatorYellow;
+    private ModelRenderer indicatorGreen, indicatorBlue, indicatorRed;
 
     public ModelDimChest()
     {
@@ -79,7 +79,6 @@ public class ModelDimChest extends Model {
         indicatorGreen = createIndicator(0);
         indicatorBlue = createIndicator(2);
         indicatorRed = createIndicator(4);
-        indicatorYellow = createIndicator(6);
     }
 
     @Override
@@ -104,8 +103,6 @@ public class ModelDimChest extends Model {
             indicatorRed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         else if(tileEntity.getFrequency().hasOwner())
             indicatorBlue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        else if(tileEntity.collect)
-            indicatorYellow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         else
             indicatorGreen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }

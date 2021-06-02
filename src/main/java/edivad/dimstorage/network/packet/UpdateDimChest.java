@@ -11,25 +11,14 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UpdateDimChest extends UpdateDimBase {
 
-    protected boolean collect;
-
     public UpdateDimChest(PacketBuffer buf)
     {
         super(buf);
-        collect = buf.readBoolean();
     }
 
     public UpdateDimChest(TileEntityDimChest tile)
     {
         super(tile);
-        collect = tile.collect;
-    }
-
-    @Override
-    public void toBytes(PacketBuffer buf)
-    {
-        super.toBytes(buf);
-        buf.writeBoolean(collect);
     }
 
     @Override
@@ -46,7 +35,6 @@ public class UpdateDimChest extends UpdateDimBase {
         TileEntityDimChest chest = (TileEntityDimChest) tile;
         chest.setFrequency(freq);
         chest.locked = locked;
-        chest.collect = collect;
         chest.markDirty();
 
         world.notifyBlockUpdate(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
