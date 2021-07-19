@@ -62,7 +62,8 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
 
         if(tile instanceof TileEntityDimTank)
         {
-            return ((TileEntityDimTank) tile).activate(player, worldIn, pos, handIn);
+            if(!player.isCrouching())
+                return ((TileEntityDimTank) tile).activate(player, worldIn, pos, handIn);
         }
         return ActionResultType.FAIL;
     }

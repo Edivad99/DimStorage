@@ -23,6 +23,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -168,9 +170,15 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     @Override
     public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
     {
+        if(!canAccess(player)) {
+            player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
+            return super.activate(player, worldIn, pos, hand);
+        }
+
         boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
         if(!result)
             return super.activate(player, worldIn, pos, hand);
+
         worldIn.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return ActionResultType.SUCCESS;
     }
