@@ -7,8 +7,8 @@ import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class LockButton extends Button {
 
@@ -20,9 +20,9 @@ public class LockButton extends Button {
         this.owner = owner;
     }
 
-    private static TranslationTextComponent getText(boolean isLock)
+    private static TranslatableComponent getText(boolean isLock)
     {
-        return new TranslationTextComponent("gui." + Main.MODID + (isLock ? ".yes" : ".no"));
+        return new TranslatableComponent("gui." + Main.MODID + (isLock ? ".yes" : ".no"));
     }
 
     @Override

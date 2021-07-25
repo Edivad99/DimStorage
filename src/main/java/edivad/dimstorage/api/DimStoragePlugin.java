@@ -3,7 +3,7 @@ package edivad.dimstorage.api;
 import java.util.List;
 
 import edivad.dimstorage.manager.DimStorageManager;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface DimStoragePlugin {
 
@@ -11,6 +11,6 @@ public interface DimStoragePlugin {
 
     public String identifier();
 
-    void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list);
+    void sendClientInfo(Player player, List<AbstractDimStorage> list);
 
 }

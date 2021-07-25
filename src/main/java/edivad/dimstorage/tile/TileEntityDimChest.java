@@ -5,17 +5,17 @@ import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -36,37 +36,35 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     //Set the Capability
     private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
-    public TileEntityDimChest()
+    public TileEntityDimChest(BlockPos blockPos, BlockState blockState)
     {
-        super(Registration.DIMCHEST_TILE.get());
+        super(Registration.DIMCHEST_TILE.get(), blockPos, blockState);
         movablePartState = MIN_MOVABLE_POSITION;
     }
 
     @Override
-    public void tick()
+    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState)
     {
-        super.tick();
-
-        if(!level.isClientSide && (level.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()))
+        if(level.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen())
         {
             openCount = getStorage().getNumOpen();
             level.blockEvent(getBlockPos(), this.getBlockState().getBlock(), 1, openCount);
             level.updateNeighborsAt(worldPosition, this.getBlockState().getBlock());
         }
 
-        if(this.openCount > 0)
+        if(openCount > 0)
         {
-            if(this.movablePartState < MAX_MOVABLE_POSITION)
-                this.movablePartState += OPENING_SPEED;
+            if(movablePartState < MAX_MOVABLE_POSITION)
+                movablePartState += OPENING_SPEED;
             else
-                this.movablePartState = MAX_MOVABLE_POSITION;
+                movablePartState = MAX_MOVABLE_POSITION;
         }
         else
         {
-            if(this.movablePartState > MIN_MOVABLE_POSITION)
-                this.movablePartState -= OPENING_SPEED;
+            if(movablePartState > MIN_MOVABLE_POSITION)
+                movablePartState -= OPENING_SPEED;
             else
-                this.movablePartState = MIN_MOVABLE_POSITION;
+                movablePartState = MIN_MOVABLE_POSITION;
         }
     }
 
@@ -84,9 +82,9 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     }
 
     @Override
-    public void setLevelAndPosition(World world, BlockPos pos)
+    public void setLevel(Level level)
     {
-        super.setLevelAndPosition(world, pos);
+        super.setLevel(level);
         itemHandler.invalidate();
         itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
     }
@@ -117,11 +115,11 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
     public void onPlaced(LivingEntity entity)
     {
-        rotation = (int) Math.floor(entity.yRot * 4 / 360 + 2.5D) & 3;
+        rotation = (int) Math.floor(entity.getYRot() * 4 / 360 + 2.5D) & 3;
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT tag)
+    public CompoundTag save(CompoundTag tag)
     {
         super.save(tag);
         tag.putByte("rot", (byte) rotation);
@@ -129,9 +127,9 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT tag)
+    public void load(CompoundTag tag)
     {
-        super.load(state, tag);
+        super.load(tag);
         rotation = tag.getByte("rot") & 3;
     }
 
@@ -145,19 +143,19 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
     //Synchronizing on block update
     @Override
-    public final SUpdateTileEntityPacket getUpdatePacket()
+    public final ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        CompoundNBT root = new CompoundNBT();
+        CompoundTag root = new CompoundTag();
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putByte("rot", (byte) rotation);
-        return new SUpdateTileEntityPacket(getBlockPos(), 1, root);
+        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, root);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
     {
-        CompoundNBT tag = pkt.getTag();
+        CompoundTag tag = pkt.getTag();
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         rotation = tag.getByte("rot") & 3;
@@ -165,22 +163,22 @@ public class TileEntityDimChest extends TileFrequencyOwner {
 
     //Synchronizing on chunk load
     @Override
-    public CompoundNBT getUpdateTag()
+    public CompoundTag getUpdateTag()
     {
-        CompoundNBT tag = super.getUpdateTag();
+        CompoundTag tag = super.getUpdateTag();
         tag.putByte("rot", (byte) rotation);
         return tag;
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    public void handleUpdateTag(CompoundTag tag)
     {
-        super.handleUpdateTag(state, tag);
+        super.handleUpdateTag(tag);
         rotation = tag.getByte("rot") & 3;
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity)
     {
         return new ContainerDimChest(id, playerInventory, this, false);
     }

@@ -3,19 +3,19 @@ package edivad.dimstorage.client.screen.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import edivad.dimstorage.tools.Config;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.Rectangle2d;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
-public class PanelScreen<T extends Container> extends BaseScreen<T> {
+public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> {
 
     private static final int ANIMATION_SPEED = 10;
     private static final int SETTINGS_WIDTH = 80;
@@ -32,9 +32,9 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     private boolean settingsButtonOver;
     private boolean allowConfig;
 
-    private List<Widget> component;
+    private List<AbstractWidget> component;
 
-    public PanelScreen(T container, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
+    public PanelScreen(T container, Inventory invPlayer, Component text, ResourceLocation background, boolean drawSettings)
     {
         super(container, invPlayer, text, background);
 
@@ -56,7 +56,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks)
     {
         super.render(mStack, mouseX, mouseY, partialTicks);
 
@@ -132,7 +132,7 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
     }
 
     @Override
-    protected void renderBg(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack mStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(mStack, partialTicks, mouseX, mouseY);
         int settingsX = leftPos + (this.imageWidth - SETTINGS_WIDTH);
@@ -161,40 +161,41 @@ public class PanelScreen<T extends Container> extends BaseScreen<T> {
         }
     }
 
-    public List<Rectangle2d> getAreas()
+    public List<Rect2i> getAreas()
     {
-        List<Rectangle2d> extraAreas = new ArrayList<>();
-        extraAreas.add(new Rectangle2d(leftPos + imageWidth, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
-        extraAreas.add(new Rectangle2d(leftPos + imageWidth, getButtonY() + BUTTON_WIDTH, animationState, SETTINGS_HEIGHT));
+        List<Rect2i> extraAreas = new ArrayList<>();
+        extraAreas.add(new Rect2i(leftPos + imageWidth, getButtonY(), BUTTON_WIDTH, BUTTON_WIDTH));
+        extraAreas.add(new Rect2i(leftPos + imageWidth, getButtonY() + BUTTON_WIDTH, animationState, SETTINGS_HEIGHT));
         return extraAreas;
     }
 
     protected void clearComponent()
     {
-        for(Widget widget : component)
+        /*for(AbstractWidget widget : component)
         {
             if(widget instanceof Button)
             {
                 this.buttons.clear();
                 break;
             }
-        }
+        }*/
         component.clear();
     }
 
-    protected void addComponent(Widget widget)
+    protected void addComponent(AbstractWidget widget)
     {
         component.add(widget);
-        if(widget instanceof Button)
-            addButton((Button) widget);
-        else if(widget instanceof TextFieldWidget)
-            children.add((TextFieldWidget) widget);
+        addRenderableWidget(widget);
+        /*if(widget instanceof Button button)
+            addButton(button);
+        else if(widget instanceof EditBox editBox)
+            children.add(editBox);*/
     }
 
     protected void drawSettings(boolean draw)
     {
         drawSettings = draw;
-        for(Widget widget : component)
+        for(AbstractWidget widget : component)
             widget.visible = draw;
     }
 }

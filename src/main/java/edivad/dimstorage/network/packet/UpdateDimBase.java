@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public abstract class UpdateDimBase {
 
@@ -16,7 +16,7 @@ public abstract class UpdateDimBase {
     protected Frequency freq;
     protected boolean locked;
 
-    public UpdateDimBase(PacketBuffer buf)
+    public UpdateDimBase(FriendlyByteBuf buf)
     {
         pos = buf.readBlockPos();
         freq = Frequency.readFromPacket(buf);
@@ -30,20 +30,20 @@ public abstract class UpdateDimBase {
         locked = tile.locked;
     }
 
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         buf.writeBlockPos(pos);
         freq.writeToPacket(buf);
         buf.writeBoolean(locked);
     }
 
-    public abstract void customHandle(World world, ServerPlayerEntity player);
+    public abstract void customHandle(Level world, ServerPlayer player);
 
     public void handle(Supplier<NetworkEvent.Context> ctx)
     {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity player = ctx.get().getSender();
-            World world = player.level;
+            ServerPlayer player = ctx.get().getSender();
+            Level world = player.level;
             if(world.isLoaded(pos))
                 customHandle(world, player);
         });

@@ -7,13 +7,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -42,7 +42,8 @@ public class FluidUtils {
 
     public static void color(int color)
     {
-        RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+        RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+        //RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 
     @Nullable
@@ -50,10 +51,10 @@ public class FluidUtils {
     {
         FluidAttributes fa = stack.getFluid().getAttributes();
         ResourceLocation still = fa.getStillTexture(stack);
-        return Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(still);
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
     }
 
-    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, World world, BlockPos pos)
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, Level world, BlockPos pos)
     {
         if(world.isClientSide)
             if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
@@ -62,7 +63,7 @@ public class FluidUtils {
         return fluid.getFluid().getAttributes().getColor(fluid);
     }
 
-    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull TileEntity tileEntity)
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull BlockEntity tileEntity)
     {
         return getLiquidColorWithBiome(fluid, tileEntity.getLevel(), tileEntity.getBlockPos());
     }

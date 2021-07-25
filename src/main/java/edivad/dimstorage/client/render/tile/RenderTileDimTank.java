@@ -2,34 +2,34 @@ package edivad.dimstorage.client.render.tile;
 
 import javax.annotation.Nonnull;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import com.mojang.math.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
+public class RenderTileDimTank extends BlockEntityRenderer<TileEntityDimTank> {
 
     private static final float TANK_THICKNESS = 0.1f;
 
-    public RenderTileDimTank(TileEntityRendererDispatcher dispatcher)
+    public RenderTileDimTank(BlockEntityRenderDispatcher dispatcher)
     {
         super(dispatcher);
     }
 
     @Override
-    public void render(TileEntityDimTank tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    public void render(TileEntityDimTank tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         if(tileEntityIn == null || tileEntityIn.isRemoved() || tileEntityIn.liquidState.clientLiquid == null)
             return;
@@ -39,7 +39,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
         matrixStackIn.popPose();
     }
 
-    private void renderFluid(@Nonnull TileEntityDimTank tileEntity, MatrixStack matrix, IRenderTypeBuffer bufferIn)
+    private void renderFluid(@Nonnull TileEntityDimTank tileEntity, PoseStack matrix, MultiBufferSource bufferIn)
     {
         FluidStack fluid = tileEntity.liquidState.clientLiquid;
         float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
@@ -49,7 +49,7 @@ public class RenderTileDimTank extends TileEntityRenderer<TileEntityDimTank> {
             TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
             if(sprite == null)
                 return;
-            IVertexBuilder renderer = bufferIn.getBuffer(RenderType.text(sprite.atlas().location()));
+            VertexConsumer renderer = bufferIn.getBuffer(RenderType.text(sprite.atlas().location()));
 
             float u1 = sprite.getU0();
             float v1 = sprite.getV0();

@@ -9,8 +9,8 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.storage.DimChestStorage;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DimChestPlugin implements DimStoragePlugin {
 
@@ -27,7 +27,7 @@ public class DimChestPlugin implements DimStoragePlugin {
     }
 
     @Override
-    public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
+    public void sendClientInfo(Player player, List<AbstractDimStorage> list)
     {
         for(AbstractDimStorage inv : list)
         {

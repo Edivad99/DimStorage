@@ -4,19 +4,19 @@ import java.util.function.Supplier;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncLiquidTank {
 
     private BlockPos pos;
     private FluidStack fluidStack;
 
-    public SyncLiquidTank(PacketBuffer buf)
+    public SyncLiquidTank(FriendlyByteBuf buf)
     {
         pos = buf.readBlockPos();
         fluidStack = buf.readFluidStack();
@@ -28,7 +28,7 @@ public class SyncLiquidTank {
         this.fluidStack = fluidStack;
     }
 
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         buf.writeBlockPos(pos);
         buf.writeFluidStack(fluidStack);
@@ -37,10 +37,10 @@ public class SyncLiquidTank {
     public void handle(Supplier<NetworkEvent.Context> ctx)
     {
         ctx.get().enqueueWork(() -> {
-            World world = Main.proxy.getClientWorld();
+            Level world = Main.proxy.getClientWorld();
             if(world.isLoaded(pos))
             {
-                TileEntity te = world.getBlockEntity(pos);
+                BlockEntity te = world.getBlockEntity(pos);
                 if(te instanceof TileEntityDimTank)
                 {
                     TileEntityDimTank tank = (TileEntityDimTank) te;

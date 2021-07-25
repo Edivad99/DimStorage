@@ -5,15 +5,15 @@ import java.util.function.Supplier;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimChestStorage;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class OpenChest {
 
     private Frequency freq;
     private boolean open;
 
-    public OpenChest(PacketBuffer buf)
+    public OpenChest(FriendlyByteBuf buf)
     {
         freq = Frequency.readFromPacket(buf);
         open = buf.readBoolean();
@@ -25,7 +25,7 @@ public class OpenChest {
         this.open = open;
     }
 
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         freq.writeToPacket(buf);
         buf.writeBoolean(open);

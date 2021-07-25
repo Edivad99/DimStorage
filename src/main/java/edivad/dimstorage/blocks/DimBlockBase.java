@@ -1,16 +1,21 @@
 package edivad.dimstorage.blocks;
 
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class DimBlockBase extends Block {
+import javax.annotation.Nullable;
+
+public abstract class DimBlockBase extends Block implements EntityBlock {
 
     public DimBlockBase(Properties properties)
     {
@@ -24,9 +29,9 @@ public class DimBlockBase extends Block {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
+    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
-        TileEntity tile = world.getBlockEntity(pos);
+        BlockEntity tile = world.getBlockEntity(pos);
         if(tile instanceof TileFrequencyOwner)
         {
             TileFrequencyOwner block = (TileFrequencyOwner) tile;
@@ -37,10 +42,16 @@ public class DimBlockBase extends Block {
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack)
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, BlockEntity te, ItemStack stack)
     {
         super.playerDestroy(worldIn, player, pos, state, te, stack);
         worldIn.removeBlockEntity(pos);
         worldIn.removeBlock(pos, false);
+    }
+
+    @Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends TileFrequencyOwner> tile) {
+        BlockEntityTicker<TileFrequencyOwner> ticker = TileFrequencyOwner::serverTick;
+        return level.isClientSide ? null : tile == blockEntityType ? (BlockEntityTicker<T>) ticker : null;
     }
 }

@@ -2,13 +2,13 @@ package edivad.dimstorage.tools.utils;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NumberNBT;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NumericTag;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class InventoryUtils {
@@ -16,17 +16,17 @@ public class InventoryUtils {
     /**
      * NBT item loading function with support for stack sizes > 32K
      */
-    public static void readItemStacksFromTag(ItemStack[] items, ListNBT tagList)
+    public static void readItemStacksFromTag(ItemStack[] items, ListTag tagList)
     {
         for(int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT tag = tagList.getCompound(i);
+            CompoundTag tag = tagList.getCompound(i);
             int b = tag.getShort("Slot");
             items[b] = ItemStack.of(tag);
-            INBT quant = tag.get("Quantity");
-            if(quant instanceof NumberNBT)
+            Tag quant = tag.get("Quantity");
+            if(quant instanceof NumericTag)
             {
-                items[b].setCount(((NumberNBT) quant).getAsInt());
+                items[b].setCount(((NumericTag) quant).getAsInt());
             }
         }
     }
@@ -34,7 +34,7 @@ public class InventoryUtils {
     /**
      * NBT item saving function
      */
-    public static ListNBT writeItemStacksToTag(ItemStack[] items)
+    public static ListTag writeItemStacksToTag(ItemStack[] items)
     {
         return writeItemStacksToTag(items, 64);
     }
@@ -42,12 +42,12 @@ public class InventoryUtils {
     /**
      * NBT item saving function with support for stack sizes > 32K
      */
-    public static ListNBT writeItemStacksToTag(ItemStack[] items, int maxQuantity)
+    public static ListTag writeItemStacksToTag(ItemStack[] items, int maxQuantity)
     {
-        ListNBT tagList = new ListNBT();
+        ListTag tagList = new ListTag();
         for(int i = 0; i < items.length; i++)
         {
-            CompoundNBT tag = new CompoundNBT();
+            CompoundTag tag = new CompoundTag();
             tag.putShort("Slot", (short) i);
             items[i].save(tag);
 
@@ -68,7 +68,7 @@ public class InventoryUtils {
     /**
      * Static default implementation for IInventory method
      */
-    public static ItemStack removeStackFromSlot(IInventory inv, int slot)
+    public static ItemStack removeStackFromSlot(Container inv, int slot)
     {
         ItemStack stack = inv.getItem(slot);
         inv.setItem(slot, ItemStack.EMPTY);
@@ -79,7 +79,7 @@ public class InventoryUtils {
      * Static default implementation for IInventory method
      */
     @Nonnull
-    public static ItemStack decrStackSize(IInventory inv, int slot, int size)
+    public static ItemStack decrStackSize(Container inv, int slot, int size)
     {
         ItemStack item = inv.getItem(slot);
 
@@ -117,7 +117,7 @@ public class InventoryUtils {
             while(!stack.isEmpty() && i < endIndex)
             {
                 ItemStack itemstack = wrapper.getStackInSlot(i);
-                if(!itemstack.isEmpty() && Container.consideredTheSameItem(stack, itemstack))
+                if(!itemstack.isEmpty() && AbstractContainerMenu.consideredTheSameItem(stack, itemstack))
                 {
                     int j = itemstack.getCount() + stack.getCount();
                     int maxSize = stack.getMaxStackSize();

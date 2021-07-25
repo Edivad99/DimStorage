@@ -7,7 +7,7 @@ import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimTankStorage;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class DimTankPlugin implements DimStoragePlugin {
 
@@ -24,7 +24,7 @@ public class DimTankPlugin implements DimStoragePlugin {
     }
 
     @Override
-    public void sendClientInfo(PlayerEntity player, List<AbstractDimStorage> list)
+    public void sendClientInfo(Player player, List<AbstractDimStorage> list)
     {
     }
 }

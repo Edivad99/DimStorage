@@ -1,7 +1,7 @@
 package edivad.dimstorage.api;
 
 import edivad.dimstorage.manager.DimStorageManager;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public abstract class AbstractDimStorage {
 
@@ -47,9 +47,9 @@ public abstract class AbstractDimStorage {
 
     public abstract String type();
 
-    public abstract CompoundNBT saveToTag();
+    public abstract CompoundTag saveToTag();
 
-    public abstract void loadFromTag(CompoundNBT tag);
+    public abstract void loadFromTag(CompoundTag tag);
 
     @Override
     public String toString()

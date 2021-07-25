@@ -2,18 +2,18 @@ package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants.BlockFlags;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class UpdateDimTank extends UpdateDimBase {
 
     protected boolean autoEject;
 
-    public UpdateDimTank(PacketBuffer buf)
+    public UpdateDimTank(FriendlyByteBuf buf)
     {
         super(buf);
         autoEject = buf.readBoolean();
@@ -26,16 +26,16 @@ public class UpdateDimTank extends UpdateDimBase {
     }
 
     @Override
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         super.toBytes(buf);
         buf.writeBoolean(autoEject);
     }
 
     @Override
-    public void customHandle(World world, ServerPlayerEntity player)
+    public void customHandle(Level world, ServerPlayer player)
     {
-        TileEntity tile = world.getBlockEntity(pos);
+        BlockEntity tile = world.getBlockEntity(pos);
 
         if(!(tile instanceof TileEntityDimTank))
         {

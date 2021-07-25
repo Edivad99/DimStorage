@@ -7,8 +7,8 @@ import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import edivad.dimstorage.tools.Config;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TextComponent;
 
 public class OwnerButton extends Button {
 
@@ -16,7 +16,7 @@ public class OwnerButton extends Button {
 
     public OwnerButton(int width, int height, TileFrequencyOwner owner)
     {
-        super(width, height, 64, 20, new StringTextComponent(owner.getFrequency().getOwner()), b -> {});
+        super(width, height, 64, 20, new TextComponent(owner.getFrequency().getOwner()), b -> {});
         this.owner = owner;
         this.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
     }

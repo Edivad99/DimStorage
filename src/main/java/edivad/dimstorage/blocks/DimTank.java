@@ -2,33 +2,36 @@ package edivad.dimstorage.blocks;
 
 import javax.annotation.Nullable;
 
+import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockDisplayReader;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
-public class DimTank extends DimBlockBase implements IWaterLoggable {
+public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
     private static final VoxelShape BOX = box(2, 0, 2, 14, 16, 14);
     private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
@@ -39,51 +42,52 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
+    @Nullable
     @Override
-    public boolean hasTileEntity(BlockState state)
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState)
     {
-        return true;
+        return new TileEntityDimTank(blockPos, blockState);
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType)
     {
-        return new TileEntityDimTank();
+        return createDimBlockTicker(level, blockEntityType, Registration.DIMTANK_TILE.get());
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
         if(worldIn.isClientSide)
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
 
-        TileEntity tile = worldIn.getBlockEntity(pos);
+        BlockEntity tile = worldIn.getBlockEntity(pos);
 
         if(tile instanceof TileEntityDimTank)
         {
             if(!player.isCrouching())
                 return ((TileEntityDimTank) tile).activate(player, worldIn, pos, handIn);
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return BOX;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return BOX;
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos)
     {
-        TileEntity tile = world.getBlockEntity(pos);
+        BlockEntity tile = world.getBlockEntity(pos);
         if(tile instanceof TileEntityDimTank)
         {
             TileEntityDimTank tank = (TileEntityDimTank) tile;
@@ -91,7 +95,7 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
             if(!fluid.isEmpty())
             {
                 FluidAttributes attributes = fluid.getFluid().getAttributes();
-                return world instanceof IBlockDisplayReader ? attributes.getLuminosity((IBlockDisplayReader) world, pos) : attributes.getLuminosity(fluid);
+                return world instanceof BlockAndTintGetter ? attributes.getLuminosity((BlockAndTintGetter) world, pos) : attributes.getLuminosity(fluid);
             }
         }
         return 0;
@@ -104,9 +108,9 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos)
+    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos)
     {
-        TileEntity te = worldIn.getBlockEntity(pos);
+        BlockEntity te = worldIn.getBlockEntity(pos);
         return (te instanceof TileEntityDimTank) ? ((TileEntityDimTank) te).getComparatorInput() : 0;
     }
 
@@ -118,15 +122,15 @@ public class DimTank extends DimBlockBase implements IWaterLoggable {
     }
 
     @Override
-    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
-        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
+        return SimpleWaterloggedBlock.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
-    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    public boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
-        return IWaterLoggable.super.canPlaceLiquid(worldIn, pos, state, fluidIn);
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(worldIn, pos, state, fluidIn);
     }
 
     @Override

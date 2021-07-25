@@ -2,36 +2,36 @@ package edivad.dimstorage.client.render.tile;
 
 import javax.annotation.Nonnull;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.model.ModelDimChest;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Quaternion;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
+public class RenderTileDimChest implements BlockEntityRenderer<TileEntityDimChest> {
 
     private ModelDimChest model;
 
-    public RenderTileDimChest(TileEntityRendererDispatcher dispatcher)
+    public RenderTileDimChest(/*BlockEntityRenderDispatcher dispatcher*/)
     {
-        super(dispatcher);
+        //super(dispatcher);
         model = new ModelDimChest();
     }
 
     @Override
-    public void render(TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    public void render(TileEntityDimChest te, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
-        if(te == null || te.isRemoved())
+        if(te.isRemoved())
             return;
 
         matrixStackIn.pushPose();
@@ -39,7 +39,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
         matrixStackIn.popPose();
     }
 
-    private void renderBlock(@Nonnull TileEntityDimChest te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    private void renderBlock(@Nonnull TileEntityDimChest te, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         int rot = te.rotation;
 
@@ -59,7 +59,7 @@ public class RenderTileDimChest extends TileEntityRenderer<TileEntityDimChest> {
 
         model.setTileEntity(te);
 
-        IVertexBuilder buffer = bufferIn.getBuffer(RenderType.entitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
+        VertexConsumer buffer = bufferIn.getBuffer(RenderType.entitySolid(new ResourceLocation(Main.MODID, "textures/models/dimchest.png")));
         model.renderToBuffer(matrixStackIn, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
         matrixStackIn.popPose();

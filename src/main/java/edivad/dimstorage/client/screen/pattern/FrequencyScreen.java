@@ -1,6 +1,6 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.ChangeButton;
@@ -13,20 +13,20 @@ import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T> {
+public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
     protected TileFrequencyOwner tileOwner;
 
-    private ITextComponent owner, freq, locked;
+    private Component owner, freq, locked;
     private FrequencyText freqTextField;
 
-    public FrequencyScreen(T container, TileFrequencyOwner tileOwner, PlayerInventory invPlayer, ITextComponent text, ResourceLocation background, boolean drawSettings)
+    public FrequencyScreen(T container, TileFrequencyOwner tileOwner, Inventory invPlayer, Component text, ResourceLocation background, boolean drawSettings)
     {
         super(container, invPlayer, text, background, drawSettings);
         this.tileOwner = tileOwner;
@@ -38,9 +38,9 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
         super.init();
 
         // Get translation
-        owner = new TranslationTextComponent("gui." + Main.MODID + ".owner");
-        freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency");
-        locked = new TranslationTextComponent("gui." + Main.MODID + ".locked");
+        owner = new TranslatableComponent("gui." + Main.MODID + ".owner");
+        freq = new TranslatableComponent("gui." + Main.MODID + ".frequency");
+        locked = new TranslatableComponent("gui." + Main.MODID + ".locked");
 
         clearComponent();
         addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));
@@ -72,14 +72,14 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
     }
 
     @Override
-    public void tick()
+    protected void containerTick()
     {
-        super.tick();
+        super.containerTick();
         freqTextField.tick();
     }
 
     @Override
-    public void render(MatrixStack mStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks)
     {
         super.render(mStack, mouseX, mouseY, partialTicks);
         freqTextField.render(mStack, mouseX, mouseY, partialTicks);
@@ -93,7 +93,7 @@ public abstract class FrequencyScreen<T extends Container> extends PanelScreen<T
     }
 
     @Override
-    protected void renderLabels(MatrixStack mStack, int mouseX, int mouseY)
+    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY)
     {
         super.renderLabels(mStack, mouseX, mouseY);
 

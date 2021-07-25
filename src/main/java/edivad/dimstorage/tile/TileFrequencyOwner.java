@@ -3,34 +3,33 @@ package edivad.dimstorage.tile;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.BlockFlags;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public abstract class TileFrequencyOwner extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public abstract class TileFrequencyOwner extends BlockEntity implements MenuProvider {
 
     public boolean locked;
 
-    public TileFrequencyOwner(TileEntityType<?> tileEntityTypeIn)
+    public TileFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState)
     {
-        super(tileEntityTypeIn);
+        super(tileEntityTypeIn, blockPos, blockState);
         locked = false;
     }
 
@@ -65,33 +64,35 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
         this.setChanged();
     }
 
-    public boolean canAccess(PlayerEntity player)
+    public boolean canAccess(Player player)
     {
         return frequency.canAccess(player);
     }
 
-    @Override
-    public void tick()
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TileFrequencyOwner tile)
     {
-        if(getStorage().getChangeCount() > changeCount)
+        if(tile.getStorage().getChangeCount() > tile.changeCount)
         {
-            level.updateNeighbourForOutputSignal(worldPosition, this.getBlockState().getBlock());
-            changeCount = getStorage().getChangeCount();
+            level.updateNeighbourForOutputSignal(tile.worldPosition, tile.getBlockState().getBlock());
+            tile.changeCount = tile.getStorage().getChangeCount();
         }
+        tile.onServerTick(level, blockPos, blockState);
     }
 
     public abstract AbstractDimStorage getStorage();
 
+    public abstract void onServerTick(Level level, BlockPos blockPos, BlockState blockState);
+
     @Override
-    public void load(BlockState state, CompoundNBT tag)
+    public void load(CompoundTag tag)
     {
-        super.load(state, tag);
+        super.load(tag);
         frequency.set(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT tag)
+    public CompoundTag save(CompoundTag tag)
     {
         super.save(tag);
         tag.put("Frequency", frequency.serializeNBT());
@@ -99,39 +100,39 @@ public abstract class TileFrequencyOwner extends TileEntity implements ITickable
         return tag;
     }
 
-    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
+    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand hand)
     {
         if(canAccess(player))
         {
-            NetworkHooks.openGui((ServerPlayerEntity) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
+            NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
         else
         {
-            player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     //Synchronizing on chunk load
     @Override
-    public CompoundNBT getUpdateTag()
+    public CompoundTag getUpdateTag()
     {
-        CompoundNBT tag = super.getUpdateTag();
+        CompoundTag tag = super.getUpdateTag();
         tag.put("Frequency", frequency.serializeNBT());
         tag.putBoolean("locked", locked);
         return tag;
     }
     
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    public void handleUpdateTag(CompoundTag tag)
     {
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
     }
 
     @Override
-    public ITextComponent getDisplayName()
+    public Component getDisplayName()
     {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getDescriptionId());
+        return new TranslatableComponent(this.getBlockState().getBlock().getDescriptionId());
     }
 }

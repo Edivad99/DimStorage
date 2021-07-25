@@ -6,18 +6,18 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +32,7 @@ public class ItemDimBase extends BlockItem {
     {
         if(stack.hasTag())
         {
-            CompoundNBT stackTag = stack.getTagElement("DimStorage");
+            CompoundTag stackTag = stack.getTagElement("DimStorage");
             if(stackTag != null && stackTag.contains("Frequency"))
             {
                 return new Frequency(stackTag.getCompound("Frequency"));
@@ -42,11 +42,11 @@ public class ItemDimBase extends BlockItem {
     }
 
     @Override
-    protected boolean placeBlock(BlockItemUseContext context, BlockState state)
+    protected boolean placeBlock(BlockPlaceContext context, BlockState state)
     {
         if(super.placeBlock(context, state))
         {
-            World world = context.getLevel();
+            Level world = context.getLevel();
             BlockPos pos = context.getClickedPos();
             ItemStack stack = context.getItemInHand();
 
@@ -59,12 +59,12 @@ public class ItemDimBase extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
     {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(TextFormatting.DARK_RED));
+            tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(new TranslationTextComponent("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
+            tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
     }
 }

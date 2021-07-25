@@ -5,13 +5,13 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class Frequency implements INBTSerializable<CompoundNBT> {
+public class Frequency implements INBTSerializable<CompoundTag> {
 
     private UUID owner;
     private String ownerText;
@@ -27,7 +27,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         this(null, channel);
     }
 
-    public Frequency(@Nullable PlayerEntity player, int channel)
+    public Frequency(@Nullable Player player, int channel)
     {
         if(player == null)
         {
@@ -37,7 +37,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         else
         {
             owner = player.getUUID();
-            ownerText = ((StringTextComponent) player.getName()).getText();
+            ownerText = ((TextComponent) player.getName()).getText();
         }
         this.channel = channel;
     }
@@ -49,7 +49,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         this.channel = channel;
     }
 
-    public Frequency(CompoundNBT tagCompound)
+    public Frequency(CompoundTag tagCompound)
     {
         deserializeNBT(tagCompound);
     }
@@ -67,10 +67,10 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         return new Frequency(ownerText, owner, channel);
     }
 
-    public Frequency setOwner(@Nonnull PlayerEntity player)
+    public Frequency setOwner(@Nonnull Player player)
     {
         owner = player.getUUID();
-        ownerText = ((StringTextComponent) player.getName()).getText();
+        ownerText = ((TextComponent) player.getName()).getText();
         return this;
     }
 
@@ -116,22 +116,21 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
     @Override
     public boolean equals(Object obj)
     {
-        if(!(obj instanceof Frequency))
+        if(!(obj instanceof Frequency f))
             return false;
 
-        Frequency f = (Frequency) obj;
         if(f.hasOwner())
             return (f.channel == this.channel && f.owner.equals(owner) && f.ownerText.equals(ownerText));
         else
             return (f.channel == this.channel && f.ownerText.equals(ownerText));
     }
 
-    public static Frequency readFromPacket(PacketBuffer buf)
+    public static Frequency readFromPacket(FriendlyByteBuf buf)
     {
-        return new Frequency(buf.readUtf(32767), buf.readBoolean() ? buf.readUUID() : null, buf.readVarInt());
+        return new Frequency(buf.readUtf(), buf.readBoolean() ? buf.readUUID() : null, buf.readVarInt());
     }
 
-    public void writeToPacket(PacketBuffer buf)
+    public void writeToPacket(FriendlyByteBuf buf)
     {
         buf.writeUtf(ownerText);
         buf.writeBoolean(hasOwner());
@@ -140,7 +139,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
         buf.writeVarInt(channel);
     }
 
-    public boolean canAccess(@Nonnull PlayerEntity player)
+    public boolean canAccess(@Nonnull Player player)
     {
         if(!hasOwner())
             return true;
@@ -148,9 +147,9 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
     }
 
     @Override
-    public CompoundNBT serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        CompoundNBT tagCompound = new CompoundNBT();
+        CompoundTag tagCompound = new CompoundTag();
         tagCompound.putString("ownerText", ownerText);
         if(hasOwner())
             tagCompound.putUUID("owner", owner);
@@ -159,7 +158,7 @@ public class Frequency implements INBTSerializable<CompoundNBT> {
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT tagCompound)
+    public void deserializeNBT(CompoundTag tagCompound)
     {
         ownerText = tagCompound.getString("ownerText");
         if(!ownerText.equals("public"))

@@ -1,6 +1,7 @@
 package edivad.dimstorage.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
@@ -9,12 +10,13 @@ import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -22,7 +24,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
     private String liquid, amount, temperature, luminosity, gaseous, empty, yes, no;
 
-    public ScreenDimTank(ContainerDimTank container, PlayerInventory invPlayer, ITextComponent text)
+    public ScreenDimTank(ContainerDimTank container, Inventory invPlayer, Component text)
     {
         super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimtank.png"), container.isOpen);
     }
@@ -36,18 +38,18 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
         drawSettings(drawSettings);
 
-        liquid = new TranslationTextComponent("gui." + Main.MODID + ".liquid").getString();
-        amount = new TranslationTextComponent("gui." + Main.MODID + ".amount").getString();
-        temperature = new TranslationTextComponent("gui." + Main.MODID + ".temperature").getString();
-        luminosity = new TranslationTextComponent("gui." + Main.MODID + ".luminosity").getString();
-        gaseous = new TranslationTextComponent("gui." + Main.MODID + ".gas").getString();
-        empty = new TranslationTextComponent("gui." + Main.MODID + ".empty").getString();
-        yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
-        no = new TranslationTextComponent("gui." + Main.MODID + ".no").getString();
+        liquid = new TranslatableComponent("gui." + Main.MODID + ".liquid").getString();
+        amount = new TranslatableComponent("gui." + Main.MODID + ".amount").getString();
+        temperature = new TranslatableComponent("gui." + Main.MODID + ".temperature").getString();
+        luminosity = new TranslatableComponent("gui." + Main.MODID + ".luminosity").getString();
+        gaseous = new TranslatableComponent("gui." + Main.MODID + ".gas").getString();
+        empty = new TranslatableComponent("gui." + Main.MODID + ".empty").getString();
+        yes = new TranslatableComponent("gui." + Main.MODID + ".yes").getString();
+        no = new TranslatableComponent("gui." + Main.MODID + ".no").getString();
     }
 
     @Override
-    protected void renderLabels(MatrixStack mStack, int mouseX, int mouseY)
+    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY)
     {
         super.renderLabels(mStack, mouseX, mouseY);
         FluidStack liquidStack = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
@@ -70,7 +72,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void renderBg(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack mStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(mStack, partialTicks, mouseX, mouseY);
 
@@ -78,7 +80,9 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-        this.minecraft.getTextureManager().bind(PlayerContainer.BLOCK_ATLAS);
+        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        //RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
         FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((TileEntityDimTank) tileOwner)));
         ScreenDimTank.blit(mStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);

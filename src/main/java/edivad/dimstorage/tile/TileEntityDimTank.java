@@ -8,25 +8,23 @@ import edivad.dimstorage.network.TankState;
 import edivad.dimstorage.network.packet.SyncLiquidTank;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.common.util.LazyOptional;
@@ -35,7 +33,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class TileEntityDimTank extends TileFrequencyOwner {
 
@@ -61,25 +59,33 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     //Set the Capability
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
 
-    public TileEntityDimTank()
+    public TileEntityDimTank(BlockPos blockPos, BlockState blockState)
     {
-        super(Registration.DIMTANK_TILE.get());
+        super(Registration.DIMTANK_TILE.get(), blockPos, blockState);
     }
 
     @Override
+    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState)
+    {
+        if(autoEject)
+            ejectLiquid();
+        liquidState.update(level.isClientSide);
+    }
+
+    /*@Override
     public void tick()
     {
         super.tick();
         if(autoEject)
             ejectLiquid();
         liquidState.update(level.isClientSide);
-    }
+    }*/
 
     private void ejectLiquid()
     {
         for(Direction side : Direction.values())
         {
-            TileEntity tile = level.getBlockEntity(worldPosition.relative(side));
+            BlockEntity tile = level.getBlockEntity(worldPosition.relative(side));
             if(tile != null && checkSameFrequency(tile))
             {
                 tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).ifPresent(h -> {
@@ -97,7 +103,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         }
     }
 
-    private boolean checkSameFrequency(TileEntity tile)
+    private boolean checkSameFrequency(BlockEntity tile)
     {
         if(tile instanceof TileEntityDimTank)
         {
@@ -118,10 +124,18 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         fluidHandler = LazyOptional.of(this::getStorage);
     }
 
-    @Override
-    public void setLevelAndPosition(World world, BlockPos pos)
+    /*@Override
+    public void setLevelAndPosition(Level world, BlockPos pos)
     {
         super.setLevelAndPosition(world, pos);
+        fluidHandler.invalidate();
+        fluidHandler = LazyOptional.of(this::getStorage);
+    }*/
+
+    @Override
+    public void setLevel(Level level)
+    {
+        super.setLevel(level);
         fluidHandler.invalidate();
         fluidHandler = LazyOptional.of(this::getStorage);
     }
@@ -152,7 +166,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT tag)
+    public CompoundTag save(CompoundTag tag)
     {
         super.save(tag);
         tag.putBoolean("autoEject", autoEject);
@@ -160,18 +174,18 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT tag)
+    public void load(CompoundTag tag)
     {
-        super.load(state, tag);
+        super.load(tag);
         liquidState.setFrequency(getFrequency());
         autoEject = tag.getBoolean("autoEject");
     }
 
     @Override
-    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand hand)
+    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand hand)
     {
         if(!canAccess(player)) {
-            player.displayClientMessage(new StringTextComponent(TextFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
             return super.activate(player, worldIn, pos, hand);
         }
 
@@ -179,8 +193,8 @@ public class TileEntityDimTank extends TileFrequencyOwner {
         if(!result)
             return super.activate(player, worldIn, pos, hand);
 
-        worldIn.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        return ActionResultType.SUCCESS;
+        worldIn.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -193,19 +207,19 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
     //Synchronizing on block update
     @Override
-    public final SUpdateTileEntityPacket getUpdatePacket()
+    public final ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        CompoundNBT root = new CompoundNBT();
+        CompoundTag root = new CompoundTag();
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putBoolean("autoEject", autoEject);
-        return new SUpdateTileEntityPacket(getBlockPos(), 1, root);
+        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, root);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
     {
-        CompoundNBT tag = pkt.getTag();
+        CompoundTag tag = pkt.getTag();
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
         autoEject = tag.getBoolean("autoEject");
@@ -213,15 +227,15 @@ public class TileEntityDimTank extends TileFrequencyOwner {
 
     //Synchronizing on chunk load
     @Override
-    public CompoundNBT getUpdateTag()
+    public CompoundTag getUpdateTag()
     {
-        CompoundNBT tag = super.getUpdateTag();
+        CompoundTag tag = super.getUpdateTag();
         tag.putBoolean("autoEject", autoEject);
         return tag;
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    public void handleUpdateTag(CompoundTag tag)
     {
         setFrequency(new Frequency(tag.getCompound("Frequency")));
         locked = tag.getBoolean("locked");
@@ -229,7 +243,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity)
     {
         return new ContainerDimTank(id, playerInventory, this, false);
     }

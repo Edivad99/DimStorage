@@ -2,18 +2,18 @@ package edivad.dimstorage.container;
 
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 
-public class ContainerDimTank extends Container {
+public class ContainerDimTank extends AbstractContainerMenu {
 
     public TileEntityDimTank owner;
     public boolean isOpen;
 
-    public ContainerDimTank(int windowId, PlayerInventory playerInventory, TileEntityDimTank owner, boolean isOpen)
+    public ContainerDimTank(int windowId, Inventory playerInventory, TileEntityDimTank owner, boolean isOpen)
     {
         super(Registration.DIMTANK_CONTAINER.get(), windowId);
         this.owner = owner;
@@ -22,7 +22,7 @@ public class ContainerDimTank extends Container {
         addPlayerSlots(playerInventory);
     }
 
-    private void addPlayerSlots(IInventory playerInventory)
+    private void addPlayerSlots(Container playerInventory)
     {
         // Main Inventory
         for(int y = 0; y < 3; y++)
@@ -34,7 +34,7 @@ public class ContainerDimTank extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn)
+    public boolean stillValid(Player playerIn)
     {
         return true;
     }

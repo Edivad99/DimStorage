@@ -16,10 +16,10 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.world.storage.FolderName;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -68,7 +68,7 @@ public class DimStorageManager {
     private File[] saveFiles;
     private int saveTo;
     private List<AbstractDimStorage> dirtyStorage;
-    private CompoundNBT saveTag;
+    private CompoundTag saveTag;
 
     public DimStorageManager(boolean client)
     {
@@ -91,7 +91,7 @@ public class DimStorageManager {
         return !client;
     }
 
-    private void sendClientInfo(PlayerEntity player)
+    private void sendClientInfo(Player player)
     {
         for(Map.Entry<String, DimStoragePlugin> plugin : plugins.entrySet())
         {
@@ -101,7 +101,7 @@ public class DimStorageManager {
 
     private void load()
     {
-        saveDir = new File(Main.getServer().overworld().getServer().getWorldPath(FolderName.ROOT).toFile(), "DimStorage");
+        saveDir = new File(Main.getServer().overworld().getServer().getWorldPath(LevelResource.ROOT).toFile(), "DimStorage");
         try
         {
             if(!saveDir.exists())
@@ -118,14 +118,14 @@ public class DimStorageManager {
                 if(saveFiles[saveTo ^ 1].exists())
                 {
                     DataInputStream din = new DataInputStream(new FileInputStream(saveFiles[saveTo ^ 1]));
-                    saveTag = CompressedStreamTools.readCompressed(din);
+                    saveTag = NbtIo.readCompressed(din);
                     din.close();
                 }
                 else
-                    saveTag = new CompoundNBT();
+                    saveTag = new CompoundTag();
             }
             else
-                saveTag = new CompoundNBT();
+                saveTag = new CompoundTag();
         }
         catch(Exception e)
         {
@@ -152,7 +152,7 @@ public class DimStorageManager {
                     saveFile.createNewFile();
 
                 DataOutputStream dout = new DataOutputStream(new FileOutputStream(saveFile));
-                CompressedStreamTools.writeCompressed(saveTag, dout);
+                NbtIo.writeCompressed(saveTag, dout);
                 dout.close();
                 FileOutputStream fout = new FileOutputStream(saveFiles[2]);
                 fout.write(saveTo);

@@ -8,13 +8,13 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.tools.utils.InventoryUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class DimChestStorage extends AbstractDimStorage implements IInventory {
+public class DimChestStorage extends AbstractDimStorage implements Container {
 
     private ItemStack[] items;
     private int open;
@@ -35,7 +35,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         }
     }
 
-    public void loadFromTag(CompoundNBT tag)
+    public void loadFromTag(CompoundTag tag)
     {
         empty();
         InventoryUtils.readItemStacksFromTag(items, tag.getList("Items", 10));
@@ -47,9 +47,9 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
         return "item";
     }
 
-    public CompoundNBT saveToTag()
+    public CompoundTag saveToTag()
     {
-        CompoundNBT compound = new CompoundNBT();
+        CompoundTag compound = new CompoundTag();
         compound.put("Items", InventoryUtils.writeItemStacksToTag(this.items));
         return compound;
     }
@@ -150,7 +150,7 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player)
+    public boolean stillValid(Player player)
     {
         return true;
     }
@@ -182,12 +182,12 @@ public class DimChestStorage extends AbstractDimStorage implements IInventory {
     }
 
     @Override
-    public void startOpen(PlayerEntity player)
+    public void startOpen(Player player)
     {
     }
 
     @Override
-    public void stopOpen(PlayerEntity player)
+    public void stopOpen(Player player)
     {
     }
 }
