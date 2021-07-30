@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model" : "dimstorage:block/dimensional_tank" }
-    }
+  "variants": {
+    "": { "model": "dimstorage:block/dimensional_tank" }
+  }
 }

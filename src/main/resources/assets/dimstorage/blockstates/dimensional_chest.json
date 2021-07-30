@@ -1,7 +1,5 @@
 {
-	"variants": {
-		"": {
-			"model": "dimstorage:block/dimensional_chest"
-		}
-	}
+  "variants": {
+    "": { "model": "dimstorage:block/dimensional_chest" }
+  }
 }
