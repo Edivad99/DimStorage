@@ -5,6 +5,8 @@ import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +54,18 @@ public class TileEntityDimChest extends TileFrequencyOwner {
             level.updateNeighborsAt(worldPosition, this.getBlockState().getBlock());
         }
 
-        if(openCount > 0)
+        commonTick();
+    }
+
+    @Override
+    public void onClientTick(Level level, BlockPos blockPos, BlockState blockState)
+    {
+        commonTick();
+    }
+
+    private void commonTick()
+    {
+        if(openCount > 0) //Both server and client
         {
             if(movablePartState < MAX_MOVABLE_POSITION)
                 movablePartState += OPENING_SPEED;

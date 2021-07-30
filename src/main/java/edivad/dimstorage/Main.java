@@ -1,5 +1,6 @@
 package edivad.dimstorage;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,8 +37,9 @@ public class Main {
         Registration.init();
 
         // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(ModSetup::init);
+        modBus.addListener(ClientSetup::init);
     }
 
     public static MinecraftServer getServer()

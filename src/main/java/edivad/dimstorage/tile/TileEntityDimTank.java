@@ -69,7 +69,13 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     {
         if(autoEject)
             ejectLiquid();
-        liquidState.update(level.isClientSide);
+        liquidState.update(false);
+    }
+
+    @Override
+    public void onClientTick(Level level, BlockPos blockPos, BlockState blockState)
+    {
+        liquidState.update(true);
     }
 
     /*@Override

@@ -43,7 +43,6 @@ public class FluidUtils {
     public static void color(int color)
     {
         RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
-        //RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 
     @Nullable

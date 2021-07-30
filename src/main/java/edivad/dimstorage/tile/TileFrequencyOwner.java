@@ -79,9 +79,16 @@ public abstract class TileFrequencyOwner extends BlockEntity implements MenuProv
         tile.onServerTick(level, blockPos, blockState);
     }
 
+    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, TileFrequencyOwner tile)
+    {
+        tile.onClientTick(level, blockPos, blockState);
+    }
+
     public abstract AbstractDimStorage getStorage();
 
     public abstract void onServerTick(Level level, BlockPos blockPos, BlockState blockState);
+
+    public abstract void onClientTick(Level level, BlockPos blockPos, BlockState blockState);
 
     @Override
     public void load(CompoundTag tag)

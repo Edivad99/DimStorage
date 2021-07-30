@@ -51,7 +51,11 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
 
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends TileFrequencyOwner> tile) {
-        BlockEntityTicker<TileFrequencyOwner> ticker = TileFrequencyOwner::serverTick;
-        return level.isClientSide ? null : tile == blockEntityType ? (BlockEntityTicker<T>) ticker : null;
+        BlockEntityTicker<TileFrequencyOwner> serverTicker = TileFrequencyOwner::serverTick;
+        BlockEntityTicker<TileFrequencyOwner> clientTicker = TileFrequencyOwner::clientTick;
+        if(tile == blockEntityType) {
+            return level.isClientSide ? (BlockEntityTicker<T>) clientTicker : (BlockEntityTicker<T>) serverTicker;
+        }
+        return null;
     }
 }
