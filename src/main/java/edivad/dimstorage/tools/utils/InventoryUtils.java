@@ -117,7 +117,7 @@ public class InventoryUtils {
             while(!stack.isEmpty() && i < endIndex)
             {
                 ItemStack itemstack = wrapper.getStackInSlot(i);
-                if(!itemstack.isEmpty() && AbstractContainerMenu.consideredTheSameItem(stack, itemstack))
+                if(!itemstack.isEmpty() && stack.sameItem(itemstack))
                 {
                     int j = itemstack.getCount() + stack.getCount();
                     int maxSize = stack.getMaxStackSize();
@@ -144,7 +144,7 @@ public class InventoryUtils {
 
             while(i < endIndex && !flag)
             {
-                ItemStack itemstack1 = wrapper.getStackInSlot(i).getStack();
+                ItemStack itemstack1 = wrapper.getStackInSlot(i);
                 if(itemstack1.isEmpty() && wrapper.isItemValid(i, stack))
                 {
                     if(stack.getCount() > 64)

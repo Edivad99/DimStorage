@@ -1,42 +1,42 @@
-//package edivad.dimstorage.compat.waila;
-//
-//import java.util.List;
-//
-//import edivad.dimstorage.Main;
-//import edivad.dimstorage.tile.TileFrequencyOwner;
-//import mcp.mobius.waila.api.IComponentProvider;
-//import mcp.mobius.waila.api.IDataAccessor;
-//import mcp.mobius.waila.api.IPluginConfig;
-//import net.minecraft.nbt.CompoundNBT;
-//import net.minecraft.util.text.ITextComponent;
-//import net.minecraft.util.text.StringTextComponent;
-//import net.minecraft.util.text.TextFormatting;
-//import net.minecraft.util.text.TranslationTextComponent;
-//
-//public class DimBlockBaseComponentProvider implements IComponentProvider {
-//
-//    @Override
-//    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
-//    {
-//        if(accessor.getTileEntity() instanceof TileFrequencyOwner)
-//        {
-//            CompoundNBT data = accessor.getServerData();
-//
-//            String owner = new TranslationTextComponent("gui." + Main.MODID + ".owner").getString() + " ";
-//            String freq = new TranslationTextComponent("gui." + Main.MODID + ".frequency").getString() + " ";
-//            String locked = new TranslationTextComponent("gui." + Main.MODID + ".locked").getString() + " ";
-//            String yes = new TranslationTextComponent("gui." + Main.MODID + ".yes").getString();
-//
-//            if(data.getBoolean(Main.MODID + ".HasOwner"))
-//            {
-//                if(data.getBoolean(Main.MODID + ".CanAccess"))
-//                    tooltip.add(new StringTextComponent(TextFormatting.GREEN + owner + data.getString(Main.MODID + ".Owner")));
-//                else
-//                    tooltip.add(new StringTextComponent(TextFormatting.RED + owner + data.getString(Main.MODID + ".Owner")));
-//            }
-//            tooltip.add(new StringTextComponent(freq + data.getInt(Main.MODID + ".Frequency")));
-//            if(data.getBoolean(Main.MODID + ".Locked"))
-//                tooltip.add(new StringTextComponent(locked + yes));
-//        }
-//    }
-//}
+package edivad.dimstorage.compat.waila;
+
+import edivad.dimstorage.Main;
+import edivad.dimstorage.tile.TileFrequencyOwner;
+import mcp.mobius.waila.api.BlockAccessor;
+import mcp.mobius.waila.api.IComponentProvider;
+import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+
+public class DimBlockBaseComponentProvider implements IComponentProvider {
+
+    @Override
+    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config)
+    {
+        //Remove extra info from Waila
+        tooltip.clear();
+        if(accessor.getBlockEntity() instanceof TileFrequencyOwner)
+        {
+            CompoundTag data = accessor.getServerData();
+
+            String owner = new TranslatableComponent("gui." + Main.MODID + ".owner").getString() + " ";
+            String freq = new TranslatableComponent("gui." + Main.MODID + ".frequency").getString() + " ";
+            String locked = new TranslatableComponent("gui." + Main.MODID + ".locked").getString() + " ";
+            String yes = new TranslatableComponent("gui." + Main.MODID + ".yes").getString();
+
+            if(data.getBoolean(Main.MODID + ".HasOwner"))
+            {
+                if(data.getBoolean(Main.MODID + ".CanAccess"))
+                    tooltip.add(new TextComponent(ChatFormatting.GREEN + owner + data.getString(Main.MODID + ".Owner")));
+                else
+                    tooltip.add(new TextComponent(ChatFormatting.RED + owner + data.getString(Main.MODID + ".Owner")));
+            }
+            tooltip.add(new TextComponent(freq + data.getInt(Main.MODID + ".Frequency")));
+            if(data.getBoolean(Main.MODID + ".Locked"))
+                tooltip.add(new TextComponent(locked + yes));
+        }
+    }
+}
