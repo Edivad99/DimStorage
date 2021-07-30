@@ -1,13 +1,12 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.client.model.ModelDimChest;
 import edivad.dimstorage.client.render.tile.DimChestRenderer;
+import edivad.dimstorage.client.render.tile.DimTankRenderer;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -27,10 +26,8 @@ public class ClientSetup {
         MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 
         //Special render & GUI
-
         BlockEntityRenderers.register(Registration.DIMCHEST_TILE.get(), DimChestRenderer::new);
-        //ClientRegistry.bindTileEntityRenderer(Registration.DIMCHEST_TILE.get(), DimChestRenderer::new);
-        //ClientRegistry.bindTileEntityRenderer(Registration.DIMTANK_TILE.get(), RenderTileDimTank::new);
+        BlockEntityRenderers.register(Registration.DIMTANK_TILE.get(), DimTankRenderer::new);
         ItemBlockRenderTypes.setRenderLayer(Registration.DIMTANK.get(), RenderType.cutout());
 
         MenuScreens.register(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);

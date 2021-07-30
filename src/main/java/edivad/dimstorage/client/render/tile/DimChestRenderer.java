@@ -115,17 +115,17 @@ public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest>
     }
 
     @Override
-    public void render(TileEntityDimChest te, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
+    public void render(TileEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
-        if(te.isRemoved())
+        if(tile.isRemoved())
             return;
 
         poseStack.pushPose();
-        renderBlock(te, partialTicks, poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
+        renderBlock(tile, partialTicks, poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
     }
 
-    private void renderBlock(TileEntityDimChest te, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
+    private void renderBlock(TileEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         poseStack.pushPose();
 
@@ -133,7 +133,7 @@ public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest>
         poseStack.translate(0.5D, -0.5D, 0.5D);
 
         // Direction
-        poseStack.mulPose(new Quaternion(0F, 360 - te.rotation * 90, 0F, true));
+        poseStack.mulPose(new Quaternion(0F, 360 - tile.rotation * 90, 0F, true));
 
         // Sens
         poseStack.mulPose(new Quaternion(180F, 0F, 0F, true));
@@ -145,14 +145,14 @@ public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest>
         staticLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         // Render movable part
         poseStack.pushPose();
-        poseStack.translate(0, 0, te.movablePartState);
+        poseStack.translate(0, 0, tile.movablePartState);
         movableLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         poseStack.popPose();
 
         // Check state
-        if(te.locked)
+        if(tile.locked)
             redIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
-        else if(te.getFrequency().hasOwner())
+        else if(tile.getFrequency().hasOwner())
             blueIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         else
             greenIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
