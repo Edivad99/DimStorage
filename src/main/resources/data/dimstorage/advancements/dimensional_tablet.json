@@ -1,26 +1,33 @@
 {
-    "parent": "dimstorage:root",
-    "display": {
-        "icon": {
-            "item": "dimstorage:dimensional_tablet"
-        },
-        "title": {
-            "translate": "advancements.dimstorage.dimensional_tablet"
-        },
-        "description": {
-            "translate": "advancements.dimstorage.dimensional_tablet.desc"
-        }
+  "parent": "dimstorage:root",
+  "display": {
+    "icon": {
+      "item": "dimstorage:dimensional_tablet"
     },
-    "criteria": {
-        "certus": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "dimstorage:dimensional_tablet"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.dimstorage.dimensional_tablet"
+    },
+    "description": {
+      "translate": "advancements.dimstorage.dimensional_tablet.desc"
     }
+  },
+  "criteria": {
+    "inv_changed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dimstorage:dimensional_tablet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "inv_changed"
+    ]
+  ]
 }

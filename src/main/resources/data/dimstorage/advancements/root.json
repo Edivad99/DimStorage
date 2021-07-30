@@ -1,26 +1,33 @@
 {
-    "display": {
-        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
-        "icon": {
-            "item": "dimstorage:dim_core"
-        },
-        "title": {
-            "translate": "advancements.dimstorage.root"
-        },
-        "description": {
-            "translate": "advancements.dimstorage.root.desc"
-        }
+  "display": {
+    "icon": {
+      "item": "dimstorage:dim_core"
     },
-    "criteria": {
-        "certus": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "dimstorage:dim_core"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.dimstorage.root"
+    },
+    "description": {
+      "translate": "advancements.dimstorage.root.desc"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "inv_changed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dimstorage:dim_core"
+            ]
+          }
+        ]
+      }
     }
+  },
+  "requirements": [
+    [
+      "inv_changed"
+    ]
+  ]
 }
