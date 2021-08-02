@@ -12,10 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class DimBlockBaseProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails)
-    {
-        if(tileEntity instanceof TileFrequencyOwner tile)
-        {
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails) {
+        if(tileEntity instanceof TileFrequencyOwner tile) {
             Frequency frequency = tile.getFrequency();
             compoundTag.putBoolean(Main.MODID + ".HasOwner", frequency.hasOwner());
             compoundTag.putBoolean(Main.MODID + ".CanAccess", tile.canAccess(serverPlayer));

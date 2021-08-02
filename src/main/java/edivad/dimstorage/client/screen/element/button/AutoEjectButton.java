@@ -9,22 +9,19 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class AutoEjectButton extends Button {
 
-    private TileEntityDimTank tank;
+    private final TileEntityDimTank tank;
 
-    public AutoEjectButton(int width, int height, TileEntityDimTank tank)
-    {
-        super(width, height, 64, 20, getText(tank.autoEject), b -> {});
+    public AutoEjectButton(int width, int height, TileEntityDimTank tank) {
+        super(width, height, 64, 20, getText(tank.autoEject), null);
         this.tank = tank;
     }
 
-    private static TranslatableComponent getText(boolean autoEject)
-    {
+    private static TranslatableComponent getText(boolean autoEject) {
         return new TranslatableComponent("gui." + Main.MODID + (autoEject ? ".eject" : ".idle"));
     }
 
     @Override
-    public void onPress()
-    {
+    public void onPress() {
         tank.swapAutoEject();
         PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
     }

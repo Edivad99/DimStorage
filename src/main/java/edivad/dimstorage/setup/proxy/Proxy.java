@@ -6,14 +6,12 @@ import net.minecraft.world.level.Level;
 public class Proxy implements IProxy {
 
     @Override
-    public Player getClientPlayer()
-    {
+    public Player getClientPlayer() {
         throw new IllegalStateException("This should only be called from client side");
     }
 
     @Override
-    public Level getClientWorld()
-    {
+    public Level getClientWorld() {
         throw new IllegalStateException("This should only be called from client side");
     }
 }

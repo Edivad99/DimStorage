@@ -14,12 +14,10 @@ import net.minecraft.network.chat.TranslatableComponent;
 public class DimBlockBaseComponentProvider implements IComponentProvider {
 
     @Override
-    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config)
-    {
+    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         //Remove extra info from Waila
         tooltip.clear();
-        if(accessor.getBlockEntity() instanceof TileFrequencyOwner)
-        {
+        if(accessor.getBlockEntity() instanceof TileFrequencyOwner) {
             CompoundTag data = accessor.getServerData();
 
             String owner = new TranslatableComponent("gui." + Main.MODID + ".owner").getString() + " ";
@@ -27,8 +25,7 @@ public class DimBlockBaseComponentProvider implements IComponentProvider {
             String locked = new TranslatableComponent("gui." + Main.MODID + ".locked").getString() + " ";
             String yes = new TranslatableComponent("gui." + Main.MODID + ".yes").getString();
 
-            if(data.getBoolean(Main.MODID + ".HasOwner"))
-            {
+            if(data.getBoolean(Main.MODID + ".HasOwner")) {
                 if(data.getBoolean(Main.MODID + ".CanAccess"))
                     tooltip.add(new TextComponent(ChatFormatting.GREEN + owner + data.getString(Main.MODID + ".Owner")));
                 else

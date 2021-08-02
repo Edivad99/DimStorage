@@ -2,7 +2,6 @@ package edivad.dimstorage.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
@@ -10,28 +9,26 @@ import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
+    private static final ResourceLocation DIMTANK_GUI = new ResourceLocation(Main.MODID, "textures/gui/dimtank.png");
     private String liquid, amount, temperature, luminosity, gaseous, empty, yes, no;
 
-    public ScreenDimTank(ContainerDimTank container, Inventory invPlayer, Component text)
-    {
-        super(container, container.owner, invPlayer, text, new ResourceLocation(Main.MODID, "textures/gui/dimtank.png"), container.isOpen);
+    public ScreenDimTank(ContainerDimTank container, Inventory inventory, Component text) {
+        super(container, container.owner, inventory, text, DIMTANK_GUI, container.isOpen);
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (TileEntityDimTank) tileOwner));
@@ -49,47 +46,40 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     }
 
     @Override
-    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY)
-    {
-        super.renderLabels(mStack, mouseX, mouseY);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        super.renderLabels(poseStack, mouseX, mouseY);
         FluidStack liquidStack = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
 
-        if(!liquidStack.isEmpty())
-        {
+        if(!liquidStack.isEmpty()) {
             FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
             String liquidName = liquidStack.getDisplayName().getString();
-            this.font.draw(mStack, liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
-            this.font.draw(mStack, amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
-            this.font.draw(mStack, temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
-            this.font.draw(mStack, luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
-            this.font.draw(mStack, gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
+            this.font.draw(poseStack, liquid + " " + liquidName.substring(0, Math.min(14, liquidName.length())), 50, 25, 4210752);
+            this.font.draw(poseStack, amount + " " + liquidStack.getAmount() + " mB", 50, 35, 4210752);
+            this.font.draw(poseStack, temperature + " " + (liquidAttributes.getTemperature() - 273) + "C", 50, 45, 4210752);
+            this.font.draw(poseStack, luminosity + " " + liquidAttributes.getLuminosity(), 50, 55, 4210752);
+            this.font.draw(poseStack, gaseous + " " + (liquidAttributes.isGaseous() ? yes : no), 50, 65, 4210752);
         }
-        else
-        {
-            this.font.draw(mStack, liquid + " " + empty, 50, 25, 4210752);
+        else {
+            this.font.draw(poseStack, liquid + " " + empty, 50, 25, 4210752);
         }
 
     }
 
     @Override
-    protected void renderBg(PoseStack mStack, float partialTicks, int mouseX, int mouseY)
-    {
-        super.renderBg(mStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
         FluidStack fluid = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        //RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
         FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((TileEntityDimTank) tileOwner)));
-        ScreenDimTank.blit(mStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
+        ScreenDimTank.blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 
-    private static int getFluidScaled(int pixels, int currentLiquidAmount)
-    {
+    private static int getFluidScaled(int pixels, int currentLiquidAmount) {
         int maxLiquidAmount = DimTankStorage.CAPACITY;
         int x = currentLiquidAmount * pixels / maxLiquidAmount;
         return pixels - x;

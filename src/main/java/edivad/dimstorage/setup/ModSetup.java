@@ -17,21 +17,17 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ModSetup
-{
+public class ModSetup {
 
-    public static final CreativeModeTab dimStorageTab = new CreativeModeTab(Main.MODID + "_tab")
-    {
+    public static final CreativeModeTab dimStorageTab = new CreativeModeTab(Main.MODID + "_tab") {
 
         @Override
-        public ItemStack makeIcon()
-        {
+        public ItemStack makeIcon() {
             return new ItemStack(Registration.DIMCHEST.get());
         }
     };
 
-    public static void init(final FMLCommonSetupEvent event)
-    {
+    public static void init(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         DimStorageManager.registerPlugin(new DimChestPlugin());
         DimStorageManager.registerPlugin(new DimTankPlugin());
@@ -42,14 +38,12 @@ public class ModSetup
     }
 
     @SubscribeEvent
-    public static void preServerStart(final FMLServerStartedEvent event)
-    {
+    public static void preServerStart(final FMLServerStartedEvent event) {
         DimStorageManager.reloadManager(false);
     }
 
     @SubscribeEvent
-    public static void registerCommands(final RegisterCommandsEvent event)
-    {
+    public static void registerCommands(final RegisterCommandsEvent event) {
         DimCommands.init(event.getDispatcher());
     }
 }

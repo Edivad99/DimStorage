@@ -1,34 +1,30 @@
 package edivad.dimstorage.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-
 import edivad.dimstorage.Main;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DimCommands {
 
     public static LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("dimtablet");
 
-    public static void init(CommandDispatcher<CommandSourceStack> dispatcher)
-    {
+    public static void init(CommandDispatcher<CommandSourceStack> dispatcher) {
         root.then(Commands.literal("add").requires(cs -> cs.hasPermission(0)).executes(context -> {
             Item item = context.getSource().getPlayerOrException().getMainHandItem().getItem();
-            if(!item.equals(Items.AIR))
-            {
+            if(!item.equals(Items.AIR)) {
                 String itemNameSpace = item.getRegistryName().toString();
                 List<String> originalList = Config.DIMTABLET_LIST.get();
-                if(!originalList.contains(itemNameSpace))
-                {
+                if(!originalList.contains(itemNameSpace)) {
                     originalList.add(itemNameSpace);
                     Config.DIMTABLET_LIST.set(originalList);
                 }
@@ -42,8 +38,7 @@ public class DimCommands {
 
         root.then(Commands.literal("remove").requires(cs -> cs.hasPermission(0)).executes(context -> {
             Item item = context.getSource().getPlayerOrException().getMainHandItem().getItem();
-            if(!item.equals(Items.AIR))
-            {
+            if(!item.equals(Items.AIR)) {
                 String itemNameSpace = item.getRegistryName().toString();
                 List<String> originalList = Config.DIMTABLET_LIST.get();
                 originalList.remove(itemNameSpace);

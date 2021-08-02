@@ -7,8 +7,7 @@ import net.minecraft.network.chat.TextComponent;
 
 public class FrequencyText extends EditBox {
 
-    public FrequencyText(int width, int height, Frequency frequency)
-    {
+    public FrequencyText(int width, int height, Frequency frequency) {
         super(Minecraft.getInstance().font, width, height, 64, 15, new TextComponent(""));
         setMaxLength(3);
         setVisible(true);

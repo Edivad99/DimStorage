@@ -5,14 +5,12 @@ import net.minecraft.data.DataGenerator;
 
 public class LootTables extends BaseLootTableProvider {
 
-    public LootTables(DataGenerator dataGeneratorIn)
-    {
+    public LootTables(DataGenerator dataGeneratorIn) {
         super(dataGeneratorIn);
     }
 
     @Override
-    protected void addTables()
-    {
+    protected void addTables() {
         lootTables.put(Registration.DIMCHEST.get(), createStandardTable(Registration.DIMCHEST.get()));
         lootTables.put(Registration.DIMTANK.get(), createStandardTable(Registration.DIMTANK.get()));
     }

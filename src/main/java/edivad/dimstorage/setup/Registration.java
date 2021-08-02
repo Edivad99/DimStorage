@@ -10,15 +10,15 @@ import edivad.dimstorage.items.DimTablet;
 import edivad.dimstorage.items.ItemDimBase;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -31,8 +31,7 @@ public class Registration {
 
     public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.dimStorageTab).stacksTo(64);
 
-    public static void init()
-    {
+    public static void init() {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -47,13 +46,11 @@ public class Registration {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof TileEntityDimChest))
-        {
+        if(!(te instanceof TileEntityDimChest tile)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
             return null;
         }
 
-        TileEntityDimChest tile = (TileEntityDimChest) te;
         return new ContainerDimChest(windowId, inv.player.getInventory(), tile, isOpen);
     }));
 
@@ -64,13 +61,11 @@ public class Registration {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof TileEntityDimTank))
-        {
+        if(!(te instanceof TileEntityDimTank tile)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
             return null;
         }
 
-        TileEntityDimTank tile = (TileEntityDimTank) te;
         return new ContainerDimTank(windowId, inv.player.getInventory(), tile, isOpen);
     }));
 

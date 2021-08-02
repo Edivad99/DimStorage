@@ -12,31 +12,24 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class LockButton extends Button {
 
-    private TileFrequencyOwner owner;
+    private final TileFrequencyOwner owner;
 
-    public LockButton(int width, int height, TileFrequencyOwner owner)
-    {
-        super(width, height, 64, 20, getText(owner.locked), b -> {});
+    public LockButton(int width, int height, TileFrequencyOwner owner) {
+        super(width, height, 64, 20, getText(owner.locked), null);
         this.owner = owner;
     }
 
-    private static TranslatableComponent getText(boolean isLock)
-    {
+    private static TranslatableComponent getText(boolean isLock) {
         return new TranslatableComponent("gui." + Main.MODID + (isLock ? ".yes" : ".no"));
     }
 
     @Override
-    public void onPress()
-    {
-        if(owner instanceof TileEntityDimChest)
-        {
-            TileEntityDimChest chest = (TileEntityDimChest) owner;
+    public void onPress() {
+        if(owner instanceof TileEntityDimChest chest) {
             chest.swapLocked();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
         }
-        else if(owner instanceof TileEntityDimTank)
-        {
-            TileEntityDimTank tank = (TileEntityDimTank) owner;
+        else if(owner instanceof TileEntityDimTank tank) {
             tank.swapLocked();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }

@@ -11,48 +11,40 @@ public abstract class TankState {
     public FluidStack clientLiquid = FluidStack.EMPTY;
     public FluidStack serverLiquid = FluidStack.EMPTY;
 
-    public void setFrequency(Frequency frequency)
-    {
+    public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
     }
 
-    public void update(boolean client)
-    {
+    public void update(boolean client) {
         FluidStack prec, succ;
-        if(client)
-        {
+        if(client) {
             prec = clientLiquid.copy();
             clientLiquid = serverLiquid.copy();
             succ = clientLiquid;
         }
-        else
-        {
+        else {
             prec = serverLiquid.copy();
             serverLiquid = getFluidStorageServer();
             succ = serverLiquid;
             sendSyncPacket();
             clientLiquid = serverLiquid.copy();
         }
-        if((prec.getAmount() == 0) != (succ.getAmount() == 0) || !prec.isFluidEqual(succ))
-        {
+        if((prec.getAmount() == 0) != (succ.getAmount() == 0) || !prec.isFluidEqual(succ)) {
             onLiquidChanged();
         }
     }
 
-    public void onLiquidChanged()
-    {
+    public void onLiquidChanged() {
     }
 
     public abstract void sendSyncPacket();
 
-    public void sync(FluidStack liquid)
-    {
+    public void sync(FluidStack liquid) {
         serverLiquid = liquid;
     }
 
     //SERVER SIDE ONLY!
-    private FluidStack getFluidStorageServer()
-    {
+    private FluidStack getFluidStorageServer() {
         return ((DimTankStorage) DimStorageManager.instance(false).getStorage(frequency, "fluid")).getFluidInTank(0);
     }
 }

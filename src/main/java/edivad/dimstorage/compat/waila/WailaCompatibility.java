@@ -14,8 +14,7 @@ import mcp.mobius.waila.api.WailaPlugin;
 public class WailaCompatibility implements IWailaPlugin {
 
     @Override
-    public void register(IRegistrar iRegistrar)
-    {
+    public void register(IRegistrar iRegistrar) {
         iRegistrar.registerBlockDataProvider(new DimBlockBaseProvider(), TileEntityDimChest.class);
         iRegistrar.registerComponentProvider(new DimBlockBaseComponentProvider(), TooltipPosition.BODY, DimChest.class);
 

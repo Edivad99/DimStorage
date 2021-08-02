@@ -11,11 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class DimTankDataProvider extends DimBlockBaseProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails)
-    {
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails) {
         super.appendServerData(compoundTag, serverPlayer, level, tileEntity, showDetails);
-        if(tileEntity instanceof TileEntityDimTank tile)
-        {
+        if(tileEntity instanceof TileEntityDimTank tile) {
             compoundTag.putBoolean(Main.MODID + ".AutoEject", tile.autoEject);
             String liquidName = tile.liquidState.serverLiquid.getDisplayName().getString();
             int liquidLevel = tile.liquidState.serverLiquid.getAmount();

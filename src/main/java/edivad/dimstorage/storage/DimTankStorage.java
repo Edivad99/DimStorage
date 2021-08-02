@@ -8,20 +8,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-
 public class DimTankStorage extends AbstractDimStorage implements IFluidHandler {
 
     private class Tank extends FluidTank {
 
-        public Tank(int capacity)
-        {
+        public Tank(int capacity) {
             super(capacity);
         }
 
         @Override
-        protected void onContentsChanged()
-        {
+        protected void onContentsChanged() {
             setDirty();
         }
     }
@@ -29,78 +25,66 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
     public static final int CAPACITY = 16000;
     private Tank tank;
 
-    public DimTankStorage(DimStorageManager manager, Frequency freq)
-    {
+    public DimTankStorage(DimStorageManager manager, Frequency freq) {
         super(manager, freq);
         tank = new Tank(CAPACITY);
     }
 
     @Override
-    public int getTanks()
-    {
+    public int getTanks() {
         return 1;
     }
 
     @Override
-    public FluidStack getFluidInTank(int tank)
-    {
+    public FluidStack getFluidInTank(int tank) {
         return this.tank.getFluid().copy();
     }
 
     @Override
-    public int getTankCapacity(int tank)
-    {
+    public int getTankCapacity(int tank) {
         return CAPACITY;
     }
 
     @Override
-    public boolean isFluidValid(int tank, FluidStack stack)
-    {
+    public boolean isFluidValid(int tank, FluidStack stack) {
         return this.tank.isFluidValid(stack);
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action)
-    {
+    public int fill(FluidStack resource, FluidAction action) {
         return tank.fill(resource, action);
     }
 
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action)
-    {
+    public FluidStack drain(FluidStack resource, FluidAction action) {
         return tank.drain(resource, action);
     }
 
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action)
-    {
+    public FluidStack drain(int maxDrain, FluidAction action) {
         return tank.drain(maxDrain, action);
     }
 
     @Override
-    public void clearStorage()
-    {
+    public void clearStorage() {
         tank = new Tank(CAPACITY);
         setDirty();
     }
 
     @Override
-    public String type()
-    {
+    public String type() {
         return "fluid";
     }
 
     @Override
-    public CompoundTag saveToTag()
-    {
+    public CompoundTag saveToTag() {
         CompoundTag compound = new CompoundTag();
         compound.put("tank", tank.writeToNBT(new CompoundTag()));
         return compound;
     }
 
     @Override
-    public void loadFromTag(CompoundTag tag)
-    {
+    public void loadFromTag(CompoundTag tag) {
         tank.readFromNBT(tag.getCompound("tank"));
     }
 }

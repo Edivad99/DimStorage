@@ -1,7 +1,6 @@
 package edivad.dimstorage.client.screen.pattern;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.element.button.ChangeButton;
 import edivad.dimstorage.client.screen.element.button.LockButton;
@@ -13,11 +12,11 @@ import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
@@ -26,15 +25,13 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
     private Component owner, freq, locked;
     private FrequencyText freqTextField;
 
-    public FrequencyScreen(T container, TileFrequencyOwner tileOwner, Inventory invPlayer, Component text, ResourceLocation background, boolean drawSettings)
-    {
-        super(container, invPlayer, text, background, drawSettings);
+    public FrequencyScreen(T container, TileFrequencyOwner tileOwner, Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
+        super(container, inventory, text, background, drawSettings);
         this.tileOwner = tileOwner;
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         // Get translation
@@ -52,11 +49,9 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
         drawSettings(drawSettings);
     }
 
-    private void changeFrequency()
-    {
+    private void changeFrequency() {
         int prevChannel = tileOwner.getFrequency().getChannel();
-        try
-        {
+        try {
             int newFreq = Math.abs(Integer.parseInt(freqTextField.getValue()));
             tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
 
@@ -65,58 +60,52 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
             else if(tileOwner instanceof TileEntityDimTank)
                 PacketHandler.INSTANCE.sendToServer(new UpdateDimTank((TileEntityDimTank) tileOwner));
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             freqTextField.setValue(String.valueOf(prevChannel));
         }
     }
 
     @Override
-    protected void containerTick()
-    {
+    protected void containerTick() {
         super.containerTick();
         freqTextField.tick();
     }
 
     @Override
-    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks)
-    {
-        super.render(mStack, mouseX, mouseY, partialTicks);
-        freqTextField.render(mStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+        freqTextField.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int clickedButton)
-    {
+    public boolean mouseClicked(double mouseX, double mouseY, int clickedButton) {
         freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
         return super.mouseClicked(mouseX, mouseY, clickedButton);
     }
 
     @Override
-    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY)
-    {
-        super.renderLabels(mStack, mouseX, mouseY);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        super.renderLabels(poseStack, mouseX, mouseY);
 
-        if(drawSettings)
-        {
+        if(drawSettings) {
             int posY = 45;
 
             // owner
-            this.font.draw(mStack, owner, 185, posY, 4210752);
+            this.font.draw(poseStack, owner, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.width(owner), posY, 0xFF333333);
+            this.hLine(poseStack, 185, 185 + this.font.width(owner), posY, 0xFF333333);
             posY += 31;
 
             // freq
-            this.font.draw(mStack, freq, 185, posY, 4210752);
+            this.font.draw(poseStack, freq, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.width(freq), posY, 0xFF333333);
+            this.hLine(poseStack, 185, 185 + this.font.width(freq), posY, 0xFF333333);
             posY += 50;
 
             // locked
-            this.font.draw(mStack, locked, 185, posY, 4210752);
+            this.font.draw(poseStack, locked, 185, posY, 4210752);
             posY += 9;
-            this.hLine(mStack, 185, 185 + this.font.width(locked), posY, 0xFF333333);
+            this.hLine(poseStack, 185, 185 + this.font.width(locked), posY, 0xFF333333);
         }
     }
 }

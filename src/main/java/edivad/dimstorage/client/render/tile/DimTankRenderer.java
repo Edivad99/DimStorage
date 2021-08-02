@@ -2,16 +2,15 @@ package edivad.dimstorage.client.render.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
+import com.mojang.math.Matrix4f;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import com.mojang.math.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,13 +20,11 @@ public class DimTankRenderer implements BlockEntityRenderer<TileEntityDimTank> {
 
     private static final float TANK_THICKNESS = 0.1f;
 
-    public DimTankRenderer(BlockEntityRendererProvider.Context context)
-    {
+    public DimTankRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(TileEntityDimTank tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn)
-    {
+    public void render(TileEntityDimTank tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if(tile.isRemoved() || tile.liquidState.clientLiquid == null)
             return;
 
@@ -36,12 +33,10 @@ public class DimTankRenderer implements BlockEntityRenderer<TileEntityDimTank> {
         poseStack.popPose();
     }
 
-    private void renderFluid(TileEntityDimTank tile, PoseStack poseStack, MultiBufferSource bufferIn)
-    {
+    private void renderFluid(TileEntityDimTank tile, PoseStack poseStack, MultiBufferSource bufferIn) {
         FluidStack fluid = tile.liquidState.clientLiquid;
         float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
-        if(scale > 0.0f)
-        {
+        if(scale > 0.0f) {
             Matrix4f matrix4f = poseStack.last().pose();
             TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
             if(sprite == null)

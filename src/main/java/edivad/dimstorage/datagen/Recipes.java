@@ -1,7 +1,5 @@
 package edivad.dimstorage.datagen;
 
-import java.util.function.Consumer;
-
 import edivad.dimstorage.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -10,16 +8,16 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
+import java.util.function.Consumer;
+
 public class Recipes extends RecipeProvider {
 
-    public Recipes(DataGenerator generatorIn)
-    {
+    public Recipes(DataGenerator generatorIn) {
         super(generatorIn);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer)
-    {
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 
         ShapedRecipeBuilder.shaped(Registration.DIMCORE.get())//
                 .pattern("aba")//

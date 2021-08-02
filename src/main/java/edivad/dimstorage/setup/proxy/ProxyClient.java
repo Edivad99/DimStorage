@@ -10,14 +10,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ProxyClient implements IProxy {
 
     @Override
-    public Player getClientPlayer()
-    {
+    public Player getClientPlayer() {
         return Minecraft.getInstance().player;
     }
 
     @Override
-    public Level getClientWorld()
-    {
+    public Level getClientWorld() {
         return Minecraft.getInstance().level;
     }
 }

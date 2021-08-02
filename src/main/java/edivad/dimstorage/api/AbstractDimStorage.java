@@ -10,8 +10,7 @@ public abstract class AbstractDimStorage {
     private boolean dirty;
     private int changeCount;
 
-    public AbstractDimStorage(DimStorageManager manager, Frequency freq)
-    {
+    public AbstractDimStorage(DimStorageManager manager, Frequency freq) {
         this.manager = manager;
         this.freq = freq.copy();
 
@@ -19,12 +18,9 @@ public abstract class AbstractDimStorage {
         this.changeCount = 0;
     }
 
-    public void setDirty()
-    {
-        if(manager.isServer())
-        {
-            if(!dirty)
-            {
+    public void setDirty() {
+        if(manager.isServer()) {
+            if(!dirty) {
                 dirty = true;
                 manager.requestSave(this);
             }
@@ -33,13 +29,11 @@ public abstract class AbstractDimStorage {
         }
     }
 
-    public void setClean()
-    {
+    public void setClean() {
         dirty = false;
     }
 
-    public int getChangeCount()
-    {
+    public int getChangeCount() {
         return changeCount;
     }
 
@@ -52,8 +46,7 @@ public abstract class AbstractDimStorage {
     public abstract void loadFromTag(CompoundTag tag);
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return freq + ",type=" + type();
     }
 }

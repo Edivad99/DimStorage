@@ -13,11 +13,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 public class DimTankComponentProvider extends DimBlockBaseComponentProvider implements IComponentProvider {
 
     @Override
-    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config)
-    {
+    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         super.appendTooltip(tooltip, accessor, config);
-        if(accessor.getBlockEntity() instanceof TileEntityDimTank)
-        {
+        if(accessor.getBlockEntity() instanceof TileEntityDimTank) {
             CompoundTag data = accessor.getServerData();
 
             String autoEject = new TranslatableComponent("gui." + Main.MODID + ".eject").getString() + ": ";
@@ -27,8 +25,7 @@ public class DimTankComponentProvider extends DimBlockBaseComponentProvider impl
 
             if(data.getBoolean(Main.MODID + ".AutoEject"))
                 tooltip.add(new TextComponent(autoEject + yes));
-            if(data.getInt(Main.MODID + ".Amount") > 0)
-            {
+            if(data.getInt(Main.MODID + ".Amount") > 0) {
                 tooltip.add(new TextComponent(liquid + " " + data.getString(Main.MODID + ".Liquid")));
                 tooltip.add(new TextComponent(amount + " " + data.getInt(Main.MODID + ".Amount") + " mB"));
             }

@@ -2,10 +2,10 @@ package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.tile.TileEntityDimTank;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
@@ -13,37 +13,31 @@ public class UpdateDimTank extends UpdateDimBase {
 
     protected boolean autoEject;
 
-    public UpdateDimTank(FriendlyByteBuf buf)
-    {
+    public UpdateDimTank(FriendlyByteBuf buf) {
         super(buf);
         autoEject = buf.readBoolean();
     }
 
-    public UpdateDimTank(TileEntityDimTank tile)
-    {
+    public UpdateDimTank(TileEntityDimTank tile) {
         super(tile);
         autoEject = tile.autoEject;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf)
-    {
+    public void toBytes(FriendlyByteBuf buf) {
         super.toBytes(buf);
         buf.writeBoolean(autoEject);
     }
 
     @Override
-    public void customHandle(Level world, ServerPlayer player)
-    {
+    public void customHandle(Level world, ServerPlayer player) {
         BlockEntity tile = world.getBlockEntity(pos);
 
-        if(!(tile instanceof TileEntityDimTank))
-        {
+        if(!(tile instanceof TileEntityDimTank tank)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
             return;
         }
 
-        TileEntityDimTank tank = (TileEntityDimTank) tile;
         tank.setFrequency(freq);
         tank.locked = locked;
         tank.autoEject = autoEject;

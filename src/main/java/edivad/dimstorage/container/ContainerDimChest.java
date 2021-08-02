@@ -3,9 +3,9 @@ package edivad.dimstorage.container;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tile.TileEntityDimChest;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +16,7 @@ public class ContainerDimChest extends AbstractContainerMenu {
     public TileEntityDimChest owner;
     public boolean isOpen;
 
-    public ContainerDimChest(int windowId, Inventory playerInventory, TileEntityDimChest owner, boolean isOpen)
-    {
+    public ContainerDimChest(int windowId, Inventory inventory, TileEntityDimChest owner, boolean isOpen) {
         super(Registration.DIMCHEST_CONTAINER.get(), windowId);
         this.chestInv = owner.getStorage();
         this.owner = owner;
@@ -25,18 +24,16 @@ public class ContainerDimChest extends AbstractContainerMenu {
         this.chestInv.openInventory();
 
         addOwnSlots();
-        addPlayerSlots(playerInventory);
+        addPlayerSlots(inventory);
     }
 
-    private void addOwnSlots()
-    {
+    private void addOwnSlots() {
         for(int y = 0; y < 6; y++)
             for(int x = 0; x < 9; x++)
                 this.addSlot(new Slot(chestInv, x + y * 9, 8 + x * 18, 18 + y * 18));
     }
 
-    private void addPlayerSlots(Container playerInventory)
-    {
+    private void addPlayerSlots(Container playerInventory) {
         // Main Inventory
         for(int y = 0; y < 3; y++)
             for(int x = 0; x < 9; x++)
@@ -47,25 +44,21 @@ public class ContainerDimChest extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerIn)
-    {
+    public boolean stillValid(Player playerIn) {
         return chestInv.stillValid(playerIn);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int position)
-    {
+    public ItemStack quickMoveStack(Player player, int position) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.slots.get(position);
+        Slot slot = this.slots.get(position);
 
-        if(slot != null && slot.hasItem())
-        {
+        if(slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             // chest to inventory
-            if(position < 54)
-            {
+            if(position < 54) {
                 if(!this.moveItemStackTo(itemstack1, 54, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
@@ -82,9 +75,8 @@ public class ContainerDimChest extends AbstractContainerMenu {
     }
 
     @Override
-    public void removed(Player entityplayer)
-    {
-        super.removed(entityplayer);
+    public void removed(Player player) {
+        super.removed(player);
         chestInv.closeInventory();
     }
 }
