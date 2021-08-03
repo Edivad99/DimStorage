@@ -37,7 +37,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
     public DimTank() {
-        super(Properties.of(Material.GLASS).sound(SoundType.GLASS).strength(3.5F).noOcclusion());
+        super(Properties.of(Material.GLASS).sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 

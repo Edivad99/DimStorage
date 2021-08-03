@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 public class DimChest extends DimBlockBase {
 
     public DimChest() {
-        super(Properties.of(Material.STONE).sound(SoundType.STONE).strength(3.5F).noOcclusion());
+        super(Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
     }
 
     @Nullable
