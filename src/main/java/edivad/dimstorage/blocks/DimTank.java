@@ -54,37 +54,37 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(worldIn.isClientSide)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        BlockEntity tile = worldIn.getBlockEntity(pos);
+        BlockEntity tile = level.getBlockEntity(pos);
 
         if(tile instanceof TileEntityDimTank tank) {
             if(!player.isCrouching())
-                return tank.activate(player, worldIn, pos, handIn);
+                return tank.activate(player, level, pos, handIn);
         }
         return InteractionResult.FAIL;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
         return BOX;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
         return BOX;
     }
 
     @Override
-    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        BlockEntity tile = world.getBlockEntity(pos);
+    public int getLightEmission(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        BlockEntity tile = blockGetter.getBlockEntity(pos);
         if(tile instanceof TileEntityDimTank tank) {
             FluidStack fluid = tank.liquidState.clientLiquid;
             if(!fluid.isEmpty()) {
                 FluidAttributes attributes = fluid.getFluid().getAttributes();
-                return world instanceof BlockAndTintGetter blockAndTint ? attributes.getLuminosity(blockAndTint, pos) : attributes.getLuminosity(fluid);
+                return blockGetter instanceof BlockAndTintGetter blockAndTint ? attributes.getLuminosity(blockAndTint, pos) : attributes.getLuminosity(fluid);
             }
         }
         return 0;
@@ -96,8 +96,8 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+        BlockEntity te = level.getBlockEntity(pos);
         return (te instanceof TileEntityDimTank tank) ? tank.getComparatorInput() : 0;
     }
 
@@ -108,13 +108,13 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return SimpleWaterloggedBlock.super.placeLiquid(worldIn, pos, state, fluidStateIn);
+    public boolean placeLiquid(LevelAccessor levelAccessor, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+        return SimpleWaterloggedBlock.super.placeLiquid(levelAccessor, pos, state, fluidStateIn);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(worldIn, pos, state, fluidIn);
+    public boolean canPlaceLiquid(BlockGetter blockGetter, BlockPos pos, BlockState state, Fluid fluidIn) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(blockGetter, pos, state, fluidIn);
     }
 
     @Override

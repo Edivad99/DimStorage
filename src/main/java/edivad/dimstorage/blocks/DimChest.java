@@ -44,22 +44,22 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(worldIn.isClientSide)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        BlockEntity tile = worldIn.getBlockEntity(pos);
+        BlockEntity tile = level.getBlockEntity(pos);
 
         if(tile instanceof TileEntityDimChest chest) {
             if(!player.isCrouching())
-                return chest.activate(player, worldIn, pos, handIn);
+                return chest.activate(player, level, pos, handIn);
         }
         return InteractionResult.FAIL;
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        BlockEntity tile = worldIn.getBlockEntity(pos);
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        BlockEntity tile = level.getBlockEntity(pos);
         if(tile instanceof TileEntityDimChest chest) {
             chest.onPlaced(placer);
         }
@@ -71,14 +71,14 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+        BlockEntity te = level.getBlockEntity(pos);
         return (te instanceof TileEntityDimChest chest) ? chest.getComparatorInput() : 0;
     }
 
     @Override
-    public boolean triggerEvent(BlockState state, Level worldIn, BlockPos pos, int eventID, int eventParam) {
-        BlockEntity tile = worldIn.getBlockEntity(pos);
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
+        BlockEntity tile = level.getBlockEntity(pos);
         return tile != null && tile.triggerEvent(eventID, eventParam);
     }
 }

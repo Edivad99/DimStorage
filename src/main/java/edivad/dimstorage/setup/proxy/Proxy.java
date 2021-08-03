@@ -11,7 +11,7 @@ public class Proxy implements IProxy {
     }
 
     @Override
-    public Level getClientWorld() {
+    public Level getClientLevel() {
         throw new IllegalStateException("This should only be called from client side");
     }
 }

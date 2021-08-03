@@ -20,8 +20,8 @@ public class UpdateDimChest extends UpdateDimBase {
     }
 
     @Override
-    public void customHandle(Level world, ServerPlayer player) {
-        BlockEntity tile = world.getBlockEntity(pos);
+    public void customHandle(Level level, ServerPlayer player) {
+        BlockEntity tile = level.getBlockEntity(pos);
 
         if(!(tile instanceof TileEntityDimChest chest)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
@@ -32,7 +32,7 @@ public class UpdateDimChest extends UpdateDimBase {
         chest.locked = locked;
         chest.setChanged();
 
-        world.sendBlockUpdated(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
+        level.sendBlockUpdated(pos, chest.getBlockState(), chest.getBlockState(), BlockFlags.DEFAULT);
         NetworkHooks.openGui(player, chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

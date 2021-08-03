@@ -17,13 +17,13 @@ public class ContainerDimTablet extends AbstractContainerMenu {
 
     private DimChestStorage chestInv;
 
-    public ContainerDimTablet(int windowId, Inventory inventory, Level world) {
+    public ContainerDimTablet(int windowId, Inventory inventory, Level level) {
         super(Registration.DIMTABLET_CONTAINER.get(), windowId);
 
         ItemStack item = inventory.player.getItemInHand(InteractionHand.MAIN_HAND);
         Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));
 
-        this.chestInv = (DimChestStorage) DimStorageManager.instance(world.isClientSide).getStorage(frequency, "item");
+        this.chestInv = (DimChestStorage) DimStorageManager.instance(level.isClientSide).getStorage(frequency, "item");
         this.chestInv.openInventory();
 
         addOwnSlots();
@@ -47,7 +47,7 @@ public class ContainerDimTablet extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerIn) {
+    public boolean stillValid(Player player) {
         return true;
     }
 

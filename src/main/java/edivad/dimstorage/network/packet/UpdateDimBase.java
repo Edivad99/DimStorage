@@ -34,14 +34,14 @@ public abstract class UpdateDimBase {
         buf.writeBoolean(locked);
     }
 
-    public abstract void customHandle(Level world, ServerPlayer player);
+    public abstract void customHandle(Level level, ServerPlayer player);
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
-            Level world = player.level;
-            if(world.isLoaded(pos))
-                customHandle(world, player);
+            Level level = player.level;
+            if(level.isLoaded(pos))
+                customHandle(level, player);
         });
         ctx.get().setPacketHandled(true);
     }

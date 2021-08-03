@@ -149,17 +149,17 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     @Override
-    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand hand) {
+    public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {
         if(!canAccess(player)) {
             player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
-            return super.activate(player, worldIn, pos, hand);
+            return super.activate(player, level, pos, hand);
         }
 
         boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
         if(!result)
-            return super.activate(player, worldIn, pos, hand);
+            return super.activate(player, level, pos, hand);
 
-        worldIn.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
 

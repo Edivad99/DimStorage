@@ -7,5 +7,5 @@ public interface IProxy {
 
     Player getClientPlayer();
 
-    Level getClientWorld();
+    Level getClientLevel();
 }

@@ -40,11 +40,11 @@ public class ItemDimBase extends BlockItem {
     @Override
     protected boolean placeBlock(BlockPlaceContext context, BlockState state) {
         if(super.placeBlock(context, state)) {
-            Level world = context.getLevel();
+            Level level = context.getLevel();
             BlockPos pos = context.getClickedPos();
             ItemStack stack = context.getItemInHand();
 
-            TileFrequencyOwner tile = (TileFrequencyOwner) world.getBlockEntity(pos);
+            TileFrequencyOwner tile = (TileFrequencyOwner) level.getBlockEntity(pos);
             tile.setFrequency(getFreq(stack));
             return true;
         }
@@ -53,7 +53,7 @@ public class ItemDimBase extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
             tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));

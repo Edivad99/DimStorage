@@ -30,8 +30,8 @@ public class UpdateDimTank extends UpdateDimBase {
     }
 
     @Override
-    public void customHandle(Level world, ServerPlayer player) {
-        BlockEntity tile = world.getBlockEntity(pos);
+    public void customHandle(Level level, ServerPlayer player) {
+        BlockEntity tile = level.getBlockEntity(pos);
 
         if(!(tile instanceof TileEntityDimTank tank)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
@@ -43,7 +43,7 @@ public class UpdateDimTank extends UpdateDimBase {
         tank.autoEject = autoEject;
         tank.setChanged();
 
-        world.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
+        level.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
         NetworkHooks.openGui(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

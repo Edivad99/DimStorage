@@ -46,10 +46,10 @@ public class FluidUtils {
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
     }
 
-    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, Level world, BlockPos pos) {
-        if(world.isClientSide)
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, Level level, BlockPos pos) {
+        if(level.isClientSide)
             if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
-                return BiomeColors.getAverageWaterColor(world, pos) | 0xFF000000;
+                return BiomeColors.getAverageWaterColor(level, pos) | 0xFF000000;
 
         return fluid.getFluid().getAttributes().getColor(fluid);
     }

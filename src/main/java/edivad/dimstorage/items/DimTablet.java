@@ -47,13 +47,13 @@ public class DimTablet extends Item implements MenuProvider {
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-        Level world = context.getLevel();
+        Level level = context.getLevel();
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
 
-        if(!world.isClientSide) {
+        if(!level.isClientSide) {
             ItemStack device = player.getItemInHand(context.getHand());
-            BlockEntity tile = world.getBlockEntity(pos);
+            BlockEntity tile = level.getBlockEntity(pos);
             if(player.isCrouching()) {
                 if(tile instanceof TileEntityDimChest dimChest) {
                     if(dimChest.canAccess(player)) {
@@ -81,12 +81,12 @@ public class DimTablet extends Item implements MenuProvider {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if(!world.isClientSide && hand.compareTo(InteractionHand.MAIN_HAND) == 0) {
+        if(!level.isClientSide && hand.compareTo(InteractionHand.MAIN_HAND) == 0) {
             if(player.isCrouching())
-                return super.use(world, player, hand);
+                return super.use(level, player, hand);
             if(!stack.getOrCreateTag().getBoolean("bound")) {
                 player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Dimensional Tablet not connected to any DimChest"), false);
                 return new InteractionResultHolder<>(InteractionResult.PASS, stack);
@@ -101,17 +101,17 @@ public class DimTablet extends Item implements MenuProvider {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level worldIn, Entity entity, int itemSlot, boolean isSelected) {
-        if(!worldIn.isClientSide) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+        if(!level.isClientSide) {
             if(stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag().getBoolean("bound")) {
                 if(entity instanceof Player player) {
                     Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-                    InvWrapper chestInventory = new InvWrapper(getStorage(worldIn, f));
+                    InvWrapper chestInventory = new InvWrapper(getStorage(level, f));
 
                     for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
                         Item item = player.getInventory().getItem(i).getItem();
                         if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString())) {
-                            InventoryUtils.mergeItemStack(player.getInventory().getItem(i), 0, getStorage(worldIn, f).getContainerSize(), chestInventory);
+                            InventoryUtils.mergeItemStack(player.getInventory().getItem(i), 0, getStorage(level, f).getContainerSize(), chestInventory);
                         }
                     }
                 }
@@ -119,8 +119,8 @@ public class DimTablet extends Item implements MenuProvider {
         }
     }
 
-    private DimChestStorage getStorage(Level world, Frequency frequency) {
-        return (DimChestStorage) DimStorageManager.instance(world.isClientSide).getStorage(frequency, "item");
+    private DimChestStorage getStorage(Level level, Frequency frequency) {
+        return (DimChestStorage) DimStorageManager.instance(level.isClientSide).getStorage(frequency, "item");
     }
 
     @OnlyIn(Dist.CLIENT)

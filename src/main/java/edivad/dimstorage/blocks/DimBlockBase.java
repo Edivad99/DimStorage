@@ -27,21 +27,21 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        BlockEntity tile = world.getBlockEntity(pos);
+    public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        BlockEntity tile = level.getBlockEntity(pos);
         if(tile instanceof TileFrequencyOwner) {
             TileFrequencyOwner block = (TileFrequencyOwner) tile;
             if(block.canAccess(player) || player.isCreative())
-                return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+                return willHarvest || super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
         }
         return false;
     }
 
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, BlockEntity te, ItemStack stack) {
-        super.playerDestroy(worldIn, player, pos, state, te, stack);
-        worldIn.removeBlockEntity(pos);
-        worldIn.removeBlock(pos, false);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity te, ItemStack stack) {
+        super.playerDestroy(level, player, pos, state, te, stack);
+        level.removeBlockEntity(pos);
+        level.removeBlock(pos, false);
     }
 
     @Nullable

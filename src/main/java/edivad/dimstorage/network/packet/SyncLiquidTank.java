@@ -33,9 +33,9 @@ public class SyncLiquidTank {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            Level world = Main.proxy.getClientWorld();
-            if(world.isLoaded(pos)) {
-                BlockEntity te = world.getBlockEntity(pos);
+            Level level = Main.proxy.getClientLevel();
+            if(level.isLoaded(pos)) {
+                BlockEntity te = level.getBlockEntity(pos);
                 if(te instanceof TileEntityDimTank tank) {
                     tank.liquidState.sync(fluidStack);
                 }

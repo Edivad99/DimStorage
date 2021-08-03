@@ -96,7 +96,7 @@ public abstract class TileFrequencyOwner extends BlockEntity implements MenuProv
         return tag;
     }
 
-    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand hand) {
+    public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {
         if(canAccess(player)) {
             NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
