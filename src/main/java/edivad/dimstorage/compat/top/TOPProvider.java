@@ -1,11 +1,8 @@
 package edivad.dimstorage.compat.top;
 
-import java.util.function.Function;
-
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tile.TileEntityDimChest;
 import edivad.dimstorage.tile.TileEntityDimTank;
 import edivad.dimstorage.tile.TileFrequencyOwner;
 import mcjty.theoneprobe.api.IElement;
@@ -24,11 +21,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Function;
+
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
 
     @Override
-    public Void apply(ITheOneProbe probe)
-    {
+    public Void apply(ITheOneProbe probe) {
         probe.registerProvider(this);
         probe.registerElementFactory(new IElementFactory() {
 
@@ -46,16 +44,13 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data)
-    {
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data) {
         BlockEntity te = level.getBlockEntity(data.getPos());
 
-        if(te instanceof TileFrequencyOwner owner)
-        {
+        if(te instanceof TileFrequencyOwner owner) {
             Frequency frequency = owner.getFrequency();
 
-            if(frequency.hasOwner())
-            {
+            if(frequency.hasOwner()) {
                 if(owner.canAccess(player))
                     probeInfo.horizontal().text(new TextComponent(ChatFormatting.GREEN + "Owner: " + frequency.getOwner()));
                 else
@@ -65,8 +60,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             if(owner.locked)
                 probeInfo.horizontal().text(new TextComponent("Locked: Yes"));
 
-            if(te instanceof TileEntityDimTank tank)
-            {
+            if(te instanceof TileEntityDimTank tank) {
                 if(tank.autoEject)
                     probeInfo.horizontal().text(new TextComponent("Auto-eject: Yes"));
 
@@ -77,8 +71,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public String getID()
-    {
+    public String getID() {
         return Main.MODID + ":default";
     }
 }

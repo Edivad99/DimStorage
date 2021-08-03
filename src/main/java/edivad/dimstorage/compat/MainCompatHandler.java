@@ -1,7 +1,6 @@
 package edivad.dimstorage.compat;
 
 import edivad.dimstorage.compat.top.TOPProvider;
-
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 
