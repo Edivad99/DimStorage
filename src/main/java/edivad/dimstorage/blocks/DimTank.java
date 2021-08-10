@@ -1,7 +1,7 @@
 package edivad.dimstorage.blocks;
 
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -44,7 +44,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileEntityDimTank(blockPos, blockState);
+        return new BlockEntityDimTank(blockPos, blockState);
     }
 
     @Nullable
@@ -60,7 +60,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
         BlockEntity tile = level.getBlockEntity(pos);
 
-        if(tile instanceof TileEntityDimTank tank) {
+        if(tile instanceof BlockEntityDimTank tank) {
             if(!player.isCrouching())
                 return tank.activate(player, level, pos, handIn);
         }
@@ -80,7 +80,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     @Override
     public int getLightEmission(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         BlockEntity tile = blockGetter.getBlockEntity(pos);
-        if(tile instanceof TileEntityDimTank tank) {
+        if(tile instanceof BlockEntityDimTank tank) {
             FluidStack fluid = tank.liquidState.clientLiquid;
             if(!fluid.isEmpty()) {
                 FluidAttributes attributes = fluid.getFluid().getAttributes();
@@ -98,7 +98,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
-        return (te instanceof TileEntityDimTank tank) ? tank.getComparatorInput() : 0;
+        return (te instanceof BlockEntityDimTank tank) ? tank.getComparatorInput() : 0;
     }
 
     @Override

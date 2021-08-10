@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.top;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +24,7 @@ public class FluidElement extends TOPElement {
         this.colorLiquid = colorLiquid;
     }
 
-    public FluidElement(TileEntityDimTank tile, int capacity) {
+    public FluidElement(BlockEntityDimTank tile, int capacity) {
         this(tile.liquidState.serverLiquid, capacity, FluidUtils.getLiquidColorWithBiome(tile.liquidState.serverLiquid, tile));
     }
 

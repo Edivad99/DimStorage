@@ -1,7 +1,7 @@
 package edivad.dimstorage.blocks;
 
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +29,7 @@ public class DimChest extends DimBlockBase {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileEntityDimChest(blockPos, blockState);
+        return new BlockEntityDimChest(blockPos, blockState);
     }
 
     @Nullable
@@ -50,7 +50,7 @@ public class DimChest extends DimBlockBase {
 
         BlockEntity tile = level.getBlockEntity(pos);
 
-        if(tile instanceof TileEntityDimChest chest) {
+        if(tile instanceof BlockEntityDimChest chest) {
             if(!player.isCrouching())
                 return chest.activate(player, level, pos, handIn);
         }
@@ -60,7 +60,7 @@ public class DimChest extends DimBlockBase {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         BlockEntity tile = level.getBlockEntity(pos);
-        if(tile instanceof TileEntityDimChest chest) {
+        if(tile instanceof BlockEntityDimChest chest) {
             chest.onPlaced(placer);
         }
     }
@@ -73,7 +73,7 @@ public class DimChest extends DimBlockBase {
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
-        return (te instanceof TileEntityDimChest chest) ? chest.getComparatorInput() : 0;
+        return (te instanceof BlockEntityDimChest chest) ? chest.getComparatorInput() : 0;
     }
 
     @Override

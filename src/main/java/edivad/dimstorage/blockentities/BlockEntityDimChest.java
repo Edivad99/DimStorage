@@ -1,4 +1,4 @@
-package edivad.dimstorage.tile;
+package edivad.dimstorage.blockentities;
 
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimChest;
@@ -23,7 +23,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TileEntityDimChest extends TileFrequencyOwner {
+public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
     private static final float MIN_MOVABLE_POSITION = 0f;
     private static final float MAX_MOVABLE_POSITION = 0.5f;
@@ -36,7 +36,7 @@ public class TileEntityDimChest extends TileFrequencyOwner {
     //Set the Capability
     private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
-    public TileEntityDimChest(BlockPos blockPos, BlockState blockState) {
+    public BlockEntityDimChest(BlockPos blockPos, BlockState blockState) {
         super(Registration.DIMCHEST_TILE.get(), blockPos, blockState);
         movablePartState = MIN_MOVABLE_POSITION;
     }

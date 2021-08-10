@@ -1,4 +1,4 @@
-package edivad.dimstorage.tile;
+package edivad.dimstorage.blockentities;
 
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.container.ContainerDimTank;
@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class TileEntityDimTank extends TileFrequencyOwner {
+public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
     public class DimTankState extends TankState {
 
@@ -57,7 +57,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     //Set the Capability
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
 
-    public TileEntityDimTank(BlockPos blockPos, BlockState blockState) {
+    public BlockEntityDimTank(BlockPos blockPos, BlockState blockState) {
         super(Registration.DIMTANK_TILE.get(), blockPos, blockState);
     }
 
@@ -91,7 +91,7 @@ public class TileEntityDimTank extends TileFrequencyOwner {
     }
 
     private boolean checkSameFrequency(BlockEntity tile) {
-        if(tile instanceof TileEntityDimTank otherTank) {
+        if(tile instanceof BlockEntityDimTank otherTank) {
             return !getFrequency().equals(otherTank.getFrequency());
         }
         return true;

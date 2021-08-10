@@ -6,7 +6,7 @@ import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.CustomTranslate;
 import edivad.dimstorage.tools.utils.InventoryUtils;
@@ -55,7 +55,7 @@ public class DimTablet extends Item implements MenuProvider {
             ItemStack device = player.getItemInHand(context.getHand());
             BlockEntity tile = level.getBlockEntity(pos);
             if(player.isCrouching()) {
-                if(tile instanceof TileEntityDimChest dimChest) {
+                if(tile instanceof BlockEntityDimChest dimChest) {
                     if(dimChest.canAccess(player)) {
                         CompoundTag tag = new CompoundTag();
                         tag.put("frequency", dimChest.getFrequency().serializeNBT());

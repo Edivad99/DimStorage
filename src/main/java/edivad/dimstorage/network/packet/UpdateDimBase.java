@@ -1,7 +1,7 @@
 package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +22,7 @@ public abstract class UpdateDimBase {
         locked = buf.readBoolean();
     }
 
-    public UpdateDimBase(TileFrequencyOwner tile) {
+    public UpdateDimBase(BlockEntityFrequencyOwner tile) {
         pos = tile.getBlockPos();
         freq = tile.getFrequency();
         locked = tile.locked;

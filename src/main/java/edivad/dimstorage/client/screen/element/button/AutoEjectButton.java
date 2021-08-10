@@ -3,15 +3,15 @@ package edivad.dimstorage.client.screen.element.button;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimTank;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class AutoEjectButton extends Button {
 
-    private final TileEntityDimTank tank;
+    private final BlockEntityDimTank tank;
 
-    public AutoEjectButton(int width, int height, TileEntityDimTank tank) {
+    public AutoEjectButton(int width, int height, BlockEntityDimTank tank) {
         super(width, height, 64, 20, getText(tank.autoEject), null);
         this.tank = tank;
     }

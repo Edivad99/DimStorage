@@ -2,7 +2,7 @@ package edivad.dimstorage.container;
 
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,10 +13,10 @@ import net.minecraft.world.item.ItemStack;
 public class ContainerDimChest extends AbstractContainerMenu {
 
     private DimChestStorage chestInv;
-    public TileEntityDimChest owner;
+    public BlockEntityDimChest owner;
     public boolean isOpen;
 
-    public ContainerDimChest(int windowId, Inventory inventory, TileEntityDimChest owner, boolean isOpen) {
+    public ContainerDimChest(int windowId, Inventory inventory, BlockEntityDimChest owner, boolean isOpen) {
         super(Registration.DIMCHEST_CONTAINER.get(), windowId);
         this.chestInv = owner.getStorage();
         this.owner = owner;

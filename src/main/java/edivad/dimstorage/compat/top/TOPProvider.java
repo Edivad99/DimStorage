@@ -3,8 +3,8 @@ package edivad.dimstorage.compat.top;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import mcjty.theoneprobe.api.IElement;
 import mcjty.theoneprobe.api.IElementFactory;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -47,7 +47,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data) {
         BlockEntity te = level.getBlockEntity(data.getPos());
 
-        if(te instanceof TileFrequencyOwner owner) {
+        if(te instanceof BlockEntityFrequencyOwner owner) {
             Frequency frequency = owner.getFrequency();
 
             if(frequency.hasOwner()) {
@@ -60,7 +60,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             if(owner.locked)
                 probeInfo.horizontal().text(new TextComponent("Locked: Yes"));
 
-            if(te instanceof TileEntityDimTank tank) {
+            if(te instanceof BlockEntityDimTank tank) {
                 if(tank.autoEject)
                     probeInfo.horizontal().text(new TextComponent("Auto-eject: Yes"));
 

@@ -1,7 +1,7 @@
 package edivad.dimstorage.container;
 
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,10 +10,10 @@ import net.minecraft.world.inventory.Slot;
 
 public class ContainerDimTank extends AbstractContainerMenu {
 
-    public TileEntityDimTank owner;
+    public BlockEntityDimTank owner;
     public boolean isOpen;
 
-    public ContainerDimTank(int windowId, Inventory inventory, TileEntityDimTank owner, boolean isOpen) {
+    public ContainerDimTank(int windowId, Inventory inventory, BlockEntityDimTank owner, boolean isOpen) {
         super(Registration.DIMTANK_CONTAINER.get(), windowId);
         this.owner = owner;
         this.isOpen = isOpen;

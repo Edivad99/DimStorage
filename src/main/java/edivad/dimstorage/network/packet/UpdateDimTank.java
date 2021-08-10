@@ -1,7 +1,7 @@
 package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -18,7 +18,7 @@ public class UpdateDimTank extends UpdateDimBase {
         autoEject = buf.readBoolean();
     }
 
-    public UpdateDimTank(TileEntityDimTank tile) {
+    public UpdateDimTank(BlockEntityDimTank tile) {
         super(tile);
         autoEject = tile.autoEject;
     }
@@ -33,7 +33,7 @@ public class UpdateDimTank extends UpdateDimBase {
     public void customHandle(Level level, ServerPlayer player) {
         BlockEntity tile = level.getBlockEntity(pos);
 
-        if(!(tile instanceof TileEntityDimTank tank)) {
+        if(!(tile instanceof BlockEntityDimTank tank)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
             return;
         }

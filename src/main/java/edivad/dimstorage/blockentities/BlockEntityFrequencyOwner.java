@@ -1,4 +1,4 @@
-package edivad.dimstorage.tile;
+package edivad.dimstorage.blockentities;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
@@ -23,11 +23,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public abstract class TileFrequencyOwner extends BlockEntity implements MenuProvider {
+public abstract class BlockEntityFrequencyOwner extends BlockEntity implements MenuProvider {
 
     public boolean locked;
 
-    public TileFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
+    public BlockEntityFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
         super(tileEntityTypeIn, blockPos, blockState);
         locked = false;
     }
@@ -63,7 +63,7 @@ public abstract class TileFrequencyOwner extends BlockEntity implements MenuProv
         return frequency.canAccess(player);
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TileFrequencyOwner tile) {
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, BlockEntityFrequencyOwner tile) {
         if(tile.getStorage().getChangeCount() > tile.changeCount) {
             level.updateNeighbourForOutputSignal(tile.worldPosition, tile.getBlockState().getBlock());
             tile.changeCount = tile.getStorage().getChangeCount();
@@ -71,7 +71,7 @@ public abstract class TileFrequencyOwner extends BlockEntity implements MenuProv
         tile.onServerTick(level, blockPos, blockState);
     }
 
-    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, TileFrequencyOwner tile) {
+    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BlockEntityFrequencyOwner tile) {
         tile.onClientTick(level, blockPos, blockState);
     }
 

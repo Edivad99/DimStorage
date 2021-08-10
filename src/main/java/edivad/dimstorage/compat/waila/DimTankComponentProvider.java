@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.waila;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
@@ -15,7 +15,7 @@ public class DimTankComponentProvider extends DimBlockBaseComponentProvider impl
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         super.appendTooltip(tooltip, accessor, config);
-        if(accessor.getBlockEntity() instanceof TileEntityDimTank) {
+        if(accessor.getBlockEntity() instanceof BlockEntityDimTank) {
             CompoundTag data = accessor.getServerData();
 
             String autoEject = new TranslatableComponent("gui." + Main.MODID + ".eject").getString() + ": ";

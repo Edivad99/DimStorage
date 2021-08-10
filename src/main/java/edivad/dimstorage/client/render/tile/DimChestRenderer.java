@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest> {
+public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest> {
 
     private static final String STATIC = "static";
     private static final String MOVABLE = "movable";
@@ -79,7 +79,7 @@ public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest>
     }
 
     @Override
-    public void render(TileEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(BlockEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if(tile.isRemoved())
             return;
 
@@ -88,7 +88,7 @@ public class DimChestRenderer implements BlockEntityRenderer<TileEntityDimChest>
         poseStack.popPose();
     }
 
-    private void renderBlock(TileEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    private void renderBlock(BlockEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         poseStack.pushPose();
 
         //This line actually rotates the renderer.

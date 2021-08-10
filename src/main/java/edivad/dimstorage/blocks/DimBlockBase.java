@@ -1,6 +1,6 @@
 package edivad.dimstorage.blocks;
 
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +29,7 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     @Override
     public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockEntity tile = level.getBlockEntity(pos);
-        if(tile instanceof TileFrequencyOwner block) {
+        if(tile instanceof BlockEntityFrequencyOwner block) {
             if(block.canAccess(player) || player.isCreative())
                 return willHarvest || super.removedByPlayer(state, level, pos, player, false, fluid);
         }
@@ -44,10 +44,10 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends TileFrequencyOwner> tile) {
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends BlockEntityFrequencyOwner> tile) {
         if(tile == blockEntityType) {
-            BlockEntityTicker<TileFrequencyOwner> serverTicker = TileFrequencyOwner::serverTick;
-            BlockEntityTicker<TileFrequencyOwner> clientTicker = TileFrequencyOwner::clientTick;
+            BlockEntityTicker<BlockEntityFrequencyOwner> serverTicker = BlockEntityFrequencyOwner::serverTick;
+            BlockEntityTicker<BlockEntityFrequencyOwner> clientTicker = BlockEntityFrequencyOwner::clientTick;
             return level.isClientSide ? (BlockEntityTicker<T>) clientTicker : (BlockEntityTicker<T>) serverTicker;
         }
         return null;

@@ -1,7 +1,7 @@
 package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -36,7 +36,7 @@ public class SyncLiquidTank {
             Level level = Main.proxy.getClientLevel();
             if(level.isLoaded(pos)) {
                 BlockEntity te = level.getBlockEntity(pos);
-                if(te instanceof TileEntityDimTank tank) {
+                if(te instanceof BlockEntityDimTank tank) {
                     tank.liquidState.sync(fluidStack);
                 }
             }

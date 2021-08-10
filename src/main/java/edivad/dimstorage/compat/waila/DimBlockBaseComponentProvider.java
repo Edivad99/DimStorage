@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.waila;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
@@ -17,7 +17,7 @@ public class DimBlockBaseComponentProvider implements IComponentProvider {
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         //Remove extra info from Waila
         tooltip.clear();
-        if(accessor.getBlockEntity() instanceof TileFrequencyOwner) {
+        if(accessor.getBlockEntity() instanceof BlockEntityFrequencyOwner) {
             CompoundTag data = accessor.getServerData();
 
             String owner = new TranslatableComponent("gui." + Main.MODID + ".owner").getString() + " ";

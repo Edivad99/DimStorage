@@ -1,7 +1,7 @@
 package edivad.dimstorage.network.packet;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.tile.TileEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -15,7 +15,7 @@ public class UpdateDimChest extends UpdateDimBase {
         super(buf);
     }
 
-    public UpdateDimChest(TileEntityDimChest tile) {
+    public UpdateDimChest(BlockEntityDimChest tile) {
         super(tile);
     }
 
@@ -23,7 +23,7 @@ public class UpdateDimChest extends UpdateDimBase {
     public void customHandle(Level level, ServerPlayer player) {
         BlockEntity tile = level.getBlockEntity(pos);
 
-        if(!(tile instanceof TileEntityDimChest chest)) {
+        if(!(tile instanceof BlockEntityDimChest chest)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
             return;
         }

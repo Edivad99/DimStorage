@@ -2,7 +2,7 @@ package edivad.dimstorage.compat.waila;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import mcp.mobius.waila.api.IServerDataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,7 +13,7 @@ public class DimBlockBaseProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
     public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails) {
-        if(tileEntity instanceof TileFrequencyOwner tile) {
+        if(tileEntity instanceof BlockEntityFrequencyOwner tile) {
             Frequency frequency = tile.getFrequency();
             compoundTag.putBoolean(Main.MODID + ".HasOwner", frequency.hasOwner());
             compoundTag.putBoolean(Main.MODID + ".CanAccess", tile.canAccess(serverPlayer));

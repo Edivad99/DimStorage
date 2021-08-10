@@ -3,7 +3,7 @@ package edivad.dimstorage.items;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +44,7 @@ public class ItemDimBase extends BlockItem {
             BlockPos pos = context.getClickedPos();
             ItemStack stack = context.getItemInHand();
 
-            TileFrequencyOwner tile = (TileFrequencyOwner) level.getBlockEntity(pos);
+            BlockEntityFrequencyOwner tile = (BlockEntityFrequencyOwner) level.getBlockEntity(pos);
             tile.setFrequency(getFreq(stack));
             return true;
         }

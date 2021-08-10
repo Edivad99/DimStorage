@@ -4,17 +4,17 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
-import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class LockButton extends Button {
 
-    private final TileFrequencyOwner owner;
+    private final BlockEntityFrequencyOwner owner;
 
-    public LockButton(int width, int height, TileFrequencyOwner owner) {
+    public LockButton(int width, int height, BlockEntityFrequencyOwner owner) {
         super(width, height, 64, 20, getText(owner.locked), null);
         this.owner = owner;
     }
@@ -25,11 +25,11 @@ public class LockButton extends Button {
 
     @Override
     public void onPress() {
-        if(owner instanceof TileEntityDimChest chest) {
+        if(owner instanceof BlockEntityDimChest chest) {
             chest.swapLocked();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
         }
-        else if(owner instanceof TileEntityDimTank tank) {
+        else if(owner instanceof BlockEntityDimTank tank) {
             tank.swapLocked();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }

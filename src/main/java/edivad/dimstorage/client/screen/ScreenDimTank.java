@@ -7,7 +7,7 @@ import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     protected void init() {
         super.init();
 
-        addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (TileEntityDimTank) tileOwner));
+        addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (BlockEntityDimTank) tileOwner));
 
         drawSettings(drawSettings);
 
@@ -48,7 +48,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
         super.renderLabels(poseStack, mouseX, mouseY);
-        FluidStack liquidStack = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
+        FluidStack liquidStack = ((BlockEntityDimTank) tileOwner).liquidState.clientLiquid;
 
         if(!liquidStack.isEmpty()) {
             FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
@@ -69,13 +69,13 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
-        FluidStack fluid = ((TileEntityDimTank) tileOwner).liquidState.clientLiquid;
+        FluidStack fluid = ((BlockEntityDimTank) tileOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((TileEntityDimTank) tileOwner)));
+        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((BlockEntityDimTank) tileOwner)));
         ScreenDimTank.blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 

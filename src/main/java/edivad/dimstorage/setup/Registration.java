@@ -8,8 +8,8 @@ import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.items.DimTablet;
 import edivad.dimstorage.items.ItemDimBase;
-import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tile.TileEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -42,13 +42,13 @@ public class Registration {
 
     public static final RegistryObject<DimChest> DIMCHEST = BLOCKS.register("dimensional_chest", DimChest::new);
     public static final RegistryObject<Item> DIMCHEST_ITEM = ITEMS.register("dimensional_chest", () -> new ItemDimBase(DIMCHEST.get()));
-    public static final RegistryObject<BlockEntityType<TileEntityDimChest>> DIMCHEST_TILE = TILES.register("dimensional_chest", () -> BlockEntityType.Builder.of(TileEntityDimChest::new, DIMCHEST.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityDimChest>> DIMCHEST_TILE = TILES.register("dimensional_chest", () -> BlockEntityType.Builder.of(BlockEntityDimChest::new, DIMCHEST.get()).build(null));
 
     public static final RegistryObject<MenuType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof TileEntityDimChest tile)) {
+        if(!(te instanceof BlockEntityDimChest tile)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
             return null;
         }
@@ -58,12 +58,12 @@ public class Registration {
 
     public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
     public static final RegistryObject<Item> DIMTANK_ITEM = ITEMS.register("dimensional_tank", () -> new ItemDimBase(DIMTANK.get()));
-    public static final RegistryObject<BlockEntityType<TileEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> BlockEntityType.Builder.of(TileEntityDimTank::new, DIMTANK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> BlockEntityType.Builder.of(BlockEntityDimTank::new, DIMTANK.get()).build(null));
     public static final RegistryObject<MenuType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof TileEntityDimTank tile)) {
+        if(!(te instanceof BlockEntityDimTank tile)) {
             Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
             return null;
         }

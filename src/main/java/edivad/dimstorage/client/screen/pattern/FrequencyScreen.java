@@ -9,9 +9,9 @@ import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
-import edivad.dimstorage.tile.TileEntityDimChest;
-import edivad.dimstorage.tile.TileEntityDimTank;
-import edivad.dimstorage.tile.TileFrequencyOwner;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -20,12 +20,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
-    protected TileFrequencyOwner tileOwner;
+    protected BlockEntityFrequencyOwner tileOwner;
 
     private Component owner, freq, locked;
     private FrequencyText freqTextField;
 
-    public FrequencyScreen(T container, TileFrequencyOwner tileOwner, Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
+    public FrequencyScreen(T container, BlockEntityFrequencyOwner tileOwner, Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
         super(container, inventory, text, background, drawSettings);
         this.tileOwner = tileOwner;
     }
@@ -55,10 +55,10 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
             int newFreq = Math.abs(Integer.parseInt(freqTextField.getValue()));
             tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
 
-            if(tileOwner instanceof TileEntityDimChest)
-                PacketHandler.INSTANCE.sendToServer(new UpdateDimChest((TileEntityDimChest) tileOwner));
-            else if(tileOwner instanceof TileEntityDimTank)
-                PacketHandler.INSTANCE.sendToServer(new UpdateDimTank((TileEntityDimTank) tileOwner));
+            if(tileOwner instanceof BlockEntityDimChest)
+                PacketHandler.INSTANCE.sendToServer(new UpdateDimChest((BlockEntityDimChest) tileOwner));
+            else if(tileOwner instanceof BlockEntityDimTank)
+                PacketHandler.INSTANCE.sendToServer(new UpdateDimTank((BlockEntityDimTank) tileOwner));
         }
         catch(Exception e) {
             freqTextField.setValue(String.valueOf(prevChannel));
