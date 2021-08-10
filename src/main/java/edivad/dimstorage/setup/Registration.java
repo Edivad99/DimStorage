@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,10 +33,11 @@ public class Registration {
     public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.dimStorageTab).stacksTo(64);
 
     public static void init() {
-        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
+        TILES.register(eventBus);
+        CONTAINERS.register(eventBus);
     }
 
     public static final RegistryObject<DimChest> DIMCHEST = BLOCKS.register("dimensional_chest", DimChest::new);

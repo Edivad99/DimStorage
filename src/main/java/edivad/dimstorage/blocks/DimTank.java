@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -31,10 +30,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
+
 public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
     private static final VoxelShape BOX = box(2, 0, 2, 14, 16, 14);
-    private static final BooleanProperty WATERLOGGED = BooleanProperty.create("waterlogged");
 
     public DimTank() {
         super(Properties.of(Material.GLASS).sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
@@ -101,7 +101,6 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
         return (te instanceof TileEntityDimTank tank) ? tank.getComparatorInput() : 0;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);

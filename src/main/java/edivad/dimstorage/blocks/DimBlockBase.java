@@ -29,10 +29,9 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     @Override
     public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockEntity tile = level.getBlockEntity(pos);
-        if(tile instanceof TileFrequencyOwner) {
-            TileFrequencyOwner block = (TileFrequencyOwner) tile;
+        if(tile instanceof TileFrequencyOwner block) {
             if(block.canAccess(player) || player.isCreative())
-                return willHarvest || super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+                return willHarvest || super.removedByPlayer(state, level, pos, player, false, fluid);
         }
         return false;
     }
@@ -46,9 +45,9 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
 
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends TileFrequencyOwner> tile) {
-        BlockEntityTicker<TileFrequencyOwner> serverTicker = TileFrequencyOwner::serverTick;
-        BlockEntityTicker<TileFrequencyOwner> clientTicker = TileFrequencyOwner::clientTick;
         if(tile == blockEntityType) {
+            BlockEntityTicker<TileFrequencyOwner> serverTicker = TileFrequencyOwner::serverTick;
+            BlockEntityTicker<TileFrequencyOwner> clientTicker = TileFrequencyOwner::clientTick;
             return level.isClientSide ? (BlockEntityTicker<T>) clientTicker : (BlockEntityTicker<T>) serverTicker;
         }
         return null;
