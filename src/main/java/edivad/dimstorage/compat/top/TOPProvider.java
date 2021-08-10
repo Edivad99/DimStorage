@@ -71,7 +71,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public String getID() {
-        return Main.MODID + ":default";
+    public ResourceLocation getID() {
+        return new ResourceLocation(Main.MODID,"default");
     }
 }
