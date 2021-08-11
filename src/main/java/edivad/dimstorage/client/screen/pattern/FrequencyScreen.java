@@ -55,10 +55,10 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
             int newFreq = Math.abs(Integer.parseInt(freqTextField.getValue()));
             tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
 
-            if(tileOwner instanceof BlockEntityDimChest)
-                PacketHandler.INSTANCE.sendToServer(new UpdateDimChest((BlockEntityDimChest) tileOwner));
-            else if(tileOwner instanceof BlockEntityDimTank)
-                PacketHandler.INSTANCE.sendToServer(new UpdateDimTank((BlockEntityDimTank) tileOwner));
+            if(tileOwner instanceof BlockEntityDimChest chest)
+                PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
+            else if(tileOwner instanceof BlockEntityDimTank tank)
+                PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
         catch(Exception e) {
             freqTextField.setValue(String.valueOf(prevChannel));

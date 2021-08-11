@@ -75,7 +75,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, ((BlockEntityDimTank) tileOwner)));
+        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, tileOwner));
         ScreenDimTank.blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 

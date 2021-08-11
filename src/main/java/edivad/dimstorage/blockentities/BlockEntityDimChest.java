@@ -45,8 +45,8 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
     public void onServerTick(Level level, BlockPos blockPos, BlockState blockState) {
         if(level.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()) {
             openCount = getStorage().getNumOpen();
-            level.blockEvent(getBlockPos(), this.getBlockState().getBlock(), 1, openCount);
-            level.updateNeighborsAt(worldPosition, this.getBlockState().getBlock());
+            level.blockEvent(blockPos, blockState.getBlock(), 1, openCount);
+            level.updateNeighborsAt(worldPosition, blockState.getBlock());
         }
 
         commonTick();

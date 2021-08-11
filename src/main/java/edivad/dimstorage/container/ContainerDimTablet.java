@@ -54,7 +54,7 @@ public class ContainerDimTablet extends AbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int position) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.slots.get(position);
+        Slot slot = this.slots.get(position);
 
         if(slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
