@@ -5,9 +5,9 @@ import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.Constants.BlockFlags;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class UpdateDimTank extends UpdateDimBase {
 
@@ -43,7 +43,7 @@ public class UpdateDimTank extends UpdateDimBase {
         tank.autoEject = autoEject;
         tank.setChanged();
 
-        level.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), BlockFlags.DEFAULT);
+        level.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), Block.UPDATE_ALL);
         NetworkHooks.openGui(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

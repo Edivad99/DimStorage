@@ -16,10 +16,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -44,12 +44,12 @@ public class Registration {
     public static final RegistryObject<Item> DIMCHEST_ITEM = ITEMS.register("dimensional_chest", () -> new ItemDimBase(DIMCHEST.get()));
     public static final RegistryObject<BlockEntityType<BlockEntityDimChest>> DIMCHEST_TILE = TILES.register("dimensional_chest", () -> BlockEntityType.Builder.of(BlockEntityDimChest::new, DIMCHEST.get()).build(null));
 
-    public static final RegistryObject<MenuType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeContainerType.create((windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<ContainerDimChest>> DIMCHEST_CONTAINER = CONTAINERS.register("dimensional_chest", () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
         if(!(te instanceof BlockEntityDimChest tile)) {
-            Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
+            Main.logger.error("Wrong type of tile entity (expected BlockEntityDimChest)!");
             return null;
         }
 
@@ -59,12 +59,12 @@ public class Registration {
     public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
     public static final RegistryObject<Item> DIMTANK_ITEM = ITEMS.register("dimensional_tank", () -> new ItemDimBase(DIMTANK.get()));
     public static final RegistryObject<BlockEntityType<BlockEntityDimTank>> DIMTANK_TILE = TILES.register("dimensional_tank", () -> BlockEntityType.Builder.of(BlockEntityDimTank::new, DIMTANK.get()).build(null));
-    public static final RegistryObject<MenuType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeContainerType.create((windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<ContainerDimTank>> DIMTANK_CONTAINER = CONTAINERS.register("dimensional_tank", () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
         if(!(te instanceof BlockEntityDimTank tile)) {
-            Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
+            Main.logger.error("Wrong type of tile entity (expected BlockEntityDimTank)!");
             return null;
         }
 
@@ -76,7 +76,5 @@ public class Registration {
     public static final RegistryObject<Item> SOLIDDIMCORE = ITEMS.register("solid_dim_core", () -> new Item(globalProperties));
 
     public static final RegistryObject<DimTablet> DIMTABLET = ITEMS.register("dimensional_tablet", DimTablet::new);
-    public static final RegistryObject<MenuType<ContainerDimTablet>> DIMTABLET_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeContainerType.create((windowId, inv, data) -> {
-        return new ContainerDimTablet(windowId, inv.player.getInventory(), inv.player.getCommandSenderWorld());
-    }));
+    public static final RegistryObject<MenuType<ContainerDimTablet>> DIMTABLET_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeMenuType.create((windowId, inv, data) -> new ContainerDimTablet(windowId, inv.player.getInventory(), inv.player.getCommandSenderWorld())));
 }

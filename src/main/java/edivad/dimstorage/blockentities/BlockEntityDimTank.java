@@ -23,17 +23,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
@@ -46,7 +46,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
         @Override
         public void onLiquidChanged() {
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), BlockFlags.DEFAULT);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
             level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
         }
     }
@@ -135,10 +135,9 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        super.save(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putBoolean("autoEject", autoEject);
-        return tag;
     }
 
     @Override
@@ -177,7 +176,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putBoolean("autoEject", autoEject);
-        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, root);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
@@ -38,7 +38,7 @@ public class ModSetup {
     }
 
     @SubscribeEvent
-    public static void preServerStart(final FMLServerStartedEvent event) {
+    public static void preServerStart(final ServerStartedEvent event) {
         DimStorageManager.reloadManager(false);
     }
 

@@ -116,10 +116,9 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        super.save(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putByte("rot", (byte) rotation);
-        return tag;
     }
 
     @Override
@@ -142,7 +141,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
         root.put("Frequency", getFrequency().serializeNBT());
         root.putBoolean("locked", locked);
         root.putByte("rot", (byte) rotation);
-        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, root);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

@@ -8,7 +8,7 @@ import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
 

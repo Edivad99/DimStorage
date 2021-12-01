@@ -15,13 +15,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants.BlockFlags;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class BlockEntityFrequencyOwner extends BlockEntity implements MenuProvider {
 
@@ -39,7 +39,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
         this.frequency.set(frequency);
         this.setChanged();
         BlockState state = level.getBlockState(worldPosition);
-        level.sendBlockUpdated(worldPosition, state, state, BlockFlags.DEFAULT);
+        level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_ALL);
     }
 
     public Frequency getFrequency() {
@@ -89,11 +89,10 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        super.save(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.put("Frequency", frequency.serializeNBT());
         tag.putBoolean("locked", locked);
-        return tag;
     }
 
     public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {

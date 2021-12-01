@@ -11,7 +11,7 @@ public class LootTables extends BaseLootTableProvider {
 
     @Override
     protected void addTables() {
-        lootTables.put(Registration.DIMCHEST.get(), createStandardTable(Registration.DIMCHEST.get()));
-        lootTables.put(Registration.DIMTANK.get(), createStandardTable(Registration.DIMTANK.get()));
+        lootTables.put(Registration.DIMCHEST.get(), createStandardTable(Registration.DIMCHEST.get(), Registration.DIMCHEST_TILE.get()));
+        lootTables.put(Registration.DIMTANK.get(), createStandardTable(Registration.DIMTANK.get(), Registration.DIMTANK_TILE.get()));
     }
 }

@@ -27,11 +27,11 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockEntity tile = level.getBlockEntity(pos);
         if(tile instanceof BlockEntityFrequencyOwner block) {
             if(block.canAccess(player) || player.isCreative())
-                return willHarvest || super.removedByPlayer(state, level, pos, player, false, fluid);
+                return willHarvest || super.onDestroyedByPlayer(state, level, pos, player, false, fluid);
         }
         return false;
     }
