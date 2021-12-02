@@ -94,8 +94,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    //compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id_api}")
-    //runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
+    compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id_api}")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
 
     // TODO: TEMP
     //compileOnly fg.deobf("curse.maven:theoneprobe-245211:3430022")
