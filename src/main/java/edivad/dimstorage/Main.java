@@ -14,7 +14,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-//import net.minecraftforge.fmllegacy.LogicalSidedProvider;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +41,5 @@ public class Main {
 
     public static MinecraftServer getServer() {
         return ServerLifecycleHooks.getCurrentServer();
-        //return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
     }
 }
