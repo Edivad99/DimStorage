@@ -28,8 +28,8 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
     public boolean locked;
 
-    public BlockEntityFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos blockPos, BlockState blockState) {
-        super(tileEntityTypeIn, blockPos, blockState);
+    public BlockEntityFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+        super(tileEntityTypeIn, pos, state);
         locked = false;
     }
 
@@ -64,23 +64,23 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
         return frequency.canAccess(player);
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, BlockEntityFrequencyOwner tile) {
-        if(tile.getStorage().getChangeCount() > tile.changeCount) {
-            level.updateNeighbourForOutputSignal(tile.worldPosition, tile.getBlockState().getBlock());
-            tile.changeCount = tile.getStorage().getChangeCount();
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BlockEntityFrequencyOwner blockentity) {
+        if(blockentity.getStorage().getChangeCount() > blockentity.changeCount) {
+            level.updateNeighbourForOutputSignal(blockentity.worldPosition, blockentity.getBlockState().getBlock());
+            blockentity.changeCount = blockentity.getStorage().getChangeCount();
         }
-        tile.onServerTick(level, blockPos, blockState);
+        blockentity.onServerTick(level, pos, state);
     }
 
-    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BlockEntityFrequencyOwner tile) {
-        tile.onClientTick(level, blockPos, blockState);
+    public static void clientTick(Level level, BlockPos pos, BlockState state, BlockEntityFrequencyOwner blockentity) {
+        blockentity.onClientTick(level, pos, state);
     }
 
     public abstract AbstractDimStorage getStorage();
 
-    public abstract void onServerTick(Level level, BlockPos blockPos, BlockState blockState);
+    public abstract void onServerTick(Level level, BlockPos pos, BlockState state);
 
-    public abstract void onClientTick(Level level, BlockPos blockPos, BlockState blockState);
+    public abstract void onClientTick(Level level, BlockPos pos, BlockState state);
 
     @Override
     public void load(CompoundTag tag) {

@@ -57,27 +57,27 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     //Set the Capability
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
 
-    public BlockEntityDimTank(BlockPos blockPos, BlockState blockState) {
-        super(Registration.DIMTANK_TILE.get(), blockPos, blockState);
+    public BlockEntityDimTank(BlockPos pos, BlockState state) {
+        super(Registration.DIMTANK_TILE.get(), pos, state);
     }
 
     @Override
-    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState) {
+    public void onServerTick(Level level, BlockPos pos, BlockState state) {
         if(autoEject)
             ejectLiquid();
         liquidState.update(false);
     }
 
     @Override
-    public void onClientTick(Level level, BlockPos blockPos, BlockState blockState) {
+    public void onClientTick(Level level, BlockPos pos, BlockState state) {
         liquidState.update(true);
     }
 
     private void ejectLiquid() {
         for(Direction side : Direction.values()) {
-            BlockEntity tile = level.getBlockEntity(worldPosition.relative(side));
-            if(tile != null && checkSameFrequency(tile)) {
-                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).ifPresent(h -> {
+            BlockEntity blockentity = level.getBlockEntity(worldPosition.relative(side));
+            if(blockentity != null && checkSameFrequency(blockentity)) {
+                blockentity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).ifPresent(h -> {
                     FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
                     if(liquid.getAmount() > 0) {
                         int qty = h.fill(liquid, FluidAction.EXECUTE);
@@ -90,8 +90,8 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
         }
     }
 
-    private boolean checkSameFrequency(BlockEntity tile) {
-        if(tile instanceof BlockEntityDimTank otherTank) {
+    private boolean checkSameFrequency(BlockEntity blockentity) {
+        if(blockentity instanceof BlockEntityDimTank otherTank) {
             return !getFrequency().equals(otherTank.getFrequency());
         }
         return true;
@@ -203,7 +203,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player playerEntity) {
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new ContainerDimTank(id, inventory, this, false);
     }
 }

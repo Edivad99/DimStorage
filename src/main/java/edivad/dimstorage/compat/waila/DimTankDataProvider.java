@@ -13,10 +13,10 @@ public class DimTankDataProvider extends DimBlockBaseProvider implements IServer
     @Override
     public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails) {
         super.appendServerData(compoundTag, serverPlayer, level, tileEntity, showDetails);
-        if(tileEntity instanceof BlockEntityDimTank tile) {
-            compoundTag.putBoolean(Main.MODID + ".AutoEject", tile.autoEject);
-            String liquidName = tile.liquidState.serverLiquid.getDisplayName().getString();
-            int liquidLevel = tile.liquidState.serverLiquid.getAmount();
+        if(tileEntity instanceof BlockEntityDimTank blockentity) {
+            compoundTag.putBoolean(Main.MODID + ".AutoEject", blockentity.autoEject);
+            String liquidName = blockentity.liquidState.serverLiquid.getDisplayName().getString();
+            int liquidLevel = blockentity.liquidState.serverLiquid.getAmount();
             compoundTag.putString(Main.MODID + ".Liquid", liquidName);
             compoundTag.putInt(Main.MODID + ".Amount", liquidLevel);
         }

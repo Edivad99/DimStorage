@@ -53,9 +53,9 @@ public class DimTablet extends Item implements MenuProvider {
 
         if(!level.isClientSide) {
             ItemStack device = player.getItemInHand(context.getHand());
-            BlockEntity tile = level.getBlockEntity(pos);
+            BlockEntity blockentity = level.getBlockEntity(pos);
             if(player.isCrouching()) {
-                if(tile instanceof BlockEntityDimChest dimChest) {
+                if(blockentity instanceof BlockEntityDimChest dimChest) {
                     if(dimChest.canAccess(player)) {
                         CompoundTag tag = new CompoundTag();
                         tag.put("frequency", dimChest.getFrequency().serializeNBT());
@@ -151,8 +151,8 @@ public class DimTablet extends Item implements MenuProvider {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player playerEntity) {
-        return new ContainerDimTablet(id, inventory, playerEntity.level);
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new ContainerDimTablet(id, inventory, player.level);
     }
 
     @Override

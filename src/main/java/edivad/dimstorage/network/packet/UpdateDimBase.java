@@ -22,10 +22,10 @@ public abstract class UpdateDimBase {
         locked = buf.readBoolean();
     }
 
-    public UpdateDimBase(BlockEntityFrequencyOwner tile) {
-        pos = tile.getBlockPos();
-        freq = tile.getFrequency();
-        locked = tile.locked;
+    public UpdateDimBase(BlockEntityFrequencyOwner blockentity) {
+        pos = blockentity.getBlockPos();
+        freq = blockentity.getFrequency();
+        locked = blockentity.locked;
     }
 
     public void toBytes(FriendlyByteBuf buf) {

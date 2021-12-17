@@ -48,12 +48,12 @@ public class Registration {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof BlockEntityDimChest tile)) {
-            Main.logger.error("Wrong type of tile entity (expected BlockEntityDimChest)!");
+        if(!(te instanceof BlockEntityDimChest blockentity)) {
+            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
             return null;
         }
 
-        return new ContainerDimChest(windowId, inv.player.getInventory(), tile, isOpen);
+        return new ContainerDimChest(windowId, inv.player.getInventory(), blockentity, isOpen);
     }));
 
     public static final RegistryObject<DimTank> DIMTANK = BLOCKS.register("dimensional_tank", DimTank::new);
@@ -63,12 +63,12 @@ public class Registration {
         BlockPos pos = data.readBlockPos();
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
-        if(!(te instanceof BlockEntityDimTank tile)) {
-            Main.logger.error("Wrong type of tile entity (expected BlockEntityDimTank)!");
+        if(!(te instanceof BlockEntityDimTank blockentity)) {
+            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
             return null;
         }
 
-        return new ContainerDimTank(windowId, inv.player.getInventory(), tile, isOpen);
+        return new ContainerDimTank(windowId, inv.player.getInventory(), blockentity, isOpen);
     }));
 
     public static final RegistryObject<Item> DIMCORE = ITEMS.register("dim_core", () -> new Item(globalProperties));

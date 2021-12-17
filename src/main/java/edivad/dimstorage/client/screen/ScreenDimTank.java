@@ -31,7 +31,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     protected void init() {
         super.init();
 
-        addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (BlockEntityDimTank) tileOwner));
+        addComponent(new AutoEjectButton(width / 2 + 95, height / 2 + 75, (BlockEntityDimTank) blockEntityFrequencyOwner));
 
         drawSettings(drawSettings);
 
@@ -48,7 +48,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
         super.renderLabels(poseStack, mouseX, mouseY);
-        FluidStack liquidStack = ((BlockEntityDimTank) tileOwner).liquidState.clientLiquid;
+        FluidStack liquidStack = ((BlockEntityDimTank) blockEntityFrequencyOwner).liquidState.clientLiquid;
 
         if(!liquidStack.isEmpty()) {
             FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
@@ -69,13 +69,13 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
-        FluidStack fluid = ((BlockEntityDimTank) tileOwner).liquidState.clientLiquid;
+        FluidStack fluid = ((BlockEntityDimTank) blockEntityFrequencyOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, tileOwner));
+        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockEntityFrequencyOwner));
         ScreenDimTank.blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
     }
 

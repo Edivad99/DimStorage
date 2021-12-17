@@ -18,9 +18,9 @@ public class UpdateDimTank extends UpdateDimBase {
         autoEject = buf.readBoolean();
     }
 
-    public UpdateDimTank(BlockEntityDimTank tile) {
-        super(tile);
-        autoEject = tile.autoEject;
+    public UpdateDimTank(BlockEntityDimTank blockentity) {
+        super(blockentity);
+        autoEject = blockentity.autoEject;
     }
 
     @Override
@@ -31,10 +31,10 @@ public class UpdateDimTank extends UpdateDimBase {
 
     @Override
     public void customHandle(Level level, ServerPlayer player) {
-        BlockEntity tile = level.getBlockEntity(pos);
+        BlockEntity blockentity = level.getBlockEntity(pos);
 
-        if(!(tile instanceof BlockEntityDimTank tank)) {
-            Main.logger.error("Wrong type of tile entity (expected TileEntityDimTank)!");
+        if(!(blockentity instanceof BlockEntityDimTank tank)) {
+            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
             return;
         }
 

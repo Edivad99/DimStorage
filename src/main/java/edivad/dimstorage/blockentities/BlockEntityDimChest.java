@@ -36,24 +36,24 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
     //Set the Capability
     private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
-    public BlockEntityDimChest(BlockPos blockPos, BlockState blockState) {
-        super(Registration.DIMCHEST_TILE.get(), blockPos, blockState);
+    public BlockEntityDimChest(BlockPos pos, BlockState state) {
+        super(Registration.DIMCHEST_TILE.get(), pos, state);
         movablePartState = MIN_MOVABLE_POSITION;
     }
 
     @Override
-    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState) {
+    public void onServerTick(Level level, BlockPos pos, BlockState state) {
         if(level.getGameTime() % 20 == 0 || openCount != getStorage().getNumOpen()) {
             openCount = getStorage().getNumOpen();
-            level.blockEvent(blockPos, blockState.getBlock(), 1, openCount);
-            level.updateNeighborsAt(worldPosition, blockState.getBlock());
+            level.blockEvent(pos, state.getBlock(), 1, openCount);
+            level.updateNeighborsAt(worldPosition, state.getBlock());
         }
 
         commonTick();
     }
 
     @Override
-    public void onClientTick(Level level, BlockPos blockPos, BlockState blockState) {
+    public void onClientTick(Level level, BlockPos pos, BlockState state) {
         commonTick();
     }
 
@@ -167,7 +167,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player playerEntity) {
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new ContainerDimChest(id, inventory, this, false);
     }
 }

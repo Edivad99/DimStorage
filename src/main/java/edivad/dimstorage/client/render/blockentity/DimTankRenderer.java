@@ -1,4 +1,4 @@
-package edivad.dimstorage.client.render.tile;
+package edivad.dimstorage.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -24,17 +24,17 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> 
     }
 
     @Override
-    public void render(BlockEntityDimTank tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        if(tile.isRemoved() || tile.liquidState.clientLiquid == null)
+    public void render(BlockEntityDimTank blockentity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        if(blockentity.isRemoved() || blockentity.liquidState.clientLiquid == null)
             return;
 
         poseStack.pushPose();
-        renderFluid(tile, poseStack, bufferIn);
+        renderFluid(blockentity, poseStack, bufferIn);
         poseStack.popPose();
     }
 
-    private void renderFluid(BlockEntityDimTank tile, PoseStack poseStack, MultiBufferSource bufferIn) {
-        FluidStack fluid = tile.liquidState.clientLiquid;
+    private void renderFluid(BlockEntityDimTank blockentity, PoseStack poseStack, MultiBufferSource bufferIn) {
+        FluidStack fluid = blockentity.liquidState.clientLiquid;
         float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
         if(scale > 0.0f) {
             Matrix4f matrix4f = poseStack.last().pose();
@@ -51,7 +51,7 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> 
             float margin = 0.9f;
             float offset = 0.1f;
 
-            int color = FluidUtils.getLiquidColorWithBiome(fluid, tile);
+            int color = FluidUtils.getLiquidColorWithBiome(fluid, blockentity);
 
             float r = FluidUtils.getRed(color);
             float g = FluidUtils.getGreen(color);

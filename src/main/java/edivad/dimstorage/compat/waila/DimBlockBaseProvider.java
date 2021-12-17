@@ -13,13 +13,13 @@ public class DimBlockBaseProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
     public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity tileEntity, boolean showDetails) {
-        if(tileEntity instanceof BlockEntityFrequencyOwner tile) {
-            Frequency frequency = tile.getFrequency();
+        if(tileEntity instanceof BlockEntityFrequencyOwner blockentity) {
+            Frequency frequency = blockentity.getFrequency();
             compoundTag.putBoolean(Main.MODID + ".HasOwner", frequency.hasOwner());
-            compoundTag.putBoolean(Main.MODID + ".CanAccess", tile.canAccess(serverPlayer));
+            compoundTag.putBoolean(Main.MODID + ".CanAccess", blockentity.canAccess(serverPlayer));
             compoundTag.putString(Main.MODID + ".Owner", frequency.getOwner());
             compoundTag.putInt(Main.MODID + ".Frequency", frequency.getChannel());
-            compoundTag.putBoolean(Main.MODID + ".Locked", tile.locked);
+            compoundTag.putBoolean(Main.MODID + ".Locked", blockentity.locked);
         }
     }
 }

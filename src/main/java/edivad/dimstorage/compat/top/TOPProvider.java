@@ -44,7 +44,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data) {
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
         BlockEntity te = level.getBlockEntity(data.getPos());
 
         if(te instanceof BlockEntityFrequencyOwner owner) {

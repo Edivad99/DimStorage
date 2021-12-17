@@ -24,8 +24,8 @@ public class FluidElement extends TOPElement {
         this.colorLiquid = colorLiquid;
     }
 
-    public FluidElement(BlockEntityDimTank tile, int capacity) {
-        this(tile.liquidState.serverLiquid, capacity, FluidUtils.getLiquidColorWithBiome(tile.liquidState.serverLiquid, tile));
+    public FluidElement(BlockEntityDimTank blockentity, int capacity) {
+        this(blockentity.liquidState.serverLiquid, capacity, FluidUtils.getLiquidColorWithBiome(blockentity.liquidState.serverLiquid, blockentity));
     }
 
     public FluidElement(FriendlyByteBuf buf) {

@@ -1,4 +1,4 @@
-package edivad.dimstorage.client.render.tile;
+package edivad.dimstorage.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -79,23 +79,23 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     }
 
     @Override
-    public void render(BlockEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        if(tile.isRemoved())
+    public void render(BlockEntityDimChest blockentity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        if(blockentity.isRemoved())
             return;
 
         poseStack.pushPose();
-        renderBlock(tile, partialTicks, poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
+        renderBlock(blockentity, partialTicks, poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
     }
 
-    private void renderBlock(BlockEntityDimChest tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    private void renderBlock(BlockEntityDimChest blockentity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         poseStack.pushPose();
 
         //This line actually rotates the renderer.
         poseStack.translate(0.5D, -0.5D, 0.5D);
 
         // Direction
-        poseStack.mulPose(new Quaternion(0F, 360 - tile.rotation * 90, 0F, true));
+        poseStack.mulPose(new Quaternion(0F, 360 - blockentity.rotation * 90, 0F, true));
 
         // Sens
         poseStack.mulPose(new Quaternion(180F, 0F, 0F, true));
@@ -107,14 +107,14 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
         staticLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         // Render movable part
         poseStack.pushPose();
-        poseStack.translate(0, 0, tile.movablePartState);
+        poseStack.translate(0, 0, blockentity.movablePartState);
         movableLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         poseStack.popPose();
 
         // Check state
-        if(tile.locked)
+        if(blockentity.locked)
             redIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
-        else if(tile.getFrequency().hasOwner())
+        else if(blockentity.getFrequency().hasOwner())
             blueIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
         else
             greenIndicatorLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);

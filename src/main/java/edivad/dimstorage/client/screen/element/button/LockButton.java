@@ -25,12 +25,10 @@ public class LockButton extends Button {
 
     @Override
     public void onPress() {
+        owner.swapLocked();
         if(owner instanceof BlockEntityDimChest chest) {
-            chest.swapLocked();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
-        }
-        else if(owner instanceof BlockEntityDimTank tank) {
-            tank.swapLocked();
+        } else if(owner instanceof BlockEntityDimTank tank) {
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
     }

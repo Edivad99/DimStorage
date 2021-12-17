@@ -43,26 +43,26 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BlockEntityDimTank(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BlockEntityDimTank(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return createDimBlockTicker(level, blockEntityType, Registration.DIMTANK_TILE.get());
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        BlockEntity tile = level.getBlockEntity(pos);
+        BlockEntity blockentity = level.getBlockEntity(pos);
 
-        if(tile instanceof BlockEntityDimTank tank) {
+        if(blockentity instanceof BlockEntityDimTank tank) {
             if(!player.isCrouching())
-                return tank.activate(player, level, pos, handIn);
+                return tank.activate(player, level, pos, hand);
         }
         return InteractionResult.FAIL;
     }
@@ -79,8 +79,8 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter blockGetter, BlockPos pos) {
-        BlockEntity tile = blockGetter.getBlockEntity(pos);
-        if(tile instanceof BlockEntityDimTank tank) {
+        BlockEntity blockentity = blockGetter.getBlockEntity(pos);
+        if(blockentity instanceof BlockEntityDimTank tank) {
             FluidStack fluid = tank.liquidState.clientLiquid;
             if(!fluid.isEmpty()) {
                 FluidAttributes attributes = fluid.getFluid().getAttributes();
@@ -96,7 +96,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
         return (te instanceof BlockEntityDimTank tank) ? tank.getComparatorInput() : 0;
     }

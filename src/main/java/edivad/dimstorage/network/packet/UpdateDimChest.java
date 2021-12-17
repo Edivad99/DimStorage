@@ -15,16 +15,16 @@ public class UpdateDimChest extends UpdateDimBase {
         super(buf);
     }
 
-    public UpdateDimChest(BlockEntityDimChest tile) {
-        super(tile);
+    public UpdateDimChest(BlockEntityDimChest blockentity) {
+        super(blockentity);
     }
 
     @Override
     public void customHandle(Level level, ServerPlayer player) {
-        BlockEntity tile = level.getBlockEntity(pos);
+        BlockEntity blockentity = level.getBlockEntity(pos);
 
-        if(!(tile instanceof BlockEntityDimChest chest)) {
-            Main.logger.error("Wrong type of tile entity (expected TileEntityDimChest)!");
+        if(!(blockentity instanceof BlockEntityDimChest chest)) {
+            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
             return;
         }
 

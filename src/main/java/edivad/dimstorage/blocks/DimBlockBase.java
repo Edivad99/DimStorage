@@ -28,8 +28,8 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        BlockEntity tile = level.getBlockEntity(pos);
-        if(tile instanceof BlockEntityFrequencyOwner block) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if(blockentity instanceof BlockEntityFrequencyOwner block) {
             if(block.canAccess(player) || player.isCreative())
                 return willHarvest || super.onDestroyedByPlayer(state, level, pos, player, false, fluid);
         }
@@ -44,8 +44,8 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends BlockEntityFrequencyOwner> tile) {
-        if(tile == blockEntityType) {
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createDimBlockTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends BlockEntityFrequencyOwner> blockentity) {
+        if(blockentity == blockEntityType) {
             BlockEntityTicker<BlockEntityFrequencyOwner> serverTicker = BlockEntityFrequencyOwner::serverTick;
             BlockEntityTicker<BlockEntityFrequencyOwner> clientTicker = BlockEntityFrequencyOwner::clientTick;
             return level.isClientSide ? (BlockEntityTicker<T>) clientTicker : (BlockEntityTicker<T>) serverTicker;

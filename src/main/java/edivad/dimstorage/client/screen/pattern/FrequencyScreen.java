@@ -20,14 +20,14 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
-    protected BlockEntityFrequencyOwner tileOwner;
+    protected BlockEntityFrequencyOwner blockEntityFrequencyOwner;
 
     private Component owner, freq, locked;
     private FrequencyText freqTextField;
 
-    public FrequencyScreen(T container, BlockEntityFrequencyOwner tileOwner, Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
+    public FrequencyScreen(T container, BlockEntityFrequencyOwner blockEntityFrequencyOwner, Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
         super(container, inventory, text, background, drawSettings);
-        this.tileOwner = tileOwner;
+        this.blockEntityFrequencyOwner = blockEntityFrequencyOwner;
     }
 
     @Override
@@ -40,24 +40,24 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
         locked = new TranslatableComponent("gui." + Main.MODID + ".locked");
 
         clearComponent();
-        addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, tileOwner));
+        addComponent(new OwnerButton(width / 2 + 95, height / 2 - 53, blockEntityFrequencyOwner));
         addComponent(new ChangeButton(width / 2 + 95, height / 2 + 7, b -> changeFrequency()));
-        addComponent(new LockButton(width / 2 + 95, height / 2 + 46, tileOwner));
+        addComponent(new LockButton(width / 2 + 95, height / 2 + 46, blockEntityFrequencyOwner));
 
-        freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, tileOwner.getFrequency());
+        freqTextField = new FrequencyText(width / 2 + 95, height / 2 - 12, blockEntityFrequencyOwner.getFrequency());
         addComponent(freqTextField);
         drawSettings(drawSettings);
     }
 
     private void changeFrequency() {
-        int prevChannel = tileOwner.getFrequency().getChannel();
+        int prevChannel = blockEntityFrequencyOwner.getFrequency().getChannel();
         try {
             int newFreq = Math.abs(Integer.parseInt(freqTextField.getValue()));
-            tileOwner.setFrequency(tileOwner.getFrequency().setChannel(newFreq));
+            blockEntityFrequencyOwner.setFrequency(blockEntityFrequencyOwner.getFrequency().setChannel(newFreq));
 
-            if(tileOwner instanceof BlockEntityDimChest chest)
+            if(blockEntityFrequencyOwner instanceof BlockEntityDimChest chest)
                 PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
-            else if(tileOwner instanceof BlockEntityDimTank tank)
+            else if(blockEntityFrequencyOwner instanceof BlockEntityDimTank tank)
                 PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
         catch(Exception e) {

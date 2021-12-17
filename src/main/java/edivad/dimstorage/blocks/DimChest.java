@@ -28,13 +28,13 @@ public class DimChest extends DimBlockBase {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BlockEntityDimChest(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BlockEntityDimChest(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return createDimBlockTicker(level, blockEntityType, Registration.DIMCHEST_TILE.get());
     }
 
@@ -44,23 +44,23 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        BlockEntity tile = level.getBlockEntity(pos);
+        BlockEntity blockentity = level.getBlockEntity(pos);
 
-        if(tile instanceof BlockEntityDimChest chest) {
+        if(blockentity instanceof BlockEntityDimChest chest) {
             if(!player.isCrouching())
-                return chest.activate(player, level, pos, handIn);
+                return chest.activate(player, level, pos, hand);
         }
         return InteractionResult.FAIL;
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        BlockEntity tile = level.getBlockEntity(pos);
-        if(tile instanceof BlockEntityDimChest chest) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if(blockentity instanceof BlockEntityDimChest chest) {
             chest.onPlaced(placer);
         }
     }
@@ -71,14 +71,14 @@ public class DimChest extends DimBlockBase {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
         return (te instanceof BlockEntityDimChest chest) ? chest.getComparatorInput() : 0;
     }
 
     @Override
     public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
-        BlockEntity tile = level.getBlockEntity(pos);
-        return tile != null && tile.triggerEvent(eventID, eventParam);
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        return blockentity != null && blockentity.triggerEvent(eventID, eventParam);
     }
 }

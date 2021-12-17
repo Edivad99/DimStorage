@@ -44,8 +44,8 @@ public class ContainerDimChest extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerIn) {
-        return chestInv.stillValid(playerIn);
+    public boolean stillValid(Player player) {
+        return chestInv.stillValid(player);
     }
 
     @Override

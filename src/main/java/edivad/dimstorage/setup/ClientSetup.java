@@ -1,8 +1,8 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.client.render.tile.DimChestRenderer;
-import edivad.dimstorage.client.render.tile.DimTankRenderer;
+import edivad.dimstorage.client.render.blockentity.DimChestRenderer;
+import edivad.dimstorage.client.render.blockentity.DimTankRenderer;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
