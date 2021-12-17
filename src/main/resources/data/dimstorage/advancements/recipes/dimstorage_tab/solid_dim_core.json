@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "dimstorage:dim_core"
+            "items": [
+              "dimstorage:dim_core"
+            ]
           }
         ]
       }

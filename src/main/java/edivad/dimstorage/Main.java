@@ -3,13 +3,9 @@ package edivad.dimstorage;
 import edivad.dimstorage.setup.ClientSetup;
 import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.setup.Registration;
-import edivad.dimstorage.setup.proxy.IProxy;
-import edivad.dimstorage.setup.proxy.Proxy;
-import edivad.dimstorage.setup.proxy.ProxyClient;
 import edivad.dimstorage.tools.Config;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -24,8 +20,6 @@ public class Main {
 
     public static final String MODID = "dimstorage";
     public static final String MODNAME = "DimStorage";
-
-    public static IProxy proxy = DistExecutor.safeRunForDist(() -> ProxyClient::new, () -> Proxy::new);
 
     public static final Logger logger = LogManager.getLogger();
 

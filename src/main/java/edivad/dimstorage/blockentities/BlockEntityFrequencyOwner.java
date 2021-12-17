@@ -4,6 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -51,7 +52,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
         if(frequency.hasOwner())
             setFrequency(getFrequency().setPublic());
         else
-            setFrequency(getFrequency().setOwner(Main.proxy.getClientPlayer()));
+            setFrequency(getFrequency().setOwner(Minecraft.getInstance().player));
     }
 
     public void swapLocked() {

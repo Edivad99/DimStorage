@@ -83,7 +83,7 @@ repositories {
     }
     maven {
         name 'TOP'
-        url 'https://maven.tterrag.com/'
+        url 'https://maven.k-4u.nl'
     }
     maven {
         name 'JEI'
@@ -97,15 +97,12 @@ dependencies {
     compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id_api}")
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
 
-    // TODO: TEMP
-    compileOnly fg.deobf("curse.maven:theoneprobe-245211:3550084")
-    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:3550084")
+    implementation fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") {
+        transitive = false
+    }
 
-    //compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}:api")
-    //runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
-
-    compileOnly fg.deobf("mezz.jei:jei-1.18:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

@@ -1,12 +1,11 @@
 package edivad.dimstorage.network.packet;
 
-import edivad.dimstorage.Main;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -32,15 +31,7 @@ public class SyncLiquidTank {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            Level level = Main.proxy.getClientLevel();
-            if(level.isLoaded(pos)) {
-                BlockEntity te = level.getBlockEntity(pos);
-                if(te instanceof BlockEntityDimTank tank) {
-                    tank.liquidState.sync(fluidStack);
-                }
-            }
-        });
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.syncronizeFluid(pos, fluidStack)));
         ctx.get().setPacketHandled(true);
     }
 

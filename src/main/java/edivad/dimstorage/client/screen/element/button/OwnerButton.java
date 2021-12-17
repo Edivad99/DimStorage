@@ -22,12 +22,10 @@ public class OwnerButton extends Button {
 
     @Override
     public void onPress() {
+        owner.swapOwner();
         if(owner instanceof BlockEntityDimChest chest) {
-            chest.swapOwner();
             PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
-        }
-        else if(owner instanceof BlockEntityDimTank tank) {
-            tank.swapOwner();
+        } else if(owner instanceof BlockEntityDimTank tank) {
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
     }
