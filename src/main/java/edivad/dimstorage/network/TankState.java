@@ -11,6 +11,10 @@ public abstract class TankState {
     public FluidStack clientLiquid = FluidStack.EMPTY;
     public FluidStack serverLiquid = FluidStack.EMPTY;
 
+    public TankState(Frequency frequency) {
+        this.frequency = frequency;
+    }
+
     public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
     }

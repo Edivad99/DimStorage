@@ -39,6 +39,10 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
     public class DimTankState extends TankState {
 
+        public DimTankState(Frequency frequency) {
+            super(frequency);
+        }
+
         @Override
         public void sendSyncPacket() {
             PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncLiquidTank(getBlockPos(), serverLiquid));
@@ -51,7 +55,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
         }
     }
 
-    public DimTankState liquidState = new DimTankState();
+    public DimTankState liquidState;
     public boolean autoEject = false;
 
     //Set the Capability
@@ -59,6 +63,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
     public BlockEntityDimTank(BlockPos pos, BlockState state) {
         super(Registration.DIMTANK_TILE.get(), pos, state);
+        liquidState = new DimTankState(getFrequency());
     }
 
     @Override
