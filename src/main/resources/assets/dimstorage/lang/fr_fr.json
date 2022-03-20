@@ -1,0 +1,43 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+
+    "item.dimstorage.dim_core": "Noyau dimensionnel",
+    "item.dimstorage.solid_dim_core": "Noyau dimensionnel solide",
+    "item.dimstorage.dim_wall": "Mur dimensionnel",
+    "item.dimstorage.dimensional_tablet": "Tablette dimensionnelle",
+
+    "block.dimstorage.dimensional_chest": "Coffre dimensionnel",
+    "block.dimstorage.dimensional_tank": "Réservoir dimensionnel",
+
+    "advancements.dimstorage.root": "Noyau dimensionnel",
+    "advancements.dimstorage.root.desc": "Le pouvoir des dimensions",
+    "advancements.dimstorage.dimensional_chest": "Coffre dimensionnel",
+    "advancements.dimstorage.dimensional_chest.desc": "Un inventaire plus connecté",
+    "advancements.dimstorage.dimensional_tablet": "Tablette dimensionnelle",
+    "advancements.dimstorage.dimensional_tablet.desc": "Un inventaire à distance",
+    "advancements.dimstorage.dimensional_tank": "Réservoir dimensionnel",
+    "advancements.dimstorage.dimensional_tank.desc": "Un réservoir multidimensionnel",
+
+    "gui.dimstorage.change": "Changer",
+    "gui.dimstorage.owner": "Propriétaire :",
+    "gui.dimstorage.frequency": "Fréquence :",
+    "gui.dimstorage.locked": "Verrouillé :",
+    "gui.dimstorage.yes": "Oui",
+    "gui.dimstorage.no": "Non",
+    "gui.dimstorage.collecting": "Collecte",
+    "gui.dimstorage.idle": "Inactif",
+    "gui.dimstorage.eject": "Éjection automatique",
+    "gui.dimstorage.liquid": "Liquide :",
+    "gui.dimstorage.amount": "Quantité :",
+    "gui.dimstorage.temperature": "Température :",
+    "gui.dimstorage.luminosity": "Luminosité :",
+    "gui.dimstorage.gas": "Gazeux :",
+    "gui.dimstorage.empty": "Vide",
+
+    "message.dimstorage.adviceToLink": "@7Appuyez sur Maj + clic droit pour lier un DimChest",
+    "message.dimstorage.holdShift": "@7Maintenez @b@oMaj @7pour les détails",
+    "message.dimstorage.changeAutoCollect": "@7Appuyez sur @b@oMaj @7+ clic droit sur un bloc non DimChest pour activer/désactiver la collecte automatique",
+
+    "tooltip.dimstorage.collect": "Lorsque vous êtes en collecte, cela signifie que DimChest collecte tous les objets des inventaires dans une zone %dx%d"
+
+}
