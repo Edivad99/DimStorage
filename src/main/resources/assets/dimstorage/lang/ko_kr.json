@@ -1,0 +1,43 @@
+{
+    "itemGroup.dimstorage_tab": "DimStorage",
+  
+    "item.dimstorage.dim_core": "차원 코어",
+    "item.dimstorage.solid_dim_core": "코체 차원 코어",
+    "item.dimstorage.dim_wall": "차원 벽",
+    "item.dimstorage.dimensional_tablet": "차원 태블릿",
+  
+    "block.dimstorage.dimensional_chest": "차원 상자",
+    "block.dimstorage.dimensional_tank": "차원 탱크",
+  
+    "advancements.dimstorage.root": "차원 코어",
+    "advancements.dimstorage.root.desc": "차원의 힘",
+    "advancements.dimstorage.dimensional_chest": "차원 상자",
+    "advancements.dimstorage.dimensional_chest.desc": "더 연결된 보관함",
+    "advancements.dimstorage.dimensional_tablet": "차원 태블릿",
+    "advancements.dimstorage.dimensional_tablet.desc": "무선 보관함",
+    "advancements.dimstorage.dimensional_tank": "차원 탱크",
+    "advancements.dimstorage.dimensional_tank.desc": "다차원 탱크",
+  
+    "gui.dimstorage.change": "변경",
+    "gui.dimstorage.owner": "소유자:",
+    "gui.dimstorage.frequency": "주파수:",
+    "gui.dimstorage.locked": "잠김:",
+    "gui.dimstorage.yes": "예",
+    "gui.dimstorage.no": "아니오",
+    "gui.dimstorage.collecting": "모으기",
+    "gui.dimstorage.idle": "유휴",
+    "gui.dimstorage.eject": "자동 배출",
+    "gui.dimstorage.liquid": "액체:",
+    "gui.dimstorage.amount": "양:",
+    "gui.dimstorage.temperature": "열:",
+    "gui.dimstorage.luminosity": "밝기:",
+    "gui.dimstorage.gas": "가스:",
+    "gui.dimstorage.empty": "비었음",
+  
+    "message.dimstorage.adviceToLink": "@7Shift + 우클릭으로 차원 상자에 바인딩하세요.",
+    "message.dimstorage.holdShift": "@7자세한 사항은 @b@oShift @7키를 누르세요.",
+    "message.dimstorage.changeAutoCollect": "@7차원 상자가 아닌 블록에 @b@oShift @7+ 우클릭하여 자동 수집을 활성화/비활성화 하세요.",
+  
+    "tooltip.dimstorage.collect": "수집 중일 때 차원상자가 %dx%d 영역의 인벤토리에 있는 모든 아이템을 수집한다는 의미입니다."
+  
+  }
