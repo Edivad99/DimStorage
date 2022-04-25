@@ -2,6 +2,7 @@ package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.VersionChecker.CheckResult;
 import net.minecraftforge.fml.VersionChecker.Status;
+import net.minecraftforge.forgespi.language.IModInfo;
 
 public class EventHandler {
 
@@ -16,27 +18,36 @@ public class EventHandler {
 
     @SubscribeEvent
     public void handlePlayerLoggedInEvent(LoggedInEvent event) {
-        CheckResult versionRAW = VersionChecker.getResult(ModList.get().getModFileById(Main.MODID).getMods().get(0));
-        Status result = versionRAW.status();
+        try
+        {
+            IModInfo modInfo = ModList.get().getModFileById(Main.MODID).getMods().get(0);
+            if(modInfo.getVersion().getQualifier().contains("NONE"))
+                return;
+            CheckResult versionRAW = VersionChecker.getResult(modInfo);
+            if(versionRAW.target() == null)
+                return;
 
-        if(!(result.equals(Status.UP_TO_DATE) || result.equals(Status.PENDING) || result.equals(Status.AHEAD))) {
-            event.getPlayer().displayClientMessage(new TextComponent(ChatFormatting.GREEN + "[" + Main.MODNAME + "] " + ChatFormatting.WHITE + "A new version is available (" + versionRAW.target() + "), please update!"), false);
-            event.getPlayer().displayClientMessage(new TextComponent(ChatFormatting.YELLOW + "Changelog:"), false);
+            Status result = versionRAW.status();
+            LocalPlayer player = event.getPlayer();
 
-            String changes = versionRAW.changes().get(versionRAW.target());
-            if(changes != null) {
-                String changesFormat[] = changes.split("\n");
+            if(result.equals(Status.OUTDATED)) {
+                player.displayClientMessage(new TextComponent(ChatFormatting.GREEN + "[" + Main.MODNAME + "] " + ChatFormatting.WHITE + "A new version is available (" + versionRAW.target() + "), please update!"), false);
+                player.displayClientMessage(new TextComponent(ChatFormatting.YELLOW + "Changelog:"), false);
 
-                for(String change : changesFormat) {
-                    event.getPlayer().displayClientMessage(new TextComponent(ChatFormatting.WHITE + "- " + change), false);
-                }
-                if(versionRAW.changes().size() > 1) {
-                    event.getPlayer().displayClientMessage(new TextComponent(ChatFormatting.WHITE + "- And more..."), false);
+                String changes = versionRAW.changes().get(versionRAW.target());
+                if(changes != null) {
+                    String[] changesFormat = changes.split("\n");
+
+                    for(var change : changesFormat) {
+                        player.displayClientMessage(new TextComponent(ChatFormatting.WHITE + "- " + change), false);
+                    }
+                    if(versionRAW.changes().size() > 1) {
+                        player.displayClientMessage(new TextComponent(ChatFormatting.WHITE + "- And more..."), false);
+                    }
                 }
             }
-        }
-        if(result.equals(Status.AHEAD)) {
-            event.getPlayer().displayClientMessage(new TextComponent(ChatFormatting.GREEN + "[" + Main.MODNAME + "] " + ChatFormatting.WHITE + "Version not released yet"), false);
+        } catch(Exception e) {
+            Main.logger.warn("Unable to check the version", e);
         }
     }
 }
