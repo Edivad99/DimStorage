@@ -5,7 +5,8 @@ import edivad.dimstorage.blocks.DimChest;
 import edivad.dimstorage.blocks.DimTank;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import mcp.mobius.waila.api.IRegistrar;
+import mcp.mobius.waila.api.IWailaClientRegistration;
+import mcp.mobius.waila.api.IWailaCommonRegistration;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
@@ -14,11 +15,14 @@ import mcp.mobius.waila.api.WailaPlugin;
 public class WailaCompatibility implements IWailaPlugin {
 
     @Override
-    public void register(IRegistrar iRegistrar) {
-        iRegistrar.registerBlockDataProvider(new DimBlockBaseProvider(), BlockEntityDimChest.class);
-        iRegistrar.registerComponentProvider(new DimBlockBaseComponentProvider(), TooltipPosition.BODY, DimChest.class);
+    public void register(IWailaCommonRegistration registration) {
+        registration.registerBlockDataProvider(DimBlockBaseProvider.INSTANCE, BlockEntityDimChest.class);
+        registration.registerBlockDataProvider(new DimTankProvider(), BlockEntityDimTank.class);
+    }
 
-        iRegistrar.registerBlockDataProvider(new DimTankDataProvider(), BlockEntityDimTank.class);
-        iRegistrar.registerComponentProvider(new DimTankComponentProvider(), TooltipPosition.BODY, DimTank.class);
+    @Override
+    public void registerClient(IWailaClientRegistration registration) {
+        registration.registerComponentProvider(DimBlockBaseProvider.INSTANCE, TooltipPosition.BODY, DimChest.class);
+        registration.registerComponentProvider(DimTankProvider.INSTANCE, TooltipPosition.BODY, DimTank.class);
     }
 }
