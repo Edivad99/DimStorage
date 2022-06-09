@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -31,7 +30,7 @@ public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContain
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
         this.font.draw(poseStack, this.getTitle(), 8, 6, 4210752);
-        this.font.draw(poseStack, new TranslatableComponent("container.inventory"), 8, 128, 4210752);
+        this.font.draw(poseStack, Component.translatable("container.inventory"), 8, 128, 4210752);
     }
 
     @Override

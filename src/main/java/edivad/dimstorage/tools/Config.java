@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,6 @@ public class Config {
     }
 
     private static String getNamespace(Block block) {
-        return block.getRegistryName().toString();
+        return ForgeRegistries.BLOCKS.getKey(block).getNamespace();
     }
 }

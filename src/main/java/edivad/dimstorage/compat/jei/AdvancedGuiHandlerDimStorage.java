@@ -1,4 +1,4 @@
-package edivad.dimstorage.compat.jei;
+/*package edivad.dimstorage.compat.jei;
 
 import edivad.dimstorage.client.screen.pattern.PanelScreen;
 import mezz.jei.api.gui.handlers.IGuiClickableArea;
@@ -25,4 +25,4 @@ public class AdvancedGuiHandlerDimStorage<Panel extends PanelScreen<?>> implemen
     public Collection<IGuiClickableArea> getGuiClickableAreas(Panel containerScreen, double mouseX, double mouseY) {
         return Collections.emptyList();
     }
-}
+}*/

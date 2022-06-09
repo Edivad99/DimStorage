@@ -3,6 +3,7 @@ package edivad.dimstorage.datagen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edivad.dimstorage.Main;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +34,6 @@ import java.util.Map;
 public abstract class BaseLootTableProvider extends LootTableProvider {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     // Filled by subclasses
     protected final Map<Block, LootTable.Builder> lootTables = new HashMap<>();
@@ -49,7 +50,7 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
 
     // Subclasses can call this if they want a standard loot table. Modify this for your own needs
     protected LootTable.Builder createStandardTable(Block block, BlockEntityType blockEntityType) {
-        String name = block.getRegistryName().getPath();
+        String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
         LootPool.Builder builder = LootPool.lootPool()//
                 .name(name)//
                 .setRolls(ConstantValue.exactly(1))//
@@ -64,8 +65,7 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     }
 
     @Override
-    // Entry point
-    public void run(HashCache cache) {
+    public void run(CachedOutput cache) {
         addTables();
 
         Map<ResourceLocation, LootTable> tables = new HashMap<>();
@@ -76,12 +76,12 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     }
 
     // Actually write out the tables in the output folder
-    private void writeTables(HashCache cache, Map<ResourceLocation, LootTable> tables) {
+    private void writeTables(CachedOutput cache, Map<ResourceLocation, LootTable> tables) {
         Path outputFolder = this.generator.getOutputFolder();
         tables.forEach((key, lootTable) -> {
             Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
             try {
-                DataProvider.save(GSON, cache, LootTables.serialize(lootTable), path);
+                DataProvider.saveStable(cache, LootTables.serialize(lootTable), path);
             }
             catch(IOException e) {
                 LOGGER.error("Couldn't write loot table {}", path, e);

@@ -1,11 +1,11 @@
 package edivad.dimstorage.client.screen.element.button;
 
 import edivad.dimstorage.Main;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimTank;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class AutoEjectButton extends Button {
 
@@ -16,8 +16,8 @@ public class AutoEjectButton extends Button {
         this.tank = tank;
     }
 
-    private static TranslatableComponent getText(boolean autoEject) {
-        return new TranslatableComponent("gui." + Main.MODID + (autoEject ? ".eject" : ".idle"));
+    private static Component getText(boolean autoEject) {
+        return Component.translatable("gui." + Main.MODID + (autoEject ? ".eject" : ".idle"));
     }
 
     @Override

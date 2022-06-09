@@ -2,13 +2,12 @@ package edivad.dimstorage.items;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.setup.Registration;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -56,8 +55,8 @@ public class ItemDimBase extends BlockItem {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.translatable("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
+            tooltip.add(Component.translatable("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
     }
 }

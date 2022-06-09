@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
 
 import javax.annotation.Nullable;
 
@@ -59,13 +59,13 @@ public abstract class TOPElement implements IElement {
     @Nullable
     public abstract TextureAtlasSprite getIcon();
 
-    public abstract TextComponent getText();
+    public abstract MutableComponent getText();
 
     protected boolean applyRenderColor() {
         return false;
     }
 
-    protected static void renderScaledText(PoseStack poseStack, Font font, int x, int y, int color, int maxWidth, TextComponent component) {
+    protected static void renderScaledText(PoseStack poseStack, Font font, int x, int y, int color, int maxWidth, MutableComponent component) {
         String text = component.getString();
         int length = font.width(text);
         if(length <= maxWidth) {

@@ -2,11 +2,11 @@ package edivad.dimstorage.items;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.CustomTranslate;
 import edivad.dimstorage.tools.utils.InventoryUtils;
@@ -15,8 +15,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,8 +32,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.List;
 
@@ -63,17 +63,17 @@ public class DimTablet extends Item implements MenuProvider {
                         tag.putBoolean("autocollect", false);
                         device.setTag(tag);
 
-                        player.displayClientMessage(new TextComponent(ChatFormatting.GREEN + "Linked to chest"), false);
+                        player.displayClientMessage(Component.literal("Linked to chest").withStyle(ChatFormatting.GREEN), false);
                         return InteractionResult.SUCCESS;
                     }
-                    player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
+                    player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
                 }
                 else {
                     stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
                     if(stack.getTag().getBoolean("autocollect"))
-                        player.displayClientMessage(new TextComponent(ChatFormatting.GREEN + "Enabled autocollect"), false);
+                        player.displayClientMessage(Component.literal("Enabled autocollect").withStyle(ChatFormatting.GREEN), false);
                     else
-                        player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Disabled autocollect"), false);
+                        player.displayClientMessage(Component.literal("Disabled autocollect").withStyle(ChatFormatting.RED), false);
                 }
             }
         }
@@ -88,7 +88,7 @@ public class DimTablet extends Item implements MenuProvider {
             if(player.isCrouching())
                 return super.use(level, player, hand);
             if(!stack.getOrCreateTag().getBoolean("bound")) {
-                player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Dimensional Tablet not connected to any DimChest"), false);
+                player.displayClientMessage(Component.literal("Dimensional Tablet not connected to any DimChest").withStyle(ChatFormatting.RED), false);
                 return new InteractionResultHolder<>(InteractionResult.PASS, stack);
             }
             Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
@@ -110,7 +110,7 @@ public class DimTablet extends Item implements MenuProvider {
 
                     for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
                         Item item = player.getInventory().getItem(i).getItem();
-                        if(Config.DIMTABLET_LIST.get().contains(item.getRegistryName().toString())) {
+                        if(Config.DIMTABLET_LIST.get().contains(ForgeRegistries.ITEMS.getKey(item).toString())) {
                             InventoryUtils.mergeItemStack(player.getInventory().getItem(i), 0, getStorage(level, f).getContainerSize(), chestInventory);
                         }
                     }
@@ -135,13 +135,13 @@ public class DimTablet extends Item implements MenuProvider {
             CompoundTag tag = stack.getTag();
             if(Screen.hasShiftDown()) {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
-                tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".frequency").append(" " + f.getChannel()).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("gui." + Main.MODID + ".frequency").append(" " + f.getChannel()).withStyle(ChatFormatting.GRAY));
                 if(f.hasOwner())
-                    tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".owner").append(" " + f.getOwner()).withStyle(ChatFormatting.GRAY));
+                    tooltip.add(Component.translatable("gui." + Main.MODID + ".owner").append(" " + f.getOwner()).withStyle(ChatFormatting.GRAY));
 
-                String yes = new TranslatableComponent("gui." + Main.MODID + ".yes").getString();
-                String no = new TranslatableComponent("gui." + Main.MODID + ".no").getString();
-                tooltip.add(new TranslatableComponent("gui." + Main.MODID + ".collecting").append(": " + (tag.getBoolean("autocollect") ? yes : no)).withStyle(ChatFormatting.GRAY));
+                String yes = Component.translatable("gui." + Main.MODID + ".yes").getString();
+                String no = Component.translatable("gui." + Main.MODID + ".no").getString();
+                tooltip.add(Component.translatable("gui." + Main.MODID + ".collecting").append(": " + (tag.getBoolean("autocollect") ? yes : no)).withStyle(ChatFormatting.GRAY));
             }
             else
                 tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
@@ -157,6 +157,6 @@ public class DimTablet extends Item implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent(this.getDescriptionId());
+        return Component.translatable(this.getDescriptionId());
     }
 }

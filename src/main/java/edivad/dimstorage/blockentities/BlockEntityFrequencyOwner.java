@@ -1,6 +1,5 @@
 package edivad.dimstorage.blockentities;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.ChatFormatting;
@@ -8,8 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -101,7 +98,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
             NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
         else {
-            player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(Component.literal(ChatFormatting.RED + "Access Denied!"), false);
         }
         return InteractionResult.SUCCESS;
     }
@@ -123,6 +120,6 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent(this.getBlockState().getBlock().getDescriptionId());
+        return Component.translatable(this.getBlockState().getBlock().getDescriptionId());
     }
 }

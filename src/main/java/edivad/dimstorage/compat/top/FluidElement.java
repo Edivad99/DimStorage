@@ -5,7 +5,8 @@ import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -53,10 +54,10 @@ public class FluidElement extends TOPElement {
     }
 
     @Override
-    public TextComponent getText() {
+    public MutableComponent getText() {
         String liquidText = fluid.getDisplayName().getString();
         int amount = fluid.getAmount();
-        return new TextComponent(String.format("%s: %dmB", liquidText, amount));
+        return Component.literal(String.format("%s: %dmB", liquidText, amount));
     }
 
     @Override

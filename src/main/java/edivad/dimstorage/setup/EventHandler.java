@@ -3,7 +3,7 @@ package edivad.dimstorage.setup;
 import edivad.dimstorage.Main;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -48,7 +48,7 @@ public class EventHandler {
                 }
             }
             messages.stream()
-                    .map(TextComponent::new)
+                    .map(Component::literal)
                     .forEach(message -> player.displayClientMessage(message, false));
 
         }

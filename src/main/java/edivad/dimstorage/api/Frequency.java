@@ -2,7 +2,6 @@ package edivad.dimstorage.api;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -31,7 +30,7 @@ public class Frequency implements INBTSerializable<CompoundTag> {
         }
         else {
             owner = player.getUUID();
-            ownerText = ((TextComponent) player.getName()).getText();
+            ownerText = player.getName().getString();
         }
         this.channel = channel;
     }
@@ -59,7 +58,7 @@ public class Frequency implements INBTSerializable<CompoundTag> {
 
     public Frequency setOwner(@Nonnull Player player) {
         owner = player.getUUID();
-        ownerText = ((TextComponent) player.getName()).getText();
+        ownerText = player.getName().getString();
         return this;
     }
 

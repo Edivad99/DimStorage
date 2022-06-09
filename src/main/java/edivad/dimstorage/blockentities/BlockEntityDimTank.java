@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -155,7 +155,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     @Override
     public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {
         if(!canAccess(player)) {
-            player.displayClientMessage(new TextComponent(ChatFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(Component.literal(ChatFormatting.RED + "Access Denied!"), false);
             return super.activate(player, level, pos, hand);
         }
 

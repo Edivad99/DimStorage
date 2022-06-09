@@ -58,8 +58,7 @@ public class GuiUtils {
                 vertexBuffer.vertex(x, y + maskTop, zLevel).uv(uMin, vMin).endVertex();
             }
         }
-        vertexBuffer.end();
-        BufferUploader.end(vertexBuffer);
+        BufferUploader.drawWithShader(vertexBuffer.end());
         RenderSystem.disableBlend();
     }
 }
