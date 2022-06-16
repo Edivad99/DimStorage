@@ -52,9 +52,9 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 
             if(frequency.hasOwner()) {
                 if(owner.canAccess(player))
-                    probeInfo.horizontal().text(Component.literal(ChatFormatting.GREEN + "Owner: " + frequency.getOwner()));
+                    probeInfo.horizontal().text(Component.literal("Owner: " + frequency.getOwner()).withStyle(ChatFormatting.GREEN));
                 else
-                    probeInfo.horizontal().text(Component.literal(ChatFormatting.RED + "Owner: " + frequency.getOwner()));
+                    probeInfo.horizontal().text(Component.literal("Owner: " + frequency.getOwner()).withStyle(ChatFormatting.RED));
             }
             probeInfo.horizontal().text(Component.literal("Frequency: " + frequency.getChannel()));
             if(owner.locked)

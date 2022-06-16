@@ -98,7 +98,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
             NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
         else {
-            player.displayClientMessage(Component.literal(ChatFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
         }
         return InteractionResult.SUCCESS;
     }
