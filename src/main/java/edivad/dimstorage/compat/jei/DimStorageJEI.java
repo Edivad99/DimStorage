@@ -1,4 +1,4 @@
-/*package edivad.dimstorage.compat.jei;
+package edivad.dimstorage.compat.jei;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.client.screen.pattern.PanelScreen;
@@ -19,5 +19,4 @@ public class DimStorageJEI implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGuiContainerHandler(PanelScreen.class, new AdvancedGuiHandlerDimStorage());
     }
-
-}*/
+}
