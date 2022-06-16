@@ -1,7 +1,7 @@
 package edivad.dimstorage.blocks;
 
-import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +25,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 
@@ -83,8 +83,12 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
         if(blockentity instanceof BlockEntityDimTank tank) {
             FluidStack fluid = tank.liquidState.clientLiquid;
             if(!fluid.isEmpty()) {
-                FluidAttributes attributes = fluid.getFluid().getAttributes();
-                return blockGetter instanceof BlockAndTintGetter blockAndTint ? attributes.getLuminosity(blockAndTint, pos) : attributes.getLuminosity(fluid);
+                FluidType fluidType = fluid.getFluid().getFluidType();
+                if(blockGetter instanceof BlockAndTintGetter blockAndTint) {
+                    return fluidType.getLightLevel(fluid.getFluid().defaultFluidState(), blockAndTint, pos);
+                } else {
+                    return fluidType.getLightLevel(fluid);
+                }
             }
         }
         return 0;

@@ -10,7 +10,8 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.client.RenderProperties;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -40,18 +41,18 @@ public class FluidUtils {
     }
 
     @Nullable
-    public static TextureAtlasSprite getFluidTexture(@Nonnull FluidStack stack) {
-        FluidAttributes fa = stack.getFluid().getAttributes();
-        ResourceLocation still = fa.getStillTexture(stack);
+    public static TextureAtlasSprite getFluidTexture(@Nonnull FluidStack fluidStack) {
+        IFluidTypeRenderProperties properties = RenderProperties.get(fluidStack.getFluid());
+        ResourceLocation still = properties.getStillTexture(fluidStack);
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
     }
 
-    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, Level level, BlockPos pos) {
+    public static int getLiquidColorWithBiome(@Nonnull FluidStack fluidStack, Level level, BlockPos pos) {
         if(level.isClientSide)
-            if(fluid.isFluidEqual(new FluidStack(Fluids.WATER, 1000)))
+            if(fluidStack.getFluid().isSame(Fluids.WATER))
                 return BiomeColors.getAverageWaterColor(level, pos) | 0xFF000000;
 
-        return fluid.getFluid().getAttributes().getColor(fluid);
+        return RenderProperties.get(fluidStack.getFluid()).getColorTint(fluidStack);
     }
 
     public static int getLiquidColorWithBiome(@Nonnull FluidStack fluid, @Nonnull BlockEntity tileEntity) {

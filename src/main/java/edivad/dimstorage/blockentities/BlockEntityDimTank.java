@@ -155,7 +155,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     @Override
     public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {
         if(!canAccess(player)) {
-            player.displayClientMessage(Component.literal(ChatFormatting.RED + "Access Denied!"), false);
+            player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
             return super.activate(player, level, pos, hand);
         }
 

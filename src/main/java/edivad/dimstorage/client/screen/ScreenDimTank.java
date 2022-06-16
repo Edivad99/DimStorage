@@ -15,8 +15,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 
 public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
@@ -49,13 +49,13 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
         FluidStack liquidStack = ((BlockEntityDimTank) blockEntityFrequencyOwner).liquidState.clientLiquid;
 
         if(!liquidStack.isEmpty()) {
-            FluidAttributes liquidAttributes = liquidStack.getFluid().getAttributes();
+            FluidType fluidType = liquidStack.getFluid().getFluidType();
             String liquidName = liquidStack.getDisplayName().getString();
             this.font.draw(poseStack, LIQUID.append(" " + liquidName.substring(0, Math.min(14, liquidName.length()))), 50, 25, 4210752);
             this.font.draw(poseStack, AMOUNT.append(" " + liquidStack.getAmount() + " mB"), 50, 35, 4210752);
-            this.font.draw(poseStack, TEMPERATURE.append(" " + (liquidAttributes.getTemperature() - 273) + "C"), 50, 45, 4210752);
-            this.font.draw(poseStack, LUMINOSITY.append(" " + liquidAttributes.getLuminosity()), 50, 55, 4210752);
-            this.font.draw(poseStack, GASEOUS.append(" " + (liquidAttributes.isGaseous() ? YES : NO)), 50, 65, 4210752);
+            this.font.draw(poseStack, TEMPERATURE.append(" " + (fluidType.getTemperature() - 273) + "C"), 50, 45, 4210752);
+            this.font.draw(poseStack, LUMINOSITY.append(" " + fluidType.getLightLevel()), 50, 55, 4210752);
+            this.font.draw(poseStack, GASEOUS.append(" " + (fluidType.isLighterThanAir() ? YES : NO)), 50, 65, 4210752);
         }
         else {
             this.font.draw(poseStack, LIQUID.append(" ").append(EMPTY), 50, 25, 4210752);
