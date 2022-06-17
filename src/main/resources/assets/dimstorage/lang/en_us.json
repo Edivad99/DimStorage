@@ -38,6 +38,7 @@
   "message.dimstorage.holdShift": "@7Hold @b@oShift @7for details",
   "message.dimstorage.changeAutoCollect": "@7Press @b@oShift @7+ right click on a non DimChest block to enable/disable autocollect",
 
-  "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area"
-
+  "tooltip.dimstorage.collect": "When you are on Collecting it means that DimChest collects all the items in the inventories in a %dx%d area",
+  "config.jade.plugin_dimstorage.dim_block_base": "Enable custom visualization for DimChest",
+  "config.jade.plugin_dimstorage.dim_tank": "Enable custom visualization for DimTank"
 }

@@ -116,6 +116,9 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") {
         transitive = false
     }
+
+    compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id_api}")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
