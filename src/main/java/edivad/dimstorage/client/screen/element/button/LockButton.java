@@ -1,12 +1,12 @@
 package edivad.dimstorage.client.screen.element.button;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -20,7 +20,7 @@ public class LockButton extends Button {
     }
 
     private static Component getText(boolean isLock) {
-        return Component.translatable("gui." + Main.MODID + (isLock ? ".yes" : ".no"));
+        return Component.translatable(isLock ? Translations.YES : Translations.NO);
     }
 
     @Override

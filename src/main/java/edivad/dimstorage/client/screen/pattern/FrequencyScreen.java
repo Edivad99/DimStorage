@@ -1,7 +1,6 @@
 package edivad.dimstorage.client.screen.pattern;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import edivad.dimstorage.Main;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
@@ -12,6 +11,7 @@ import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,9 +19,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
-    private static final Component OWNER = Component.translatable("gui." + Main.MODID + ".owner");
-    private static final Component FREQ = Component.translatable("gui." + Main.MODID + ".frequency");
-    private static final Component LOCKED = Component.translatable("gui." + Main.MODID + ".locked");
+    private static final Component OWNER = Component.translatable(Translations.OWNER);
+    private static final Component FREQ = Component.translatable(Translations.FREQUENCY);
+    private static final Component LOCKED = Component.translatable(Translations.LOCKED);
 
     protected BlockEntityFrequencyOwner blockEntityFrequencyOwner;
     private FrequencyText freqTextField;

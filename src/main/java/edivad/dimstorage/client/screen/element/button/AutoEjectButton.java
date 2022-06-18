@@ -1,9 +1,9 @@
 package edivad.dimstorage.client.screen.element.button;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimTank;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -17,7 +17,7 @@ public class AutoEjectButton extends Button {
     }
 
     private static Component getText(boolean autoEject) {
-        return Component.translatable("gui." + Main.MODID + (autoEject ? ".eject" : ".idle"));
+        return Component.translatable(autoEject ? Translations.EJECT : Translations.IDLE);
     }
 
     @Override

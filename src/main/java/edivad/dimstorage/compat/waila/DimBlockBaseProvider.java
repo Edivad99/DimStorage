@@ -3,6 +3,7 @@ package edivad.dimstorage.compat.waila;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,10 +45,10 @@ public class DimBlockBaseProvider implements IBlockComponentProvider, IServerDat
         if(accessor.getBlockEntity() instanceof BlockEntityFrequencyOwner) {
             CompoundTag data = accessor.getServerData();
 
-            MutableComponent owner = Component.translatable("gui." + Main.MODID + ".owner").append(" ");
-            MutableComponent freq = Component.translatable("gui." + Main.MODID + ".frequency").append(" ");
-            MutableComponent locked = Component.translatable("gui." + Main.MODID + ".locked").append(" ");
-            MutableComponent yes = Component.translatable("gui." + Main.MODID + ".yes");
+            MutableComponent owner = Component.translatable(Translations.OWNER).append(" ");
+            MutableComponent freq = Component.translatable(Translations.FREQUENCY).append(" ");
+            MutableComponent locked = Component.translatable(Translations.LOCKED).append(" ");
+            MutableComponent yes = Component.translatable(Translations.YES);
 
             if(data.getBoolean(Main.MODID + ".HasOwner")) {
                 ChatFormatting textColor = data.getBoolean(Main.MODID + ".CanAccess") ? ChatFormatting.GREEN : ChatFormatting.RED;

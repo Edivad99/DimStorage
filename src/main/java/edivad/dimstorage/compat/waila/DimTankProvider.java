@@ -2,6 +2,7 @@ package edivad.dimstorage.compat.waila;
 
 import edivad.dimstorage.Main;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -38,10 +39,10 @@ public class DimTankProvider extends DimBlockBaseProvider implements IBlockCompo
         if(accessor.getBlockEntity() instanceof BlockEntityDimTank) {
             CompoundTag data = accessor.getServerData();
 
-            MutableComponent autoEject = Component.translatable("gui." + Main.MODID + ".eject").append(": ");
-            MutableComponent yes = Component.translatable("gui." + Main.MODID + ".yes");
-            MutableComponent liquid = Component.translatable("gui." + Main.MODID + ".liquid").append(" ");
-            MutableComponent amount = Component.translatable("gui." + Main.MODID + ".amount").append(" ");
+            MutableComponent autoEject = Component.translatable(Translations.EJECT).append(": ");
+            MutableComponent yes = Component.translatable(Translations.YES);
+            MutableComponent liquid = Component.translatable(Translations.LIQUID).append(" ");
+            MutableComponent amount = Component.translatable(Translations.AMOUNT).append(" ");
 
             if(data.getBoolean(Main.MODID + ".AutoEject"))
                 tooltip.add(autoEject.append(yes));

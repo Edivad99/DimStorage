@@ -1,6 +1,5 @@
 package edivad.dimstorage.items;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.container.ContainerDimTablet;
@@ -9,12 +8,14 @@ import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.Config;
 import edivad.dimstorage.tools.CustomTranslate;
+import edivad.dimstorage.tools.Translations;
 import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,7 +36,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.List;
 
@@ -128,25 +128,26 @@ public class DimTablet extends Item implements MenuProvider {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
         if(level != null) {
             if(!stack.hasTag() || !stack.getTag().getBoolean("bound")) {
-                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".adviceToLink"));
+                tooltip.add(CustomTranslate.translateToLocal(Translations.ADVICE_TO_LINK));
                 return;
             }
 
             CompoundTag tag = stack.getTag();
             if(Screen.hasShiftDown()) {
                 Frequency f = new Frequency(tag.getCompound("frequency"));
-                tooltip.add(Component.translatable("gui." + Main.MODID + ".frequency").append(" " + f.getChannel()).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable(Translations.FREQUENCY).append(" " + f.getChannel()).withStyle(ChatFormatting.GRAY));
                 if(f.hasOwner())
-                    tooltip.add(Component.translatable("gui." + Main.MODID + ".owner").append(" " + f.getOwner()).withStyle(ChatFormatting.GRAY));
+                    tooltip.add(Component.translatable(Translations.OWNER).append(" " + f.getOwner()).withStyle(ChatFormatting.GRAY));
 
-                String yes = Component.translatable("gui." + Main.MODID + ".yes").getString();
-                String no = Component.translatable("gui." + Main.MODID + ".no").getString();
-                tooltip.add(Component.translatable("gui." + Main.MODID + ".collecting").append(": " + (tag.getBoolean("autocollect") ? yes : no)).withStyle(ChatFormatting.GRAY));
+                MutableComponent yes = Component.translatable(Translations.YES);
+                MutableComponent no = Component.translatable(Translations.NO);
+                MutableComponent collecting = Component.translatable(Translations.COLLECTING);
+                tooltip.add(collecting.append(": ").append(tag.getBoolean("autocollect") ? yes : no).withStyle(ChatFormatting.GRAY));
             }
             else
-                tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".holdShift"));
+                tooltip.add(CustomTranslate.translateToLocal(Translations.HOLD_SHIFT));
 
-            tooltip.add(CustomTranslate.translateToLocal("message." + Main.MODID + ".changeAutoCollect"));
+            tooltip.add(CustomTranslate.translateToLocal(Translations.CHANGE_AUTO_COLLECT));
         }
     }
 

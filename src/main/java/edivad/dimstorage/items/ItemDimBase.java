@@ -4,6 +4,7 @@ import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -55,8 +56,8 @@ public class ItemDimBase extends BlockItem {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
         Frequency frequency = getFreq(stack);
         if(frequency.hasOwner())
-            tooltip.add(Component.translatable("gui." + Main.MODID + ".owner").append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner()).withStyle(ChatFormatting.DARK_RED));
         if(stack.hasTag())
-            tooltip.add(Component.translatable("gui." + Main.MODID + ".frequency").append(" " + frequency.getChannel()));
+            tooltip.add(Component.translatable(Translations.FREQUENCY).append(" " + frequency.getChannel()));
     }
 }

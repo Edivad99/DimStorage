@@ -5,6 +5,7 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.storage.DimTankStorage;
+import edivad.dimstorage.tools.Translations;
 import mcjty.theoneprobe.api.IElement;
 import mcjty.theoneprobe.api.IElementFactory;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -15,6 +16,7 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,22 +49,25 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
         BlockEntity te = level.getBlockEntity(data.getPos());
 
-        if(te instanceof BlockEntityFrequencyOwner owner) {
-            Frequency frequency = owner.getFrequency();
+        if(te instanceof BlockEntityFrequencyOwner frequencyOwner) {
+            MutableComponent locked = Component.translatable(Translations.LOCKED);
+            MutableComponent yes = Component.translatable(Translations.YES);
+            MutableComponent eject = Component.translatable(Translations.EJECT);
+            MutableComponent owner = Component.translatable(Translations.OWNER);
+            MutableComponent frequency = Component.translatable(Translations.FREQUENCY);
 
-            if(frequency.hasOwner()) {
-                if(owner.canAccess(player))
-                    probeInfo.horizontal().text(Component.literal("Owner: " + frequency.getOwner()).withStyle(ChatFormatting.GREEN));
-                else
-                    probeInfo.horizontal().text(Component.literal("Owner: " + frequency.getOwner()).withStyle(ChatFormatting.RED));
+            Frequency blockFrequency = frequencyOwner.getFrequency();
+            if(blockFrequency.hasOwner()) {
+                ChatFormatting textColor = frequencyOwner.canAccess(player) ? ChatFormatting.GREEN : ChatFormatting.RED;
+                probeInfo.horizontal().text(owner.append(" " + blockFrequency.getOwner()).withStyle(textColor));
             }
-            probeInfo.horizontal().text(Component.literal("Frequency: " + frequency.getChannel()));
-            if(owner.locked)
-                probeInfo.horizontal().text(Component.literal("Locked: Yes"));
+            probeInfo.horizontal().text(frequency.append(" " + blockFrequency.getChannel()));
+            if(frequencyOwner.locked)
+                probeInfo.horizontal().text(locked.append(" ").append(yes));
 
             if(te instanceof BlockEntityDimTank tank) {
                 if(tank.autoEject)
-                    probeInfo.horizontal().text(Component.literal("Auto-eject: Yes"));
+                    probeInfo.horizontal().text(eject.append(" ").append(yes));
 
                 if(!tank.liquidState.serverLiquid.isEmpty())
                     probeInfo.element(new FluidElement(tank, DimTankStorage.CAPACITY));

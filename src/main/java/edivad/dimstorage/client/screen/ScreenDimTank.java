@@ -8,6 +8,7 @@ import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
+import edivad.dimstorage.tools.Translations;
 import edivad.dimstorage.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -21,14 +22,14 @@ import net.minecraftforge.fluids.FluidType;
 public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
     private static final ResourceLocation DIMTANK_GUI = new ResourceLocation(Main.MODID, "textures/gui/dimtank.png");
-    private static final MutableComponent LIQUID = Component.translatable("gui." + Main.MODID + ".liquid");
-    private static final MutableComponent AMOUNT = Component.translatable("gui." + Main.MODID + ".amount");
-    private static final MutableComponent TEMPERATURE = Component.translatable("gui." + Main.MODID + ".temperature");
-    private static final MutableComponent LUMINOSITY = Component.translatable("gui." + Main.MODID + ".luminosity");
-    private static final MutableComponent GASEOUS = Component.translatable("gui." + Main.MODID + ".gas");
-    private static final MutableComponent EMPTY = Component.translatable("gui." + Main.MODID + ".empty");
-    private static final MutableComponent YES = Component.translatable("gui." + Main.MODID + ".yes");
-    private static final MutableComponent NO = Component.translatable("gui." + Main.MODID + ".no");
+    private static final MutableComponent LIQUID = Component.translatable(Translations.LIQUID);
+    private static final MutableComponent AMOUNT = Component.translatable(Translations.AMOUNT);
+    private static final MutableComponent TEMPERATURE = Component.translatable(Translations.TEMPERATURE);
+    private static final MutableComponent LUMINOSITY = Component.translatable(Translations.LUMINOSITY);
+    private static final MutableComponent GASEOUS = Component.translatable(Translations.GAS);
+    private static final MutableComponent EMPTY = Component.translatable(Translations.EMPTY);
+    private static final MutableComponent YES = Component.translatable(Translations.YES);
+    private static final MutableComponent NO = Component.translatable(Translations.NO);
 
     public ScreenDimTank(ContainerDimTank container, Inventory inventory, Component text) {
         super(container, container.owner, inventory, text, DIMTANK_GUI, container.isOpen);
