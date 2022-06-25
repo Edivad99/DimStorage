@@ -13,18 +13,15 @@ import snownee.jade.api.WailaPlugin;
 @WailaPlugin(Main.MODID)
 public class WailaCompatibility implements IWailaPlugin {
 
-    private static final DimBlockBaseProvider DIM_BLOCK_BASE_PROVIDER = new DimBlockBaseProvider();
-    private static final DimTankProvider DIM_TANK_PROVIDER = new DimTankProvider();
-
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(DIM_BLOCK_BASE_PROVIDER, BlockEntityDimChest.class);
-        registration.registerBlockDataProvider(DIM_TANK_PROVIDER, BlockEntityDimTank.class);
+        registration.registerBlockDataProvider(new DimBlockBaseProvider(), BlockEntityDimChest.class);
+        registration.registerBlockDataProvider(new DimTankProvider(), BlockEntityDimTank.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerBlockComponent(DIM_BLOCK_BASE_PROVIDER, DimChest.class);
-        registration.registerBlockComponent(DIM_TANK_PROVIDER, DimTank.class);
+        registration.registerBlockComponent(new DimBlockBaseComponent(), DimChest.class);
+        registration.registerBlockComponent(new DimTankComponent(), DimTank.class);
     }
 }
