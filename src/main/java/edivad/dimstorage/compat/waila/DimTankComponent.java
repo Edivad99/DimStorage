@@ -26,11 +26,11 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
             CompoundTag data = accessor.getServerData();
 
             if(data.getBoolean(Main.MODID + ".AutoEject"))
-                tooltip.add(AUTO_EJECT.append(": ").append(YES));
+                tooltip.add(AUTO_EJECT.copy().append(": ").append(YES));
             if(data.getInt(Main.MODID + ".Amount") > 0) {
                 String liquidName = Component.translatable(data.getString(Main.MODID + ".Liquid")).getString();
-                tooltip.add(LIQUID.append(" " + liquidName));
-                tooltip.add(AMOUNT.append(" " + data.getInt(Main.MODID + ".Amount") + " mB"));
+                tooltip.add(LIQUID.copy().append(" " + liquidName));
+                tooltip.add(AMOUNT.copy().append(" " + data.getInt(Main.MODID + ".Amount") + " mB"));
             }
         }
     }

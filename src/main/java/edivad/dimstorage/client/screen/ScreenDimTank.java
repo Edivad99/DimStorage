@@ -52,14 +52,14 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
         if(!liquidStack.isEmpty()) {
             FluidType fluidType = liquidStack.getFluid().getFluidType();
             String liquidName = liquidStack.getDisplayName().getString();
-            this.font.draw(poseStack, LIQUID.append(" " + liquidName.substring(0, Math.min(14, liquidName.length()))), 50, 25, 4210752);
-            this.font.draw(poseStack, AMOUNT.append(" " + liquidStack.getAmount() + " mB"), 50, 35, 4210752);
-            this.font.draw(poseStack, TEMPERATURE.append(" " + (fluidType.getTemperature() - 273) + "C"), 50, 45, 4210752);
-            this.font.draw(poseStack, LUMINOSITY.append(" " + fluidType.getLightLevel()), 50, 55, 4210752);
-            this.font.draw(poseStack, GASEOUS.append(" " + (fluidType.isLighterThanAir() ? YES : NO)), 50, 65, 4210752);
+            this.font.draw(poseStack, LIQUID.copy().append(" " + liquidName.substring(0, Math.min(14, liquidName.length()))), 50, 25, 4210752);
+            this.font.draw(poseStack, AMOUNT.copy().append(" " + liquidStack.getAmount() + " mB"), 50, 35, 4210752);
+            this.font.draw(poseStack, TEMPERATURE.copy().append(" " + (fluidType.getTemperature() - 273) + "C"), 50, 45, 4210752);
+            this.font.draw(poseStack, LUMINOSITY.copy().append(" " + fluidType.getLightLevel()), 50, 55, 4210752);
+            this.font.draw(poseStack, GASEOUS.copy().append(" " + (fluidType.isLighterThanAir() ? YES : NO)), 50, 65, 4210752);
         }
         else {
-            this.font.draw(poseStack, LIQUID.append(" ").append(EMPTY), 50, 25, 4210752);
+            this.font.draw(poseStack, LIQUID.copy().append(" ").append(EMPTY), 50, 25, 4210752);
         }
 
     }

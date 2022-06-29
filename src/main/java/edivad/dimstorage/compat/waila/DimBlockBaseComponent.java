@@ -32,11 +32,11 @@ public class DimBlockBaseComponent implements IBlockComponentProvider {
 
             if(data.getBoolean(Main.MODID + ".HasOwner")) {
                 ChatFormatting textColor = data.getBoolean(Main.MODID + ".CanAccess") ? ChatFormatting.GREEN : ChatFormatting.RED;
-                tooltip.add(OWNER.append(" " + data.getString(Main.MODID + ".Owner")).withStyle(textColor));
+                tooltip.add(OWNER.copy().append(" " + data.getString(Main.MODID + ".Owner")).withStyle(textColor));
             }
-            tooltip.add(FREQ.append(" " + data.getInt(Main.MODID + ".Frequency")));
+            tooltip.add(FREQ.copy().append(" " + data.getInt(Main.MODID + ".Frequency")));
             if(data.getBoolean(Main.MODID + ".Locked"))
-                tooltip.add(LOCKED.append(" ").append(YES));
+                tooltip.add(LOCKED.copy().append(" ").append(YES));
         }
     }
 
