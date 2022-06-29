@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -92,7 +93,8 @@ public class DimStorageManager {
     }
 
     private void load() {
-        saveDir = new File(Main.getServer().overworld().getServer().getWorldPath(LevelResource.ROOT).toFile(), "DimStorage");
+        var minecraftServer = ServerLifecycleHooks.getCurrentServer().overworld().getServer();
+        saveDir = new File(minecraftServer.getWorldPath(LevelResource.ROOT).toFile(), "DimStorage");
         try {
             if(!saveDir.exists())
                 saveDir.mkdirs();

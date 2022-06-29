@@ -34,7 +34,7 @@ public class UpdateDimTank extends UpdateDimBase {
         BlockEntity blockentity = level.getBlockEntity(pos);
 
         if(!(blockentity instanceof BlockEntityDimTank tank)) {
-            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
+            Main.LOGGER.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
             return;
         }
 

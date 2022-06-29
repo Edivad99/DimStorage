@@ -24,7 +24,7 @@ public class UpdateDimChest extends UpdateDimBase {
         BlockEntity blockentity = level.getBlockEntity(pos);
 
         if(!(blockentity instanceof BlockEntityDimChest chest)) {
-            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
+            Main.LOGGER.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
             return;
         }
 

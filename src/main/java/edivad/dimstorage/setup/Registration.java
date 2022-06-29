@@ -49,7 +49,7 @@ public class Registration {
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
         if(!(te instanceof BlockEntityDimChest blockentity)) {
-            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
+            Main.LOGGER.error("Wrong type of blockentity (expected BlockEntityDimChest)!");
             return null;
         }
 
@@ -64,7 +64,7 @@ public class Registration {
         BlockEntity te = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         boolean isOpen = data.readBoolean();
         if(!(te instanceof BlockEntityDimTank blockentity)) {
-            Main.logger.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
+            Main.LOGGER.error("Wrong type of blockentity (expected BlockEntityDimTank)!");
             return null;
         }
 
