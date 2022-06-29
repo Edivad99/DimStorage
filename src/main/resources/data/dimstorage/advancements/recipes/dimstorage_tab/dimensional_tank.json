@@ -1,13 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "dimstorage:dimensional_tank"
-    ]
-  },
   "criteria": {
-    "cauldron": {
-      "trigger": "minecraft:inventory_changed",
+    "has_cauldron": {
       "conditions": {
         "items": [
           {
@@ -16,19 +10,25 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "dimstorage:dimensional_tank"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "cauldron",
+      "has_cauldron",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dimstorage:dimensional_tank"
+    ]
+  }
 }

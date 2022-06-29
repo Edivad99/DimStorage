@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ada",
-    "dcd",
-    "aba"
-  ],
   "key": {
     "a": {
       "item": "dimstorage:dim_wall"
@@ -19,6 +14,11 @@
       "tag": "forge:glass"
     }
   },
+  "pattern": [
+    "ada",
+    "dcd",
+    "aba"
+  ],
   "result": {
     "item": "dimstorage:dimensional_tank"
   }
