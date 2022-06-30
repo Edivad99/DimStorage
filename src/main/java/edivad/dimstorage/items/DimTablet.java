@@ -4,12 +4,11 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.setup.Config;
 import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tools.Config;
-import edivad.dimstorage.tools.CustomTranslate;
+import edivad.dimstorage.tools.InventoryUtils;
 import edivad.dimstorage.tools.Translations;
-import edivad.dimstorage.tools.utils.InventoryUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -30,12 +29,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -51,31 +48,33 @@ public class DimTablet extends Item implements MenuProvider {
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
 
-        if(!level.isClientSide) {
-            ItemStack device = player.getItemInHand(context.getHand());
-            BlockEntity blockentity = level.getBlockEntity(pos);
-            if(player.isCrouching()) {
-                if(blockentity instanceof BlockEntityDimChest dimChest) {
-                    if(dimChest.canAccess(player)) {
-                        CompoundTag tag = new CompoundTag();
-                        tag.put("frequency", dimChest.getFrequency().serializeNBT());
-                        tag.putBoolean("bound", true);
-                        tag.putBoolean("autocollect", false);
-                        device.setTag(tag);
+        if(level.isClientSide) {
+            return InteractionResult.PASS;
+        }
+        if(!player.isCrouching()) {
+            return InteractionResult.PASS;
+        }
 
-                        player.displayClientMessage(Component.literal("Linked to chest").withStyle(ChatFormatting.GREEN), false);
-                        return InteractionResult.SUCCESS;
-                    }
-                    player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
-                }
-                else {
-                    stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
-                    if(stack.getTag().getBoolean("autocollect"))
-                        player.displayClientMessage(Component.literal("Enabled autocollect").withStyle(ChatFormatting.GREEN), false);
-                    else
-                        player.displayClientMessage(Component.literal("Disabled autocollect").withStyle(ChatFormatting.RED), false);
-                }
+        ItemStack device = player.getItemInHand(context.getHand());
+        if(level.getBlockEntity(pos) instanceof BlockEntityDimChest dimChest) {
+            if(dimChest.canAccess(player)) {
+                CompoundTag tag = new CompoundTag();
+                tag.put("frequency", dimChest.getFrequency().serializeNBT());
+                tag.putBoolean("bound", true);
+                tag.putBoolean("autocollect", false);
+                device.setTag(tag);
+
+                player.displayClientMessage(Component.literal("Linked to chest").withStyle(ChatFormatting.GREEN), false);
+                return InteractionResult.SUCCESS;
             }
+            player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
+        }
+        else {
+            stack.getTag().putBoolean("autocollect", !stack.getTag().getBoolean("autocollect"));
+            if(stack.getTag().getBoolean("autocollect"))
+                player.displayClientMessage(Component.literal("Enabled autocollect").withStyle(ChatFormatting.GREEN), false);
+            else
+                player.displayClientMessage(Component.literal("Disabled autocollect").withStyle(ChatFormatting.RED), false);
         }
         return InteractionResult.PASS;
     }
@@ -110,7 +109,7 @@ public class DimTablet extends Item implements MenuProvider {
 
                     for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
                         Item item = player.getInventory().getItem(i).getItem();
-                        if(Config.DIMTABLET_LIST.get().contains(ForgeRegistries.ITEMS.getKey(item).toString())) {
+                        if(Config.DimTablet.containItem(item)) {
                             InventoryUtils.mergeItemStack(player.getInventory().getItem(i), 0, getStorage(level, f).getContainerSize(), chestInventory);
                         }
                     }

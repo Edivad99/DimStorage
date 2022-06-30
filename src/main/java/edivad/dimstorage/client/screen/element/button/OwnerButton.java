@@ -6,7 +6,7 @@ import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
-import edivad.dimstorage.tools.Config;
+import edivad.dimstorage.setup.Config;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -17,7 +17,7 @@ public class OwnerButton extends Button {
     public OwnerButton(int width, int height, BlockEntityFrequencyOwner owner) {
         super(width, height, 64, 20, Component.literal(owner.getFrequency().getOwner()), null);
         this.owner = owner;
-        this.active = Config.DIMCHEST_ALLOWPRIVATENETWORK.get();
+        this.active = Config.DimBlock.ALLOW_PRIVATE_NETWORK.get();
     }
 
     @Override

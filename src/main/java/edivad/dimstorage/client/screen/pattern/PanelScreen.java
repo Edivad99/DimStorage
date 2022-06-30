@@ -1,7 +1,7 @@
 package edivad.dimstorage.client.screen.pattern;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import edivad.dimstorage.tools.Config;
+import edivad.dimstorage.setup.Config;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -36,7 +36,7 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
 
         this.drawSettings = drawSettings;
         this.settingsButtonOver = false;
-        this.allowConfig = Config.DIMCHEST_ALLOWCONFIG.get();
+        this.allowConfig = Config.DimBlock.ALLOW_CONFIG.get();
         this.component = new ArrayList<>();
 
         if(this.drawSettings) {
