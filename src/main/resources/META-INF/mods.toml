@@ -54,3 +54,9 @@ description="DimStorage add a technologic version of ender chest system with own
     versionRange="[1.19,1.20.0)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.dimstorage]]
+    modId="edivadlib"
+    mandatory=true
+    versionRange="[1.0.0,)"
+    ordering="NONE"
+    side="BOTH"

@@ -34,12 +34,12 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 
             @Override
             public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
-                return new FluidElement(friendlyByteBuf);
+                return new MyFluidElement(friendlyByteBuf);
             }
 
             @Override
             public ResourceLocation getId() {
-                return FluidElement.ID;
+                return MyFluidElement.ID;
             }
         });
         return null;
@@ -70,7 +70,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
                     probeInfo.horizontal().text(eject.append(" ").append(yes));
 
                 if(!tank.liquidState.serverLiquid.isEmpty())
-                    probeInfo.element(new FluidElement(tank, DimTankStorage.CAPACITY));
+                    probeInfo.element(new MyFluidElement(tank, DimTankStorage.CAPACITY));
             }
         }
     }

@@ -30,7 +30,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     private static final String BLUE_INDICATOR = "blueIndicator";
     private static final String RED_INDICATOR = "redIndicator";
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
     public static final ModelLayerLocation STATIC_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), STATIC);
     public static final ModelLayerLocation MOVABLE_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), MOVABLE);
     public static final ModelLayerLocation GREEN_INDICATOR_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), GREEN_INDICATOR);
@@ -91,7 +91,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     private void renderBlock(BlockEntityDimChest blockentity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         poseStack.pushPose();
 
-        //This line actually rotates the renderer.
+        // This line actually rotates the renderer.
         poseStack.translate(0.5D, -0.5D, 0.5D);
 
         // Direction
@@ -100,7 +100,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
         // Sens
         poseStack.mulPose(new Quaternion(180F, 0F, 0F, true));
 
-        // Ajustement
+        // Adjustment
         poseStack.translate(0D, -2D, 0D);
 
         VertexConsumer buffer = bufferIn.getBuffer(RenderType.entitySolid(TEXTURE));

@@ -30,7 +30,7 @@ public class Registration {
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Main.MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Main.MODID);
 
-    public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.dimStorageTab).stacksTo(64);
+    public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.DIMSTORAGE_TAB).stacksTo(64);
 
     public static void init() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

@@ -1,10 +1,14 @@
 package edivad.dimstorage.tools;
 
 import edivad.dimstorage.Main;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import edivad.edivadlib.tools.TranslationsAdvancement;
 
 public class Translations {
+
+    public static final TranslationsAdvancement ADVANCEMENTS_ROOT = new TranslationsAdvancement(Main.MODID, "root");
+    public static final TranslationsAdvancement DIMCHEST_ADVANCEMENTS = new TranslationsAdvancement(Main.MODID, "dimensional_chest");
+    public static final TranslationsAdvancement DIMTANK_ADVANCEMENTS = new TranslationsAdvancement(Main.MODID, "dimensional_tablet");
+    public static final TranslationsAdvancement DIMTABLET_ADVANCEMENTS = new TranslationsAdvancement(Main.MODID, "dimensional_tank");
 
     public static final String LIQUID = "gui." + Main.MODID + ".liquid";
     public static final String AMOUNT = "gui." + Main.MODID + ".amount";
@@ -21,9 +25,13 @@ public class Translations {
     public static final String FREQUENCY = "gui." + Main.MODID + ".frequency";
     public static final String LOCKED = "gui." + Main.MODID + ".locked";
     public static final String COLLECTING = "gui." + Main.MODID + ".collecting";
-
-
-    public static final String ADVICE_TO_LINK = "message." + Main.MODID + ".adviceToLink";
-    public static final String HOLD_SHIFT = "message." + Main.MODID + ".holdShift";
+    public static final String PRESS = "message." + Main.MODID + ".press";
+    public static final String HOLD = "message." + Main.MODID + ".hold";
+    public static final String FOR_DETAILS = "message." + Main.MODID + ".for_details";
+    public static final String BIND_DIMCHEST = "message." + Main.MODID + ".bind_dimchest";
     public static final String CHANGE_AUTO_COLLECT = "message." + Main.MODID + ".changeAutoCollect";
+
+
+    public static final String JADE_DIMCHEST = "config.jade.plugin_" + Main.MODID + ".dim_block_base";
+    public static final String JADE_DIMTANK = "config.jade.plugin_" + Main.MODID + ".dim_tank";
 }

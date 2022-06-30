@@ -3,9 +3,9 @@ package edivad.dimstorage.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.tools.utils.FluidUtils;
+import edivad.dimstorage.storage.DimTankStorage;
+import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -51,13 +51,12 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> 
             float margin = 0.9f;
             float offset = 0.1f;
 
-            int color = FluidUtils.getLiquidColorWithBiome(fluid, blockentity);
-
-            float r = FluidUtils.getRed(color);
-            float g = FluidUtils.getGreen(color);
-            float b = FluidUtils.getBlue(color);
-            float a = FluidUtils.getAlpha(color);
-            int light = 15728880;
+            final int color = FluidUtils.getLiquidColorWithBiome(fluid, blockentity);
+            final float r = FluidUtils.getRed(color);
+            final float g = FluidUtils.getGreen(color);
+            final float b = FluidUtils.getBlue(color);
+            final float a = FluidUtils.getAlpha(color);
+            final int light = 15728880;
 
             // Top
             renderer.vertex(matrix4f, TANK_THICKNESS + offset, scale + TANK_THICKNESS, TANK_THICKNESS + offset).color(r, g, b, a).uv(u1, v1).uv2(light).endVertex();

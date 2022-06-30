@@ -101,10 +101,15 @@ repositories {
         name 'JEI'
         url 'https://dvs1.progwml6.com/files/maven'
     }
+    flatDir {
+        dir 'libs'
+    }
 }
 
 dependencies { 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("edivad:EdivadLib-${minecraft_version}:${edivadlib_version}")
 
     implementation fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") {
         transitive = false

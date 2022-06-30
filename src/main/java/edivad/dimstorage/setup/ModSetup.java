@@ -1,7 +1,7 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
-import edivad.dimstorage.compat.MainCompatHandler;
+import edivad.dimstorage.compat.top.TOPProvider;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.plugin.DimChestPlugin;
@@ -11,15 +11,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
 
-    public static final CreativeModeTab dimStorageTab = new CreativeModeTab(Main.MODID + "_tab") {
+    public static final CreativeModeTab DIMSTORAGE_TAB = new CreativeModeTab(Main.MODID + "_tab") {
 
         @Override
         public ItemStack makeIcon() {
@@ -33,8 +35,10 @@ public class ModSetup {
         DimStorageManager.registerPlugin(new DimTankPlugin());
         MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 
-        //Compat
-        MainCompatHandler.registerTOP();
+        //Register TheOneProbe
+        if(ModList.get().isLoaded("theoneprobe")) {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
+        }
     }
 
     @SubscribeEvent

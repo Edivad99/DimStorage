@@ -9,7 +9,7 @@ import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.Translations;
-import edivad.dimstorage.tools.utils.FluidUtils;
+import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

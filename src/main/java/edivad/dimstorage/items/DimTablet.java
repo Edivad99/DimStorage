@@ -39,7 +39,7 @@ import java.util.List;
 public class DimTablet extends Item implements MenuProvider {
 
     public DimTablet() {
-        super(new Properties().tab(ModSetup.dimStorageTab).stacksTo(1));
+        super(new Properties().tab(ModSetup.DIMSTORAGE_TAB).stacksTo(1));
     }
 
     @Override
@@ -125,9 +125,26 @@ public class DimTablet extends Item implements MenuProvider {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        MutableComponent ADVICE_TO_LINK = Component.translatable(Translations.PRESS).withStyle(ChatFormatting.GRAY)
+                .append(" ")
+                .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
+                .append(Component.literal(" + ").withStyle(ChatFormatting.GRAY))
+                .append(Component.translatable(Translations.BIND_DIMCHEST).withStyle(ChatFormatting.GRAY));
+
+        MutableComponent HOLD_SHIFT = Component.translatable(Translations.HOLD).withStyle(ChatFormatting.GRAY)
+                .append(" ")
+                .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
+                .append(" ")
+                .append(Component.translatable(Translations.FOR_DETAILS).withStyle(ChatFormatting.GRAY));
+
+        MutableComponent CHANGE_AUTOCOLLECT = Component.translatable(Translations.PRESS).withStyle(ChatFormatting.GRAY)
+                .append(" ")
+                .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
+                .append(Component.literal(" + ").withStyle(ChatFormatting.GRAY))
+                .append(Component.translatable(Translations.CHANGE_AUTO_COLLECT).withStyle(ChatFormatting.GRAY));
         if(level != null) {
             if(!stack.hasTag() || !stack.getTag().getBoolean("bound")) {
-                tooltip.add(CustomTranslate.translateToLocal(Translations.ADVICE_TO_LINK));
+                tooltip.add(ADVICE_TO_LINK);
                 return;
             }
 
@@ -144,9 +161,9 @@ public class DimTablet extends Item implements MenuProvider {
                 tooltip.add(collecting.append(": ").append(tag.getBoolean("autocollect") ? yes : no).withStyle(ChatFormatting.GRAY));
             }
             else
-                tooltip.add(CustomTranslate.translateToLocal(Translations.HOLD_SHIFT));
+                tooltip.add(HOLD_SHIFT);
 
-            tooltip.add(CustomTranslate.translateToLocal(Translations.CHANGE_AUTO_COLLECT));
+            tooltip.add(CHANGE_AUTOCOLLECT);
         }
     }
 

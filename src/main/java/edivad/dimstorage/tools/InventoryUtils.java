@@ -1,4 +1,4 @@
-package edivad.dimstorage.tools.utils;
+package edivad.dimstorage.tools;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -5,7 +5,7 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.OpenChest;
-import edivad.dimstorage.tools.utils.InventoryUtils;
+import edivad.dimstorage.tools.InventoryUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;

@@ -6,6 +6,7 @@ import edivad.dimstorage.client.render.blockentity.DimTankRenderer;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
+import edivad.edivadlib.setup.UpdateChecker;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +22,7 @@ public class ClientSetup {
 
     public static void init(FMLClientSetupEvent event) {
         //Version checker
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(new UpdateChecker(Main.MODID));
 
         //Special render & GUI
         ItemBlockRenderTypes.setRenderLayer(Registration.DIMTANK.get(), RenderType.cutout());
