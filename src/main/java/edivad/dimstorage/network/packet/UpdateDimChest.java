@@ -33,6 +33,6 @@ public class UpdateDimChest extends UpdateDimBase {
         chest.setChanged();
 
         level.sendBlockUpdated(pos, chest.getBlockState(), chest.getBlockState(), Block.UPDATE_ALL);
-        NetworkHooks.openGui(player, chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+        NetworkHooks.openScreen(player, chest, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

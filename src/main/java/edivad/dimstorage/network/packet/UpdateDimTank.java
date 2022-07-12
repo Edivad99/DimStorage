@@ -44,6 +44,6 @@ public class UpdateDimTank extends UpdateDimBase {
         tank.setChanged();
 
         level.sendBlockUpdated(pos, tank.getBlockState(), tank.getBlockState(), Block.UPDATE_ALL);
-        NetworkHooks.openGui(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
+        NetworkHooks.openScreen(player, tank, buf -> buf.writeBlockPos(pos).writeBoolean(true));
     }
 }

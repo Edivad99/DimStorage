@@ -94,7 +94,7 @@ public class DimTablet extends Item implements MenuProvider {
             if(!f.canAccess(player))
                 return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-            NetworkHooks.openGui((ServerPlayer) player, this);
+            NetworkHooks.openScreen((ServerPlayer) player, this);
         }
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }

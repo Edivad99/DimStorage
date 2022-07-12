@@ -9,8 +9,8 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.WorldEvent.Load;
-import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.event.level.LevelEvent.Load;
+import net.minecraftforge.event.level.LevelEvent.Save;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -32,24 +32,24 @@ public class DimStorageManager {
 
         @SubscribeEvent
         public void onWorldLoad(Load event) {
-            if(event.getWorld().isClientSide())
+            if(event.getLevel().isClientSide())
                 reloadManager(true);
         }
 
         @SubscribeEvent
         public void onWorldSave(Save event) {
-            if(!event.getWorld().isClientSide() && instance(false) != null)
+            if(!event.getLevel().isClientSide() && instance(false) != null)
                 instance(false).save(false);
         }
 
         @SubscribeEvent
         public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-            instance(false).sendClientInfo(event.getPlayer());
+            instance(false).sendClientInfo(event.getEntity());
         }
 
         @SubscribeEvent
         public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-            instance(false).sendClientInfo(event.getPlayer());
+            instance(false).sendClientInfo(event.getEntity());
         }
     }
 

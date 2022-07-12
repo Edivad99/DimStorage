@@ -95,7 +95,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
     public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand hand) {
         if(canAccess(player)) {
-            NetworkHooks.openGui((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
+            NetworkHooks.openScreen((ServerPlayer) player, this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
         }
         else {
             player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED), false);
