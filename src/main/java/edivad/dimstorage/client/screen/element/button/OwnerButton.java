@@ -7,15 +7,16 @@ import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.setup.Config;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class OwnerButton extends Button {
+public class OwnerButton extends AbstractButton {
 
     private final BlockEntityFrequencyOwner owner;
 
     public OwnerButton(int width, int height, BlockEntityFrequencyOwner owner) {
-        super(width, height, 64, 20, Component.literal(owner.getFrequency().getOwner()), null);
+        super(width, height, 64, 20, Component.literal(owner.getFrequency().getOwner()));
         this.owner = owner;
         this.active = Config.DimBlock.ALLOW_PRIVATE_NETWORK.get();
     }
@@ -28,5 +29,10 @@ public class OwnerButton extends Button {
         } else if(owner instanceof BlockEntityDimTank tank) {
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+        defaultButtonNarrationText(narrationElementOutput);
     }
 }

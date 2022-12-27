@@ -1,23 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "a": {
       "item": "minecraft:iron_ingot"
     },
     "b": {
-      "item": "minecraft:redstone"
-    },
-    "c": {
-      "item": "minecraft:ender_pearl"
+      "item": "dimstorage:dim_core"
     }
   },
   "pattern": [
+    "aaa",
     "aba",
-    "bcb",
-    "aba"
+    "aaa"
   ],
   "result": {
-    "count": 4,
-    "item": "dimstorage:dim_wall"
+    "item": "dimstorage:solid_dim_core"
   }
 }

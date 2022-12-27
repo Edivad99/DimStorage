@@ -2,8 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "dimensional_chest",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -15,29 +13,31 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "Frequency",
-                  "target": "DimStorage.Frequency",
-                  "op": "replace"
+                  "target": "DimStorage.Frequency"
                 }
-              ]
+              ],
+              "source": "block_entity"
             },
             {
-              "function": "minecraft:set_contents",
-              "type": "dimstorage:dimensional_chest",
+              "type": "dimstorage:dimensional_tank",
               "entries": [
                 {
                   "type": "minecraft:dynamic",
                   "name": "minecraft:contents"
                 }
-              ]
+              ],
+              "function": "minecraft:set_contents"
             }
           ],
-          "name": "dimstorage:dimensional_chest"
+          "name": "dimstorage:dimensional_tank"
         }
-      ]
+      ],
+      "name": "dimensional_tank",
+      "rolls": 1.0
     }
   ]
 }

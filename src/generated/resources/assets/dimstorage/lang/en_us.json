@@ -30,7 +30,6 @@
   "item.dimstorage.dim_wall": "Dimensional Wall",
   "item.dimstorage.dimensional_tablet": "Dimensional Tablet",
   "item.dimstorage.solid_dim_core": "Solid Dimensional Core",
-  "itemGroup.dimstorage_tab": "DimStorage",
   "message.dimstorage.bind_dimchest": "right click to bind a DimChest",
   "message.dimstorage.changeAutoCollect": "right click on a non DimChest block to enable/disable autocollect",
   "message.dimstorage.for_details": "for details",

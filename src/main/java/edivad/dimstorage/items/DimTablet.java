@@ -5,7 +5,6 @@ import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.setup.Config;
-import edivad.dimstorage.setup.ModSetup;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.InventoryUtils;
 import edivad.dimstorage.tools.Translations;
@@ -39,7 +38,7 @@ import java.util.List;
 public class DimTablet extends Item implements MenuProvider {
 
     public DimTablet() {
-        super(new Properties().tab(ModSetup.DIMSTORAGE_TAB).stacksTo(1));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

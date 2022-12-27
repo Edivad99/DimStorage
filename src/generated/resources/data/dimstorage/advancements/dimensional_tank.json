@@ -1,0 +1,37 @@
+{
+  "parent": "dimstorage:root",
+  "criteria": {
+    "inv_changed": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dimstorage:dimensional_tank"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.dimstorage.dimensional_tablet.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "dimstorage:dimensional_tank"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.dimstorage.dimensional_tablet"
+    }
+  },
+  "requirements": [
+    [
+      "inv_changed"
+    ]
+  ]
+}

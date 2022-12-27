@@ -1,6 +1,6 @@
 {
    "parent": "minecraft:item/generated",
    "textures": {
-       "layer0": "dimstorage:items/dim_wall"
+       "layer0": "dimstorage:item/dim_wall"
    }
 }

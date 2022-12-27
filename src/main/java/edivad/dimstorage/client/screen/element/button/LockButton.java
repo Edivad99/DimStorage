@@ -7,15 +7,16 @@ import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class LockButton extends Button {
+public class LockButton extends AbstractButton {
 
     private final BlockEntityFrequencyOwner owner;
 
     public LockButton(int width, int height, BlockEntityFrequencyOwner owner) {
-        super(width, height, 64, 20, getText(owner.locked), null);
+        super(width, height, 64, 20, getText(owner.locked));
         this.owner = owner;
     }
 
@@ -31,5 +32,10 @@ public class LockButton extends Button {
         } else if(owner instanceof BlockEntityDimTank tank) {
             PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
         }
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+        defaultButtonNarrationText(narrationElementOutput);
     }
 }

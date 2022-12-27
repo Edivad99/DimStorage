@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "down": "dimstorage:blocks/dimtank_bottom",
-    "particle": "dimstorage:blocks/dimtank_side",
-    "side": "dimstorage:blocks/dimtank_side"
+    "down": "dimstorage:block/dimtank_bottom",
+    "particle": "dimstorage:block/dimtank_side",
+    "side": "dimstorage:block/dimtank_side"
   },
   "render_type": "cutout",
   "elements": [

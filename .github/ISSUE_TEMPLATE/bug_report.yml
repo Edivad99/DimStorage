@@ -46,8 +46,8 @@ body:
       description: |
         Example:
           - **Mod version**: 1.0.0
-          - **Forge version**: 1.18.1 - 39.0.0
-          - **Minecraft version**: 1.18.1
+          - **Forge version**: 1.19.3 - 44.0.0
+          - **Minecraft version**: 1.19.3
       value: |
           - Mod version:
           - Forge version:

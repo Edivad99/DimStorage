@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "dimstorage:blocks/dimchest_top",
-    "down" : "dimstorage:blocks/dimchest_bottom",
-    "up": "dimstorage:blocks/dimchest_top",
-    "east": "dimstorage:blocks/dimchest_sides",
-    "west": "dimstorage:blocks/dimchest_sides",
-    "north": "dimstorage:blocks/dimchest_sides",
-    "south": "dimstorage:blocks/dimchest_sides"
+    "particle": "dimstorage:block/dimchest_top",
+    "down" : "dimstorage:block/dimchest_bottom",
+    "up": "dimstorage:block/dimchest_top",
+    "east": "dimstorage:block/dimchest_sides",
+    "west": "dimstorage:block/dimchest_sides",
+    "north": "dimstorage:block/dimchest_sides",
+    "south": "dimstorage:block/dimchest_sides"
   },
   "display": {
     "gui": {

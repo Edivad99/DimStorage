@@ -1,25 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "a": {
-      "item": "minecraft:obsidian"
+      "item": "dimstorage:dim_wall"
     },
     "b": {
       "item": "dimstorage:solid_dim_core"
     },
     "c": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:cauldron"
     },
     "d": {
-      "tag": "forge:glass_panes"
+      "tag": "forge:glass"
     }
   },
   "pattern": [
-    "cdc",
-    "cdc",
+    "ada",
+    "dcd",
     "aba"
   ],
   "result": {
-    "item": "dimstorage:dimensional_tablet"
+    "item": "dimstorage:dimensional_tank"
   }
 }

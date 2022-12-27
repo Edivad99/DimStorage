@@ -1,6 +1,6 @@
 {
    "parent": "minecraft:item/generated",
    "textures": {
-       "layer0": "dimstorage:items/solid_dim_core"
+       "layer0": "dimstorage:item/solid_dim_core"
    }
 }

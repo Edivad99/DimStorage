@@ -30,8 +30,6 @@ public class Registration {
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Main.MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Main.MODID);
 
-    public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.DIMSTORAGE_TAB).stacksTo(64);
-
     public static void init() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(eventBus);
@@ -71,9 +69,9 @@ public class Registration {
         return new ContainerDimTank(windowId, inv.player.getInventory(), blockentity, isOpen);
     }));
 
-    public static final RegistryObject<Item> DIMCORE = ITEMS.register("dim_core", () -> new Item(globalProperties));
-    public static final RegistryObject<Item> DIMWALL = ITEMS.register("dim_wall", () -> new Item(globalProperties));
-    public static final RegistryObject<Item> SOLIDDIMCORE = ITEMS.register("solid_dim_core", () -> new Item(globalProperties));
+    public static final RegistryObject<Item> DIMCORE = ITEMS.register("dim_core", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DIMWALL = ITEMS.register("dim_wall", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SOLIDDIMCORE = ITEMS.register("solid_dim_core", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<DimTablet> DIMTABLET = ITEMS.register("dimensional_tablet", DimTablet::new);
     public static final RegistryObject<MenuType<ContainerDimTablet>> DIMTABLET_CONTAINER = CONTAINERS.register("dimensional_tablet", () -> IForgeMenuType.create((windowId, inv, data) -> new ContainerDimTablet(windowId, inv.player.getInventory(), inv.player.getCommandSenderWorld())));

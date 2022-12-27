@@ -17,8 +17,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -129,7 +129,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-        if(!locked && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if(!locked && capability == ForgeCapabilities.ITEM_HANDLER)
             return itemHandler.cast();
         return super.getCapability(capability, facing);
     }

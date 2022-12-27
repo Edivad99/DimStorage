@@ -2,7 +2,6 @@ package edivad.dimstorage.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.setup.Registration;
@@ -18,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Quaternionf;
 
 public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest> {
 
@@ -27,7 +27,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     private static final String BLUE_INDICATOR = "blueIndicator";
     private static final String RED_INDICATOR = "redIndicator";
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/models/dimchest.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/model/dimchest.png");
     public static final ModelLayerLocation STATIC_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), STATIC);
     public static final ModelLayerLocation MOVABLE_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), MOVABLE);
     public static final ModelLayerLocation GREEN_INDICATOR_LAYER = new ModelLayerLocation(Registration.DIMCHEST.getId(), GREEN_INDICATOR);
@@ -92,10 +92,10 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
         poseStack.translate(0.5D, -0.5D, 0.5D);
 
         // Direction
-        poseStack.mulPose(new Quaternion(0F, 360 - blockentity.rotation * 90, 0F, true));
+        poseStack.mulPose((new Quaternionf()).rotationXYZ(0F, (360 - blockentity.rotation * 90) * ((float)Math.PI / 180F), 0F));
 
         // Sens
-        poseStack.mulPose(new Quaternion(180F, 0F, 0F, true));
+        poseStack.mulPose((new Quaternionf()).rotationXYZ((float) Math.PI, 0F, 0F));
 
         // Adjustment
         poseStack.translate(0D, -2D, 0D);

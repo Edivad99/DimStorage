@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 
 public class ChangeButton extends Button {
 
-    public ChangeButton(int width, int height, Button.OnPress onPress) {
-        super(width, height, 64, 20, Component.translatable(Translations.CHANGE), onPress);
+    public ChangeButton(int x, int y, Button.OnPress onPress) {
+        super(x, y, 64, 20, Component.translatable(Translations.CHANGE), onPress, DEFAULT_NARRATION);
     }
 }

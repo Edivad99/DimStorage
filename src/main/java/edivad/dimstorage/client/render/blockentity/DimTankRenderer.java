@@ -2,7 +2,6 @@ package edivad.dimstorage.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.edivadlib.tools.utils.FluidUtils;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.fluids.FluidStack;
+import org.joml.Matrix4f;
 
 public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> {
 
@@ -38,7 +38,7 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> 
             TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
             if(sprite == null)
                 return;
-            VertexConsumer renderer = bufferIn.getBuffer(RenderType.text(sprite.atlas().location()));
+            VertexConsumer renderer = bufferIn.getBuffer(RenderType.text(sprite.atlasLocation()));
 
             float u1 = sprite.getU0();
             float v1 = sprite.getV0();

@@ -1,6 +1,6 @@
 {
    "parent": "minecraft:item/generated",
    "textures": {
-       "layer0": "dimstorage:items/dimensional_tablet"
+       "layer0": "dimstorage:item/dimensional_tablet"
    }
 }

@@ -1,6 +1,5 @@
 package edivad.dimstorage.items;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.setup.Registration;
@@ -10,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,7 +24,7 @@ import java.util.List;
 public class ItemDimBase extends BlockItem {
 
     public ItemDimBase(Block blockIn) {
-        super(blockIn, Registration.globalProperties);
+        super(blockIn, new Properties());
     }
 
     private Frequency getFreq(ItemStack stack) {

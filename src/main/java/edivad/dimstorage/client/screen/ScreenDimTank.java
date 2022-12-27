@@ -56,7 +56,7 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
             this.font.draw(poseStack, AMOUNT.copy().append(" " + liquidStack.getAmount() + " mB"), 50, 35, 4210752);
             this.font.draw(poseStack, TEMPERATURE.copy().append(" " + (fluidType.getTemperature() - 273) + "C"), 50, 45, 4210752);
             this.font.draw(poseStack, LUMINOSITY.copy().append(" " + fluidType.getLightLevel()), 50, 55, 4210752);
-            this.font.draw(poseStack, GASEOUS.copy().append(" " + (fluidType.isLighterThanAir() ? YES : NO)), 50, 65, 4210752);
+            this.font.draw(poseStack, GASEOUS.copy().append(" ").append(fluidType.isLighterThanAir() ? YES : NO), 50, 65, 4210752);
         }
         else {
             this.font.draw(poseStack, LIQUID.copy().append(" ").append(EMPTY), 50, 25, 4210752);
@@ -70,12 +70,14 @@ public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
 
         FluidStack fluid = ((BlockEntityDimTank) blockEntityFrequencyOwner).liquidState.clientLiquid;
         int z = getFluidScaled(60, fluid.getAmount());
-        TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
+        if (!fluid.isEmpty()) {
+            TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
 
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockEntityFrequencyOwner));
-        ScreenDimTank.blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
+            FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockEntityFrequencyOwner));
+            blit(poseStack, this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture);
+        }
     }
 
     private static int getFluidScaled(int pixels, int currentLiquidAmount) {

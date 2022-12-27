@@ -3,19 +3,17 @@ package edivad.dimstorage.datagen;
 import edivad.dimstorage.Main;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tools.Translations;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class Lang extends LanguageProvider {
 
-    public Lang(DataGenerator gen) {
-        super(gen, Main.MODID, "en_us");
+    public Lang(PackOutput packOutput) {
+        super(packOutput, Main.MODID, "en_us");
     }
 
     @Override
     protected void addTranslations() {
-        add("itemGroup." + Main.MODID + "_tab", Main.MODNAME);
-
         add(Registration.DIMCORE.get(), "Dimensional Core");
         add(Registration.SOLIDDIMCORE.get(), "Solid Dimensional Core");
         add(Registration.DIMWALL.get(), "Dimensional Wall");
@@ -25,7 +23,6 @@ public class Lang extends LanguageProvider {
 
         add(Translations.ADVANCEMENTS_ROOT.title(), "Dimensional Core");
         add(Translations.ADVANCEMENTS_ROOT.desc(), "The power of dimensions");
-
 
         add(Translations.DIMCHEST_ADVANCEMENTS.title(), "Dimensional Chest");
         add(Translations.DIMCHEST_ADVANCEMENTS.desc(), "A more connected inventory");
@@ -49,9 +46,6 @@ public class Lang extends LanguageProvider {
         add(Translations.FREQUENCY, "Frequency:");
         add(Translations.LOCKED, "Locked:");
         add(Translations.COLLECTING, "Collecting");
-
-
-
 
         add(Translations.PRESS, "Press");
         add(Translations.HOLD, "Hold");

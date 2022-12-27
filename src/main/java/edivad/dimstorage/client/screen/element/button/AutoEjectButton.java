@@ -4,15 +4,16 @@ import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class AutoEjectButton extends Button {
+public class AutoEjectButton extends AbstractButton {
 
     private final BlockEntityDimTank tank;
 
-    public AutoEjectButton(int width, int height, BlockEntityDimTank tank) {
-        super(width, height, 64, 20, getText(tank.autoEject), null);
+    public AutoEjectButton(int x, int y, BlockEntityDimTank tank) {
+        super(x, y, 64, 20, getText(tank.autoEject));
         this.tank = tank;
     }
 
@@ -24,5 +25,10 @@ public class AutoEjectButton extends Button {
     public void onPress() {
         tank.swapAutoEject();
         PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+        defaultButtonNarrationText(narrationElementOutput);
     }
 }

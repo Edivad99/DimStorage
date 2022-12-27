@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "a": {
       "item": "minecraft:iron_ingot"
@@ -8,7 +9,7 @@
       "item": "minecraft:redstone"
     },
     "c": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:ender_pearl"
     }
   },
   "pattern": [
@@ -17,6 +18,7 @@
     "aba"
   ],
   "result": {
-    "item": "dimstorage:dim_core"
+    "count": 4,
+    "item": "dimstorage:dim_wall"
   }
 }
