@@ -39,7 +39,7 @@ public class Main {
                 builder -> builder
                         .icon(() -> new ItemStack(Registration.DIMCHEST_ITEM.get()))
                         .title(Component.literal(MODNAME))
-                        .displayItems((features, output, hasPermissions) -> {
+                        .displayItems((params, output) -> {
                             output.accept(new ItemStack(Registration.DIMCHEST_ITEM.get()));
                             output.accept(new ItemStack(Registration.DIMTANK_ITEM.get()));
                             output.accept(new ItemStack(Registration.DIMTABLET.get()));

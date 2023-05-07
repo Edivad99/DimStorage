@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "dimstorage:dim_core"
-  }
+  },
+  "show_notification": true
 }

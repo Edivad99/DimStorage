@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "dimstorage:dimensional_tablet"
-  }
+  },
+  "show_notification": true
 }

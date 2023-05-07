@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "dimstorage:dimensional_chest"
-  }
+  },
+  "show_notification": true
 }

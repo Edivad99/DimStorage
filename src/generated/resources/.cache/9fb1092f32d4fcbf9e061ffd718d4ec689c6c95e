@@ -1,13 +1,13 @@
-// 1.19.3	2022-12-09T21:12:07.820099737	Recipes
+// 1.19.4	2023-05-07T10:05:21.706197	Recipes
 8a870811d2a8fe9905aefc238e73830e659baebf data/dimstorage/advancements/recipes/misc/dim_core.json
 c4e7d8834a3518cd9375c59ce19acec0294bf467 data/dimstorage/advancements/recipes/misc/dim_wall.json
 52cce6ddaa022a37230d2d74e8fd2d1f1d1711cb data/dimstorage/advancements/recipes/misc/dimensional_chest.json
 a1f0953e1d83fbca76267c405cc160e096adafe3 data/dimstorage/advancements/recipes/misc/dimensional_tablet.json
 b626cbe4ce84803ea6b643b7472f5b55774c2d77 data/dimstorage/advancements/recipes/misc/dimensional_tank.json
 3bfdbcec4c3e8e9c2d3d6d3e380c689ca342997d data/dimstorage/advancements/recipes/misc/solid_dim_core.json
-9fd026ba542063d1f66cea58b6b47d8a8b832f1e data/dimstorage/recipes/dim_core.json
-4fdbf55fb10e6f98400846f95b9db50d7ccb7ab5 data/dimstorage/recipes/dim_wall.json
-1348106c3182e988f75fde55e3a4db2ec22b9edc data/dimstorage/recipes/dimensional_chest.json
-90c47ede6f8a078c9f5188abaf36012ca181202f data/dimstorage/recipes/dimensional_tablet.json
-440ea2be09d23d494e8811a6c3e9c06f53178874 data/dimstorage/recipes/dimensional_tank.json
-9f96c563b67a8b53cca335f07bca20f6872cea9a data/dimstorage/recipes/solid_dim_core.json
+6f7720ad5a5d92d5afb93832dd82ca2f7eaabbe8 data/dimstorage/recipes/dim_core.json
+e8573033e52cd3b39891bbc369103082c05650a5 data/dimstorage/recipes/dim_wall.json
+6520a38efa1a62eab64420007fcb75b12a757179 data/dimstorage/recipes/dimensional_chest.json
+4c46026920e731403e1cb85e26b27ebb4bd8bcc9 data/dimstorage/recipes/dimensional_tablet.json
+d03d710017619b3d8eb4942c56c69859b14a7426 data/dimstorage/recipes/dimensional_tank.json
+e7ab90b2b8f9244d60b16c7e6f1d3ce0bf22b270 data/dimstorage/recipes/solid_dim_core.json
