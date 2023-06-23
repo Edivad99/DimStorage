@@ -1,6 +1,7 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.Main;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -10,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Config {
@@ -44,7 +46,7 @@ public class Config {
     }
 
     public static class DimTablet {
-        public static ForgeConfigSpec.ConfigValue<List<String>> ALLOW_LIST;
+        public static ForgeConfigSpec.ConfigValue<List<? extends String>> ALLOW_LIST;
 
         public static void registerServerConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
             SERVER_BUILDER.push("DimTablet");
@@ -52,13 +54,13 @@ public class Config {
             ALLOW_LIST = SERVER_BUILDER
                     .comment("A list of blocks that the DimTablet takes and transfers to the connected DimChest",
                             "[/dimstorage add] adds the item you have in the main hand to this list")
-                    .define("allow_list", generateAllowList());
+                    .defineList("allow_list", allowList(), o -> ResourceLocation.isValidResourceLocation(o.toString()));
 
             SERVER_BUILDER.pop();
         }
 
         public static boolean containItem(Item item) {
-            return ALLOW_LIST.get().contains(getRegistryName(item));
+            return ALLOW_LIST.get().contains(getResourceLocation(item));
         }
 
         public static boolean addItem(Item item) {
@@ -67,8 +69,8 @@ public class Config {
             if(containItem(item))
                 return false;
 
-            var newList = new ArrayList<>(ALLOW_LIST.get());
-            newList.add(getRegistryName(item));
+            var newList = new ArrayList<String>(ALLOW_LIST.get());
+            newList.add(getResourceLocation(item));
             ALLOW_LIST.set(newList);
             return true;
         }
@@ -79,17 +81,17 @@ public class Config {
             if(!containItem(item))
                 return false;
 
-            var newList = new ArrayList<>(ALLOW_LIST.get());
-            newList.remove(getRegistryName(item));
+            var newList = new ArrayList<String>(ALLOW_LIST.get());
+            newList.remove(getResourceLocation(item));
             ALLOW_LIST.set(newList);
             return true;
         }
 
-        private static String getRegistryName(Item item) {
-            return ForgeRegistries.ITEMS.getKey(item).toString();
+        private static String getResourceLocation(Item item) {
+            return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).toString();
         }
 
-        private static List<String> generateAllowList() {
+        private static List<String> allowList() {
             return Stream.of(Items.DIRT,
                             Items.GRAVEL,
                             Items.COBBLESTONE,
@@ -100,7 +102,7 @@ public class Config {
                             Items.SANDSTONE,
                             Items.NETHERRACK,
                             Items.END_STONE)
-                    .map(DimTablet::getRegistryName)
+                    .map(DimTablet::getResourceLocation)
                     .toList();
         }
     }
