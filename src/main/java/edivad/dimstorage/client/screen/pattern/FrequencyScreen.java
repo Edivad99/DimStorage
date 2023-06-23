@@ -1,6 +1,5 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
@@ -12,6 +11,7 @@ import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.packet.UpdateDimChest;
 import edivad.dimstorage.network.packet.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -68,9 +68,9 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(poseStack, mouseX, mouseY, partialTicks);
-        freqTextField.render(poseStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        freqTextField.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -80,28 +80,28 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        super.renderLabels(poseStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
         if(drawSettings) {
             int posY = 45;
 
             // owner
-            this.font.draw(poseStack, OWNER, 185, posY, 4210752);
+            guiGraphics.drawString(this.font, OWNER, 185, posY, 4210752, false);
             posY += 9;
-            this.hLine(poseStack, 185, 185 + this.font.width(OWNER), posY, 0xFF333333);
+            guiGraphics.hLine(185, 185 + this.font.width(OWNER), posY, 0xFF333333);
             posY += 31;
 
             // freq
-            this.font.draw(poseStack, FREQ, 185, posY, 4210752);
+            guiGraphics.drawString(this.font, FREQ, 185, posY, 4210752);
             posY += 9;
-            this.hLine(poseStack, 185, 185 + this.font.width(FREQ), posY, 0xFF333333);
+            guiGraphics.hLine(185, 185 + this.font.width(FREQ), posY, 0xFF333333);
             posY += 50;
 
             // locked
-            this.font.draw(poseStack, LOCKED, 185, posY, 4210752);
+            guiGraphics.drawString(this.font, LOCKED, 185, posY, 4210752);
             posY += 9;
-            this.hLine(poseStack, 185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
+            guiGraphics.hLine(185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
         }
     }
 }

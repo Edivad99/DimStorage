@@ -39,5 +39,6 @@
       "name": "dimensional_tank",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "dimstorage:blocks/dimensional_tank"
 }

@@ -39,5 +39,6 @@
       "name": "dimensional_chest",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "dimstorage:blocks/dimensional_chest"
 }

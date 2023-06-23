@@ -1,14 +1,7 @@
 package edivad.dimstorage;
 
 import com.mojang.logging.LogUtils;
-import edivad.dimstorage.setup.ClientSetup;
-import edivad.dimstorage.setup.Config;
-import edivad.dimstorage.setup.ModSetup;
-import edivad.dimstorage.setup.Registration;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import edivad.dimstorage.setup.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,21 +24,6 @@ public class Main {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(ModSetup::init);
         modEventBus.addListener(ClientSetup::init);
-        modEventBus.addListener(Main::onCreativeModeTabRegister);
-    }
-
-    private static void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(new ResourceLocation(MODID, "tab"),
-                builder -> builder
-                        .icon(() -> new ItemStack(Registration.DIMCHEST_ITEM.get()))
-                        .title(Component.literal(MODNAME))
-                        .displayItems((params, output) -> {
-                            output.accept(new ItemStack(Registration.DIMCHEST_ITEM.get()));
-                            output.accept(new ItemStack(Registration.DIMTANK_ITEM.get()));
-                            output.accept(new ItemStack(Registration.DIMTABLET.get()));
-                            output.accept(new ItemStack(Registration.DIMCORE.get()));
-                            output.accept(new ItemStack(Registration.DIMWALL.get()));
-                            output.accept(new ItemStack(Registration.SOLIDDIMCORE.get()));
-                        }));
+        DimStorageCreativeModeTabs.register(modEventBus);
     }
 }

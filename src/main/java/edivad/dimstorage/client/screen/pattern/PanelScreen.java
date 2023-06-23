@@ -1,7 +1,7 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import edivad.dimstorage.setup.Config;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -50,8 +50,8 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
         if(state == SettingsState.STATE_OPENING) {
             animationState += ANIMATION_SPEED;
@@ -112,29 +112,29 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         int settingsX = leftPos + (this.imageWidth - SETTINGS_WIDTH);
 
         if(allowConfig)
-            this.blit(poseStack, settingsX + this.animationState, topPos + 36, this.imageWidth, 36, SETTINGS_WIDTH, this.imageHeight);
+            guiGraphics.blit(this.background, settingsX + this.animationState, topPos + 36, this.imageWidth, 36, SETTINGS_WIDTH, this.imageHeight);
 
-        this.blit(poseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight + 2);//Space to see the border
+        guiGraphics.blit(this.background, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight + 2);//Space to see the border
 
         // button background
-        this.blit(poseStack, getButtonX(), getButtonY(), this.imageWidth, 16, BUTTON_WIDTH, BUTTON_WIDTH);
+        guiGraphics.blit(this.background, getButtonX(), getButtonY(), this.imageWidth, 16, BUTTON_WIDTH, BUTTON_WIDTH);
 
         if(state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENING) {
             if(settingsButtonOver)
-                this.blit(poseStack, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 28, 16, 8, BUTTON_WIDTH);
+                guiGraphics.blit(this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 28, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(poseStack, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 20, 16, 8, BUTTON_WIDTH);
+                guiGraphics.blit(this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 20, 16, 8, BUTTON_WIDTH);
         }
         else if(state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING) {
             if(settingsButtonOver)
-                this.blit(poseStack, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 44, 16, 8, BUTTON_WIDTH);
+                guiGraphics.blit(this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 44, 16, 8, BUTTON_WIDTH);
             else
-                this.blit(poseStack, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 36, 16, 8, BUTTON_WIDTH);
+                guiGraphics.blit(this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 36, 16, 8, BUTTON_WIDTH);
         }
     }
 

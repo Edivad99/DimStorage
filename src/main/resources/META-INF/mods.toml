@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[44,)"
+loaderVersion="[47,)"
 license="GNU AGPLv3"
 
 [[mods]]
@@ -16,18 +16,18 @@ description="DimStorage add a technologic version of ender chest system with own
 [[dependencies.dimstorage]]
     modId="forge"
     mandatory=true
-    versionRange="[45.0.57,)"
+    versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.dimstorage]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4,1.20.0)"
+    versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.dimstorage]]
     modId="edivadlib"
     mandatory=true
-    versionRange="[1.4.0,)"
+    versionRange="[2.0.0,)"
     ordering="NONE"
     side="BOTH"

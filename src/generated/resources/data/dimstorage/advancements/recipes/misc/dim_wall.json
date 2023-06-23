@@ -30,5 +30,6 @@
     "recipes": [
       "dimstorage:dim_wall"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -39,7 +39,7 @@ public abstract class UpdateDimBase {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
-            Level level = player.level;
+            Level level = player.level();
             if(level.isLoaded(pos))
                 customHandle(level, player);
         });

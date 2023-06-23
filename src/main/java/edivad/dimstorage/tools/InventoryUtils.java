@@ -99,7 +99,7 @@ public class InventoryUtils {
         if(stack.isStackable()) {
             while(!stack.isEmpty() && i < endIndex) {
                 ItemStack itemstack = wrapper.getStackInSlot(i);
-                if(!itemstack.isEmpty() && stack.sameItem(itemstack)) {
+                if(!itemstack.isEmpty() && ItemStack.isSameItem(stack, itemstack)) {
                     int j = itemstack.getCount() + stack.getCount();
                     int maxSize = stack.getMaxStackSize();
                     if(j <= maxSize) {

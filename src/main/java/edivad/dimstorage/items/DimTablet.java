@@ -168,7 +168,7 @@ public class DimTablet extends Item implements MenuProvider {
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new ContainerDimTablet(id, inventory, player.level);
+        return new ContainerDimTablet(id, inventory, player.level());
     }
 
     @Override

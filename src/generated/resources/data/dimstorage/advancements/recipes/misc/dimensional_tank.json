@@ -30,5 +30,6 @@
     "recipes": [
       "dimstorage:dimensional_tank"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

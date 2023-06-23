@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,7 +36,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     private static final VoxelShape BOX = box(2, 0, 2, 14, 16, 14);
 
     public DimTank() {
-        super(Properties.of(Material.GLASS).sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
+        super(Properties.of().sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
