@@ -136,7 +136,7 @@ tasks.register('makeChangelog', GitChangelogTask) {
 }
 
 publishMods {
-    displayName = "SolarGeneration-$minecraft_version-$mod_version"
+    displayName = "DimStorage-$minecraft_version-$mod_version"
     version = mod_version
     type = STABLE
 
