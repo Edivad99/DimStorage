@@ -1,6 +1,7 @@
 package edivad.dimstorage.compat.top;
 
-import edivad.dimstorage.Main;
+import java.util.function.Function;
+import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
@@ -23,60 +24,63 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.function.Function;
-
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
 
-    @Override
-    public Void apply(ITheOneProbe probe) {
-        probe.registerProvider(this);
-        probe.registerElementFactory(new IElementFactory() {
+  @Override
+  public Void apply(ITheOneProbe probe) {
+    probe.registerProvider(this);
+    probe.registerElementFactory(new IElementFactory() {
 
-            @Override
-            public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
-                return new MyFluidElement(friendlyByteBuf);
-            }
+      @Override
+      public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
+        return new MyFluidElement(friendlyByteBuf);
+      }
 
-            @Override
-            public ResourceLocation getId() {
-                return MyFluidElement.ID;
-            }
-        });
-        return null;
-    }
+      @Override
+      public ResourceLocation getId() {
+        return MyFluidElement.ID;
+      }
+    });
+    return null;
+  }
 
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
-        BlockEntity te = level.getBlockEntity(data.getPos());
+  @Override
+  public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level,
+      BlockState state, IProbeHitData data) {
 
-        if(te instanceof BlockEntityFrequencyOwner frequencyOwner) {
-            MutableComponent locked = Component.translatable(Translations.LOCKED);
-            MutableComponent yes = Component.translatable(Translations.YES);
-            MutableComponent eject = Component.translatable(Translations.EJECT);
-            MutableComponent owner = Component.translatable(Translations.OWNER);
-            MutableComponent frequency = Component.translatable(Translations.FREQUENCY);
+    if (level.getBlockEntity(data.getPos()) instanceof BlockEntityFrequencyOwner frequencyOwner) {
+      var locked = Component.translatable(Translations.LOCKED);
+      var yes = Component.translatable(Translations.YES);
+      var eject = Component.translatable(Translations.EJECT);
+      var owner = Component.translatable(Translations.OWNER);
+      var frequency = Component.translatable(Translations.FREQUENCY);
 
-            Frequency blockFrequency = frequencyOwner.getFrequency();
-            if(blockFrequency.hasOwner()) {
-                ChatFormatting textColor = frequencyOwner.canAccess(player) ? ChatFormatting.GREEN : ChatFormatting.RED;
-                probeInfo.horizontal().text(owner.append(" " + blockFrequency.getOwner()).withStyle(textColor));
-            }
-            probeInfo.horizontal().text(frequency.append(" " + blockFrequency.getChannel()));
-            if(frequencyOwner.locked)
-                probeInfo.horizontal().text(locked.append(" ").append(yes));
+      var blockFrequency = frequencyOwner.getFrequency();
+      if (blockFrequency.hasOwner()) {
+        var textColor =
+            frequencyOwner.canAccess(player) ? ChatFormatting.GREEN : ChatFormatting.RED;
+        probeInfo.horizontal()
+            .text(owner.append(" " + blockFrequency.getOwner()).withStyle(textColor));
+      }
+      probeInfo.horizontal().text(frequency.append(" " + blockFrequency.getChannel()));
+      if (frequencyOwner.locked) {
+        probeInfo.horizontal().text(locked.append(" ").append(yes));
+      }
 
-            if(te instanceof BlockEntityDimTank tank) {
-                if(tank.autoEject)
-                    probeInfo.horizontal().text(eject.append(" ").append(yes));
-
-                if(!tank.liquidState.serverLiquid.isEmpty())
-                    probeInfo.element(new MyFluidElement(tank, DimTankStorage.CAPACITY));
-            }
+      if (level.getBlockEntity(data.getPos()) instanceof BlockEntityDimTank tank) {
+        if (tank.autoEject) {
+          probeInfo.horizontal().text(eject.append(" ").append(yes));
         }
-    }
 
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(Main.MODID,"default");
+        if (!tank.liquidState.serverLiquid.isEmpty()) {
+          probeInfo.element(new MyFluidElement(tank, DimTankStorage.CAPACITY));
+        }
+      }
     }
+  }
+
+  @Override
+  public ResourceLocation getID() {
+    return new ResourceLocation(DimStorage.ID, "default");
+  }
 }

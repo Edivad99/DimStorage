@@ -28,6 +28,8 @@ minecraft {
 
     copyIdeResources = true
 
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
         configureEach {
             property 'forge.logging.console.level', 'debug'

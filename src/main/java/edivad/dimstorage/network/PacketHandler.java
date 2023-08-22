@@ -1,6 +1,6 @@
 package edivad.dimstorage.network;
 
-import edivad.dimstorage.Main;
+import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.network.packet.OpenChest;
 import edivad.dimstorage.network.packet.SyncLiquidTank;
 import edivad.dimstorage.network.packet.UpdateDimChest;
@@ -10,20 +10,41 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import java.util.Optional;
-
 public class PacketHandler {
 
-    private static final String PROTOCOL_VERSION = "1";
+  private static final String PROTOCOL_VERSION = "1";
+  public static SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
+      .named(new ResourceLocation(DimStorage.ID, "network"))
+      .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+      .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+      .networkProtocolVersion(() -> PROTOCOL_VERSION)
+      .simpleChannel();
 
-    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Main.MODID, "net"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-
-    public static void init() {
-        int id = 0;
-        INSTANCE.registerMessage(id++, UpdateDimChest.class, UpdateDimChest::toBytes, UpdateDimChest::new, UpdateDimChest::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        INSTANCE.registerMessage(id++, OpenChest.class, OpenChest::toBytes, OpenChest::new, OpenChest::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-
-        INSTANCE.registerMessage(id++, UpdateDimTank.class, UpdateDimTank::toBytes, UpdateDimTank::new, UpdateDimTank::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        INSTANCE.registerMessage(id++, SyncLiquidTank.class, SyncLiquidTank::toBytes, SyncLiquidTank::new, SyncLiquidTank::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-    }
+  public static void init() {
+    int id = 0;
+    INSTANCE
+        .messageBuilder(UpdateDimChest.class, 0, NetworkDirection.PLAY_TO_SERVER)
+        .encoder(UpdateDimChest::encode)
+        .decoder(UpdateDimChest::new)
+        .consumerMainThread(UpdateDimChest::handle)
+        .add();
+    INSTANCE
+        .messageBuilder(OpenChest.class, 1, NetworkDirection.PLAY_TO_CLIENT)
+        .encoder(OpenChest::encode)
+        .decoder(OpenChest::decode)
+        .consumerMainThread(OpenChest::handle)
+        .add();
+    INSTANCE
+        .messageBuilder(UpdateDimTank.class, 2, NetworkDirection.PLAY_TO_SERVER)
+        .encoder(UpdateDimTank::encode)
+        .decoder(UpdateDimTank::new)
+        .consumerMainThread(UpdateDimTank::handle)
+        .add();
+    INSTANCE
+        .messageBuilder(SyncLiquidTank.class, 3, NetworkDirection.PLAY_TO_CLIENT)
+        .encoder(SyncLiquidTank::encode)
+        .decoder(SyncLiquidTank::decode)
+        .consumerMainThread(SyncLiquidTank::handle)
+        .add();
+  }
 }

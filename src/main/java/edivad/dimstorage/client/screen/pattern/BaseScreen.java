@@ -11,30 +11,30 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
-    protected ResourceLocation background;
+  protected ResourceLocation background;
 
-    public BaseScreen(T container, Inventory inventory, Component text, ResourceLocation background) {
-        super(container, inventory, text);
-        this.background = background;
-        this.imageWidth = 176;
-        this.imageHeight = 220;
-        this.titleLabelX = 8;
-        this.titleLabelY = 6;
-        this.inventoryLabelX = 8;
-        this.inventoryLabelY = 128;
-    }
+  public BaseScreen(T container, Inventory inventory, Component text, ResourceLocation background) {
+    super(container, inventory, text);
+    this.background = background;
+    this.imageWidth = 176;
+    this.imageHeight = 220;
+    this.titleLabelX = 8;
+    this.titleLabelY = 6;
+    this.inventoryLabelX = 8;
+    this.inventoryLabelY = 128;
+  }
 
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, background);
-    }
+  @Override
+  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    RenderSystem.setShaderTexture(0, background);
+  }
 
-    @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
-    }
+  @Override
+  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(guiGraphics);
+    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    this.renderTooltip(guiGraphics, mouseX, mouseY);
+  }
 }

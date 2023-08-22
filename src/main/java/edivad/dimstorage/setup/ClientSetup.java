@@ -1,45 +1,33 @@
 package edivad.dimstorage.setup;
 
-import edivad.dimstorage.Main;
 import edivad.dimstorage.client.render.blockentity.DimChestRenderer;
 import edivad.dimstorage.client.render.blockentity.DimTankRenderer;
-import edivad.dimstorage.client.screen.ScreenDimChest;
-import edivad.dimstorage.client.screen.ScreenDimTablet;
-import edivad.dimstorage.client.screen.ScreenDimTank;
-import edivad.edivadlib.setup.UpdateChecker;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 
-@Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
-    public static void init(FMLClientSetupEvent event) {
-        //Version checker
-        MinecraftForge.EVENT_BUS.register(new UpdateChecker(Main.MODID));
+  public static void init(IEventBus modEventBus) {
+    modEventBus.addListener(ClientSetup::registerLayerDefinitions);
+    modEventBus.addListener(ClientSetup::registerRenders);
+  }
 
-        //GUI
-        MenuScreens.register(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-        MenuScreens.register(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
-        MenuScreens.register(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
-    }
+  private static void registerLayerDefinitions(
+      EntityRenderersEvent.RegisterLayerDefinitions event) {
+    event.registerLayerDefinition(DimChestRenderer.STATIC_LAYER,
+        DimChestRenderer::createStaticLayer);
+    event.registerLayerDefinition(DimChestRenderer.MOVABLE_LAYER,
+        DimChestRenderer::createMovableLayer);
+    event.registerLayerDefinition(DimChestRenderer.GREEN_INDICATOR_LAYER,
+        () -> DimChestRenderer.createIndicatorLayer(0));
+    event.registerLayerDefinition(DimChestRenderer.BLUE_INDICATOR_LAYER,
+        () -> DimChestRenderer.createIndicatorLayer(2));
+    event.registerLayerDefinition(DimChestRenderer.RED_INDICATOR_LAYER,
+        () -> DimChestRenderer.createIndicatorLayer(4));
+  }
 
-    @SubscribeEvent
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(DimChestRenderer.STATIC_LAYER, DimChestRenderer::createStaticLayer);
-        event.registerLayerDefinition(DimChestRenderer.MOVABLE_LAYER, DimChestRenderer::createMovableLayer);
-        event.registerLayerDefinition(DimChestRenderer.GREEN_INDICATOR_LAYER, () -> DimChestRenderer.createIndicatorLayer(0));
-        event.registerLayerDefinition(DimChestRenderer.BLUE_INDICATOR_LAYER, () -> DimChestRenderer.createIndicatorLayer(2));
-        event.registerLayerDefinition(DimChestRenderer.RED_INDICATOR_LAYER, () -> DimChestRenderer.createIndicatorLayer(4));
-    }
-
-    @SubscribeEvent
-    public static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(Registration.DIMCHEST_TILE.get(), DimChestRenderer::new);
-        event.registerBlockEntityRenderer(Registration.DIMTANK_TILE.get(), DimTankRenderer::new);
-    }
+  private static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
+    event.registerBlockEntityRenderer(Registration.DIMCHEST_TILE.get(), DimChestRenderer::new);
+    event.registerBlockEntityRenderer(Registration.DIMTANK_TILE.get(), DimTankRenderer::new);
+  }
 }

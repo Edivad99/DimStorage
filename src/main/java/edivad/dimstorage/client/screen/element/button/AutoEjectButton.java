@@ -10,25 +10,25 @@ import net.minecraft.network.chat.Component;
 
 public class AutoEjectButton extends AbstractButton {
 
-    private final BlockEntityDimTank tank;
+  private final BlockEntityDimTank tank;
 
-    public AutoEjectButton(int x, int y, BlockEntityDimTank tank) {
-        super(x, y, 64, 20, getText(tank.autoEject));
-        this.tank = tank;
-    }
+  public AutoEjectButton(int x, int y, BlockEntityDimTank tank) {
+    super(x, y, 64, 20, getText(tank.autoEject));
+    this.tank = tank;
+  }
 
-    private static Component getText(boolean autoEject) {
-        return Component.translatable(autoEject ? Translations.EJECT : Translations.IDLE);
-    }
+  private static Component getText(boolean autoEject) {
+    return Component.translatable(autoEject ? Translations.EJECT : Translations.IDLE);
+  }
 
-    @Override
-    public void onPress() {
-        tank.swapAutoEject();
-        PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
-    }
+  @Override
+  public void onPress() {
+    tank.swapAutoEject();
+    PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
+  }
 
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-        defaultButtonNarrationText(narrationElementOutput);
-    }
+  @Override
+  protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    defaultButtonNarrationText(narrationElementOutput);
+  }
 }

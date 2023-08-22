@@ -1,16 +1,15 @@
 package edivad.dimstorage.api;
 
+import java.util.List;
 import edivad.dimstorage.manager.DimStorageManager;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
-
 public interface DimStoragePlugin {
 
-    AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq);
+  AbstractDimStorage createDimStorage(DimStorageManager manager, Frequency freq);
 
-    String identifier();
+  String identifier();
 
-    void sendClientInfo(Player player, List<AbstractDimStorage> list);
+  void sendClientInfo(Player player, List<AbstractDimStorage> list);
 
 }

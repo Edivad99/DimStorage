@@ -5,48 +5,48 @@ import net.minecraft.nbt.CompoundTag;
 
 public abstract class AbstractDimStorage {
 
-    public final DimStorageManager manager;
-    public final Frequency freq;
-    private boolean dirty;
-    private int changeCount;
+  public final DimStorageManager manager;
+  public final Frequency freq;
+  private boolean dirty;
+  private int changeCount;
 
-    public AbstractDimStorage(DimStorageManager manager, Frequency freq) {
-        this.manager = manager;
-        this.freq = freq.copy();
+  public AbstractDimStorage(DimStorageManager manager, Frequency freq) {
+    this.manager = manager;
+    this.freq = freq.copy();
 
-        this.dirty = false;
-        this.changeCount = 0;
+    this.dirty = false;
+    this.changeCount = 0;
+  }
+
+  public void setDirty() {
+    if (manager.isServer()) {
+      if (!dirty) {
+        dirty = true;
+        manager.requestSave(this);
+      }
+
+      changeCount++;
     }
+  }
 
-    public void setDirty() {
-        if(manager.isServer()) {
-            if(!dirty) {
-                dirty = true;
-                manager.requestSave(this);
-            }
+  public void setClean() {
+    dirty = false;
+  }
 
-            changeCount++;
-        }
-    }
+  public int getChangeCount() {
+    return changeCount;
+  }
 
-    public void setClean() {
-        dirty = false;
-    }
+  public abstract void clearStorage();
 
-    public int getChangeCount() {
-        return changeCount;
-    }
+  public abstract String type();
 
-    public abstract void clearStorage();
+  public abstract CompoundTag saveToTag();
 
-    public abstract String type();
+  public abstract void loadFromTag(CompoundTag tag);
 
-    public abstract CompoundTag saveToTag();
-
-    public abstract void loadFromTag(CompoundTag tag);
-
-    @Override
-    public String toString() {
-        return freq + ",type=" + type();
-    }
+  @Override
+  public String toString() {
+    return freq + ",type=" + type();
+  }
 }

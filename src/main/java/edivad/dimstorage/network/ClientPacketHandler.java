@@ -9,13 +9,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ClientPacketHandler {
 
-    public static void syncronizeFluid(BlockPos pos, FluidStack fluidStack) {
-        Level level = Minecraft.getInstance().level;
-        if(level.isLoaded(pos)) {
-            BlockEntity te = level.getBlockEntity(pos);
-            if(te instanceof BlockEntityDimTank tank) {
-                tank.liquidState.sync(fluidStack);
-            }
-        }
+  public static void syncronizeFluid(BlockPos pos, FluidStack fluidStack) {
+    Level level = Minecraft.getInstance().level;
+    if (level.isLoaded(pos)) {
+      BlockEntity te = level.getBlockEntity(pos);
+      if (te instanceof BlockEntityDimTank tank) {
+        tank.liquidState.sync(fluidStack);
+      }
     }
+  }
 }

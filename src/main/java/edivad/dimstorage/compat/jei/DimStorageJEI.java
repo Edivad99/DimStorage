@@ -1,6 +1,6 @@
 package edivad.dimstorage.compat.jei;
 
-import edivad.dimstorage.Main;
+import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.client.screen.pattern.PanelScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -10,13 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 @JeiPlugin
 public class DimStorageJEI implements IModPlugin {
 
-    @Override
-    public ResourceLocation getPluginUid() {
-        return new ResourceLocation(Main.MODID, "jei_plugin");
-    }
+  @Override
+  public ResourceLocation getPluginUid() {
+    return new ResourceLocation(DimStorage.ID, "jei_plugin");
+  }
 
-    @Override
-    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addGuiContainerHandler(PanelScreen.class, new AdvancedGuiHandlerDimStorage());
-    }
+  @Override
+  public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+    registration.addGuiContainerHandler(PanelScreen.class, new AdvancedGuiHandlerDimStorage());
+  }
 }

@@ -1,7 +1,8 @@
 package edivad.dimstorage.blocks;
 
-import edivad.dimstorage.setup.Registration;
+import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,67 +19,69 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
-import javax.annotation.Nullable;
-
 public class DimChest extends DimBlockBase {
 
-    public DimChest() {
-        super(Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
+  public DimChest() {
+    super(Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL)
+        .requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
+  }
+
+  @Nullable
+  @Override
+  public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    return new BlockEntityDimChest(pos, state);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+      BlockEntityType<T> blockEntityType) {
+    return createDimBlockTicker(level, blockEntityType, Registration.DIMCHEST_TILE.get());
+  }
+
+  @Override
+  public RenderShape getRenderShape(BlockState state) {
+    return RenderShape.ENTITYBLOCK_ANIMATED;
+  }
+
+  @Override
+  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+      InteractionHand hand, BlockHitResult hit) {
+    if (level.isClientSide) {
+      return InteractionResult.SUCCESS;
     }
 
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityDimChest(pos, state);
+    if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
+      if (!player.isCrouching()) {
+        return chest.activate(player, level, pos, hand);
+      }
     }
+    return InteractionResult.FAIL;
+  }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return createDimBlockTicker(level, blockEntityType, Registration.DIMCHEST_TILE.get());
+  @Override
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer,
+      ItemStack stack) {
+    if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
+      chest.onPlaced(placer);
     }
+  }
 
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
+  @Override
+  public boolean hasAnalogOutputSignal(BlockState state) {
+    return true;
+  }
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(level.isClientSide)
-            return InteractionResult.SUCCESS;
+  @Override
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    return (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest)
+        ? chest.getComparatorInput() : 0;
+  }
 
-        BlockEntity blockentity = level.getBlockEntity(pos);
-
-        if(blockentity instanceof BlockEntityDimChest chest) {
-            if(!player.isCrouching())
-                return chest.activate(player, level, pos, hand);
-        }
-        return InteractionResult.FAIL;
-    }
-
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        BlockEntity blockentity = level.getBlockEntity(pos);
-        if(blockentity instanceof BlockEntityDimChest chest) {
-            chest.onPlaced(placer);
-        }
-    }
-
-    @Override
-    public boolean hasAnalogOutputSignal(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        BlockEntity te = level.getBlockEntity(pos);
-        return (te instanceof BlockEntityDimChest chest) ? chest.getComparatorInput() : 0;
-    }
-
-    @Override
-    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
-        BlockEntity blockentity = level.getBlockEntity(pos);
-        return blockentity != null && blockentity.triggerEvent(eventID, eventParam);
-    }
+  @Override
+  public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID,
+      int eventParam) {
+    var blockentity = level.getBlockEntity(pos);
+    return blockentity != null && blockentity.triggerEvent(eventID, eventParam);
+  }
 }

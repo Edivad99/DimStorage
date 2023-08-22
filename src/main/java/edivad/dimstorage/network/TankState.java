@@ -7,48 +7,48 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class TankState {
 
-    private Frequency frequency;
-    public FluidStack clientLiquid = FluidStack.EMPTY;
-    public FluidStack serverLiquid = FluidStack.EMPTY;
+  public FluidStack clientLiquid = FluidStack.EMPTY;
+  public FluidStack serverLiquid = FluidStack.EMPTY;
+  private Frequency frequency;
 
-    public TankState(Frequency frequency) {
-        this.frequency = frequency;
+  public TankState(Frequency frequency) {
+    this.frequency = frequency;
+  }
+
+  public void setFrequency(Frequency frequency) {
+    this.frequency = frequency;
+  }
+
+  public void update(boolean client) {
+    FluidStack prec, succ;
+    if (client) {
+      prec = clientLiquid.copy();
+      clientLiquid = serverLiquid.copy();
+      succ = clientLiquid;
+    } else {
+      prec = serverLiquid.copy();
+      serverLiquid = getFluidStorageServer();
+      succ = serverLiquid;
+      sendSyncPacket();
+      clientLiquid = serverLiquid.copy();
     }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
+    if ((prec.getAmount() == 0) != (succ.getAmount() == 0) || !prec.isFluidEqual(succ)) {
+      onLiquidChanged();
     }
+  }
 
-    public void update(boolean client) {
-        FluidStack prec, succ;
-        if(client) {
-            prec = clientLiquid.copy();
-            clientLiquid = serverLiquid.copy();
-            succ = clientLiquid;
-        }
-        else {
-            prec = serverLiquid.copy();
-            serverLiquid = getFluidStorageServer();
-            succ = serverLiquid;
-            sendSyncPacket();
-            clientLiquid = serverLiquid.copy();
-        }
-        if((prec.getAmount() == 0) != (succ.getAmount() == 0) || !prec.isFluidEqual(succ)) {
-            onLiquidChanged();
-        }
-    }
+  public void onLiquidChanged() {
+  }
 
-    public void onLiquidChanged() {
-    }
+  public abstract void sendSyncPacket();
 
-    public abstract void sendSyncPacket();
+  public void sync(FluidStack liquid) {
+    serverLiquid = liquid;
+  }
 
-    public void sync(FluidStack liquid) {
-        serverLiquid = liquid;
-    }
-
-    //SERVER SIDE ONLY!
-    private FluidStack getFluidStorageServer() {
-        return ((DimTankStorage) DimStorageManager.instance(false).getStorage(frequency, "fluid")).getFluidInTank(0);
-    }
+  //SERVER SIDE ONLY!
+  private FluidStack getFluidStorageServer() {
+    return ((DimTankStorage) DimStorageManager.instance(false)
+        .getStorage(frequency, "fluid")).getFluidInTank(0);
+  }
 }

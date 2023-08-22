@@ -13,29 +13,29 @@ import net.minecraft.network.chat.Component;
 
 public class LockButton extends AbstractButton {
 
-    private final BlockEntityFrequencyOwner owner;
+  private final BlockEntityFrequencyOwner owner;
 
-    public LockButton(int width, int height, BlockEntityFrequencyOwner owner) {
-        super(width, height, 64, 20, getText(owner.locked));
-        this.owner = owner;
-    }
+  public LockButton(int width, int height, BlockEntityFrequencyOwner owner) {
+    super(width, height, 64, 20, getText(owner.locked));
+    this.owner = owner;
+  }
 
-    private static Component getText(boolean isLock) {
-        return Component.translatable(isLock ? Translations.YES : Translations.NO);
-    }
+  private static Component getText(boolean isLock) {
+    return Component.translatable(isLock ? Translations.YES : Translations.NO);
+  }
 
-    @Override
-    public void onPress() {
-        owner.swapLocked();
-        if(owner instanceof BlockEntityDimChest chest) {
-            PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
-        } else if(owner instanceof BlockEntityDimTank tank) {
-            PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
-        }
+  @Override
+  public void onPress() {
+    owner.swapLocked();
+    if (owner instanceof BlockEntityDimChest chest) {
+      PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
+    } else if (owner instanceof BlockEntityDimTank tank) {
+      PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
     }
+  }
 
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-        defaultButtonNarrationText(narrationElementOutput);
-    }
+  @Override
+  protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    defaultButtonNarrationText(narrationElementOutput);
+  }
 }
