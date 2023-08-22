@@ -4,13 +4,13 @@ license="GNU AGPLv3"
 
 [[mods]]
 modId="dimstorage"
-version="${file.jarVersion}"
+version="${mod_version}"
 displayName="DimStorage"
-updateJSONURL="https://raw.githubusercontent.com/Edivad99/mod-version-controll/master/dimstorage_update.json"
+updateJSONURL="https://api.modrinth.com/updates/dimstorage/forge_updates.json"
 issueTrackerURL="https://github.com/Edivad99/DimStorage/issues"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/dimstorage"
+modUrl="https://www.curseforge.com/minecraft/mc-mods/dimstorage"
 credits="I would like to thank Thegaarnik for giving me the opportunity to publish and update this mod."
-authors="edivad"
+authors="Edivad99"
 description="DimStorage add a technologic version of ender chest system with owner, frequence selection and lock system."
 
 [[dependencies.dimstorage]]
@@ -28,6 +28,6 @@ description="DimStorage add a technologic version of ender chest system with own
 [[dependencies.dimstorage]]
     modId="edivadlib"
     mandatory=true
-    versionRange="[2.0.0,)"
+    versionRange="[2.0.1,)"
     ordering="NONE"
     side="BOTH"

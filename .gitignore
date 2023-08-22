@@ -23,3 +23,5 @@ run
 logs
 libs
 .DS_Store
+
+CHANGELOG.md

@@ -93,13 +93,13 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
             posY += 31;
 
             // freq
-            guiGraphics.drawString(this.font, FREQ, 185, posY, 4210752);
+            guiGraphics.drawString(this.font, FREQ, 185, posY, 4210752, false);
             posY += 9;
             guiGraphics.hLine(185, 185 + this.font.width(FREQ), posY, 0xFF333333);
             posY += 50;
 
             // locked
-            guiGraphics.drawString(this.font, LOCKED, 185, posY, 4210752);
+            guiGraphics.drawString(this.font, LOCKED, 185, posY, 4210752, false);
             posY += 9;
             guiGraphics.hLine(185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
         }
