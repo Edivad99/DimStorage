@@ -76,7 +76,7 @@ public class DimStorage {
   }
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    MinecraftForge.EVENT_BUS.register(new UpdateChecker(DimStorage.ID));
+    MinecraftForge.EVENT_BUS.register(new UpdateChecker(ID));
     MenuScreens.register(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
     MenuScreens.register(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
     MenuScreens.register(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
