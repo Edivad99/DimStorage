@@ -16,8 +16,6 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
 
   private static final MutableComponent AUTO_EJECT = Component.translatable(Translations.EJECT);
   private static final MutableComponent YES = Component.translatable(Translations.YES);
-  private static final MutableComponent LIQUID = Component.translatable(Translations.LIQUID);
-  private static final MutableComponent AMOUNT = Component.translatable(Translations.AMOUNT);
 
   @Override
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
@@ -31,8 +29,8 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
       if (data.getInt(DimStorage.ID + ".Amount") > 0) {
         String liquidName = Component.translatable(data.getString(DimStorage.ID + ".Liquid"))
             .getString();
-        tooltip.add(LIQUID.copy().append(" " + liquidName));
-        tooltip.add(AMOUNT.copy().append(" " + data.getInt(DimStorage.ID + ".Amount") + " mB"));
+        tooltip.add(Component.translatable(Translations.LIQUID, liquidName));
+        tooltip.add(Component.translatable(Translations.AMOUNT, data.getInt(DimStorage.ID + ".Amount")));
       }
     }
   }
