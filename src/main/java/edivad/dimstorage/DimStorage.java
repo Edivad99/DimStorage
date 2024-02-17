@@ -108,7 +108,7 @@ public class DimStorage {
   }
 
   private void handleServerStarted(ServerStartedEvent event) {
-    DimStorageManager.reloadManager(false);
+    DimStorageManager.reloadManager(event.getServer().overworld());
   }
 
   private void registerCapabilities(RegisterCapabilitiesEvent event) {

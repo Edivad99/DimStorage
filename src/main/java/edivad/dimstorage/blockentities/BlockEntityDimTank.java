@@ -47,12 +47,12 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     if (autoEject) {
       ejectLiquid();
     }
-    liquidState.update(false);
+    liquidState.update(level);
   }
 
   @Override
   public void onClientTick(Level level, BlockPos pos, BlockState state) {
-    liquidState.update(true);
+    liquidState.update(level);
   }
 
   private void ejectLiquid() {
@@ -93,7 +93,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Override
   public DimTankStorage getStorage() {
-    return (DimTankStorage) DimStorageManager.instance(level.isClientSide)
+    return (DimTankStorage) DimStorageManager.instance(level)
         .getStorage(getFrequency(), "fluid");
   }
 

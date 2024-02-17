@@ -30,8 +30,10 @@ public record OpenChest (Frequency freq, boolean open) implements EdivadLibPacke
 
   @Override
   public void handle(PlayPayloadContext context) {
-    ((DimChestStorage) DimStorageManager.instance(true)
-        .getStorage(freq, "item"))
-        .setClientOpen(open ? 1 : 0);
+    context.level().ifPresent(level -> {
+      ((DimChestStorage) DimStorageManager.instance(level)
+          .getStorage(freq, "item"))
+          .setClientOpen(open ? 1 : 0);
+    });
   }
 }

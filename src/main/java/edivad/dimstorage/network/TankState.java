@@ -3,6 +3,8 @@ package edivad.dimstorage.network;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimTankStorage;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public abstract class TankState {
@@ -19,15 +21,15 @@ public abstract class TankState {
     this.frequency = frequency;
   }
 
-  public void update(boolean client) {
+  public void update(Level level) {
     FluidStack prec, succ;
-    if (client) {
+    if (level.isClientSide()) {
       prec = clientLiquid.copy();
       clientLiquid = serverLiquid.copy();
       succ = clientLiquid;
     } else {
       prec = serverLiquid.copy();
-      serverLiquid = getFluidStorageServer();
+      serverLiquid = getFluidStorageServer((ServerLevel) level);
       succ = serverLiquid;
       sendSyncPacket();
       clientLiquid = serverLiquid.copy();
@@ -46,9 +48,8 @@ public abstract class TankState {
     serverLiquid = liquid;
   }
 
-  //SERVER SIDE ONLY!
-  private FluidStack getFluidStorageServer() {
-    return ((DimTankStorage) DimStorageManager.instance(false)
+  private FluidStack getFluidStorageServer(ServerLevel level) {
+    return ((DimTankStorage) DimStorageManager.instance(level)
         .getStorage(frequency, "fluid")).getFluidInTank(0);
   }
 }

@@ -23,7 +23,7 @@ public class DimTabletMenu extends AbstractContainerMenu {
     ItemStack item = inventory.player.getItemInHand(InteractionHand.MAIN_HAND);
     Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));
 
-    this.chestInv = (DimChestStorage) DimStorageManager.instance(level.isClientSide)
+    this.chestInv = (DimChestStorage) DimStorageManager.instance(level)
         .getStorage(frequency, "item");
     this.chestInv.openInventory();
 

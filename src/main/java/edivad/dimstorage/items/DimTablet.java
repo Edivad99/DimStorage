@@ -123,7 +123,7 @@ public class DimTablet extends Item implements MenuProvider {
   }
 
   private DimChestStorage getStorage(Level level, Frequency frequency) {
-    return (DimChestStorage) DimStorageManager.instance(level.isClientSide)
+    return (DimChestStorage) DimStorageManager.instance(level)
         .getStorage(frequency, "item");
   }
 

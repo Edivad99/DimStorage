@@ -91,7 +91,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
   @Override
   public DimChestStorage getStorage() {
-    return (DimChestStorage) DimStorageManager.instance(level.isClientSide)
+    return (DimChestStorage) DimStorageManager.instance(level)
         .getStorage(getFrequency(), "item");
   }
 
