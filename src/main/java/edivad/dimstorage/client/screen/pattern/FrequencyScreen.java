@@ -59,7 +59,6 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
       } else if (blockEntityFrequencyOwner instanceof BlockEntityDimTank tank) {
         PacketHandler.sendToServer(new UpdateDimTank(tank));
       }
-      freqTextField.setValue(String.valueOf(blockEntityFrequencyOwner.getFrequency().getChannel()));
     } catch (Exception e) {
       freqTextField.setValue(String.valueOf(prevChannel));
     }
