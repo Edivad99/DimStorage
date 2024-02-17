@@ -1,14 +1,13 @@
 package edivad.dimstorage.datagen;
 
-import java.util.function.Consumer;
 import edivad.dimstorage.setup.Registration;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 public class Recipes extends RecipeProvider {
 
@@ -17,7 +16,7 @@ public class Recipes extends RecipeProvider {
   }
 
   @Override
-  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  protected void buildRecipes(RecipeOutput recipeOutput) {
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIMCORE.get())
         .pattern("aba")
@@ -27,7 +26,7 @@ public class Recipes extends RecipeProvider {
         .define('b', Items.REDSTONE)
         .define('c', Items.DIAMOND)
         .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
-        .save(consumer);
+        .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIMWALL.get(), 4)
         .pattern("aba")
@@ -37,7 +36,7 @@ public class Recipes extends RecipeProvider {
         .define('b', Items.REDSTONE)
         .define('c', Items.ENDER_PEARL)
         .unlockedBy(getHasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL))
-        .save(consumer);
+        .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.SOLIDDIMCORE.get())
         .pattern("aaa")
@@ -46,7 +45,7 @@ public class Recipes extends RecipeProvider {
         .define('a', Items.IRON_INGOT)
         .define('b', Registration.DIMCORE.get())
         .unlockedBy(getHasName(Registration.DIMCORE.get()), has(Registration.DIMCORE.get()))
-        .save(consumer);
+        .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIMCHEST.get())
         .pattern("aaa")
@@ -56,7 +55,7 @@ public class Recipes extends RecipeProvider {
         .define('b', Registration.SOLIDDIMCORE.get())
         .unlockedBy(getHasName(Registration.SOLIDDIMCORE.get()),
             has(Registration.SOLIDDIMCORE.get()))
-        .save(consumer);
+        .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIMTABLET.get())
         .pattern("cdc")
@@ -67,7 +66,7 @@ public class Recipes extends RecipeProvider {
         .define('c', Items.IRON_INGOT)
         .define('d', Tags.Items.GLASS_PANES)
         .unlockedBy(getHasName(Registration.DIMCHEST.get()), has(Registration.DIMCHEST.get()))
-        .save(consumer);
+        .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIMTANK.get())
         .pattern("ada")
@@ -78,6 +77,6 @@ public class Recipes extends RecipeProvider {
         .define('c', Items.CAULDRON)
         .define('d', Tags.Items.GLASS)
         .unlockedBy(getHasName(Items.CAULDRON), has(Items.CAULDRON))
-        .save(consumer);
+        .save(recipeOutput);
   }
 }

@@ -12,7 +12,7 @@ public class DimStorageJEI implements IModPlugin {
 
   @Override
   public ResourceLocation getPluginUid() {
-    return new ResourceLocation(DimStorage.ID, "jei_plugin");
+    return DimStorage.rl("jei_plugin");
   }
 
   @Override

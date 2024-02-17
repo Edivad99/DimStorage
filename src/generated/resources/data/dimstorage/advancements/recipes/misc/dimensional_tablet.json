@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_dimensional_chest",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_dimensional_chest"
     ]
   ],
   "rewards": {
     "recipes": [
       "dimstorage:dimensional_tablet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

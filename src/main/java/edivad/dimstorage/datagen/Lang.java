@@ -4,7 +4,7 @@ import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class Lang extends LanguageProvider {
 

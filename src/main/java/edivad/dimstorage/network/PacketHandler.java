@@ -1,50 +1,38 @@
 package edivad.dimstorage.network;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.network.packet.OpenChest;
-import edivad.dimstorage.network.packet.SyncLiquidTank;
-import edivad.dimstorage.network.packet.UpdateDimChest;
-import edivad.dimstorage.network.packet.UpdateDimTank;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import edivad.dimstorage.network.to_client.OpenChest;
+import edivad.dimstorage.network.to_client.SyncLiquidTank;
+import edivad.dimstorage.network.to_server.UpdateDimChest;
+import edivad.dimstorage.network.to_server.UpdateDimTank;
+import edivad.edivadlib.network.BasePacketHandler;
+import edivad.edivadlib.network.EdivadLibPacket;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-public class PacketHandler {
+public class PacketHandler extends BasePacketHandler {
 
-  private static final String PROTOCOL_VERSION = "1";
-  public static SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-      .named(new ResourceLocation(DimStorage.ID, "network"))
-      .clientAcceptedVersions(PROTOCOL_VERSION::equals)
-      .serverAcceptedVersions(PROTOCOL_VERSION::equals)
-      .networkProtocolVersion(() -> PROTOCOL_VERSION)
-      .simpleChannel();
+  public PacketHandler(IEventBus modEventBus) {
+    super(modEventBus, DimStorage.ID, "1");
+  }
 
-  public static void init() {
-    int id = 0;
-    INSTANCE
-        .messageBuilder(UpdateDimChest.class, 0, NetworkDirection.PLAY_TO_SERVER)
-        .encoder(UpdateDimChest::encode)
-        .decoder(UpdateDimChest::new)
-        .consumerMainThread(UpdateDimChest::handle)
-        .add();
-    INSTANCE
-        .messageBuilder(OpenChest.class, 1, NetworkDirection.PLAY_TO_CLIENT)
-        .encoder(OpenChest::encode)
-        .decoder(OpenChest::decode)
-        .consumerMainThread(OpenChest::handle)
-        .add();
-    INSTANCE
-        .messageBuilder(UpdateDimTank.class, 2, NetworkDirection.PLAY_TO_SERVER)
-        .encoder(UpdateDimTank::encode)
-        .decoder(UpdateDimTank::new)
-        .consumerMainThread(UpdateDimTank::handle)
-        .add();
-    INSTANCE
-        .messageBuilder(SyncLiquidTank.class, 3, NetworkDirection.PLAY_TO_CLIENT)
-        .encoder(SyncLiquidTank::encode)
-        .decoder(SyncLiquidTank::decode)
-        .consumerMainThread(SyncLiquidTank::handle)
-        .add();
+  @Override
+  protected void registerClientToServer(PacketRegistrar registrar) {
+    registrar.play(UpdateDimChest.ID, UpdateDimChest::read);
+    registrar.play(UpdateDimTank.ID, UpdateDimTank::read);
+  }
+
+  @Override
+  protected void registerServerToClient(PacketRegistrar registrar) {
+    registrar.play(OpenChest.ID, OpenChest::read);
+    registrar.play(SyncLiquidTank.ID, SyncLiquidTank::read);
+  }
+
+  public static void sendToServer(EdivadLibPacket packet) {
+    PacketDistributor.SERVER.noArg().send(packet);
+  }
+
+  public static void sendToAll(EdivadLibPacket packet) {
+    PacketDistributor.ALL.noArg().send(packet);
   }
 }

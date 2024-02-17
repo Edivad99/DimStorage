@@ -39,6 +39,6 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
 
   @Override
   public ResourceLocation getUid() {
-    return new ResourceLocation(DimStorage.ID, "dim_tank");
+    return DimStorage.rl("dim_tank");
   }
 }

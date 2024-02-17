@@ -2,7 +2,6 @@ package edivad.dimstorage.compat.top;
 
 import java.util.function.Function;
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.storage.DimTankStorage;
@@ -17,11 +16,9 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
@@ -81,6 +78,6 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 
   @Override
   public ResourceLocation getID() {
-    return new ResourceLocation(DimStorage.ID, "default");
+    return DimStorage.rl("default");
   }
 }

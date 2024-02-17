@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_solid_dim_core",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_solid_dim_core"
     ]
   ],
   "rewards": {
     "recipes": [
       "dimstorage:dimensional_chest"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -3,15 +3,14 @@ package edivad.dimstorage.items;
 import java.util.List;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.container.ContainerDimTablet;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.menu.DimTabletMenu;
 import edivad.dimstorage.setup.Config;
 import edivad.dimstorage.storage.DimChestStorage;
 import edivad.dimstorage.tools.InventoryUtils;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,22 +28,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class DimTablet extends Item implements MenuProvider {
 
-  public DimTablet() {
-    super(new Properties().stacksTo(1));
+  public DimTablet(Properties properties) {
+    super(properties);
   }
 
   @Override
   public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-    Level level = context.getLevel();
-    Player player = context.getPlayer();
-    BlockPos pos = context.getClickedPos();
+    var level = context.getLevel();
+    var player = context.getPlayer();
+    var pos = context.getClickedPos();
 
     if (level.isClientSide) {
       return InteractionResult.PASS;
@@ -83,26 +79,25 @@ public class DimTablet extends Item implements MenuProvider {
 
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-    ItemStack stack = player.getItemInHand(hand);
-
-    if (!level.isClientSide && hand.compareTo(InteractionHand.MAIN_HAND) == 0) {
-      if (player.isCrouching()) {
-        return super.use(level, player, hand);
-      }
-      if (!stack.getOrCreateTag().getBoolean("bound")) {
-        player.displayClientMessage(
-            Component.literal("Dimensional Tablet not connected to any DimChest")
-                .withStyle(ChatFormatting.RED), false);
-        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
-      }
-      Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-      if (!f.canAccess(player)) {
-        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
-      }
-
-      NetworkHooks.openScreen((ServerPlayer) player, this);
+    if (player.isCrouching()) {
+      return super.use(level, player, hand);
     }
-    return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+    var stack = player.getItemInHand(hand);
+
+    if (!stack.getOrCreateTag().getBoolean("bound")) {
+      player.displayClientMessage(
+          Component.literal("Dimensional Tablet not connected to any DimChest")
+              .withStyle(ChatFormatting.RED), false);
+      return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+    }
+
+    if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
+      var f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
+      if (f.canAccess(player)) {
+        serverPlayer.openMenu(this);
+      }
+    }
+    return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()), stack);
   }
 
   @Override
@@ -112,11 +107,11 @@ public class DimTablet extends Item implements MenuProvider {
       if (stack.getOrCreateTag().getBoolean("autocollect") && stack.getOrCreateTag()
           .getBoolean("bound")) {
         if (entity instanceof Player player) {
-          Frequency f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
-          InvWrapper chestInventory = new InvWrapper(getStorage(level, f));
+          var f = new Frequency(stack.getOrCreateTag().getCompound("frequency"));
+          var chestInventory = new InvWrapper(getStorage(level, f));
 
           for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            Item item = player.getInventory().getItem(i).getItem();
+            var item = player.getInventory().getItem(i).getItem();
             if (Config.DimTablet.containItem(item)) {
               InventoryUtils.mergeItemStack(player.getInventory().getItem(i), 0,
                   getStorage(level, f).getContainerSize(), chestInventory);
@@ -132,25 +127,24 @@ public class DimTablet extends Item implements MenuProvider {
         .getStorage(frequency, "item");
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
   public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip,
       TooltipFlag flagIn) {
-    MutableComponent ADVICE_TO_LINK = Component.translatable(Translations.PRESS)
+    var ADVICE_TO_LINK = Component.translatable(Translations.PRESS)
         .withStyle(ChatFormatting.GRAY)
         .append(" ")
         .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
         .append(Component.literal(" + ").withStyle(ChatFormatting.GRAY))
         .append(Component.translatable(Translations.BIND_DIMCHEST).withStyle(ChatFormatting.GRAY));
 
-    MutableComponent HOLD_SHIFT = Component.translatable(Translations.HOLD)
+    var HOLD_SHIFT = Component.translatable(Translations.HOLD)
         .withStyle(ChatFormatting.GRAY)
         .append(" ")
         .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
         .append(" ")
         .append(Component.translatable(Translations.FOR_DETAILS).withStyle(ChatFormatting.GRAY));
 
-    MutableComponent CHANGE_AUTOCOLLECT = Component.translatable(Translations.PRESS)
+    var CHANGE_AUTOCOLLECT = Component.translatable(Translations.PRESS)
         .withStyle(ChatFormatting.GRAY)
         .append(" ")
         .append(Component.literal("Shift").withStyle(ChatFormatting.ITALIC, ChatFormatting.AQUA))
@@ -188,7 +182,7 @@ public class DimTablet extends Item implements MenuProvider {
 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return new ContainerDimTablet(id, inventory, player.level());
+    return new DimTabletMenu(id, inventory, player.level());
   }
 
   @Override

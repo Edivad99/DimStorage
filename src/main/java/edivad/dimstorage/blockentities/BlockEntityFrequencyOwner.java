@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class BlockEntityFrequencyOwner extends BlockEntity implements MenuProvider {
 
@@ -24,9 +23,9 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   public boolean locked;
   private int changeCount;
 
-  public BlockEntityFrequencyOwner(BlockEntityType<?> tileEntityTypeIn, BlockPos pos,
-      BlockState state) {
-    super(tileEntityTypeIn, pos, state);
+  public BlockEntityFrequencyOwner(BlockEntityType<? extends BlockEntityFrequencyOwner> type,
+      BlockPos pos, BlockState state) {
+    super(type, pos, state);
     locked = false;
   }
 
@@ -52,7 +51,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   public void setFrequency(Frequency frequency) {
     this.frequency.set(frequency);
     this.setChanged();
-    BlockState state = level.getBlockState(worldPosition);
+    var state = level.getBlockState(worldPosition);
     level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_ALL);
   }
 
@@ -93,14 +92,14 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     tag.putBoolean("locked", locked);
   }
 
-  public InteractionResult activate(Player player, Level level, BlockPos pos,
+  public InteractionResult activate(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (canAccess(player)) {
-      NetworkHooks.openScreen((ServerPlayer) player, this,
-          buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
+      player.openMenu(this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
     } else {
-      player.displayClientMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED),
-          false);
+      player.displayClientMessage(
+          Component.literal("Access Denied!")
+              .withStyle(ChatFormatting.RED), false);
     }
     return InteractionResult.SUCCESS;
   }

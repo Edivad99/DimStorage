@@ -6,11 +6,11 @@ import edivad.edivadlib.compat.top.FluidElement;
 import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class MyFluidElement extends FluidElement {
 
-  public static final ResourceLocation ID = new ResourceLocation(DimStorage.ID, "fluid_element");
+  public static final ResourceLocation ID = DimStorage.rl("fluid_element");
 
   protected MyFluidElement(FluidStack fluid, int capacity, int colorLiquid) {
     super(fluid, capacity, colorLiquid);

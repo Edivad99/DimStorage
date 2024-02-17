@@ -2,7 +2,6 @@ package edivad.dimstorage.client.render.blockentity;
 
 import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.edivadlib.tools.utils.FluidUtils;
@@ -11,7 +10,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fluids.FluidStack;
 
 public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> {
 

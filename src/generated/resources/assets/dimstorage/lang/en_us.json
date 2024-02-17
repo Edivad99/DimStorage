@@ -24,7 +24,7 @@
   "gui.dimstorage.luminosity": "Luminosity: %s",
   "gui.dimstorage.no": "No",
   "gui.dimstorage.owner": "Owner:",
-  "gui.dimstorage.temperature": "Temperature: °C",
+  "gui.dimstorage.temperature": "Temperature: %s °C",
   "gui.dimstorage.yes": "Yes",
   "item.dimstorage.dim_core": "Dimensional Core",
   "item.dimstorage.dim_wall": "Dimensional Wall",

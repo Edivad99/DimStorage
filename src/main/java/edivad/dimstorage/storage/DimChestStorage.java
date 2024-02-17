@@ -5,13 +5,12 @@ import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.OpenChest;
+import edivad.dimstorage.network.to_client.OpenChest;
 import edivad.dimstorage.tools.InventoryUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
 
 public class DimChestStorage extends AbstractDimStorage implements Container {
 
@@ -71,7 +70,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
       synchronized (this) {
         open++;
         if (open >= 1) {
-          PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, true));
+          PacketHandler.sendToAll(new OpenChest(freq, true));
         }
       }
     }
@@ -82,7 +81,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
       synchronized (this) {
         open--;
         if (open <= 0) {
-          PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new OpenChest(freq, false));
+          PacketHandler.sendToAll(new OpenChest(freq, false));
         }
       }
     }

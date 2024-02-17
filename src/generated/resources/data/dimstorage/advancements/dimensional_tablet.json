@@ -15,16 +15,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.dimstorage.dimensional_tank.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "dimstorage:dimensional_tablet"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.dimstorage.dimensional_tank"
     }

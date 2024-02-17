@@ -1,11 +1,12 @@
 package edivad.dimstorage.blockentities;
 
+import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.container.ContainerDimTank;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.menu.DimTankMenu;
 import edivad.dimstorage.network.PacketHandler;
 import edivad.dimstorage.network.TankState;
-import edivad.dimstorage.network.packet.SyncLiquidTank;
+import edivad.dimstorage.network.to_client.SyncLiquidTank;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimTankStorage;
 import net.minecraft.ChatFormatting;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,21 +28,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   public DimTankState liquidState;
   public boolean autoEject = false;
-  //Set the Capability
-  private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
 
   public BlockEntityDimTank(BlockPos pos, BlockState state) {
     super(Registration.DIMTANK_TILE.get(), pos, state);
@@ -61,28 +56,31 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   private void ejectLiquid() {
-    for (Direction side : Direction.values()) {
-      BlockEntity blockentity = level.getBlockEntity(worldPosition.relative(side));
-      if (blockentity != null && checkSameFrequency(blockentity)) {
-        blockentity.getCapability(ForgeCapabilities.FLUID_HANDLER, side.getOpposite())
-            .ifPresent(h -> {
-              FluidStack liquid = getStorage().drain(100, FluidAction.SIMULATE);
-              if (liquid.getAmount() > 0) {
-                int qty = h.fill(liquid, FluidAction.EXECUTE);
-                if (qty > 0) {
-                  getStorage().drain(qty, FluidAction.EXECUTE);
-                }
-              }
-            });
+    for (var side : Direction.values()) {
+      var pos = worldPosition.relative(side);
+      if (checkSameFrequency(level.getBlockEntity(pos))) {
+        continue;
+      }
+
+      var fluidHandler =
+          level.getCapability(Capabilities.FluidHandler.BLOCK, pos, side.getOpposite());
+      if (fluidHandler != null) {
+        var liquid = getStorage().drain(100, IFluidHandler.FluidAction.SIMULATE);
+        if (liquid.getAmount() > 0) {
+          int qty = fluidHandler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
+          if (qty > 0) {
+            getStorage().drain(qty, IFluidHandler.FluidAction.EXECUTE);
+          }
+        }
       }
     }
   }
 
   private boolean checkSameFrequency(BlockEntity blockentity) {
     if (blockentity instanceof BlockEntityDimTank otherTank) {
-      return !getFrequency().equals(otherTank.getFrequency());
+      return getFrequency().equals(otherTank.getFrequency());
     }
-    return true;
+    return false;
   }
 
   @Override
@@ -91,21 +89,6 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     if (!level.isClientSide) {
       liquidState.setFrequency(frequency);
     }
-    fluidHandler.invalidate();
-    fluidHandler = LazyOptional.of(this::getStorage);
-  }
-
-  @Override
-  public void setLevel(Level level) {
-    super.setLevel(level);
-    fluidHandler.invalidate();
-    fluidHandler = LazyOptional.of(this::getStorage);
-  }
-
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    fluidHandler.invalidate();
   }
 
   @Override
@@ -138,7 +121,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public InteractionResult activate(Player player, Level level, BlockPos pos,
+  public InteractionResult activate(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (!canAccess(player)) {
       player.displayClientMessage(Component.literal("Access Denied!")
@@ -155,12 +138,9 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     return InteractionResult.SUCCESS;
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    if (!locked && cap == ForgeCapabilities.FLUID_HANDLER) {
-      return fluidHandler.cast();
-    }
-    return super.getCapability(cap, side);
+  @Nullable
+  public IFluidHandler getFluidHandler(Direction direction) {
+    return locked ? null : this.getStorage();
   }
 
   //Synchronizing on block update
@@ -198,7 +178,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return new ContainerDimTank(id, inventory, this, false);
+    return new DimTankMenu(id, inventory, this, false);
   }
 
   public class DimTankState extends TankState {
@@ -209,8 +189,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
     @Override
     public void sendSyncPacket() {
-      PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-          new SyncLiquidTank(getBlockPos(), serverLiquid));
+      PacketHandler.sendToAll(new SyncLiquidTank(getBlockPos(), serverLiquid));
     }
 
     @Override

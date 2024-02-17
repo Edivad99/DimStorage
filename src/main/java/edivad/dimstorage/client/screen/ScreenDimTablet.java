@@ -2,18 +2,18 @@ package edivad.dimstorage.client.screen;
 
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.client.screen.pattern.BaseScreen;
-import edivad.dimstorage.container.ContainerDimTablet;
+import edivad.dimstorage.menu.DimTabletMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ScreenDimTablet extends BaseScreen<ContainerDimTablet> {
+public class ScreenDimTablet extends BaseScreen<DimTabletMenu> {
 
   private static final ResourceLocation DIMTABLET_GUI =
-      new ResourceLocation(DimStorage.ID, "textures/gui/dimchest.png");
+      DimStorage.rl("textures/gui/dimchest.png");
 
-  public ScreenDimTablet(ContainerDimTablet container, Inventory inventory, Component text) {
+  public ScreenDimTablet(DimTabletMenu container, Inventory inventory, Component text) {
     super(container, inventory, text, DIMTABLET_GUI);
   }
 

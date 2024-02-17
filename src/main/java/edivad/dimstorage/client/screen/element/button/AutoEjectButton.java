@@ -2,7 +2,7 @@ package edivad.dimstorage.client.screen.element.button;
 
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateDimTank;
+import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -24,7 +24,7 @@ public class AutoEjectButton extends AbstractButton {
   @Override
   public void onPress() {
     tank.swapAutoEject();
-    PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
+    PacketHandler.sendToServer(new UpdateDimTank(tank));
   }
 
   @Override

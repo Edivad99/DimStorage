@@ -1,8 +1,10 @@
 package edivad.dimstorage.blockentities;
 
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.container.ContainerDimChest;
 import edivad.dimstorage.manager.DimStorageManager;
+import edivad.dimstorage.menu.DimChestMenu;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.core.BlockPos;
@@ -16,12 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
@@ -31,8 +30,6 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   public float movablePartState;
   public int rotation;
   private int openCount;
-  //Set the Capability
-  private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
   public BlockEntityDimChest(BlockPos pos, BlockState state) {
     super(Registration.DIMCHEST_TILE.get(), pos, state);
@@ -73,27 +70,14 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   }
 
   public int getComparatorInput() {
-    return itemHandler.map(ItemHandlerHelper::calcRedstoneFromInventory).orElse(0);
+    return Optional.ofNullable(getItemHandler(null))
+        .map(ItemHandlerHelper::calcRedstoneFromInventory)
+        .orElse(0);
   }
 
-  @Override
-  public void setFrequency(Frequency frequency) {
-    super.setFrequency(frequency);
-    itemHandler.invalidate();
-    itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
-  }
-
-  @Override
-  public void setLevel(Level level) {
-    super.setLevel(level);
-    itemHandler.invalidate();
-    itemHandler = LazyOptional.of(() -> new InvWrapper(getStorage()));
-  }
-
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    itemHandler.invalidate();
+  @Nullable
+  public IItemHandler getItemHandler(Direction direction) {
+    return locked ? null : new InvWrapper(getStorage());
   }
 
   @Override
@@ -125,14 +109,6 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   public void load(CompoundTag tag) {
     super.load(tag);
     rotation = tag.getByte("rot") & 3;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-    if (!locked && capability == ForgeCapabilities.ITEM_HANDLER) {
-      return itemHandler.cast();
-    }
-    return super.getCapability(capability, facing);
   }
 
   //Synchronizing on block update
@@ -169,6 +145,6 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return new ContainerDimChest(id, inventory, this, false);
+    return new DimChestMenu(id, inventory, this, false);
   }
 }

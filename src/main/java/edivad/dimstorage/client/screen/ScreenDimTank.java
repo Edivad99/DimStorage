@@ -4,7 +4,7 @@ import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
-import edivad.dimstorage.container.ContainerDimTank;
+import edivad.dimstorage.menu.DimTankMenu;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.Translations;
 import edivad.edivadlib.tools.utils.FluidUtils;
@@ -13,12 +13,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ScreenDimTank extends FrequencyScreen<ContainerDimTank> {
+public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
 
-  private static final ResourceLocation DIMTANK_GUI =
-      new ResourceLocation(DimStorage.ID, "textures/gui/dimtank.png");
+  private static final ResourceLocation DIMTANK_GUI = DimStorage.rl("textures/gui/dimtank.png");
 
-  public ScreenDimTank(ContainerDimTank container, Inventory inventory, Component text) {
+  public ScreenDimTank(DimTankMenu container, Inventory inventory, Component text) {
     super(container, container.owner, inventory, text, DIMTANK_GUI, container.isOpen);
   }
 

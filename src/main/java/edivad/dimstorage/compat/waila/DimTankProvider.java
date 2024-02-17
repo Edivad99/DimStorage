@@ -21,6 +21,6 @@ public class DimTankProvider extends DimBlockBaseProvider {
 
   @Override
   public ResourceLocation getUid() {
-    return new ResourceLocation(DimStorage.ID, "dim_tank");
+    return DimStorage.rl("dim_tank");
   }
 }

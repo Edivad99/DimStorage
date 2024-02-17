@@ -15,14 +15,14 @@ import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.level.LevelEvent.Load;
-import net.minecraftforge.event.level.LevelEvent.Save;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class DimStorageManager {
 
@@ -78,10 +78,10 @@ public class DimStorageManager {
     plugins.put(plugin.identifier(), plugin);
 
     if (serverManager != null) {
-      serverManager.storageList.put(plugin.identifier(), new ArrayList<AbstractDimStorage>());
+      serverManager.storageList.put(plugin.identifier(), new ArrayList<>());
     }
     if (clientManager != null) {
-      clientManager.storageList.put(plugin.identifier(), new ArrayList<AbstractDimStorage>());
+      clientManager.storageList.put(plugin.identifier(), new ArrayList<>());
     }
   }
 
@@ -112,9 +112,8 @@ public class DimStorageManager {
         fin.close();
 
         if (saveFiles[saveTo ^ 1].exists()) {
-          DataInputStream din = new DataInputStream(
-              new FileInputStream(saveFiles[saveTo ^ 1]));
-          saveTag = NbtIo.readCompressed(din);
+          var din = new DataInputStream(new FileInputStream(saveFiles[saveTo ^ 1]));
+          saveTag = NbtIo.readCompressed(din, NbtAccounter.unlimitedHeap());
           din.close();
         } else {
           saveTag = new CompoundTag();
@@ -181,14 +180,14 @@ public class DimStorageManager {
   public static class DimStorageSaveHandler {
 
     @SubscribeEvent
-    public void onWorldLoad(Load event) {
+    public void onWorldLoad(LevelEvent.Load event) {
       if (event.getLevel().isClientSide()) {
         reloadManager(true);
       }
     }
 
     @SubscribeEvent
-    public void onWorldSave(Save event) {
+    public void onWorldSave(LevelEvent.Save event) {
       if (!event.getLevel().isClientSide() && instance(false) != null) {
         instance(false).save(false);
       }

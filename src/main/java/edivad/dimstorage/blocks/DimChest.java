@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,24 +48,21 @@ public class DimChest extends DimBlockBase {
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult hit) {
-    if (level.isClientSide) {
-      return InteractionResult.SUCCESS;
-    }
-
-    if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
-      if (!player.isCrouching()) {
-        return chest.activate(player, level, pos, hand);
+    if (player instanceof ServerPlayer serverPlayer) {
+      if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
+        if (!player.isCrouching()) {
+          return chest.activate(serverPlayer, level, pos, hand);
+        }
       }
     }
-    return InteractionResult.FAIL;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override
   public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer,
       ItemStack stack) {
-    if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
-      chest.onPlaced(placer);
-    }
+    level.getBlockEntity(pos, Registration.DIMCHEST_TILE.get())
+        .ifPresent(chest -> chest.onPlaced(placer));
   }
 
   @Override
@@ -74,8 +72,8 @@ public class DimChest extends DimBlockBase {
 
   @Override
   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-    return (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest)
-        ? chest.getComparatorInput() : 0;
+    return level.getBlockEntity(pos, Registration.DIMCHEST_TILE.get())
+        .map(BlockEntityDimChest::getComparatorInput).orElse(0);
   }
 
   @Override

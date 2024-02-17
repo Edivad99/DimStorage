@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import edivad.dimstorage.DimStorage;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
 
   public static void init() {
-    var SERVER_BUILDER = new ForgeConfigSpec.Builder();
+    var SERVER_BUILDER = new ModConfigSpec.Builder();
     SERVER_BUILDER.comment(DimStorage.MODNAME + "'s config");
 
     DimBlock.registerServerConfig(SERVER_BUILDER);
@@ -27,10 +27,10 @@ public class Config {
 
   public static class DimBlock {
 
-    public static ForgeConfigSpec.BooleanValue ALLOW_CONFIG;
-    public static ForgeConfigSpec.BooleanValue ALLOW_PRIVATE_NETWORK;
+    public static ModConfigSpec.BooleanValue ALLOW_CONFIG;
+    public static ModConfigSpec.BooleanValue ALLOW_PRIVATE_NETWORK;
 
-    public static void registerServerConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void registerServerConfig(ModConfigSpec.Builder SERVER_BUILDER) {
       SERVER_BUILDER.push("DimChest/DimTank");
 
       ALLOW_CONFIG = SERVER_BUILDER
@@ -47,9 +47,9 @@ public class Config {
 
   public static class DimTablet {
 
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> ALLOW_LIST;
+    public static ModConfigSpec.ConfigValue<List<? extends String>> ALLOW_LIST;
 
-    public static void registerServerConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void registerServerConfig(ModConfigSpec.Builder SERVER_BUILDER) {
       SERVER_BUILDER.push("DimTablet");
 
       ALLOW_LIST = SERVER_BUILDER
@@ -95,7 +95,7 @@ public class Config {
     }
 
     private static String getResourceLocation(Item item) {
-      return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).toString();
+      return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item)).toString();
     }
 
     private static List<String> allowList() {

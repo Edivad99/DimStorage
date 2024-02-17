@@ -1,4 +1,4 @@
-package edivad.dimstorage.container;
+package edivad.dimstorage.menu;
 
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.setup.Registration;
@@ -10,15 +10,15 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class ContainerDimChest extends AbstractContainerMenu {
+public class DimChestMenu extends AbstractContainerMenu {
 
   private final DimChestStorage chestInv;
   public BlockEntityDimChest owner;
   public boolean isOpen;
 
-  public ContainerDimChest(int windowId, Inventory inventory, BlockEntityDimChest owner,
+  public DimChestMenu(int windowId, Inventory inventory, BlockEntityDimChest owner,
       boolean isOpen) {
-    super(Registration.DIMCHEST_CONTAINER.get(), windowId);
+    super(Registration.DIMCHEST_MENU.get(), windowId);
     this.chestInv = owner.getStorage();
     this.owner = owner;
     this.isOpen = isOpen;

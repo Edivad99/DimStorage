@@ -3,7 +3,7 @@ package edivad.dimstorage.network;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.storage.DimTankStorage;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public abstract class TankState {
 

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -27,8 +28,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
 
 public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
 
@@ -56,16 +55,14 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult hit) {
-    if (level.isClientSide) {
-      return InteractionResult.SUCCESS;
-    }
-
-    if (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank) {
-      if (!player.isCrouching()) {
-        return tank.activate(player, level, pos, hand);
+    if (player instanceof ServerPlayer serverPlayer) {
+      if (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank) {
+        if (!player.isCrouching()) {
+          return tank.activate(serverPlayer, level, pos, hand);
+        }
       }
     }
-    return InteractionResult.FAIL;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override
@@ -119,9 +116,9 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
   }
 
   @Override
-  public boolean canPlaceLiquid(BlockGetter blockGetter, BlockPos pos, BlockState state,
-      Fluid fluidIn) {
-    return SimpleWaterloggedBlock.super.canPlaceLiquid(blockGetter, pos, state, fluidIn);
+  public boolean canPlaceLiquid(@Nullable Player player, BlockGetter blockGetter, BlockPos pos,
+      BlockState state, Fluid fluidIn) {
+    return SimpleWaterloggedBlock.super.canPlaceLiquid(player, blockGetter, pos, state, fluidIn);
   }
 
   @Override

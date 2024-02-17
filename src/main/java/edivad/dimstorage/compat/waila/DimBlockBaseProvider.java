@@ -25,6 +25,6 @@ public class DimBlockBaseProvider implements IServerDataProvider<BlockAccessor> 
 
   @Override
   public ResourceLocation getUid() {
-    return new ResourceLocation(DimStorage.ID, "dim_block_base");
+    return DimStorage.rl("dim_block_base");
   }
 }

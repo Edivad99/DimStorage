@@ -8,8 +8,8 @@ import edivad.dimstorage.client.screen.element.button.LockButton;
 import edivad.dimstorage.client.screen.element.button.OwnerButton;
 import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.PacketHandler;
-import edivad.dimstorage.network.packet.UpdateDimChest;
-import edivad.dimstorage.network.packet.UpdateDimTank;
+import edivad.dimstorage.network.to_server.UpdateDimChest;
+import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -55,19 +55,14 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
           blockEntityFrequencyOwner.getFrequency().setChannel(newFreq));
 
       if (blockEntityFrequencyOwner instanceof BlockEntityDimChest chest) {
-        PacketHandler.INSTANCE.sendToServer(new UpdateDimChest(chest));
+        PacketHandler.sendToServer(new UpdateDimChest(chest));
       } else if (blockEntityFrequencyOwner instanceof BlockEntityDimTank tank) {
-        PacketHandler.INSTANCE.sendToServer(new UpdateDimTank(tank));
+        PacketHandler.sendToServer(new UpdateDimTank(tank));
       }
+      freqTextField.setValue(String.valueOf(blockEntityFrequencyOwner.getFrequency().getChannel()));
     } catch (Exception e) {
       freqTextField.setValue(String.valueOf(prevChannel));
     }
-  }
-
-  @Override
-  protected void containerTick() {
-    super.containerTick();
-    freqTextField.tick();
   }
 
   @Override

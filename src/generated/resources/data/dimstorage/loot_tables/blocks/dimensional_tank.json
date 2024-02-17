@@ -3,6 +3,11 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -21,22 +26,11 @@
                 }
               ],
               "source": "block_entity"
-            },
-            {
-              "type": "dimstorage:dimensional_tank",
-              "entries": [
-                {
-                  "type": "minecraft:dynamic",
-                  "name": "minecraft:contents"
-                }
-              ],
-              "function": "minecraft:set_contents"
             }
           ],
           "name": "dimstorage:dimensional_tank"
         }
       ],
-      "name": "dimensional_tank",
       "rolls": 1.0
     }
   ],

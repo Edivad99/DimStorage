@@ -1,4 +1,4 @@
-package edivad.dimstorage.container;
+package edivad.dimstorage.menu;
 
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
@@ -13,12 +13,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ContainerDimTablet extends AbstractContainerMenu {
+public class DimTabletMenu extends AbstractContainerMenu {
 
   private final DimChestStorage chestInv;
 
-  public ContainerDimTablet(int windowId, Inventory inventory, Level level) {
-    super(Registration.DIMTABLET_CONTAINER.get(), windowId);
+  public DimTabletMenu(int windowId, Inventory inventory, Level level) {
+    super(Registration.DIMTABLET_MENU.get(), windowId);
 
     ItemStack item = inventory.player.getItemInHand(InteractionHand.MAIN_HAND);
     Frequency frequency = new Frequency(item.getOrCreateTag().getCompound("frequency"));

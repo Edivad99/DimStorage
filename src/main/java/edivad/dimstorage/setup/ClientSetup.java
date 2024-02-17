@@ -2,8 +2,8 @@ package edivad.dimstorage.setup;
 
 import edivad.dimstorage.client.render.blockentity.DimChestRenderer;
 import edivad.dimstorage.client.render.blockentity.DimTankRenderer;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public class ClientSetup {
 

@@ -20,6 +20,5 @@
   "result": {
     "count": 4,
     "item": "dimstorage:dim_wall"
-  },
-  "show_notification": true
+  }
 }

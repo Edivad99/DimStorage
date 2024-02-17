@@ -2,13 +2,15 @@ package edivad.dimstorage;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.blockentities.BlockEntityDimTank;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
 import edivad.dimstorage.compat.top.TOPProvider;
-import edivad.dimstorage.datagen.AdvancementProvider;
+import edivad.dimstorage.datagen.DimStorageAdvancementProvider;
+import edivad.dimstorage.datagen.DimStorageLootTableProvider;
 import edivad.dimstorage.datagen.Lang;
-import edivad.dimstorage.datagen.LootTables;
 import edivad.dimstorage.datagen.Recipes;
 import edivad.dimstorage.datagen.TagsProvider;
 import edivad.dimstorage.manager.DimStorageManager;
@@ -21,21 +23,21 @@ import edivad.dimstorage.setup.DimStorageCreativeModeTabs;
 import edivad.dimstorage.setup.Registration;
 import edivad.dimstorage.tools.DimCommands;
 import edivad.edivadlib.setup.UpdateChecker;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.loot.LootTableProvider;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 @Mod(DimStorage.ID)
 public class DimStorage {
@@ -45,29 +47,30 @@ public class DimStorage {
 
   public static final Logger LOGGER = LogUtils.getLogger();
 
-  public DimStorage() {
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+  public DimStorage(IEventBus modEventBus, Dist dist) {
 
     Registration.init(modEventBus);
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleClientSetup);
+    modEventBus.addListener(this::handleRegisterMenuScreens);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::registerCapabilities);
+    var packetHandler = new PacketHandler(modEventBus);
     DimStorageCreativeModeTabs.register(modEventBus);
     Config.init();
 
-    if (FMLEnvironment.dist == Dist.CLIENT) {
+    if (dist.isClient()) {
       ClientSetup.init(modEventBus);
     }
 
-    MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-    MinecraftForge.EVENT_BUS.addListener(this::handleServerStarted);
+    NeoForge.EVENT_BUS.addListener(this::registerCommands);
+    NeoForge.EVENT_BUS.addListener(this::handleServerStarted);
   }
 
   private void handleCommonSetup(FMLCommonSetupEvent event) {
-    PacketHandler.init();
     DimStorageManager.registerPlugin(new DimChestPlugin());
     DimStorageManager.registerPlugin(new DimTankPlugin());
-    MinecraftForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
+    NeoForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 
     //Register TheOneProbe
     if (ModList.get().isLoaded("theoneprobe")) {
@@ -76,10 +79,13 @@ public class DimStorage {
   }
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    MinecraftForge.EVENT_BUS.register(new UpdateChecker(ID));
-    MenuScreens.register(Registration.DIMCHEST_CONTAINER.get(), ScreenDimChest::new);
-    MenuScreens.register(Registration.DIMTABLET_CONTAINER.get(), ScreenDimTablet::new);
-    MenuScreens.register(Registration.DIMTANK_CONTAINER.get(), ScreenDimTank::new);
+    NeoForge.EVENT_BUS.register(new UpdateChecker(ID));
+  }
+
+  private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
+    event.register(Registration.DIMCHEST_MENU.get(), ScreenDimChest::new);
+    event.register(Registration.DIMTABLET_MENU.get(), ScreenDimTablet::new);
+    event.register(Registration.DIMTANK_MENU.get(), ScreenDimTank::new);
   }
 
   private void handleGatherData(GatherDataEvent event) {
@@ -89,12 +95,11 @@ public class DimStorage {
     var fileHelper = event.getExistingFileHelper();
 
     generator.addProvider(event.includeServer(), new Recipes(packOutput));
+    generator.addProvider(event.includeServer(), new DimStorageLootTableProvider(packOutput));
     generator.addProvider(event.includeServer(),
-        (DataProvider.Factory<LootTableProvider>) LootTables::create);
-    generator.addProvider(event.includeServer(), new TagsProvider(packOutput, lookupProvider,
-        fileHelper));
-    generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput,
-        lookupProvider, fileHelper));
+        new TagsProvider(packOutput, lookupProvider, fileHelper));
+    generator.addProvider(event.includeServer(),
+        new DimStorageAdvancementProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeClient(), new Lang(packOutput));
   }
 
@@ -104,5 +109,16 @@ public class DimStorage {
 
   private void handleServerStarted(ServerStartedEvent event) {
     DimStorageManager.reloadManager(false);
+  }
+
+  private void registerCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.DIMCHEST_TILE.get(),
+        BlockEntityDimChest::getItemHandler);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.DIMTANK_TILE.get(),
+        BlockEntityDimTank::getFluidHandler);
+  }
+
+  public static ResourceLocation rl(String path) {
+    return new ResourceLocation(ID, path);
   }
 }
