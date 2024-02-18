@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 
 public class DimStorageManager extends SavedData {
 
+  private static final String DATA_TAG = "dimstorage.inventories";
   private static final HashMap<String, DimStoragePlugin> PLUGINS = new HashMap<>();
   private static DimStorageManager SERVER_MANAGER;
   private static DimStorageManager CLIENT_MANAGER;
@@ -29,8 +31,8 @@ public class DimStorageManager extends SavedData {
   private final List<AbstractDimStorage> dirtyStorage;
   private CompoundTag saveTag;
 
-  public DimStorageManager(boolean client) {
-    this.client = client;
+  private DimStorageManager(Level level) {
+    this.client = level.isClientSide();
     this.saveTag = new CompoundTag();
 
     storageMap = Collections.synchronizedMap(new HashMap<>());
@@ -43,10 +45,10 @@ public class DimStorageManager extends SavedData {
   }
 
   public static void reloadManager(Level level) {
-    if (level.isClientSide()) {
-      CLIENT_MANAGER =  new DimStorageManager(true);
+    if (level instanceof ServerLevel serverLevel) {
+      SERVER_MANAGER = get(serverLevel);
     } else {
-      SERVER_MANAGER = get((ServerLevel) level);
+      CLIENT_MANAGER =  new DimStorageManager(level);
     }
   }
 
@@ -62,11 +64,11 @@ public class DimStorageManager extends SavedData {
 
   private static DimStorageManager get(ServerLevel level) {
     return level.getDataStorage()
-        .computeIfAbsent(new SavedData.Factory<>(() -> new DimStorageManager(level.isClientSide()), tag -> {
-          var manager = new DimStorageManager(level.isClientSide());
+        .computeIfAbsent(new SavedData.Factory<>(() -> new DimStorageManager(level), tag -> {
+          var manager = new DimStorageManager(level);
           manager.load(tag);
           return manager;
-        }), "dimstorage.inventories");
+        }), DATA_TAG);
   }
 
   public static void registerPlugin(DimStoragePlugin plugin) {
@@ -93,7 +95,7 @@ public class DimStorageManager extends SavedData {
   @Override
   public CompoundTag save(CompoundTag tag) {
     for (var inv : dirtyStorage) {
-      saveTag.put(inv.freq + ",type=" + inv.type(), inv.saveToTag());
+      saveTag.put(buildKey(inv.freq, inv.type()), inv.saveToTag());
       inv.setClean();
     }
     dirtyStorage.clear();
@@ -105,8 +107,12 @@ public class DimStorageManager extends SavedData {
     this.saveTag = tag.getCompound("inventory");
   }
 
+  private static String buildKey(Frequency frequency, String type) {
+    return frequency + ",type=" + type;
+  }
+
   public AbstractDimStorage getStorage(Frequency freq, String type) {
-    String key = freq + ",type=" + type;
+    String key = buildKey(freq, type);
     AbstractDimStorage storage = storageMap.get(key);
 
     if (storage == null) {
@@ -131,7 +137,11 @@ public class DimStorageManager extends SavedData {
 
     @SubscribeEvent
     public void onWorldLoad(LevelEvent.Load event) {
-      reloadManager((Level) event.getLevel());
+      if (event.getLevel() instanceof Level level) {
+        reloadManager(level);
+      } else {
+        DimStorage.LOGGER.warn("Unable to reload the manager");
+      }
     }
 
     @SubscribeEvent

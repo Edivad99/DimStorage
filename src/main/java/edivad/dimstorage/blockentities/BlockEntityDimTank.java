@@ -147,7 +147,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
-    root.put("Frequency", getFrequency().serializeNBT());
+    root.put("frequency", getFrequency().serializeNBT());
     root.putBoolean("locked", locked);
     root.putBoolean("autoEject", autoEject);
     return ClientboundBlockEntityDataPacket.create(this);
@@ -156,7 +156,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
     CompoundTag tag = pkt.getTag();
-    setFrequency(new Frequency(tag.getCompound("Frequency")));
+    setFrequency(new Frequency(tag.getCompound("frequency")));
     locked = tag.getBoolean("locked");
     autoEject = tag.getBoolean("autoEject");
   }
@@ -171,7 +171,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Override
   public void handleUpdateTag(CompoundTag tag) {
-    setFrequency(new Frequency(tag.getCompound("Frequency")));
+    setFrequency(new Frequency(tag.getCompound("frequency")));
     locked = tag.getBoolean("locked");
     autoEject = tag.getBoolean("autoEject");
   }

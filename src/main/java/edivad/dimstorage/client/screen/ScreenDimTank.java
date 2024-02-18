@@ -67,9 +67,7 @@ public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
           50, 65, 4210752, false);
     } else {
       guiGraphics.drawString(this.font,
-          Component.translatable(Translations.LIQUID)
-              .append(" ")
-              .append(Component.translatable(Translations.EMPTY)),
+          Component.translatable(Translations.LIQUID, Component.translatable(Translations.EMPTY)),
           50, 25, 4210752, false);
     }
   }

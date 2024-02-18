@@ -115,7 +115,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
-    root.put("Frequency", getFrequency().serializeNBT());
+    root.put("frequency", getFrequency().serializeNBT());
     root.putBoolean("locked", locked);
     root.putByte("rot", (byte) rotation);
     return ClientboundBlockEntityDataPacket.create(this);
@@ -124,7 +124,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   @Override
   public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
     CompoundTag tag = pkt.getTag();
-    setFrequency(new Frequency(tag.getCompound("Frequency")));
+    setFrequency(new Frequency(tag.getCompound("frequency")));
     locked = tag.getBoolean("locked");
     rotation = tag.getByte("rot") & 3;
   }

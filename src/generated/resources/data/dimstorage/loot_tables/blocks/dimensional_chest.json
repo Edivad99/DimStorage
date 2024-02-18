@@ -21,8 +21,8 @@
               "ops": [
                 {
                   "op": "replace",
-                  "source": "Frequency",
-                  "target": "DimStorage.Frequency"
+                  "source": "frequency",
+                  "target": "dimstorage.frequency"
                 }
               ],
               "source": "block_entity"

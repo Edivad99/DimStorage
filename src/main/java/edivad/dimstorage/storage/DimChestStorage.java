@@ -32,7 +32,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
 
   public void loadFromTag(CompoundTag tag) {
     empty();
-    InventoryUtils.readItemStacksFromTag(items, tag.getList("Items", 10));
+    InventoryUtils.readItemStacksFromTag(items, tag.getList("items", 10));
   }
 
   @Override
@@ -42,7 +42,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
 
   public CompoundTag saveToTag() {
     CompoundTag compound = new CompoundTag();
-    compound.put("Items", InventoryUtils.writeItemStacksToTag(this.items));
+    compound.put("items", InventoryUtils.writeItemStacksToTag(this.items));
     return compound;
   }
 
@@ -106,6 +106,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
     return true;
   }
 
+  @Override
   public ItemStack removeItem(int slot, int size) {
     synchronized (this) {
       return InventoryUtils.decrStackSize(this, slot, size);

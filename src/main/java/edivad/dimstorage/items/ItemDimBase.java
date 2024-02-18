@@ -22,9 +22,9 @@ public class ItemDimBase extends BlockItem {
 
   private Frequency getFreq(ItemStack stack) {
     if (stack.hasTag()) {
-      var stackTag = stack.getTagElement("DimStorage");
-      if (stackTag != null && stackTag.contains("Frequency")) {
-        return new Frequency(stackTag.getCompound("Frequency"));
+      var stackTag = stack.getTagElement("dimstorage");
+      if (stackTag != null && stackTag.contains("frequency")) {
+        return new Frequency(stackTag.getCompound("frequency"));
       }
     }
     return new Frequency();

@@ -38,7 +38,7 @@ public class DimStorageBlockLoot extends BlockLootSubProvider {
         .add(LootItem.lootTableItem(block)
             .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
             .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-                .copy("Frequency", "DimStorage.Frequency", CopyNbtFunction.MergeStrategy.REPLACE))
+                .copy("frequency", "dimstorage.frequency", CopyNbtFunction.MergeStrategy.REPLACE))
         ).when(ExplosionCondition.survivesExplosion());
     return LootTable.lootTable().withPool(builder);
   }

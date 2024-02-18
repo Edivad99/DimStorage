@@ -81,14 +81,14 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    frequency.set(new Frequency(tag.getCompound("Frequency")));
+    frequency.set(new Frequency(tag.getCompound("frequency")));
     locked = tag.getBoolean("locked");
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("Frequency", frequency.serializeNBT());
+    tag.put("frequency", frequency.serializeNBT());
     tag.putBoolean("locked", locked);
   }
 
@@ -108,14 +108,14 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   @Override
   public CompoundTag getUpdateTag() {
     CompoundTag tag = super.getUpdateTag();
-    tag.put("Frequency", frequency.serializeNBT());
+    tag.put("frequency", frequency.serializeNBT());
     tag.putBoolean("locked", locked);
     return tag;
   }
 
   @Override
   public void handleUpdateTag(CompoundTag tag) {
-    setFrequency(new Frequency(tag.getCompound("Frequency")));
+    setFrequency(new Frequency(tag.getCompound("frequency")));
     locked = tag.getBoolean("locked");
   }
 
