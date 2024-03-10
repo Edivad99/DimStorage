@@ -71,10 +71,6 @@ repositories {
         url 'https://www.cursemaven.com'
     }
     maven {
-        name 'TOP'
-        url 'https://maven.k-4u.nl'
-    }
-    maven {
         name 'JEI'
         url 'https://maven.blamejared.com/'
     }
@@ -89,7 +85,7 @@ dependencies {
     //implementation "edivad:EdivadLib-$minecraft_version:2.1.1"
     implementation "curse.maven:edivadlib-638508:$edivadlib_id"
 
-    implementation "mcjty.theoneprobe:theoneprobe:$top_version"
+    implementation "curse.maven:the-one-probe-245211:$top_version"
 
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
