@@ -1,4 +1,4 @@
-package edivad.dimstorage.compat.waila;
+package edivad.dimstorage.compat.jade;
 
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
@@ -11,7 +11,7 @@ import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin(DimStorage.ID)
-public class WailaCompatibility implements IWailaPlugin {
+public class JadeCompatibility implements IWailaPlugin {
 
   @Override
   public void register(IWailaCommonRegistration registration) {
