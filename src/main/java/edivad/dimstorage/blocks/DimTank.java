@@ -58,7 +58,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
     if (player instanceof ServerPlayer serverPlayer) {
       if (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank) {
         if (!player.isCrouching()) {
-          return tank.activate(serverPlayer, level, pos, hand);
+          return tank.use(serverPlayer, level, pos, hand);
         }
       }
     }

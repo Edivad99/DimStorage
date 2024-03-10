@@ -56,20 +56,20 @@ public class Registration {
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityDimTank>> DIMTANK_TILE =
       BLOCK_ENTITY.register("dimensional_tank", () ->
           BlockEntityType.Builder.of(BlockEntityDimTank::new, DIMTANK.get()).build(null));
-  private static final DeferredRegister<MenuType<?>> MENU = DeferredRegister.create(
-      BuiltInRegistries.MENU, DimStorage.ID);
+  private static final DeferredRegister<MenuType<?>> MENU =
+      DeferredRegister.create(BuiltInRegistries.MENU, DimStorage.ID);
   public static final DeferredHolder<MenuType<?>, MenuType<DimChestMenu>> DIMCHEST_MENU =
       MENU.register("dimensional_chest", () ->
           new MenuType<>((IContainerFactory<DimChestMenu>) (id, inventory, buf) -> {
-        var pos = buf.readBlockPos();
-        var blockEntity = inventory.player.level().getBlockEntity(pos);
-        boolean isOpen = buf.readBoolean();
-        if (!(blockEntity instanceof BlockEntityDimChest chest)) {
-          DimStorage.LOGGER.error("Wrong type of block entity (expected BlockEntityDimChest)!");
-          return null;
-        }
-        return new DimChestMenu(id, inventory.player.getInventory(), chest, isOpen);
-      }, FeatureFlags.DEFAULT_FLAGS));
+            var pos = buf.readBlockPos();
+            var blockEntity = inventory.player.level().getBlockEntity(pos);
+            boolean isOpen = buf.readBoolean();
+            if (!(blockEntity instanceof BlockEntityDimChest chest)) {
+              DimStorage.LOGGER.error("Wrong type of block entity (expected BlockEntityDimChest)!");
+              return null;
+            }
+            return new DimChestMenu(id, inventory.player.getInventory(), chest, isOpen);
+          }, FeatureFlags.DEFAULT_FLAGS));
   public static final DeferredHolder<MenuType<?>, MenuType<DimTankMenu>> DIMTANK_MENU =
       MENU.register("dimensional_tank", () ->
           new MenuType<>((IContainerFactory<DimTankMenu>) (id, inventory, buf) -> {

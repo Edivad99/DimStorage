@@ -1,9 +1,7 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,14 +24,13 @@ public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContain
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderSystem.setShaderTexture(0, background);
+    int x = (this.width - this.getXSize()) / 2;
+    int y = (this.height - this.getYSize()) / 2;
+    guiGraphics.blit(background, x, y, 0, 0, this.getXSize(), this.getYSize());
   }
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     super.render(guiGraphics, mouseX, mouseY, partialTicks);
     this.renderTooltip(guiGraphics, mouseX, mouseY);
   }

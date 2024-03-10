@@ -51,7 +51,7 @@ public class DimChest extends DimBlockBase {
     if (player instanceof ServerPlayer serverPlayer) {
       if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
         if (!player.isCrouching()) {
-          return chest.activate(serverPlayer, level, pos, hand);
+          return chest.use(serverPlayer, level, pos, hand);
         }
       }
     }

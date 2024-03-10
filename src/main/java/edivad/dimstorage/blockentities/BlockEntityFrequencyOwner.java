@@ -92,7 +92,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     tag.putBoolean("locked", locked);
   }
 
-  public InteractionResult activate(ServerPlayer player, Level level, BlockPos pos,
+  public InteractionResult use(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (canAccess(player)) {
       player.openMenu(this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));

@@ -121,17 +121,17 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public InteractionResult activate(ServerPlayer player, Level level, BlockPos pos,
+  public InteractionResult use(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (!canAccess(player)) {
       player.displayClientMessage(Component.literal("Access Denied!")
           .withStyle(ChatFormatting.RED), false);
-      return super.activate(player, level, pos, hand);
+      return super.use(player, level, pos, hand);
     }
 
     boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
     if (!result) {
-      return super.activate(player, level, pos, hand);
+      return super.use(player, level, pos, hand);
     }
 
     level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
