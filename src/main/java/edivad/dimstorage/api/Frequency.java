@@ -63,7 +63,7 @@ public record Frequency(Optional<GameProfile> gameProfile, int channel) implemen
   }
 
   public boolean canAccess(Player player) {
-    return this.gameProfile.map(profile -> profile.equals(player.getGameProfile())).orElse(true);
+    return this.gameProfile.map(profile -> profile.getId().equals(player.getGameProfile().getId())).orElse(true);
   }
 
   public String getOwner() {
