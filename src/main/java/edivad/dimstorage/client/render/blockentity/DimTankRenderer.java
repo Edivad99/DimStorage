@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.phys.Vec3;
 
 public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> {
 
@@ -19,14 +20,14 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank> 
   }
 
   @Override
-  public void render(BlockEntityDimTank blockentity, float partialTicks, PoseStack poseStack,
-      MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+  public void render(BlockEntityDimTank blockentity, float partialTick, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
     if (blockentity.isRemoved() || blockentity.liquidState.clientLiquid == null) {
       return;
     }
 
     poseStack.pushPose();
-    renderFluid(blockentity, poseStack, bufferIn);
+    renderFluid(blockentity, poseStack, bufferSource);
     poseStack.popPose();
   }
 

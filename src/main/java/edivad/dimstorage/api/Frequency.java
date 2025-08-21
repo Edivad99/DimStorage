@@ -8,7 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -75,31 +75,14 @@ public record Frequency(Optional<GameProfile> gameProfile, int channel) implemen
     return "gameProfile=" + (this.hasOwner() ? this.gameProfile.get().getId() : "public") + ",channel=" + this.channel;
   }
 
-  public CompoundTag serializeNBT() {
-    var tag = new CompoundTag();
-    this.gameProfile.ifPresent(profile -> {
-      tag.putUUID("gameProfile", profile.getId());
-      tag.putString("ownerName", profile.getName());
-    });
-    tag.putInt("channel", this.channel);
-    return tag;
-  }
-
-  public static Frequency deserializeNBT(CompoundTag tag) {
-    if (tag.contains("gameProfile") && tag.contains("ownerName")) {
-      var owner = new GameProfile(tag.getUUID("gameProfile"), tag.getString("ownerName"));
-      return new Frequency(Optional.of(owner), tag.getInt("channel"));
-    }
-    return new Frequency(Optional.empty(), tag.getInt("channel"));
-  }
-
   @Override
-  public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag) {
+  public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltipAdder,
+      TooltipFlag flag, DataComponentGetter componentGetter) {
     if (this.hasOwner()) {
-      consumer.accept(Component.translatable(Translations.OWNER).append(" " + this.getOwner())
+      tooltipAdder.accept(Component.translatable(Translations.OWNER).append(" " + this.getOwner())
           .withStyle(ChatFormatting.DARK_RED));
     }
-    consumer.accept(Component.translatable(Translations.FREQUENCY)
+    tooltipAdder.accept(Component.translatable(Translations.FREQUENCY)
         .append(" " + this.channel()));
   }
 }

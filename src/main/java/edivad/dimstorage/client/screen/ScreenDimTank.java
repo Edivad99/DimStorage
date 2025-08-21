@@ -9,6 +9,7 @@ import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.Translations;
 import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -85,13 +86,9 @@ public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
       }
 
       var color = FluidUtils.getLiquidColorWithBiome(fluid, blockEntityFrequencyOwner);
-      var red = FluidUtils.getRed(color);
-      var green = FluidUtils.getGreen(color);
-      var blue = FluidUtils.getBlue(color);
-      var alpha = FluidUtils.getAlpha(color);
 
-      guiGraphics.blit(this.leftPos + 11, this.topPos + 21 + z, 176, 16, 60 - z, fluidTexture,
-          red, green, blue, alpha);
+      guiGraphics.blit(RenderType::guiTextured, fluidTexture.atlasLocation(), this.leftPos + 11,
+          this.topPos + 21 + z, 176, 16, 60 - z, color, 256, 256);
     }
   }
 }

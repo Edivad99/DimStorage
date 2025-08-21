@@ -1,6 +1,6 @@
 package edivad.dimstorage.items;
 
-import java.util.List;
+import java.util.function.Consumer;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.items.components.DimStorageComponents;
@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,14 +41,14 @@ public class ItemDimBase extends BlockItem {
 
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> tooltip, TooltipFlag tooltipFlag) {
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     var frequency = getFreq(stack);
     if (frequency.hasOwner()) {
-      tooltip.add(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner())
+      tooltipAdder.accept(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner())
           .withStyle(ChatFormatting.DARK_RED));
     }
     if (stack.has(DimStorageComponents.FREQUENCY)) {
-      tooltip.add(Component.translatable(Translations.FREQUENCY)
+      tooltipAdder.accept(Component.translatable(Translations.FREQUENCY)
           .append(" " + frequency.channel()));
     }
   }

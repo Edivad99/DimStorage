@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "dimstorage:dim_wall"
-    },
-    "b": {
-      "item": "dimstorage:solid_dim_core"
-    }
+    "a": "dimstorage:dim_wall",
+    "b": "dimstorage:solid_dim_core"
   },
   "pattern": [
     "aaa",

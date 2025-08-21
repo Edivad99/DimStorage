@@ -5,7 +5,6 @@
     "particle": "dimstorage:block/dimtank_side",
     "side": "dimstorage:block/dimtank_side"
   },
-  "render_type": "cutout",
   "elements": [
     {
       "name": "bottom",

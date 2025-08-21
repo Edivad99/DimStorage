@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dimstorage:block/dimensional_chest"
+    }
+  }
+}

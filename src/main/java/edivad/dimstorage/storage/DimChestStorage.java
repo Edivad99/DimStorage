@@ -8,6 +8,7 @@ import edivad.dimstorage.network.to_client.OpenChest;
 import edivad.dimstorage.tools.InventoryUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
 
   public void loadFromTag(HolderLookup.Provider registries, CompoundTag tag) {
     empty();
-    InventoryUtils.readItemStacksFromTag(registries, items, tag.getList("items", 10));
+    InventoryUtils.readItemStacksFromTag(registries, items, tag.getList("items").orElse(new ListTag()));
   }
 
   @Override

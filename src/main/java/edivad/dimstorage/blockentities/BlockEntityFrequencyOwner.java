@@ -6,12 +6,13 @@ import edivad.dimstorage.items.components.DimStorageComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -84,20 +85,20 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   @Override
   protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
     super.loadAdditional(tag, registries);
-    this.frequency = Frequency.deserializeNBT(tag.getCompound("frequency"));
-    this.locked = tag.getBoolean("locked");
+    this.frequency = tag.read("frequency", Frequency.CODEC).orElseThrow();
+    this.locked = tag.getBoolean("locked").orElseThrow();
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
     super.saveAdditional(tag, registries);
-    tag.put("frequency", this.frequency.serializeNBT());
+    tag.store("frequency", Frequency.CODEC, this.frequency);
     tag.putBoolean("locked", this.locked);
   }
 
   @Override
-  protected void applyImplicitComponents(DataComponentInput componentInput) {
-    var frequency = componentInput.get(DimStorageComponents.FREQUENCY);
+  protected void applyImplicitComponents(DataComponentGetter componentGetter) {
+    var frequency = componentGetter.get(DimStorageComponents.FREQUENCY);
     if (frequency != null) {
       this.setFrequency(frequency);
     }
@@ -108,7 +109,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     components.set(DimStorageComponents.FREQUENCY, this.frequency);
   }
 
-  public ItemInteractionResult useItemOn(ServerPlayer player, Level level, BlockPos pos,
+  public InteractionResult useItemOn(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (canAccess(player)) {
       player.openMenu(this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
@@ -117,14 +118,14 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
           Component.literal("Access Denied!")
               .withStyle(ChatFormatting.RED), false);
     }
-    return ItemInteractionResult.SUCCESS;
+    return InteractionResult.SUCCESS;
   }
 
   //Synchronizing on chunk load
   @Override
   public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
     var tag = super.getUpdateTag(registries);
-    tag.put("frequency", this.frequency.serializeNBT());
+    tag.store("frequency", Frequency.CODEC, this.frequency);
     tag.putBoolean("locked", this.locked);
     return tag;
   }
@@ -132,8 +133,8 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   @Override
   public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
     super.handleUpdateTag(tag, lookupProvider);
-    this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
+    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = tag.getBoolean("locked").orElse(false);
   }
 
   @Override

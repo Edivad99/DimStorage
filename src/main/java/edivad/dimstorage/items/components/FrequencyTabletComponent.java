@@ -7,6 +7,7 @@ import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -33,8 +34,8 @@ public record FrequencyTabletComponent(Frequency frequency, boolean bound, boole
           FrequencyTabletComponent::new);
 
   @Override
-  public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer,
-      TooltipFlag tooltipFlag) {
+  public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltipAdder,
+      TooltipFlag flag, DataComponentGetter componentGetter) {
     var HOLD_SHIFT = Component.translatable(Translations.HOLD)
         .withStyle(ChatFormatting.GRAY)
         .append(" ")
@@ -51,23 +52,23 @@ public record FrequencyTabletComponent(Frequency frequency, boolean bound, boole
             .withStyle(ChatFormatting.GRAY));
 
     if (Screen.hasShiftDown()) {
-      consumer.accept(Component.translatable(Translations.FREQUENCY).append(" " + frequency.channel())
+      tooltipAdder.accept(Component.translatable(Translations.FREQUENCY).append(" " + frequency.channel())
           .withStyle(ChatFormatting.GRAY));
       if (frequency.hasOwner()) {
-        consumer.accept(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner())
+        tooltipAdder.accept(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner())
             .withStyle(ChatFormatting.GRAY));
       }
 
       var yes = Component.translatable(Translations.YES);
       var no = Component.translatable(Translations.NO);
       var collecting = Component.translatable(Translations.COLLECTING);
-      consumer.accept(collecting.append(": ")
+      tooltipAdder.accept(collecting.append(": ")
           .append(autocollect ? yes : no)
           .withStyle(ChatFormatting.GRAY));
     } else {
-      consumer.accept(HOLD_SHIFT);
+      tooltipAdder.accept(HOLD_SHIFT);
     }
 
-    consumer.accept(CHANGE_AUTOCOLLECT);
+    tooltipAdder.accept(CHANGE_AUTOCOLLECT);
   }
 }

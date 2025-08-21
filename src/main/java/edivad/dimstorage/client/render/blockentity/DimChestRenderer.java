@@ -17,7 +17,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.phys.Vec3;
 
 public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest> {
 
@@ -119,19 +120,19 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
   }
 
   @Override
-  public void render(BlockEntityDimChest blockentity, float partialTicks, PoseStack poseStack,
-      MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-    if (blockentity.isRemoved()) {
+  public void render(BlockEntityDimChest blockEntity, float partialTick, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
+    if (blockEntity.isRemoved()) {
       return;
     }
 
     poseStack.pushPose();
-    renderBlock(blockentity, partialTicks, poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
+    renderBlock(blockEntity, poseStack, bufferSource, packedLight, packedOverlay);
     poseStack.popPose();
   }
 
-  private void renderBlock(BlockEntityDimChest blockentity, float partialTicks, PoseStack poseStack,
-      MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+  private void renderBlock(BlockEntityDimChest blockEntity, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
     poseStack.pushPose();
 
     // This line actually rotates the renderer.
@@ -139,7 +140,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
 
     // Direction
     poseStack.mulPose((new Quaternionf())
-        .rotationXYZ(0F, (360 - blockentity.rotation * 90) * ((float) Math.PI / 180F), 0F));
+        .rotationXYZ(0F, (360 - blockEntity.rotation * 90) * ((float) Math.PI / 180F), 0F));
 
     // Sens
     poseStack.mulPose((new Quaternionf()).rotationXYZ((float) Math.PI, 0F, 0F));
@@ -147,25 +148,25 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     // Adjustment
     poseStack.translate(0D, -2D, 0D);
 
-    VertexConsumer buffer = bufferIn.getBuffer(RenderType.entitySolid(TEXTURE));
-    var color = FastColor.ARGB32.colorFromFloat(1F, 1F, 1F, 1F);
-    staticLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
+    VertexConsumer buffer = bufferSource.getBuffer(RenderType.entitySolid(TEXTURE));
+    var color = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
+    staticLayer.render(poseStack, buffer, packedLight, packedOverlay, color);
     // Render movable part
     poseStack.pushPose();
-    poseStack.translate(0, 0, blockentity.movablePartState);
-    movableLayer.render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
+    poseStack.translate(0, 0, blockEntity.movablePartState);
+    movableLayer.render(poseStack, buffer, packedLight, packedOverlay, color);
     poseStack.popPose();
 
     // Check state
-    if (blockentity.locked) {
+    if (blockEntity.locked) {
       redIndicatorLayer
-          .render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
-    } else if (blockentity.getFrequency().hasOwner()) {
+          .render(poseStack, buffer, packedLight, packedOverlay, color);
+    } else if (blockEntity.getFrequency().hasOwner()) {
       blueIndicatorLayer
-          .render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
+          .render(poseStack, buffer, packedLight, packedOverlay, color);
     } else {
       greenIndicatorLayer
-          .render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
+          .render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
     poseStack.popPose();

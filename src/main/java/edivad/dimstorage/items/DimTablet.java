@@ -1,6 +1,7 @@
 package edivad.dimstorage.items;
 
-import java.util.List;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.items.components.DimStorageComponents;
@@ -13,18 +14,20 @@ import edivad.dimstorage.tools.InventoryUtils;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -79,7 +82,7 @@ public class DimTablet extends Item implements MenuProvider {
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+  public InteractionResult use(Level level, Player player, InteractionHand hand) {
     if (player.isCrouching()) {
       return super.use(level, player, hand);
     }
@@ -91,7 +94,7 @@ public class DimTablet extends Item implements MenuProvider {
             Component.literal("Dimensional Tablet not connected to any DimChest")
                 .withStyle(ChatFormatting.RED), false);
       }
-      return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+      return InteractionResult.PASS;
     }
 
     if (player instanceof ServerPlayer serverPlayer && hand == InteractionHand.MAIN_HAND) {
@@ -99,15 +102,12 @@ public class DimTablet extends Item implements MenuProvider {
         serverPlayer.openMenu(this);
       }
     }
-    return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()), stack);
+    return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot,
-      boolean isSelected) {
-    if (level.isClientSide) {
-      return;
-    }
+  public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity,
+      @Nullable EquipmentSlot slot) {
     var frequencyComponent = stack.get(DimStorageComponents.FREQUENCY_TABLET);
     if (frequencyComponent == null) {
       return;
@@ -136,7 +136,7 @@ public class DimTablet extends Item implements MenuProvider {
 
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> tooltip, TooltipFlag tooltipFlag) {
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     var ADVICE_TO_LINK = Component.translatable(Translations.PRESS)
         .withStyle(ChatFormatting.GRAY)
         .append(" ")
@@ -146,10 +146,10 @@ public class DimTablet extends Item implements MenuProvider {
 
     var frequencyComponent = stack.get(DimStorageComponents.FREQUENCY_TABLET);
     if (frequencyComponent == null || !frequencyComponent.bound()) {
-      tooltip.add(ADVICE_TO_LINK);
+      tooltipAdder.accept(ADVICE_TO_LINK);
       return;
     }
-    frequencyComponent.addToTooltip(context, tooltip::add, tooltipFlag);
+    frequencyComponent.addToTooltip(context, tooltipAdder, flag, stack.getComponents());
   }
 
   @Override

@@ -17,7 +17,7 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
     super.appendTooltip(tooltip, accessor, config);
     if (accessor.getBlockEntity() instanceof BlockEntityDimTank) {
       var tag = accessor.getServerData();
-      var auto_eject = tag.getBoolean("auto_eject");
+      var auto_eject = tag.getBoolean("auto_eject").orElse(false);
 
       if (auto_eject) {
         tooltip.add(Component.translatable(Translations.EJECT, Component.translatable(Translations.YES)));

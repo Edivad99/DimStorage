@@ -74,7 +74,7 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
 
   @Override
   public void loadFromTag(HolderLookup.Provider registries, CompoundTag tag) {
-    tank.readFromNBT(registries, tag.getCompound("tank"));
+    tank.readFromNBT(registries, tag.getCompound("tank").orElseThrow());
   }
 
   private class Tank extends FluidTank {

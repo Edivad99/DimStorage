@@ -6,9 +6,9 @@ import edivad.dimstorage.tools.Translations;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
-public class Lang extends LanguageProvider {
+public class DimStorageLanguageProvider extends LanguageProvider {
 
-  public Lang(PackOutput packOutput) {
+  public DimStorageLanguageProvider(PackOutput packOutput) {
     super(packOutput, DimStorage.ID, "en_us");
   }
 
@@ -18,6 +18,8 @@ public class Lang extends LanguageProvider {
     add(Registration.SOLIDDIMCORE.get(), "Solid Dimensional Core");
     add(Registration.DIMWALL.get(), "Dimensional Wall");
     add(Registration.DIMTABLET.get(), "Dimensional Tablet");
+    add(Registration.DIMCHEST_ITEM.get(), "Dimensional Chest");
+    add(Registration.DIMTANK_ITEM.get(), "Dimensional Tank");
     add(Registration.DIMCHEST.get(), "Dimensional Chest");
     add(Registration.DIMTANK.get(), "Dimensional Tank");
 

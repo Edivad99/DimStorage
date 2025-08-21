@@ -6,7 +6,7 @@ import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,10 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class DimChest extends DimBlockBase {
+public class DimChestBlock extends DimBlockBase {
 
-  public DimChest() {
-    super(Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL)
+  public DimChestBlock(Properties properties) {
+    super(properties.mapColor(MapColor.METAL).sound(SoundType.METAL)
         .requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
   }
 
@@ -41,12 +41,12 @@ public class DimChest extends DimBlockBase {
   }
 
   @Override
-  public RenderShape getRenderShape(BlockState state) {
-    return RenderShape.ENTITYBLOCK_ANIMATED;
+  protected RenderShape getRenderShape(BlockState state) {
+    return RenderShape.INVISIBLE;
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
     if (player instanceof ServerPlayer serverPlayer) {
       if (level.getBlockEntity(pos) instanceof BlockEntityDimChest chest) {
@@ -55,7 +55,7 @@ public class DimChest extends DimBlockBase {
         }
       }
     }
-    return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
   }
 
   @Override

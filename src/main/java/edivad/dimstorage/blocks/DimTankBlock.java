@@ -8,7 +8,8 @@ import edivad.dimstorage.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -30,12 +31,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
+public class DimTankBlock extends DimBlockBase implements SimpleWaterloggedBlock {
 
   private static final VoxelShape BOX = box(2, 0, 2, 14, 16, 14);
 
-  public DimTank() {
-    super(Properties.of().sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F)
+  public DimTankBlock(Properties properties) {
+    super(properties.sound(SoundType.GLASS).requiresCorrectToolForDrops().strength(3.5F)
         .noOcclusion());
     this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
   }
@@ -54,7 +55,7 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
     if (player instanceof ServerPlayer serverPlayer) {
       if (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank) {
@@ -63,17 +64,17 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
         }
       }
     }
-    return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos,
+  protected VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos,
       CollisionContext context) {
     return BOX;
   }
 
   @Override
-  public VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos pos,
+  protected VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos pos,
       CollisionContext context) {
     return BOX;
   }
@@ -95,18 +96,18 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
   }
 
   @Override
-  public boolean hasAnalogOutputSignal(BlockState state) {
+  protected boolean hasAnalogOutputSignal(BlockState state) {
     return true;
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
     return (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank)
         ? tank.getComparatorInput() : 0;
   }
 
   @Override
-  public FluidState getFluidState(BlockState state) {
+  protected FluidState getFluidState(BlockState state) {
     return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
   }
 
@@ -117,9 +118,9 @@ public class DimTank extends DimBlockBase implements SimpleWaterloggedBlock {
   }
 
   @Override
-  public boolean canPlaceLiquid(@Nullable Player player, BlockGetter blockGetter, BlockPos pos,
+  public boolean canPlaceLiquid(@Nullable LivingEntity entity, BlockGetter blockGetter, BlockPos pos,
       BlockState state, Fluid fluidIn) {
-    return SimpleWaterloggedBlock.super.canPlaceLiquid(player, blockGetter, pos, state, fluidIn);
+    return SimpleWaterloggedBlock.super.canPlaceLiquid(entity, blockGetter, pos, state, fluidIn);
   }
 
   @Override

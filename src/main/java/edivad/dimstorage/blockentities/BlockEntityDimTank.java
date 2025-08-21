@@ -20,7 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -118,11 +118,11 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
     super.loadAdditional(tag, registries);
     this.liquidState.setFrequency(getFrequency());
-    this.autoEject = tag.getBoolean("autoEject");
+    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
   }
 
   @Override
-  public ItemInteractionResult useItemOn(ServerPlayer player, Level level, BlockPos pos,
+  public InteractionResult useItemOn(ServerPlayer player, Level level, BlockPos pos,
       InteractionHand hand) {
     if (!canAccess(player)) {
       player.displayClientMessage(Component.literal("Access Denied!")
@@ -136,7 +136,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     }
 
     level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-    return ItemInteractionResult.SUCCESS;
+    return InteractionResult.SUCCESS;
   }
 
   @Nullable
@@ -148,7 +148,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
-    root.put("frequency", getFrequency().serializeNBT());
+    root.store("frequency", Frequency.CODEC, getFrequency());
     root.putBoolean("locked", this.locked);
     root.putBoolean("autoEject", this.autoEject);
     return ClientboundBlockEntityDataPacket.create(this);
@@ -159,9 +159,9 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
       HolderLookup.Provider provider) {
     super.onDataPacket(net, pkt, provider);
     CompoundTag tag = pkt.getTag();
-    this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
-    this.autoEject = tag.getBoolean("autoEject");
+    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = tag.getBoolean("locked").orElseThrow();
+    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
   }
 
   //Synchronizing on chunk load
@@ -174,9 +174,9 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Override
   public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-    this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
-    this.autoEject = tag.getBoolean("autoEject");
+    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = tag.getBoolean("locked").orElseThrow();
+    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
   }
 
   @Override

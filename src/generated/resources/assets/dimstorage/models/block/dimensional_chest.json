@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/cube",
+  "display": {
+    "gui": {
+      "rotation": [
+        25,
+        45,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    }
+  },
+  "textures": {
+    "down": "dimstorage:block/dimensional_chest_bottom",
+    "east": "dimstorage:block/dimensional_chest_sides",
+    "north": "dimstorage:block/dimensional_chest_sides",
+    "particle": "dimstorage:block/dimensional_chest_top",
+    "south": "dimstorage:block/dimensional_chest_sides",
+    "up": "dimstorage:block/dimensional_chest_top",
+    "west": "dimstorage:block/dimensional_chest_sides"
+  }
+}

@@ -12,23 +12,21 @@ import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.advancements.AdvancementProvider;
+import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class DimStorageAdvancementProvider extends AdvancementProvider {
 
   public DimStorageAdvancementProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries,
-      ExistingFileHelper existingFileHelper) {
-    super(packOutput, registries, existingFileHelper, List.of(new Advancements()));
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, List.of(new Advancements()));
   }
 
-  private static class Advancements implements AdvancementProvider.AdvancementGenerator {
+  private static class Advancements implements AdvancementSubProvider {
 
     @Override
-    public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer,
-        ExistingFileHelper existingFileHelper) {
+    public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> writer) {
       var ROOT = Advancement.Builder.advancement()
           .display(Registration.DIMCORE.get(),
               Translations.ADVANCEMENTS_ROOT.translateTitle(),
@@ -40,7 +38,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
               false)
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(Registration.DIMCORE.get()))
-          .save(consumer, DimStorage.rl("root"), existingFileHelper);
+          .save(writer, DimStorage.rl("root"));
 
       var DIMCHEST = Advancement.Builder.advancement()
           .display(Registration.DIMCHEST_ITEM.get(),
@@ -54,7 +52,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(Registration.DIMCHEST_ITEM.get()))
           .parent(ROOT)
-          .save(consumer, DimStorage.rl("dimensional_chest"), existingFileHelper);
+          .save(writer, DimStorage.rl("dimensional_chest"));
 
       Advancement.Builder.advancement()
           .display(Registration.DIMTANK_ITEM.get(),
@@ -68,7 +66,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(Registration.DIMTANK_ITEM.get()))
           .parent(ROOT)
-          .save(consumer, DimStorage.rl("dimensional_tank"), existingFileHelper);
+          .save(writer, DimStorage.rl("dimensional_tank"));
 
       Advancement.Builder.advancement()
           .display(Registration.DIMTABLET.get(),
@@ -82,7 +80,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(Registration.DIMTABLET.get()))
           .parent(DIMCHEST)
-          .save(consumer, DimStorage.rl("dimensional_tablet"), existingFileHelper);
+          .save(writer, DimStorage.rl("dimensional_tablet"));
     }
   }
 }

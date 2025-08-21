@@ -17,13 +17,13 @@ public class InventoryUtils {
   public static void readItemStacksFromTag(HolderLookup.Provider lookupProvider,
       ItemStack[] items, ListTag tagList) {
     for (int i = 0; i < tagList.size(); i++) {
-      var tag = tagList.getCompound(i);
+      var tag = tagList.getCompound(i).orElseThrow();
       ItemStack.parse(lookupProvider, tag).ifPresent(itemStack -> {
-        int b = tag.getShort("Slot");
+        int b = tag.getShort("Slot").orElseThrow();
         items[b] = itemStack;
         var quant = tag.get("Quantity");
         if (quant instanceof NumericTag numericTag) {
-          items[b].setCount(numericTag.getAsInt());
+          items[b].setCount(numericTag.intValue());
         }
       });
     }

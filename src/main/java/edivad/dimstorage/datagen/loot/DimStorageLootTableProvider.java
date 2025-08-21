@@ -1,4 +1,4 @@
-package edivad.dimstorage.datagen;
+package edivad.dimstorage.datagen.loot;
 
 import java.util.List;
 import java.util.Set;

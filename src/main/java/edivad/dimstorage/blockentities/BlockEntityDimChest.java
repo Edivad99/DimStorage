@@ -109,14 +109,14 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   @Override
   protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
     super.loadAdditional(tag, registries);
-    this.rotation = tag.getByte("rot") & 3;
+    this.rotation = tag.getByte("rot").orElseThrow() & 3;
   }
 
   //Synchronizing on block update
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
-    root.put("frequency", getFrequency().serializeNBT());
+    root.store("frequency", Frequency.CODEC, getFrequency());
     root.putBoolean("locked", this.locked);
     root.putByte("rot", (byte) this.rotation);
     return ClientboundBlockEntityDataPacket.create(this);
@@ -127,9 +127,9 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
       HolderLookup.Provider provider) {
     super.onDataPacket(net, pkt, provider);
     var tag = pkt.getTag();
-    this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
-    this.rotation = tag.getByte("rot") & 3;
+    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = tag.getBoolean("locked").orElseThrow();
+    this.rotation = tag.getByte("rot").orElseThrow() & 3;
   }
 
   //Synchronizing on chunk load
@@ -143,7 +143,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   @Override
   public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
     super.handleUpdateTag(tag, lookupProvider);
-    this.rotation = tag.getByte("rot") & 3;
+    this.rotation = tag.getByte("rot").orElseThrow() & 3;
   }
 
   @Override

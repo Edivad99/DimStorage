@@ -3,8 +3,8 @@ package edivad.dimstorage.setup;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentities.BlockEntityDimChest;
 import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.blocks.DimChest;
-import edivad.dimstorage.blocks.DimTank;
+import edivad.dimstorage.blocks.DimChestBlock;
+import edivad.dimstorage.blocks.DimTankBlock;
 import edivad.dimstorage.items.DimTablet;
 import edivad.dimstorage.items.ItemDimBase;
 import edivad.dimstorage.menu.DimChestMenu;
@@ -27,12 +27,19 @@ public class Registration {
 
   private static final DeferredRegister.Blocks BLOCKS =
       DeferredRegister.createBlocks(DimStorage.ID);
-  public static final DeferredBlock<DimChest> DIMCHEST =
-      BLOCKS.register("dimensional_chest", DimChest::new);
-  public static final DeferredBlock<DimTank> DIMTANK =
-      BLOCKS.register("dimensional_tank", DimTank::new);
   private static final DeferredRegister.Items ITEMS =
       DeferredRegister.createItems(DimStorage.ID);
+  private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY =
+      DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, DimStorage.ID);
+  private static final DeferredRegister<MenuType<?>> MENU =
+      DeferredRegister.create(BuiltInRegistries.MENU, DimStorage.ID);
+
+
+  public static final DeferredBlock<DimChestBlock> DIMCHEST =
+      BLOCKS.registerBlock("dimensional_chest", DimChestBlock::new);
+  public static final DeferredBlock<DimTankBlock> DIMTANK =
+      BLOCKS.registerBlock("dimensional_tank", DimTankBlock::new);
+
   public static final DeferredItem<BlockItem> DIMCHEST_ITEM =
       ITEMS.registerItem("dimensional_chest", properties ->
           new ItemDimBase(DIMCHEST.get(), properties));
@@ -48,16 +55,12 @@ public class Registration {
   public static final DeferredItem<DimTablet> DIMTABLET =
       ITEMS.registerItem("dimensional_tablet", properties ->
           new DimTablet(properties.stacksTo(1)));
-  private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY =
-      DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, DimStorage.ID);
+
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityDimChest>> DIMCHEST_TILE =
-      BLOCK_ENTITY.register("dimensional_chest", () ->
-          BlockEntityType.Builder.of(BlockEntityDimChest::new, DIMCHEST.get()).build(null));
+      BLOCK_ENTITY.register("dimensional_chest", () -> new BlockEntityType<>(BlockEntityDimChest::new, DIMCHEST.get()));
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityDimTank>> DIMTANK_TILE =
-      BLOCK_ENTITY.register("dimensional_tank", () ->
-          BlockEntityType.Builder.of(BlockEntityDimTank::new, DIMTANK.get()).build(null));
-  private static final DeferredRegister<MenuType<?>> MENU =
-      DeferredRegister.create(BuiltInRegistries.MENU, DimStorage.ID);
+      BLOCK_ENTITY.register("dimensional_tank", () -> new BlockEntityType<>(BlockEntityDimTank::new, DIMTANK.get()));
+
   public static final DeferredHolder<MenuType<?>, MenuType<DimChestMenu>> DIMCHEST_MENU =
       MENU.register("dimensional_chest", () ->
           new MenuType<>((IContainerFactory<DimChestMenu>) (id, inventory, buf) -> {

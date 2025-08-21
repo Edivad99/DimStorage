@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:obsidian"
-    },
-    "b": {
-      "item": "dimstorage:solid_dim_core"
-    },
-    "c": {
-      "item": "minecraft:iron_ingot"
-    },
-    "d": {
-      "tag": "c:glass_panes"
-    }
+    "a": "minecraft:obsidian",
+    "b": "dimstorage:solid_dim_core",
+    "c": "minecraft:iron_ingot",
+    "d": "#c:glass_panes"
   },
   "pattern": [
     "cdc",

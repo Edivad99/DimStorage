@@ -1,6 +1,7 @@
 package edivad.dimstorage.compat.jade;
 
 import edivad.dimstorage.DimStorage;
+import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
@@ -15,19 +16,18 @@ public class DimBlockBaseComponent implements IBlockComponentProvider {
 
   @Override
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-    if (accessor.getBlockEntity() instanceof BlockEntityFrequencyOwner) {
+    if (accessor.getBlockEntity() instanceof BlockEntityFrequencyOwner blockEntity) {
       var tag = accessor.getServerData();
-      var has_owner = tag.getBoolean("has_owner");
-      var can_access = tag.getBoolean("can_access");
-      var owner = tag.getString("gameProfile");
-      var frequency = tag.getInt("frequency");
-      var locked = tag.getBoolean("locked");
+      var frequency = tag.read("frequency", Frequency.CODEC).orElseThrow();
+      var locked = tag.getBoolean("locked").orElse(false);
 
-      if (has_owner) {
-        var textColor = can_access ? ChatFormatting.GREEN : ChatFormatting.RED;
-        tooltip.add(Component.translatable(Translations.OWNER).append(" " + owner).withStyle(textColor));
+      if (frequency.hasOwner()) {
+        var textColor = blockEntity.canAccess(accessor.getPlayer())
+            ? ChatFormatting.GREEN : ChatFormatting.RED;
+        tooltip.add(Component.translatable(Translations.OWNER).append(" " + frequency.getOwner()).withStyle(textColor));
       }
-      tooltip.add(Component.translatable(Translations.FREQUENCY).append(" " + frequency));
+      tooltip.add(Component.translatable(Translations.FREQUENCY).append(" " + frequency.channel()));
+
       if (locked) {
         tooltip.add(Component.translatable(Translations.LOCKED).append(" ")
             .append(Component.translatable(Translations.YES)));

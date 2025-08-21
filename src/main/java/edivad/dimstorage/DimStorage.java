@@ -9,10 +9,11 @@ import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
 import edivad.dimstorage.compat.top.TOPProvider;
 import edivad.dimstorage.datagen.DimStorageAdvancementProvider;
-import edivad.dimstorage.datagen.DimStorageLootTableProvider;
-import edivad.dimstorage.datagen.Lang;
-import edivad.dimstorage.datagen.Recipes;
-import edivad.dimstorage.datagen.TagsProvider;
+import edivad.dimstorage.datagen.DimStorageLanguageProvider;
+import edivad.dimstorage.datagen.DimStorageRecipeProvider;
+import edivad.dimstorage.datagen.DimStorageTagsProvider;
+import edivad.dimstorage.datagen.loot.DimStorageLootTableProvider;
+import edivad.dimstorage.datagen.models.DimStorageModelProvider;
 import edivad.dimstorage.items.components.DimStorageComponents;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.to_client.OpenChest;
@@ -95,19 +96,13 @@ public class DimStorage {
     event.register(Registration.DIMTANK_MENU.get(), ScreenDimTank::new);
   }
 
-  private void handleGatherData(GatherDataEvent event) {
-    var generator = event.getGenerator();
-    var packOutput = generator.getPackOutput();
-    var lookupProvider = event.getLookupProvider();
-    var fileHelper = event.getExistingFileHelper();
-
-    generator.addProvider(event.includeServer(), new Recipes(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(), new DimStorageLootTableProvider(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new TagsProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new DimStorageAdvancementProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeClient(), new Lang(packOutput));
+  private void handleGatherData(GatherDataEvent.Client event) {
+    event.createProvider(DimStorageRecipeProvider.Runner::new);
+    event.createProvider(DimStorageLootTableProvider::new);
+    event.createProvider(DimStorageTagsProvider::new);
+    event.createProvider(DimStorageAdvancementProvider::new);
+    event.createProvider(DimStorageLanguageProvider::new);
+    event.createProvider(DimStorageModelProvider::new);
   }
 
   private void registerCommands(RegisterCommandsEvent event) {

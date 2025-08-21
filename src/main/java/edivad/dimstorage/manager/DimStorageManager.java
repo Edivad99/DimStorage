@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
@@ -16,13 +17,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
 public class DimStorageManager extends SavedData {
 
-  private static final String DATA_TAG = "dimstorage.inventories";
+  private static final SavedDataType<DimStorageManager> TYPE = new SavedDataType<>(
+      "dimstorage.inventories",
+      DimStorageManager::new,
+      ctx -> RecordCodecBuilder.create(instance -> instance.group(
+          RecordCodecBuilder.point(ctx.levelOrThrow()),
+          CompoundTag.CODEC.fieldOf("tag").forGetter(DimStorageManager::getTag)
+      ).apply(instance, DimStorageManager::new))
+  );
+
   private static final HashMap<String, DimStoragePlugin> PLUGINS = new HashMap<>();
   private static DimStorageManager SERVER_MANAGER;
   private static DimStorageManager CLIENT_MANAGER;
@@ -30,9 +40,15 @@ public class DimStorageManager extends SavedData {
   private final Map<String, AbstractDimStorage> storageMap;
   private final Map<String, List<AbstractDimStorage>> storageList;
   private final List<AbstractDimStorage> dirtyStorage;
+  private final Level level;
   private CompoundTag saveTag;
 
+  private DimStorageManager(Context ctx) {
+    this(ctx.level().getLevel());
+  }
+
   private DimStorageManager(Level level) {
+    this.level = level;
     this.client = level.isClientSide();
     this.saveTag = new CompoundTag();
 
@@ -43,6 +59,11 @@ public class DimStorageManager extends SavedData {
     for (String key : PLUGINS.keySet()) {
       storageList.put(key, new ArrayList<>());
     }
+  }
+
+  public DimStorageManager(ServerLevel serverLevel, CompoundTag compoundTag) {
+    this(serverLevel);
+    this.saveTag = compoundTag.getCompound("inventory").orElse(new CompoundTag());
   }
 
   public static void reloadManager(Level level) {
@@ -64,12 +85,7 @@ public class DimStorageManager extends SavedData {
   }
 
   private static DimStorageManager get(ServerLevel level) {
-    return level.getDataStorage()
-        .computeIfAbsent(new SavedData.Factory<>(() -> new DimStorageManager(level), (tag, registries) -> {
-          var manager = new DimStorageManager(level);
-          manager.load(tag);
-          return manager;
-        }), DATA_TAG);
+    return level.getDataStorage().computeIfAbsent(TYPE);
   }
 
   public static void registerPlugin(DimStoragePlugin plugin) {
@@ -93,19 +109,15 @@ public class DimStorageManager extends SavedData {
     }
   }
 
-  @Override
-  public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+  private CompoundTag getTag() {
+    var tag = new CompoundTag();
     for (var inv : dirtyStorage) {
-      saveTag.put(buildKey(inv.freq, inv.type()), inv.saveToTag(registries));
+      saveTag.put(buildKey(inv.freq, inv.type()), inv.saveToTag(level.registryAccess()));
       inv.setClean();
     }
     dirtyStorage.clear();
     tag.put("inventory", saveTag);
     return tag;
-  }
-
-  private void load(CompoundTag tag) {
-    this.saveTag = tag.getCompound("inventory");
   }
 
   private static String buildKey(Frequency frequency, String type) {
@@ -121,7 +133,7 @@ public class DimStorageManager extends SavedData {
       storage = PLUGINS.get(type).createDimStorage(this, freq);
 
       if (!client && saveTag.contains(key)) {
-        storage.loadFromTag(registries, saveTag.getCompound(key));
+        storage.loadFromTag(registries, saveTag.getCompound(key).orElseThrow());
       }
 
       storageMap.put(key, storage);
