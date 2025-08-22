@@ -1,10 +1,9 @@
 package edivad.dimstorage.api;
 
 import edivad.dimstorage.manager.DimStorageManager;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public abstract class AbstractDimStorage {
+public abstract class AbstractDimStorage implements ValueIOSerializable {
 
   public final DimStorageManager manager;
   public final Frequency freq;
@@ -41,10 +40,6 @@ public abstract class AbstractDimStorage {
   public abstract void clearStorage();
 
   public abstract String type();
-
-  public abstract void save(ValueOutput output);
-
-  public abstract void loadFromTag(ValueInput input);
 
   @Override
   public String toString() {

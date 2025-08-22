@@ -120,7 +120,7 @@ public class DimStorageManager extends SavedData {
     try(var scopedCollector = new ProblemReporter.ScopedCollector(() -> "DimStorageManager", LOGGER)) {
       for (var inv : dirtyStorage) {
         TagValueOutput out = TagValueOutput.createWithContext(scopedCollector, level.registryAccess());
-        inv.save(out);
+        inv.serialize(out);
         inv.setClean();
         saveTag.put(buildKey(inv.freq, inv.type()), out.buildResult());
       }
@@ -145,7 +145,7 @@ public class DimStorageManager extends SavedData {
         try(var scopedCollector = new ProblemReporter.ScopedCollector(() -> "DimStorageManager", LOGGER)) {
           var in = TagValueInput.create(scopedCollector, level.registryAccess(),
               saveTag.getCompound(key).orElseThrow());
-          storage.loadFromTag(in);
+          storage.deserialize(in);
         }
       }
 

@@ -32,7 +32,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
     }
   }
 
-  public void loadFromTag(ValueInput input) {
+  public void deserialize(ValueInput input) {
     empty();
     ContainerHelper.loadAllItems(input, items);
   }
@@ -42,7 +42,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
     return "item";
   }
 
-  public void save(ValueOutput output) {
+  public void serialize(ValueOutput output) {
     ContainerHelper.saveAllItems(output, this.items, false);
   }
 

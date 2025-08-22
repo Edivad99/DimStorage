@@ -66,12 +66,12 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
   }
 
   @Override
-  public void save(ValueOutput output) {
+  public void serialize(ValueOutput output) {
     tank.serialize(output);
   }
 
   @Override
-  public void loadFromTag(ValueInput input) {
+  public void deserialize(ValueInput input) {
     tank.deserialize(input);
   }
 
