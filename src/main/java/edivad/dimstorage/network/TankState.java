@@ -50,6 +50,6 @@ public abstract class TankState {
 
   private FluidStack getFluidStorageServer(ServerLevel level) {
     return ((DimTankStorage) DimStorageManager.instance(level)
-        .getStorage(level.registryAccess(), frequency, "fluid")).getFluidInTank(0);
+        .getStorage(frequency, "fluid")).getFluidInTank(0);
   }
 }

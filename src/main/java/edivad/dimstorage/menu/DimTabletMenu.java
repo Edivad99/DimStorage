@@ -21,7 +21,7 @@ public class DimTabletMenu extends DimStorageMenu {
     var frequency = item.get(DimStorageComponents.FREQUENCY_TABLET).frequency();
 
     this.chestInv = (DimChestStorage) DimStorageManager.instance(level)
-        .getStorage(level.registryAccess(), frequency, "item");
+        .getStorage(frequency, "item");
     this.chestInv.openInventory();
 
     this.addOwnSlots();

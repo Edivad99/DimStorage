@@ -1,8 +1,8 @@
 package edivad.dimstorage.api;
 
 import edivad.dimstorage.manager.DimStorageManager;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class AbstractDimStorage {
 
@@ -42,9 +42,9 @@ public abstract class AbstractDimStorage {
 
   public abstract String type();
 
-  public abstract CompoundTag saveToTag(HolderLookup.Provider registries);
+  public abstract void save(ValueOutput output);
 
-  public abstract void loadFromTag(HolderLookup.Provider registries, CompoundTag tag);
+  public abstract void loadFromTag(ValueInput input);
 
   @Override
   public String toString() {

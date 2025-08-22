@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends PanelScreen<T> {
 
@@ -55,9 +55,9 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
           blockEntityFrequencyOwner.getFrequency().setChannel(newFreq));
 
       if (blockEntityFrequencyOwner instanceof BlockEntityDimChest chest) {
-        PacketDistributor.sendToServer(new UpdateDimChest(chest));
+        ClientPacketDistributor.sendToServer(new UpdateDimChest(chest));
       } else if (blockEntityFrequencyOwner instanceof BlockEntityDimTank tank) {
-        PacketDistributor.sendToServer(new UpdateDimTank(tank));
+        ClientPacketDistributor.sendToServer(new UpdateDimTank(tank));
       }
     } catch (Exception e) {
       freqTextField.setValue(String.valueOf(prevChannel));
@@ -84,19 +84,19 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
       int posY = 45;
 
       // gameProfile
-      guiGraphics.drawString(this.font, OWNER, 185, posY, 4210752, false);
+      guiGraphics.drawString(this.font, OWNER, 185, posY, 0xFF333333, false);
       posY += 9;
       guiGraphics.hLine(185, 185 + this.font.width(OWNER), posY, 0xFF333333);
       posY += 31;
 
       // freq
-      guiGraphics.drawString(this.font, FREQ, 185, posY, 4210752, false);
+      guiGraphics.drawString(this.font, FREQ, 185, posY, 0xFF333333, false);
       posY += 9;
       guiGraphics.hLine(185, 185 + this.font.width(FREQ), posY, 0xFF333333);
       posY += 50;
 
       // locked
-      guiGraphics.drawString(this.font, LOCKED, 185, posY, 4210752, false);
+      guiGraphics.drawString(this.font, LOCKED, 185, posY, 0xFF333333, false);
       posY += 9;
       guiGraphics.hLine(185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
     }

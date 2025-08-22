@@ -4,7 +4,7 @@ import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.client.screen.pattern.BaseScreen;
 import edivad.dimstorage.menu.DimTabletMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +21,7 @@ public class ScreenDimTablet extends BaseScreen<DimTabletMenu> {
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
     super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
-    guiGraphics.blit(RenderType::guiTextured, DIMTABLET_GUI, this.leftPos, this.topPos, 0, 0,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, DIMTABLET_GUI, this.leftPos, this.topPos, 0, 0,
         this.imageWidth, this.imageHeight + 2, 256, 256);//Space to see the border
   }
 }

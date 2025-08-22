@@ -3,8 +3,8 @@ package edivad.dimstorage.storage;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -66,15 +66,13 @@ public class DimTankStorage extends AbstractDimStorage implements IFluidHandler 
   }
 
   @Override
-  public CompoundTag saveToTag(HolderLookup.Provider registries) {
-    CompoundTag compound = new CompoundTag();
-    compound.put("tank", tank.writeToNBT(registries, new CompoundTag()));
-    return compound;
+  public void save(ValueOutput output) {
+    tank.serialize(output);
   }
 
   @Override
-  public void loadFromTag(HolderLookup.Provider registries, CompoundTag tag) {
-    tank.readFromNBT(registries, tag.getCompound("tank").orElseThrow());
+  public void loadFromTag(ValueInput input) {
+    tank.deserialize(input);
   }
 
   private class Tank extends FluidTank {

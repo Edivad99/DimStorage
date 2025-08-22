@@ -6,7 +6,7 @@ import edivad.dimstorage.setup.Config;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -111,31 +111,31 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
     int settingsX = leftPos + (this.imageWidth - SETTINGS_WIDTH);
 
     if (allowConfig) {
-      guiGraphics.blit(RenderType::guiTextured, this.background, settingsX + this.animationState,
+      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, settingsX + this.animationState,
           topPos + 36, this.imageWidth, 36, SETTINGS_WIDTH, this.imageHeight, 256, 256);
     }
 
-    guiGraphics.blit(RenderType::guiTextured, this.background, leftPos, topPos, 0, 0, this.imageWidth,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, leftPos, topPos, 0, 0, this.imageWidth,
         this.imageHeight + 2, 256, 256);//Space to see the border
 
     // button background
-    guiGraphics.blit(RenderType::guiTextured, this.background, getButtonX(), getButtonY(), this.imageWidth, 16, BUTTON_WIDTH,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, getButtonX(), getButtonY(), this.imageWidth, 16, BUTTON_WIDTH,
         BUTTON_WIDTH, 256, 256);
 
     if (state == SettingsState.STATE_CLOSED || state == SettingsState.STATE_OPENING) {
       if (settingsButtonOver) {
-        guiGraphics.blit(RenderType::guiTextured, this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 28,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 28,
             16, 8, BUTTON_WIDTH, 256, 256);
       } else {
-        guiGraphics.blit(RenderType::guiTextured, this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 20,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, getButtonX() + 6, getButtonY() - 3, this.imageWidth + 20,
             16, 8, BUTTON_WIDTH, 256, 256);
       }
     } else if (state == SettingsState.STATE_OPENED || state == SettingsState.STATE_CLOSING) {
       if (settingsButtonOver) {
-        guiGraphics.blit(RenderType::guiTextured, this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 44,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 44,
             16, 8, BUTTON_WIDTH, 256, 256);
       } else {
-        guiGraphics.blit(RenderType::guiTextured, this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 36,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.background, getButtonX() + 4, getButtonY() - 3, this.imageWidth + 36,
             16, 8, BUTTON_WIDTH, 256, 256);
       }
     }

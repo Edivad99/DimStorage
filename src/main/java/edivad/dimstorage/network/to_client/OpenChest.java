@@ -29,7 +29,7 @@ public record OpenChest(Frequency freq, boolean open) implements CustomPacketPay
   public static void handle(OpenChest message, IPayloadContext ctx) {
     var level = ctx.player().level();
     ((DimChestStorage) DimStorageManager.instance(level)
-        .getStorage(level.registryAccess(), message.freq, "item"))
+        .getStorage(message.freq, "item"))
         .setClientOpen(message.open ? 1 : 0);
   }
 }

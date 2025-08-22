@@ -1,22 +1,22 @@
 package edivad.dimstorage.storage;
 
-import java.util.Arrays;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.network.to_client.OpenChest;
 import edivad.dimstorage.tools.InventoryUtils;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DimChestStorage extends AbstractDimStorage implements Container {
 
-  private ItemStack[] items;
+  private NonNullList<ItemStack> items;
   private int open;
 
   public DimChestStorage(DimStorageManager manager, Frequency freq) {
@@ -32,9 +32,9 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
     }
   }
 
-  public void loadFromTag(HolderLookup.Provider registries, CompoundTag tag) {
+  public void loadFromTag(ValueInput input) {
     empty();
-    InventoryUtils.readItemStacksFromTag(registries, items, tag.getList("items").orElse(new ListTag()));
+    ContainerHelper.loadAllItems(input, items);
   }
 
   @Override
@@ -42,15 +42,13 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
     return "item";
   }
 
-  public CompoundTag saveToTag(HolderLookup.Provider registries) {
-    CompoundTag compound = new CompoundTag();
-    compound.put("items", InventoryUtils.writeItemStacksToTag(registries, this.items));
-    return compound;
+  public void save(ValueOutput output) {
+    ContainerHelper.saveAllItems(output, this.items, false);
   }
 
   public ItemStack getItem(int slot) {
     synchronized (this) {
-      return items[slot];
+      return items.get(slot);
     }
   }
 
@@ -62,7 +60,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
 
   public void setItem(int slot, ItemStack stack) {
     synchronized (this) {
-      items[slot] = stack;
+      items.set(slot, stack);
       setChanged();
     }
   }
@@ -132,8 +130,7 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
 
   public void empty() {
     synchronized (this) {
-      items = new ItemStack[getContainerSize()];
-      Arrays.fill(items, ItemStack.EMPTY);
+      items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
     }
   }
 

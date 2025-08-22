@@ -1,65 +1,11 @@
 package edivad.dimstorage.tools;
 
 import org.jetbrains.annotations.NotNull;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NumericTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class InventoryUtils {
-
-  /**
-   * NBT item loading function with support for stack sizes > 32K
-   */
-  public static void readItemStacksFromTag(HolderLookup.Provider lookupProvider,
-      ItemStack[] items, ListTag tagList) {
-    for (int i = 0; i < tagList.size(); i++) {
-      var tag = tagList.getCompound(i).orElseThrow();
-      ItemStack.parse(lookupProvider, tag).ifPresent(itemStack -> {
-        int b = tag.getShort("Slot").orElseThrow();
-        items[b] = itemStack;
-        var quant = tag.get("Quantity");
-        if (quant instanceof NumericTag numericTag) {
-          items[b].setCount(numericTag.intValue());
-        }
-      });
-    }
-  }
-
-  /**
-   * NBT item saving function
-   */
-  public static ListTag writeItemStacksToTag(HolderLookup.Provider lookupProvider,
-      ItemStack[] items) {
-    return writeItemStacksToTag(lookupProvider, items, 64);
-  }
-
-  /**
-   * NBT item saving function with support for stack sizes > 32K
-   */
-  public static ListTag writeItemStacksToTag(HolderLookup.Provider lookupProvider,
-      ItemStack[] items, int maxQuantity) {
-    ListTag tagList = new ListTag();
-    for (int i = 0; i < items.length; i++) {
-      if (items[i].isEmpty()) {
-        continue;
-      }
-      var tag = new CompoundTag();
-      tag.putShort("Slot", (short) i);
-
-      if (maxQuantity > Short.MAX_VALUE) {
-        tag.putInt("Quantity", items[i].getCount());
-      } else if (maxQuantity > Byte.MAX_VALUE) {
-        tag.putShort("Quantity", (short) items[i].getCount());
-      }
-
-      tagList.add(items[i].save(lookupProvider, tag));
-    }
-    return tagList;
-  }
 
   /**
    * Static default implementation for IInventory method

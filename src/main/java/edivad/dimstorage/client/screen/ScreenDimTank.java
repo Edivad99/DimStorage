@@ -9,7 +9,7 @@ import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.Translations;
 import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,34 +49,33 @@ public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.LIQUID,
               liquidName.substring(0, Math.min(14, liquidName.length()))),
-          50, 25, 4210752, false);
+          50, 25, 0xFF333333, false);
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.AMOUNT, liquidStack.getAmount()),
-          50, 35, 4210752, false);
+          50, 35, 0xFF333333, false);
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.TEMPERATURE, fluidType.getTemperature() - 273),
-          50, 45, 4210752, false);
+          50, 45, 0xFF333333, false);
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.LUMINOSITY, fluidType.getLightLevel()),
-          50, 55, 4210752, false);
+          50, 55, 0xFF333333, false);
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.GAS)
               .append(" ")
               .append(fluidType.isLighterThanAir()
                   ? Component.translatable(Translations.YES)
                   : Component.translatable(Translations.NO)),
-          50, 65, 4210752, false);
+          50, 65, 0xFF333333, false);
     } else {
       guiGraphics.drawString(this.font,
           Component.translatable(Translations.LIQUID, Component.translatable(Translations.EMPTY)),
-          50, 25, 4210752, false);
+          50, 25, 0xFF333333, false);
     }
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
-
+  public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
     var fluid = ((BlockEntityDimTank) blockEntityFrequencyOwner).liquidState.clientLiquid;
     int z = getFluidScaled(60, fluid.getAmount());
     if (!fluid.isEmpty()) {
@@ -87,8 +86,8 @@ public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
 
       var color = FluidUtils.getLiquidColorWithBiome(fluid, blockEntityFrequencyOwner);
 
-      guiGraphics.blit(RenderType::guiTextured, fluidTexture.atlasLocation(), this.leftPos + 11,
-          this.topPos + 21 + z, 176, 16, 60 - z, color, 256, 256);
+      guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, fluidTexture, this.leftPos + 11,
+          this.topPos + 21 + z, 16, 60 - z, color);
     }
   }
 }

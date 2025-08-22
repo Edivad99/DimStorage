@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class OwnerButton extends AbstractButton {
 
@@ -30,9 +30,9 @@ public class OwnerButton extends AbstractButton {
   public void onPress() {
     owner.swapOwner(Minecraft.getInstance().player);
     if (owner instanceof BlockEntityDimChest chest) {
-      PacketDistributor.sendToServer(new UpdateDimChest(chest));
+      ClientPacketDistributor.sendToServer(new UpdateDimChest(chest));
     } else if (owner instanceof BlockEntityDimTank tank) {
-      PacketDistributor.sendToServer(new UpdateDimTank(tank));
+      ClientPacketDistributor.sendToServer(new UpdateDimTank(tank));
     }
   }
 

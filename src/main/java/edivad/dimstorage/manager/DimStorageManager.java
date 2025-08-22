@@ -6,23 +6,29 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.DimStoragePlugin;
 import edivad.dimstorage.api.Frequency;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
 public class DimStorageManager extends SavedData {
+
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   private static final SavedDataType<DimStorageManager> TYPE = new SavedDataType<>(
       "dimstorage.inventories",
@@ -111,11 +117,15 @@ public class DimStorageManager extends SavedData {
 
   private CompoundTag getTag() {
     var tag = new CompoundTag();
-    for (var inv : dirtyStorage) {
-      saveTag.put(buildKey(inv.freq, inv.type()), inv.saveToTag(level.registryAccess()));
-      inv.setClean();
+    try(var scopedCollector = new ProblemReporter.ScopedCollector(() -> "DimStorageManager", LOGGER)) {
+      for (var inv : dirtyStorage) {
+        TagValueOutput out = TagValueOutput.createWithContext(scopedCollector, level.registryAccess());
+        inv.save(out);
+        inv.setClean();
+        saveTag.put(buildKey(inv.freq, inv.type()), out.buildResult());
+      }
+      dirtyStorage.clear();
     }
-    dirtyStorage.clear();
     tag.put("inventory", saveTag);
     return tag;
   }
@@ -124,8 +134,7 @@ public class DimStorageManager extends SavedData {
     return frequency + ",type=" + type;
   }
 
-  public AbstractDimStorage getStorage(HolderLookup.Provider registries,
-      Frequency freq, String type) {
+  public AbstractDimStorage getStorage(Frequency freq, String type) {
     String key = buildKey(freq, type);
     AbstractDimStorage storage = storageMap.get(key);
 
@@ -133,7 +142,11 @@ public class DimStorageManager extends SavedData {
       storage = PLUGINS.get(type).createDimStorage(this, freq);
 
       if (!client && saveTag.contains(key)) {
-        storage.loadFromTag(registries, saveTag.getCompound(key).orElseThrow());
+        try(var scopedCollector = new ProblemReporter.ScopedCollector(() -> "DimStorageManager", LOGGER)) {
+          var in = TagValueInput.create(scopedCollector, level.registryAccess(),
+              saveTag.getCompound(key).orElseThrow());
+          storage.loadFromTag(in);
+        }
       }
 
       storageMap.put(key, storage);

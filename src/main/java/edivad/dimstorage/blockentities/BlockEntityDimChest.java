@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -93,7 +95,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   @Override
   public DimChestStorage getStorage() {
     return (DimChestStorage) DimStorageManager.instance(this.level)
-        .getStorage(this.level.registryAccess(), getFrequency(), "item");
+        .getStorage(getFrequency(), "item");
   }
 
   public void onPlaced(LivingEntity entity) {
@@ -101,15 +103,15 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.saveAdditional(tag, registries);
-    tag.putByte("rot", (byte) this.rotation);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putByte("rot", (byte) this.rotation);
   }
 
   @Override
-  protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.loadAdditional(tag, registries);
-    this.rotation = tag.getByte("rot").orElseThrow() & 3;
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.rotation = input.getByteOr("rot", (byte) 0) & 3;
   }
 
   //Synchronizing on block update
@@ -123,13 +125,11 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt,
-      HolderLookup.Provider provider) {
-    super.onDataPacket(net, pkt, provider);
-    var tag = pkt.getTag();
-    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
-    this.locked = tag.getBoolean("locked").orElseThrow();
-    this.rotation = tag.getByte("rot").orElseThrow() & 3;
+  public void onDataPacket(Connection net, ValueInput valueInput) {
+    super.onDataPacket(net, valueInput);
+    this.setFrequency(valueInput.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = valueInput.getBooleanOr("locked", false);
+    this.rotation = valueInput.getByteOr("rot", (byte) 0) & 3;
   }
 
   //Synchronizing on chunk load
@@ -141,9 +141,9 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-    super.handleUpdateTag(tag, lookupProvider);
-    this.rotation = tag.getByte("rot").orElseThrow() & 3;
+  public void handleUpdateTag(ValueInput input) {
+    super.handleUpdateTag(input);
+    this.rotation = input.getByteOr("rot", (byte) 0) & 3;
   }
 
   @Override

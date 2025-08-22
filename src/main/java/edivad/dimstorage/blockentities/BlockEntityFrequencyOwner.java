@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class BlockEntityFrequencyOwner extends BlockEntity implements MenuProvider {
 
@@ -83,17 +85,17 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   public abstract void onClientTick(Level level, BlockPos pos, BlockState state);
 
   @Override
-  protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.loadAdditional(tag, registries);
-    this.frequency = tag.read("frequency", Frequency.CODEC).orElseThrow();
-    this.locked = tag.getBoolean("locked").orElseThrow();
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.frequency = input.read("frequency", Frequency.CODEC).orElseThrow();
+    this.locked = input.getBooleanOr("locked", false);
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.saveAdditional(tag, registries);
-    tag.store("frequency", Frequency.CODEC, this.frequency);
-    tag.putBoolean("locked", this.locked);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store("frequency", Frequency.CODEC, this.frequency);
+    output.putBoolean("locked", this.locked);
   }
 
   @Override
@@ -131,10 +133,10 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
   }
 
   @Override
-  public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-    super.handleUpdateTag(tag, lookupProvider);
-    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
-    this.locked = tag.getBoolean("locked").orElse(false);
+  public void handleUpdateTag(ValueInput input) {
+    super.handleUpdateTag(input);
+    this.setFrequency(input.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = input.getBooleanOr("locked", false);
   }
 
   @Override

@@ -28,6 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -95,7 +97,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public DimTankStorage getStorage() {
     return (DimTankStorage) DimStorageManager.instance(this.level)
-        .getStorage(this.level.registryAccess(), this.getFrequency(), "fluid");
+        .getStorage(this.getFrequency(), "fluid");
   }
 
   public int getComparatorInput() {
@@ -109,16 +111,16 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.saveAdditional(tag, registries);
-    tag.putBoolean("autoEject", this.autoEject);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putBoolean("autoEject", this.autoEject);
   }
 
   @Override
-  protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.loadAdditional(tag, registries);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     this.liquidState.setFrequency(getFrequency());
-    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
+    this.autoEject = input.getBooleanOr("autoEject", false);
   }
 
   @Override
@@ -155,13 +157,11 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt,
-      HolderLookup.Provider provider) {
-    super.onDataPacket(net, pkt, provider);
-    CompoundTag tag = pkt.getTag();
-    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
-    this.locked = tag.getBoolean("locked").orElseThrow();
-    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
+  public void onDataPacket(Connection net, ValueInput valueInput) {
+    super.onDataPacket(net, valueInput);
+    this.setFrequency(valueInput.read("frequency", Frequency.CODEC).orElseThrow());
+    this.locked = valueInput.getBooleanOr("locked", false);
+    this.autoEject = valueInput.getBooleanOr("autoEject", false);
   }
 
   //Synchronizing on chunk load
@@ -173,10 +173,9 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Override
-  public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-    this.setFrequency(tag.read("frequency", Frequency.CODEC).orElseThrow());
-    this.locked = tag.getBoolean("locked").orElseThrow();
-    this.autoEject = tag.getBoolean("autoEject").orElseThrow();
+  public void handleUpdateTag(ValueInput input) {
+    super.handleUpdateTag(input);
+    this.autoEject = input.getBooleanOr("autoEject", false);
   }
 
   @Override
