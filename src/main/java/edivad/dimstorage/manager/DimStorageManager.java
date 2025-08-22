@@ -31,7 +31,7 @@ public class DimStorageManager extends SavedData {
   private static final Logger LOGGER = LogUtils.getLogger();
 
   private static final SavedDataType<DimStorageManager> TYPE = new SavedDataType<>(
-      "dimstorage.inventories",
+      "dimstorage_inventories",
       DimStorageManager::new,
       ctx -> RecordCodecBuilder.create(instance -> instance.group(
           RecordCodecBuilder.point(ctx.levelOrThrow()),
@@ -67,7 +67,7 @@ public class DimStorageManager extends SavedData {
     }
   }
 
-  public DimStorageManager(ServerLevel serverLevel, CompoundTag compoundTag) {
+  private DimStorageManager(ServerLevel serverLevel, CompoundTag compoundTag) {
     this(serverLevel);
     this.saveTag = compoundTag.getCompound("inventory").orElse(new CompoundTag());
   }
