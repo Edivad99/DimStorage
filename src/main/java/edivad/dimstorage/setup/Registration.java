@@ -42,10 +42,10 @@ public class Registration {
 
   public static final DeferredItem<BlockItem> DIMCHEST_ITEM =
       ITEMS.registerItem("dimensional_chest", properties ->
-          new ItemDimBase(DIMCHEST.get(), properties));
+          new ItemDimBase(DIMCHEST.get(), properties.useBlockDescriptionPrefix()));
   public static final DeferredItem<BlockItem> DIMTANK_ITEM =
       ITEMS.registerItem("dimensional_tank", properties ->
-          new ItemDimBase(DIMTANK.get(), properties));
+          new ItemDimBase(DIMTANK.get(), properties.useBlockDescriptionPrefix()));
   public static final DeferredItem<Item> DIMCORE =
       ITEMS.registerSimpleItem("dim_core");
   public static final DeferredItem<Item> DIMWALL =

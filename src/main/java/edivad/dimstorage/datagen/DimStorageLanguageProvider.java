@@ -14,14 +14,12 @@ public class DimStorageLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    add(Registration.DIMCORE.get(), "Dimensional Core");
-    add(Registration.SOLIDDIMCORE.get(), "Solid Dimensional Core");
-    add(Registration.DIMWALL.get(), "Dimensional Wall");
-    add(Registration.DIMTABLET.get(), "Dimensional Tablet");
-    add(Registration.DIMCHEST_ITEM.get(), "Dimensional Chest");
-    add(Registration.DIMTANK_ITEM.get(), "Dimensional Tank");
-    add(Registration.DIMCHEST.get(), "Dimensional Chest");
-    add(Registration.DIMTANK.get(), "Dimensional Tank");
+    addItem(Registration.DIMCORE, "Dimensional Core");
+    addItem(Registration.SOLIDDIMCORE, "Solid Dimensional Core");
+    addItem(Registration.DIMWALL, "Dimensional Wall");
+    addItem(Registration.DIMTABLET, "Dimensional Tablet");
+    addBlock(Registration.DIMCHEST, "Dimensional Chest");
+    addBlock(Registration.DIMTANK, "Dimensional Tank");
 
     add(Translations.ADVANCEMENTS_ROOT.title(), "Dimensional Core");
     add(Translations.ADVANCEMENTS_ROOT.desc(), "The power of dimensions");
