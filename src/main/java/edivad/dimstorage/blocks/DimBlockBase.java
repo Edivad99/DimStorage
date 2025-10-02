@@ -51,8 +51,8 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
 
   @Override
   public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
-      BlockEntity te, ItemStack stack) {
-    super.playerDestroy(level, player, pos, state, te, stack);
+      @Nullable BlockEntity blockEntity, ItemStack stack) {
+    super.playerDestroy(level, player, pos, state, blockEntity, stack);
     level.removeBlockEntity(pos);
     level.removeBlock(pos, false);
   }

@@ -60,8 +60,11 @@ public class DimChestBlock extends DimBlockBase {
   }
 
   @Override
-  public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer,
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
       ItemStack stack) {
+    if (placer == null) {
+      return;
+    }
     level.getBlockEntity(pos, ModRegistration.DIMCHEST_TILE.get())
         .ifPresent(chest -> chest.onPlaced(placer));
   }

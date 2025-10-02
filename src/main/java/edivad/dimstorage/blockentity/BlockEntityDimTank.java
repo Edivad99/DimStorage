@@ -140,7 +140,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Nullable
-  public ResourceHandler<FluidResource> getFluidHandler(Direction direction) {
+  public ResourceHandler<FluidResource> getFluidHandler(@Nullable Direction direction) {
     return this.locked ? null : this.getStorage();
   }
 

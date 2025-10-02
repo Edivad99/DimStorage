@@ -1,6 +1,5 @@
 package edivad.dimstorage.tools;
 
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
@@ -18,7 +17,6 @@ public class InventoryUtils {
   /**
    * Static default implementation for IInventory method
    */
-  @NotNull
   public static ItemStack decrStackSize(Container inv, int slot, int size) {
     var item = inv.getItem(slot);
 

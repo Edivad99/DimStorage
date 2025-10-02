@@ -46,15 +46,12 @@ public class DimTankRenderer implements BlockEntityRenderer<BlockEntityDimTank, 
   private void renderFluid(DimTankRenderState state, PoseStack poseStack,
       SubmitNodeCollector submitNodeCollector) {
     var fluid = state.fluid;
-    if (fluid == null || fluid.isEmpty()) {
+    if (fluid.isEmpty()) {
       return;
     }
     float scale = (1.0f - TANK_THICKNESS / 2 - TANK_THICKNESS) * fluid.getAmount() / (DimTankStorage.CAPACITY);
     if (scale > 0.0f) {
       TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
-      if (sprite == null) {
-        return;
-      }
 
       float u1 = sprite.getU0();
       float v1 = sprite.getV0();

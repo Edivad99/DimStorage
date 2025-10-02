@@ -80,7 +80,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   }
 
   @Nullable
-  public ResourceHandler<ItemResource> getItemHandler(Direction direction) {
+  public ResourceHandler<ItemResource> getItemHandler(@Nullable Direction direction) {
     return this.locked ? null : VanillaContainerWrapper.of(getStorage());
   }
 

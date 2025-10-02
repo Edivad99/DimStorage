@@ -17,10 +17,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.MaterialSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
@@ -44,7 +44,6 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
       new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), RED_INDICATOR);
   private static final ResourceLocation TEXTURE = DimStorage.rl("textures/model/dimchest.png");
 
-  private final MaterialSet materials;
   private final ModelPart staticLayer;
   private final ModelPart movableLayer;
   private final ModelPart greenIndicatorLayer;
@@ -52,7 +51,6 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
   private final ModelPart redIndicatorLayer;
 
   public DimChestRenderer(BlockEntityRendererProvider.Context context) {
-    materials = context.materials();
     staticLayer = context.bakeLayer(STATIC_LAYER);
     movableLayer = context.bakeLayer(MOVABLE_LAYER);
     greenIndicatorLayer = context.bakeLayer(GREEN_INDICATOR_LAYER);
@@ -127,21 +125,6 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     return LayerDefinition.create(meshDefinition, 128, 128);
   }
 
-  /*
-  @Override
-  public void render(BlockEntityDimChest blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
-    if (blockEntity.isRemoved()) {
-      return;
-    }
-
-    poseStack.pushPose();
-    renderBlock(blockEntity, poseStack, bufferSource, packedLight, packedOverlay);
-    poseStack.popPose();
-  }*/
-
-
-
   private void renderBlock(DimChestRenderState state, PoseStack poseStack,
       SubmitNodeCollector collector, CameraRenderState cameraState) {
     poseStack.pushPose();
@@ -159,56 +142,32 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     // Adjustment
     poseStack.translate(0D, -2D, 0D);
 
-    //VertexConsumer buffer = bufferSource.getBuffer(RenderType.entitySolid(TEXTURE));
     var color = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
-    collector.submitModelPart(staticLayer,
-        poseStack,
-        RenderType.entitySolid(TEXTURE),
-        state.lightCoords,
-        OverlayTexture.NO_OVERLAY,
-        null,
-        false, false, color, state.breakProgress, 0);
+    renderModelPart(collector, staticLayer, poseStack, state, color);
 
     // Render movable part
     poseStack.pushPose();
     poseStack.translate(0, 0, state.movablePartState);
-    collector.submitModelPart(movableLayer,
-        poseStack,
-        RenderType.entitySolid(TEXTURE),
-        state.lightCoords,
-        OverlayTexture.NO_OVERLAY,
-        null,
-        false, false, color, state.breakProgress, 0);
+    renderModelPart(collector, movableLayer, poseStack, state, color);
     poseStack.popPose();
 
     // Check state
     if (state.locked) {
-      collector.submitModelPart(redIndicatorLayer,
-          poseStack,
-          RenderType.entitySolid(TEXTURE),
-          state.lightCoords,
-          OverlayTexture.NO_OVERLAY,
-          null,
-          false, false, color, state.breakProgress, 0);
+      renderModelPart(collector, redIndicatorLayer, poseStack, state, color);
     } else if (state.hasOwner) {
-      collector.submitModelPart(blueIndicatorLayer,
-          poseStack,
-          RenderType.entitySolid(TEXTURE),
-          state.lightCoords,
-          OverlayTexture.NO_OVERLAY,
-          null,
-          false, false, color, state.breakProgress, 0);
+      renderModelPart(collector, blueIndicatorLayer, poseStack, state, color);
     } else {
-      collector.submitModelPart(greenIndicatorLayer,
-          poseStack,
-          RenderType.entitySolid(TEXTURE),
-          state.lightCoords,
-          OverlayTexture.NO_OVERLAY,
-          null,
-          false, false, color, state.breakProgress, 0);
+      renderModelPart(collector, greenIndicatorLayer, poseStack, state, color);
     }
 
     poseStack.popPose();
+  }
+
+  private static void renderModelPart(SubmitNodeCollector collector, ModelPart modelPart,
+      PoseStack poseStack, BlockEntityRenderState state, int color) {
+    collector.submitModelPart(modelPart, poseStack, RenderType.entitySolid(TEXTURE),
+        state.lightCoords, OverlayTexture.NO_OVERLAY, null, false, false, color,
+        state.breakProgress, 0);
   }
 
   @Override

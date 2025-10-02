@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -40,7 +41,9 @@ public class DimStorageManager extends SavedData {
   );
 
   private static final HashMap<String, DimStoragePlugin> PLUGINS = new HashMap<>();
+  @Nullable
   private static DimStorageManager SERVER_MANAGER;
+  @Nullable
   private static DimStorageManager CLIENT_MANAGER;
   private final boolean client;
   private final Map<String, AbstractDimStorage> storageMap;
