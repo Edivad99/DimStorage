@@ -1,7 +1,7 @@
 package edivad.dimstorage.menu;
 
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.world.entity.player.Inventory;
 
 public class DimTankMenu extends DimStorageMenu {
@@ -11,7 +11,7 @@ public class DimTankMenu extends DimStorageMenu {
 
   public DimTankMenu(int windowId, Inventory inventory, BlockEntityDimTank owner,
       boolean isOpen) {
-    super(Registration.DIMTANK_MENU.get(), windowId);
+    super(ModRegistration.DIMTANK_MENU.get(), windowId);
     this.owner = owner;
     this.isOpen = isOpen;
 

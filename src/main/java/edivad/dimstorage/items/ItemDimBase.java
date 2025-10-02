@@ -2,7 +2,7 @@ package edivad.dimstorage.items;
 
 import java.util.function.Consumer;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.items.components.DimStorageComponents;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;

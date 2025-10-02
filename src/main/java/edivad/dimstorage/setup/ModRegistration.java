@@ -1,8 +1,8 @@
 package edivad.dimstorage.setup;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.blocks.DimChestBlock;
 import edivad.dimstorage.blocks.DimTankBlock;
 import edivad.dimstorage.items.DimTablet;
@@ -23,7 +23,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class Registration {
+public class ModRegistration {
 
   private static final DeferredRegister.Blocks BLOCKS =
       DeferredRegister.createBlocks(DimStorage.ID);

@@ -1,14 +1,15 @@
 package edivad.dimstorage.client.screen.element.button;
 
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.network.to_server.UpdateDimChest;
 import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.setup.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -27,7 +28,7 @@ public class OwnerButton extends AbstractButton {
   }
 
   @Override
-  public void onPress() {
+  public void onPress(InputWithModifiers inputWithModifiers) {
     owner.swapOwner(Minecraft.getInstance().player);
     if (owner instanceof BlockEntityDimChest chest) {
       ClientPacketDistributor.sendToServer(new UpdateDimChest(chest));

@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blocks.DimChestBlock;
 import edivad.dimstorage.blocks.DimTankBlock;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -25,13 +25,13 @@ public class DimStorageModelProvider extends ModelProvider {
 
   @Override
   protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-    itemModels.generateFlatItem(Registration.DIMWALL.get(), ModelTemplates.FLAT_ITEM);
-    itemModels.generateFlatItem(Registration.DIMCORE.get(), ModelTemplates.FLAT_ITEM);
-    itemModels.generateFlatItem(Registration.SOLIDDIMCORE.get(), ModelTemplates.FLAT_ITEM);
-    itemModels.generateFlatItem(Registration.DIMTABLET.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(ModRegistration.DIMWALL.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(ModRegistration.DIMCORE.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(ModRegistration.SOLIDDIMCORE.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(ModRegistration.DIMTABLET.get(), ModelTemplates.FLAT_ITEM);
 
-    createDimChest(blockModels, Registration.DIMCHEST.get());
-    createDimTank(blockModels, Registration.DIMTANK.get());
+    createDimChest(blockModels, ModRegistration.DIMCHEST.get());
+    createDimTank(blockModels, ModRegistration.DIMTANK.get());
   }
 
   private void createDimChest(BlockModelGenerators blockModels, DimChestBlock block) {

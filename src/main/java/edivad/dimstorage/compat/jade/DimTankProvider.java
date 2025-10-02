@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.jade;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;

@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -51,7 +51,7 @@ public record FrequencyTabletComponent(Frequency frequency, boolean bound, boole
         .append(Component.translatable(Translations.CHANGE_AUTO_COLLECT)
             .withStyle(ChatFormatting.GRAY));
 
-    if (Screen.hasShiftDown()) {
+    if (Minecraft.getInstance().hasShiftDown()) {
       tooltipAdder.accept(Component.translatable(Translations.FREQUENCY).append(" " + frequency.channel())
           .withStyle(ChatFormatting.GRAY));
       if (frequency.hasOwner()) {

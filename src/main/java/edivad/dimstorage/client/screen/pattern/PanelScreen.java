@@ -5,6 +5,7 @@ import java.util.List;
 import edivad.dimstorage.setup.Config;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -73,12 +74,12 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
   }
 
   @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int clickedButton) {
-    super.mouseClicked(mouseX, mouseY, clickedButton);
+  public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    super.mouseClicked(event, doubleClick);
 
     if (allowConfig) {
-      if (mouseX >= getButtonX() && mouseX <= getButtonX() + BUTTON_WIDTH) {
-        if (mouseY >= getButtonY() && mouseY <= getButtonY() + BUTTON_WIDTH) {
+      if (event.x() >= getButtonX() && event.x() <= getButtonX() + BUTTON_WIDTH) {
+        if (event.y() >= getButtonY() && event.y() <= getButtonY() + BUTTON_WIDTH) {
           if (state == SettingsState.STATE_CLOSED) {
             state = SettingsState.STATE_OPENING;
           } else if (state == SettingsState.STATE_OPENED) {

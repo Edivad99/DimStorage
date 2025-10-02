@@ -27,7 +27,7 @@ public class ClientSetup {
   }
 
   private static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-    event.registerBlockEntityRenderer(Registration.DIMCHEST_TILE.get(), DimChestRenderer::new);
-    event.registerBlockEntityRenderer(Registration.DIMTANK_TILE.get(), DimTankRenderer::new);
+    event.registerBlockEntityRenderer(ModRegistration.DIMCHEST_TILE.get(), DimChestRenderer::new);
+    event.registerBlockEntityRenderer(ModRegistration.DIMTANK_TILE.get(), DimTankRenderer::new);
   }
 }

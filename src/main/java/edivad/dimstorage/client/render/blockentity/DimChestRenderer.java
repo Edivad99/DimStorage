@@ -1,43 +1,50 @@
 package edivad.dimstorage.client.render.blockentity;
 
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.state.DimChestRenderState;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.MaterialSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 
-public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest> {
+public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest, DimChestRenderState> {
 
   private static final String STATIC = "static";
   public static final ModelLayerLocation STATIC_LAYER =
-      new ModelLayerLocation(Registration.DIMCHEST.getId(), STATIC);
+      new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), STATIC);
   private static final String MOVABLE = "movable";
   public static final ModelLayerLocation MOVABLE_LAYER =
-      new ModelLayerLocation(Registration.DIMCHEST.getId(), MOVABLE);
+      new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), MOVABLE);
   private static final String GREEN_INDICATOR = "greenIndicator";
   public static final ModelLayerLocation GREEN_INDICATOR_LAYER =
-      new ModelLayerLocation(Registration.DIMCHEST.getId(), GREEN_INDICATOR);
+      new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), GREEN_INDICATOR);
   private static final String BLUE_INDICATOR = "blueIndicator";
   public static final ModelLayerLocation BLUE_INDICATOR_LAYER =
-      new ModelLayerLocation(Registration.DIMCHEST.getId(), BLUE_INDICATOR);
+      new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), BLUE_INDICATOR);
   private static final String RED_INDICATOR = "redIndicator";
   public static final ModelLayerLocation RED_INDICATOR_LAYER =
-      new ModelLayerLocation(Registration.DIMCHEST.getId(), RED_INDICATOR);
+      new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), RED_INDICATOR);
   private static final ResourceLocation TEXTURE = DimStorage.rl("textures/model/dimchest.png");
+
+  private final MaterialSet materials;
   private final ModelPart staticLayer;
   private final ModelPart movableLayer;
   private final ModelPart greenIndicatorLayer;
@@ -45,6 +52,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
   private final ModelPart redIndicatorLayer;
 
   public DimChestRenderer(BlockEntityRendererProvider.Context context) {
+    materials = context.materials();
     staticLayer = context.bakeLayer(STATIC_LAYER);
     movableLayer = context.bakeLayer(MOVABLE_LAYER);
     greenIndicatorLayer = context.bakeLayer(GREEN_INDICATOR_LAYER);
@@ -119,6 +127,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     return LayerDefinition.create(meshDefinition, 128, 128);
   }
 
+  /*
   @Override
   public void render(BlockEntityDimChest blockEntity, float partialTick, PoseStack poseStack,
       MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
@@ -129,10 +138,12 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     poseStack.pushPose();
     renderBlock(blockEntity, poseStack, bufferSource, packedLight, packedOverlay);
     poseStack.popPose();
-  }
+  }*/
 
-  private void renderBlock(BlockEntityDimChest blockEntity, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+
+
+  private void renderBlock(DimChestRenderState state, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
     poseStack.pushPose();
 
     // This line actually rotates the renderer.
@@ -140,7 +151,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
 
     // Direction
     poseStack.mulPose((new Quaternionf())
-        .rotationXYZ(0F, (360 - blockEntity.rotation * 90) * ((float) Math.PI / 180F), 0F));
+        .rotationXYZ(0F, (360 - state.rotation * 90) * ((float) Math.PI / 180F), 0F));
 
     // Sens
     poseStack.mulPose((new Quaternionf()).rotationXYZ((float) Math.PI, 0F, 0F));
@@ -148,27 +159,78 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     // Adjustment
     poseStack.translate(0D, -2D, 0D);
 
-    VertexConsumer buffer = bufferSource.getBuffer(RenderType.entitySolid(TEXTURE));
+    //VertexConsumer buffer = bufferSource.getBuffer(RenderType.entitySolid(TEXTURE));
     var color = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
-    staticLayer.render(poseStack, buffer, packedLight, packedOverlay, color);
+    collector.submitModelPart(staticLayer,
+        poseStack,
+        RenderType.entitySolid(TEXTURE),
+        state.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        null,
+        false, false, color, state.breakProgress, 0);
+
     // Render movable part
     poseStack.pushPose();
-    poseStack.translate(0, 0, blockEntity.movablePartState);
-    movableLayer.render(poseStack, buffer, packedLight, packedOverlay, color);
+    poseStack.translate(0, 0, state.movablePartState);
+    collector.submitModelPart(movableLayer,
+        poseStack,
+        RenderType.entitySolid(TEXTURE),
+        state.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        null,
+        false, false, color, state.breakProgress, 0);
     poseStack.popPose();
 
     // Check state
-    if (blockEntity.locked) {
-      redIndicatorLayer
-          .render(poseStack, buffer, packedLight, packedOverlay, color);
-    } else if (blockEntity.getFrequency().hasOwner()) {
-      blueIndicatorLayer
-          .render(poseStack, buffer, packedLight, packedOverlay, color);
+    if (state.locked) {
+      collector.submitModelPart(redIndicatorLayer,
+          poseStack,
+          RenderType.entitySolid(TEXTURE),
+          state.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          null,
+          false, false, color, state.breakProgress, 0);
+    } else if (state.hasOwner) {
+      collector.submitModelPart(blueIndicatorLayer,
+          poseStack,
+          RenderType.entitySolid(TEXTURE),
+          state.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          null,
+          false, false, color, state.breakProgress, 0);
     } else {
-      greenIndicatorLayer
-          .render(poseStack, buffer, packedLight, packedOverlay, color);
+      collector.submitModelPart(greenIndicatorLayer,
+          poseStack,
+          RenderType.entitySolid(TEXTURE),
+          state.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          null,
+          false, false, color, state.breakProgress, 0);
     }
 
+    poseStack.popPose();
+  }
+
+  @Override
+  public DimChestRenderState createRenderState() {
+    return new DimChestRenderState();
+  }
+
+  @Override
+  public void extractRenderState(BlockEntityDimChest blockEntity, DimChestRenderState state,
+      float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTick, cameraPos, crumblingOverlay);
+    state.locked = blockEntity.locked;
+    state.hasOwner = blockEntity.getFrequency().hasOwner();
+    state.movablePartState = blockEntity.movablePartState;
+    state.rotation = blockEntity.rotation;
+  }
+
+  @Override
+  public void submit(DimChestRenderState state, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
+    poseStack.pushPose();
+    renderBlock(state, poseStack, collector, cameraState);
     poseStack.popPose();
   }
 }

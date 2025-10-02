@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.jade;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

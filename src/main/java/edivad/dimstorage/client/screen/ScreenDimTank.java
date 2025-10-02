@@ -1,7 +1,7 @@
 package edivad.dimstorage.client.screen;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.client.screen.element.button.AutoEjectButton;
 import edivad.dimstorage.client.screen.pattern.FrequencyScreen;
 import edivad.dimstorage.menu.DimTankMenu;

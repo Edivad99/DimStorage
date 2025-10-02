@@ -1,8 +1,8 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.client.screen.element.button.ChangeButton;
 import edivad.dimstorage.client.screen.element.button.LockButton;
 import edivad.dimstorage.client.screen.element.button.OwnerButton;
@@ -11,6 +11,7 @@ import edivad.dimstorage.network.to_server.UpdateDimChest;
 import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -71,9 +72,9 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
   }
 
   @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int clickedButton) {
-    freqTextField.mouseClicked(mouseX, mouseY, clickedButton);
-    return super.mouseClicked(mouseX, mouseY, clickedButton);
+  public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    freqTextField.mouseClicked(event, doubleClick);
+    return super.mouseClicked(event, doubleClick);
   }
 
   @Override

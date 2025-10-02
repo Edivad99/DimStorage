@@ -8,6 +8,7 @@ import edivad.dimstorage.tools.InventoryUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
@@ -150,10 +151,10 @@ public class DimChestStorage extends AbstractDimStorage implements Container {
   }
 
   @Override
-  public void startOpen(Player player) {
+  public void startOpen(ContainerUser user) {
   }
 
   @Override
-  public void stopOpen(Player player) {
+  public void stopOpen(ContainerUser user) {
   }
 }

@@ -1,7 +1,7 @@
 package edivad.dimstorage.menu;
 
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +15,7 @@ public class DimChestMenu extends DimStorageMenu {
 
   public DimChestMenu(int windowId, Inventory inventory, BlockEntityDimChest owner,
       boolean isOpen) {
-    super(Registration.DIMCHEST_MENU.get(), windowId);
+    super(ModRegistration.DIMCHEST_MENU.get(), windowId);
     this.chestInv = owner.getStorage();
     this.owner = owner;
     this.isOpen = isOpen;

@@ -1,8 +1,8 @@
 package edivad.dimstorage.compat.jade;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.blocks.DimChestBlock;
 import edivad.dimstorage.blocks.DimTankBlock;
 import snownee.jade.api.IWailaClientRegistration;

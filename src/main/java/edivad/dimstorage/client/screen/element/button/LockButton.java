@@ -1,13 +1,14 @@
 package edivad.dimstorage.client.screen.element.button;
 
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.network.to_server.UpdateDimChest;
 import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -25,7 +26,7 @@ public class LockButton extends AbstractButton {
   }
 
   @Override
-  public void onPress() {
+  public void onPress(InputWithModifiers inputWithModifiers) {
     owner.swapLocked();
     if (owner instanceof BlockEntityDimChest chest) {
       ClientPacketDistributor.sendToServer(new UpdateDimChest(chest));

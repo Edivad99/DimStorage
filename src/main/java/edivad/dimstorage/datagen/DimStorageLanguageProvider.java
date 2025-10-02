@@ -1,7 +1,7 @@
 package edivad.dimstorage.datagen;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -14,12 +14,12 @@ public class DimStorageLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    addItem(Registration.DIMCORE, "Dimensional Core");
-    addItem(Registration.SOLIDDIMCORE, "Solid Dimensional Core");
-    addItem(Registration.DIMWALL, "Dimensional Wall");
-    addItem(Registration.DIMTABLET, "Dimensional Tablet");
-    addBlock(Registration.DIMCHEST, "Dimensional Chest");
-    addBlock(Registration.DIMTANK, "Dimensional Tank");
+    addItem(ModRegistration.DIMCORE, "Dimensional Core");
+    addItem(ModRegistration.SOLIDDIMCORE, "Solid Dimensional Core");
+    addItem(ModRegistration.DIMWALL, "Dimensional Wall");
+    addItem(ModRegistration.DIMTABLET, "Dimensional Tablet");
+    addBlock(ModRegistration.DIMCHEST, "Dimensional Chest");
+    addBlock(ModRegistration.DIMTANK, "Dimensional Tank");
 
     add(Translations.ADVANCEMENTS_ROOT.title(), "Dimensional Core");
     add(Translations.ADVANCEMENTS_ROOT.desc(), "The power of dimensions");

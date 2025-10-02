@@ -2,8 +2,8 @@ package edivad.dimstorage.compat.top;
 
 import java.util.function.Function;
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.blockentities.BlockEntityFrequencyOwner;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.storage.DimTankStorage;
 import edivad.dimstorage.tools.Translations;
 import mcjty.theoneprobe.api.IElement;

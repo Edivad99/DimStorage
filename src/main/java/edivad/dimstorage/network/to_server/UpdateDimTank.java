@@ -2,8 +2,8 @@ package edivad.dimstorage.network.to_server;
 
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -39,7 +39,7 @@ public record UpdateDimTank(
   public static void handle(UpdateDimTank message, IPayloadContext ctx) {
     var player = ctx.player();
     var level = player.level();
-    level.getBlockEntity(message.pos, Registration.DIMTANK_TILE.get()).ifPresent(tank -> {
+    level.getBlockEntity(message.pos, ModRegistration.DIMTANK_TILE.get()).ifPresent(tank -> {
       tank.setFrequency(message.freq);
       tank.locked = message.locked;
       tank.autoEject = message.autoEject;

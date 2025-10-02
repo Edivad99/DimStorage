@@ -19,14 +19,14 @@ public class DimStorageCreativeModeTabs {
       CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
           .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
           .title(Component.literal(DimStorage.MODNAME))
-          .icon(() -> new ItemStack(Registration.DIMCHEST_ITEM.get()))
+          .icon(() -> new ItemStack(ModRegistration.DIMCHEST_ITEM.get()))
           .displayItems((parameters, output) -> {
-            output.accept(new ItemStack(Registration.DIMCHEST_ITEM.get()));
-            output.accept(new ItemStack(Registration.DIMTANK_ITEM.get()));
-            output.accept(new ItemStack(Registration.DIMTABLET.get()));
-            output.accept(new ItemStack(Registration.DIMCORE.get()));
-            output.accept(new ItemStack(Registration.DIMWALL.get()));
-            output.accept(new ItemStack(Registration.SOLIDDIMCORE.get()));
+            output.accept(new ItemStack(ModRegistration.DIMCHEST_ITEM.get()));
+            output.accept(new ItemStack(ModRegistration.DIMTANK_ITEM.get()));
+            output.accept(new ItemStack(ModRegistration.DIMTABLET.get()));
+            output.accept(new ItemStack(ModRegistration.DIMCORE.get()));
+            output.accept(new ItemStack(ModRegistration.DIMWALL.get()));
+            output.accept(new ItemStack(ModRegistration.SOLIDDIMCORE.get()));
           }).build());
 
   public static void register(IEventBus modEventBus) {

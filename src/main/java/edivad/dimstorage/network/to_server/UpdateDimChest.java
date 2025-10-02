@@ -2,8 +2,8 @@ package edivad.dimstorage.network.to_server;
 
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -37,7 +37,7 @@ public record UpdateDimChest(
   public static void handle(UpdateDimChest message, IPayloadContext ctx) {
     var player = ctx.player();
     var level = player.level();
-    level.getBlockEntity(message.pos, Registration.DIMCHEST_TILE.get()).ifPresent(chest -> {
+    level.getBlockEntity(message.pos, ModRegistration.DIMCHEST_TILE.get()).ifPresent(chest -> {
       chest.setFrequency(message.freq);
       chest.locked = message.locked;
       chest.setChanged();

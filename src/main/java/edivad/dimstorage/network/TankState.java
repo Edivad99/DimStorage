@@ -6,6 +6,7 @@ import edivad.dimstorage.storage.DimTankStorage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public abstract class TankState {
 
@@ -49,7 +50,8 @@ public abstract class TankState {
   }
 
   private FluidStack getFluidStorageServer(ServerLevel level) {
-    return ((DimTankStorage) DimStorageManager.instance(level)
-        .getStorage(frequency, "fluid")).getFluidInTank(0);
+    var storage = ((DimTankStorage) DimStorageManager.instance(level)
+        .getStorage(frequency, "fluid"));
+    return FluidUtil.getStack(storage, 0);
   }
 }

@@ -1,11 +1,11 @@
-package edivad.dimstorage.blockentities;
+package edivad.dimstorage.blockentity;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.menu.DimChestMenu;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.storage.DimChestStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,9 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
@@ -35,7 +36,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   private int openCount;
 
   public BlockEntityDimChest(BlockPos pos, BlockState state) {
-    super(Registration.DIMCHEST_TILE.get(), pos, state);
+    super(ModRegistration.DIMCHEST_TILE.get(), pos, state);
     this.movablePartState = MIN_MOVABLE_POSITION;
   }
 
@@ -74,13 +75,13 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
   public int getComparatorInput() {
     return Optional.ofNullable(getItemHandler(null))
-        .map(ItemHandlerHelper::calcRedstoneFromInventory)
+        .map(ResourceHandlerUtil::getRedstoneSignalFromResourceHandler)
         .orElse(0);
   }
 
   @Nullable
-  public IItemHandler getItemHandler(Direction direction) {
-    return this.locked ? null : new InvWrapper(getStorage());
+  public ResourceHandler<ItemResource> getItemHandler(Direction direction) {
+    return this.locked ? null : VanillaContainerWrapper.of(getStorage());
   }
 
   @Override

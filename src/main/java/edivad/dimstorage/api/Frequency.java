@@ -23,7 +23,7 @@ public record Frequency(Optional<GameProfile> gameProfile, int channel) implemen
 
   public static final Codec<Frequency> CODEC =
       RecordCodecBuilder.create(instance -> instance.group(
-          ExtraCodecs.GAME_PROFILE.optionalFieldOf("gameProfile").forGetter(Frequency::gameProfile),
+          ExtraCodecs.AUTHLIB_GAME_PROFILE.optionalFieldOf("gameProfile").forGetter(Frequency::gameProfile),
           Codec.INT.fieldOf("channel").forGetter(Frequency::channel)
       ).apply(instance, Frequency::new)
   );
@@ -63,16 +63,17 @@ public record Frequency(Optional<GameProfile> gameProfile, int channel) implemen
   }
 
   public boolean canAccess(Player player) {
-    return this.gameProfile.map(profile -> profile.getId().equals(player.getGameProfile().getId())).orElse(true);
+    return this.gameProfile.map(profile -> profile.id().equals(player.getGameProfile().id())).orElse(true);
   }
 
   public String getOwner() {
-    return this.gameProfile().map(GameProfile::getName).orElse("public");
+    return this.gameProfile().map(GameProfile::name).orElse("public");
   }
 
   @Override
   public String toString() {
-    return "gameProfile=" + (this.hasOwner() ? this.gameProfile.get().getId() : "public") + ",channel=" + this.channel;
+    var gameProfile = this.gameProfile.isPresent() ? this.gameProfile.get().id() : "public";
+    return String.format("gameProfile=%s,channel=%s", gameProfile, this.channel);
   }
 
   @Override

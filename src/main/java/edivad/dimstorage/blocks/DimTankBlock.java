@@ -3,9 +3,10 @@ package edivad.dimstorage.blocks;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 import org.jetbrains.annotations.Nullable;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,7 +52,7 @@ public class DimTankBlock extends DimBlockBase implements SimpleWaterloggedBlock
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
       BlockEntityType<T> blockEntityType) {
-    return createDimBlockTicker(level, blockEntityType, Registration.DIMTANK_TILE.get());
+    return createDimBlockTicker(level, blockEntityType, ModRegistration.DIMTANK_TILE.get());
   }
 
   @Override
@@ -101,7 +102,8 @@ public class DimTankBlock extends DimBlockBase implements SimpleWaterloggedBlock
   }
 
   @Override
-  protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos,
+      Direction direction) {
     return (level.getBlockEntity(pos) instanceof BlockEntityDimTank tank)
         ? tank.getComparatorInput() : 0;
   }

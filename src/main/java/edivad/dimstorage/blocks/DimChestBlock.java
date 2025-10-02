@@ -1,9 +1,10 @@
 package edivad.dimstorage.blocks;
 
 import org.jetbrains.annotations.Nullable;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +38,7 @@ public class DimChestBlock extends DimBlockBase {
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
       BlockEntityType<T> blockEntityType) {
-    return createDimBlockTicker(level, blockEntityType, Registration.DIMCHEST_TILE.get());
+    return createDimBlockTicker(level, blockEntityType, ModRegistration.DIMCHEST_TILE.get());
   }
 
   @Override
@@ -61,7 +62,7 @@ public class DimChestBlock extends DimBlockBase {
   @Override
   public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer,
       ItemStack stack) {
-    level.getBlockEntity(pos, Registration.DIMCHEST_TILE.get())
+    level.getBlockEntity(pos, ModRegistration.DIMCHEST_TILE.get())
         .ifPresent(chest -> chest.onPlaced(placer));
   }
 
@@ -71,8 +72,9 @@ public class DimChestBlock extends DimBlockBase {
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-    return level.getBlockEntity(pos, Registration.DIMCHEST_TILE.get())
+  protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos,
+      Direction direction) {
+    return level.getBlockEntity(pos, ModRegistration.DIMCHEST_TILE.get())
         .map(BlockEntityDimChest::getComparatorInput).orElse(0);
   }
 

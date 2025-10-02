@@ -1,4 +1,4 @@
-package edivad.dimstorage.blockentities;
+package edivad.dimstorage.blockentity;
 
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;

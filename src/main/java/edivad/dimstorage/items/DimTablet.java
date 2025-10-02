@@ -3,14 +3,13 @@ package edivad.dimstorage.items;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
 import edivad.dimstorage.items.components.DimStorageComponents;
 import edivad.dimstorage.items.components.FrequencyTabletComponent;
 import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.menu.DimTabletMenu;
 import edivad.dimstorage.setup.Config;
 import edivad.dimstorage.storage.DimChestStorage;
-import edivad.dimstorage.tools.InventoryUtils;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.item.PlayerInventoryWrapper;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class DimTablet extends Item implements MenuProvider {
 
@@ -44,7 +45,7 @@ public class DimTablet extends Item implements MenuProvider {
     var player = context.getPlayer();
     var pos = context.getClickedPos();
 
-    if (level.isClientSide) {
+    if (level.isClientSide()) {
       return InteractionResult.PASS;
     }
     if (!player.isCrouching()) {
@@ -113,19 +114,17 @@ public class DimTablet extends Item implements MenuProvider {
       return;
     }
 
-    if (frequencyComponent.autocollect() && frequencyComponent.bound()) {
-      if (entity instanceof Player player) {
-        var f = frequencyComponent.frequency();
-        var chestInventory = new InvWrapper(getStorage(level, f));
+    if (!(entity instanceof Player player)) {
+      return;
+    }
 
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-          var item = player.getInventory().getItem(i).getItem();
-          if (Config.DimTablet.containItem(item)) {
-            InventoryUtils.mergeItemStack(player.getInventory().getItem(i),
-                0, getStorage(level, f).getContainerSize(), chestInventory);
-          }
-        }
-      }
+    if (frequencyComponent.autocollect() && frequencyComponent.bound()) {
+      var playerInventory = PlayerInventoryWrapper.of(player);
+      var frequency = frequencyComponent.frequency();
+      var chestInventory = VanillaContainerWrapper.of(getStorage(level, frequency));
+
+      ResourceHandlerUtil.move(playerInventory, chestInventory,
+          resource -> Config.DimTablet.containItem(resource.getItem()), 1, null);
     }
   }
 

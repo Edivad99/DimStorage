@@ -1,7 +1,7 @@
 package edivad.dimstorage.compat.top;
 
 import edivad.dimstorage.DimStorage;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.edivadlib.compat.top.FluidElement;
 import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;

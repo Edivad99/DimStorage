@@ -1,4 +1,4 @@
-package edivad.dimstorage.blockentities;
+package edivad.dimstorage.blockentity;
 
 import org.jetbrains.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
@@ -6,7 +6,7 @@ import edivad.dimstorage.manager.DimStorageManager;
 import edivad.dimstorage.menu.DimTankMenu;
 import edivad.dimstorage.network.TankState;
 import edivad.dimstorage.network.to_client.SyncLiquidTank;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.storage.DimTankStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -31,9 +31,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
@@ -41,7 +43,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   public boolean autoEject = false;
 
   public BlockEntityDimTank(BlockPos pos, BlockState state) {
-    super(Registration.DIMTANK_TILE.get(), pos, state);
+    super(ModRegistration.DIMTANK_TILE.get(), pos, state);
     this.liquidState = new DimTankState(getFrequency());
   }
 
@@ -66,16 +68,12 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
       }
 
       var fluidHandler =
-          this.level.getCapability(Capabilities.FluidHandler.BLOCK, pos, side.getOpposite());
-      if (fluidHandler != null) {
-        var liquid = getStorage().drain(100, IFluidHandler.FluidAction.SIMULATE);
-        if (liquid.getAmount() > 0) {
-          int qty = fluidHandler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
-          if (qty > 0) {
-            getStorage().drain(qty, IFluidHandler.FluidAction.EXECUTE);
-          }
-        }
+          this.level.getCapability(Capabilities.Fluid.BLOCK, pos, side.getOpposite());
+      if (fluidHandler == null) {
+        continue;
       }
+
+      ResourceHandlerUtil.move(getStorage(), fluidHandler, __ -> true, 100, null);
     }
   }
 
@@ -89,7 +87,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public void setFrequency(Frequency frequency) {
     super.setFrequency(frequency);
-    if (!this.level.isClientSide) {
+    if (!this.level.isClientSide()) {
       this.liquidState.setFrequency(frequency);
     }
   }
@@ -101,7 +99,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   public int getComparatorInput() {
-    int amount = getStorage().getFluidInTank(0).getAmount();
+    int amount = getStorage().getAmountAsInt(0);
     return amount / 1000;
   }
 
@@ -132,7 +130,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
       return super.useItemOn(player, level, pos, hand);
     }
 
-    boolean result = FluidUtil.interactWithFluidHandler(player, hand, getStorage());
+    boolean result = FluidUtil.interactWithFluidHandler(player, hand, pos, getStorage());
     if (!result) {
       return super.useItemOn(player, level, pos, hand);
     }
@@ -142,7 +140,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   }
 
   @Nullable
-  public IFluidHandler getFluidHandler(Direction direction) {
+  public ResourceHandler<FluidResource> getFluidHandler(Direction direction) {
     return this.locked ? null : this.getStorage();
   }
 

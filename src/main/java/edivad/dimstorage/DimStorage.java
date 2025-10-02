@@ -2,8 +2,8 @@ package edivad.dimstorage;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
-import edivad.dimstorage.blockentities.BlockEntityDimChest;
-import edivad.dimstorage.blockentities.BlockEntityDimTank;
+import edivad.dimstorage.blockentity.BlockEntityDimChest;
+import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
@@ -25,7 +25,7 @@ import edivad.dimstorage.plugin.DimTankPlugin;
 import edivad.dimstorage.setup.ClientSetup;
 import edivad.dimstorage.setup.Config;
 import edivad.dimstorage.setup.DimStorageCreativeModeTabs;
-import edivad.dimstorage.setup.Registration;
+import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.DimCommands;
 import edivad.edivadlib.setup.UpdateChecker;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +56,7 @@ public class DimStorage {
   public DimStorage(ModContainer modContainer, Dist dist) {
 
     var modEventBus = modContainer.getEventBus();
-    Registration.init(modEventBus);
+    ModRegistration.init(modEventBus);
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleClientSetup);
     modEventBus.addListener(this::handleRegisterMenuScreens);
@@ -91,9 +91,9 @@ public class DimStorage {
   }
 
   private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
-    event.register(Registration.DIMCHEST_MENU.get(), ScreenDimChest::new);
-    event.register(Registration.DIMTABLET_MENU.get(), ScreenDimTablet::new);
-    event.register(Registration.DIMTANK_MENU.get(), ScreenDimTank::new);
+    event.register(ModRegistration.DIMCHEST_MENU.get(), ScreenDimChest::new);
+    event.register(ModRegistration.DIMTABLET_MENU.get(), ScreenDimTablet::new);
+    event.register(ModRegistration.DIMTANK_MENU.get(), ScreenDimTank::new);
   }
 
   private void handleGatherData(GatherDataEvent.Client event) {
@@ -114,9 +114,9 @@ public class DimStorage {
   }
 
   private void registerCapabilities(RegisterCapabilitiesEvent event) {
-    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.DIMCHEST_TILE.get(),
+    event.registerBlockEntity(Capabilities.Item.BLOCK, ModRegistration.DIMCHEST_TILE.get(),
         BlockEntityDimChest::getItemHandler);
-    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.DIMTANK_TILE.get(),
+    event.registerBlockEntity(Capabilities.Fluid.BLOCK, ModRegistration.DIMTANK_TILE.get(),
         BlockEntityDimTank::getFluidHandler);
   }
 
