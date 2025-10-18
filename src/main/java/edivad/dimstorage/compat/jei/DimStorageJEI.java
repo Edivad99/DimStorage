@@ -17,6 +17,6 @@ public class DimStorageJEI implements IModPlugin {
 
   @Override
   public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-    registration.addGuiContainerHandler(PanelScreen.class, new AdvancedGuiHandlerDimStorage());
+    registration.addGuiContainerHandler(PanelScreen.class, new AdvancedGuiHandlerDimStorage<>());
   }
 }
