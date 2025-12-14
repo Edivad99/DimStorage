@@ -72,6 +72,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
   public void setLocked(boolean locked) {
     this.locked = locked;
+    this.invalidateCapabilities();
     this.setChanged();
   }
 
