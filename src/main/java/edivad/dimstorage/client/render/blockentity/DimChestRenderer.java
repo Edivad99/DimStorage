@@ -152,7 +152,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     poseStack.popPose();
 
     // Check state
-    if (state.isLocked()) {
+    if (state.locked) {
       renderModelPart(collector, redIndicatorLayer, poseStack, state, color);
     } else if (state.hasOwner) {
       renderModelPart(collector, blueIndicatorLayer, poseStack, state, color);
@@ -179,7 +179,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
   public void extractRenderState(BlockEntityDimChest blockEntity, DimChestRenderState state,
       float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTick, cameraPos, crumblingOverlay);
-    state.locked = blockEntity.locked;
+    state.locked = blockEntity.isLocked();
     state.hasOwner = blockEntity.getFrequency().hasOwner();
     state.movablePartState = blockEntity.movablePartState;
     state.rotation = blockEntity.rotation;
