@@ -18,7 +18,7 @@ public class DimBlockBaseProvider implements IServerDataProvider<BlockAccessor> 
       tag.putBoolean("can_access", blockEntity.canAccess(player));
       tag.putString("gameProfile", frequency.getOwner());
       tag.putInt("frequency", frequency.channel());
-      tag.putBoolean("locked", blockEntity.locked);
+      tag.putBoolean("locked", blockEntity.isLocked());
     }
   }
 

@@ -141,7 +141,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Nullable
   public IFluidHandler getFluidHandler(Direction direction) {
-    return this.locked ? null : this.getStorage();
+    return this.isLocked() ? null : this.getStorage();
   }
 
   //Synchronizing on block update
@@ -149,7 +149,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
     root.put("frequency", getFrequency().serializeNBT());
-    root.putBoolean("locked", this.locked);
+    root.putBoolean("locked", this.isLocked());
     root.putBoolean("autoEject", this.autoEject);
     return ClientboundBlockEntityDataPacket.create(this);
   }
@@ -160,7 +160,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     super.onDataPacket(net, pkt, provider);
     CompoundTag tag = pkt.getTag();
     this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
+    this.setLocked(tag.getBoolean("locked"));
     this.autoEject = tag.getBoolean("autoEject");
   }
 
@@ -175,7 +175,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   @Override
   public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
     this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
+    this.setLocked(tag.getBoolean("locked"));
     this.autoEject = tag.getBoolean("autoEject");
   }
 

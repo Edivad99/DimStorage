@@ -16,7 +16,7 @@ public class LockButton extends AbstractButton {
   private final BlockEntityFrequencyOwner owner;
 
   public LockButton(int width, int height, BlockEntityFrequencyOwner owner) {
-    super(width, height, 64, 20, getText(owner.locked));
+    super(width, height, 64, 20, getText(owner.isLocked()));
     this.owner = owner;
   }
 

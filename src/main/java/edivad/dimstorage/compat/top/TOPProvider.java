@@ -60,7 +60,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             .text(owner.append(" " + blockFrequency.getOwner()).withStyle(textColor));
       }
       probeInfo.horizontal().text(frequency.append(" " + blockFrequency.channel()));
-      if (frequencyOwner.locked) {
+      if (frequencyOwner.isLocked()) {
         probeInfo.horizontal().text(locked.append(" ").append(yes));
       }
 
