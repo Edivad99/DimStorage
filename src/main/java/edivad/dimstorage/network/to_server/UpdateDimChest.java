@@ -31,7 +31,7 @@ public record UpdateDimChest(
   }
 
   public UpdateDimChest(BlockEntityDimChest tank) {
-    this(tank.getBlockPos(), tank.getFrequency(), tank.locked);
+    this(tank.getBlockPos(), tank.getFrequency(), tank.isLocked());
   }
 
   public static void handle(UpdateDimChest message, IPayloadContext ctx) {
@@ -39,8 +39,7 @@ public record UpdateDimChest(
     var level = player.level();
     level.getBlockEntity(message.pos, ModRegistration.DIMCHEST_TILE.get()).ifPresent(chest -> {
       chest.setFrequency(message.freq);
-      chest.locked = message.locked;
-      chest.setChanged();
+      chest.setLocked(message.locked);
       level.sendBlockUpdated(message.pos, chest.getBlockState(), chest.getBlockState(), Block.UPDATE_ALL);
       player.openMenu(chest, buf -> buf.writeBlockPos(message.pos).writeBoolean(true));
     });

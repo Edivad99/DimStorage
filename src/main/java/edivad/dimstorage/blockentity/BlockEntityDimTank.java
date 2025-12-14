@@ -141,7 +141,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
 
   @Nullable
   public ResourceHandler<FluidResource> getFluidHandler(@Nullable Direction direction) {
-    return this.locked ? null : this.getStorage();
+    return this.isLocked() ? null : this.getStorage();
   }
 
   //Synchronizing on block update
@@ -149,7 +149,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
     root.store("frequency", Frequency.CODEC, getFrequency());
-    root.putBoolean("locked", this.locked);
+    root.putBoolean("locked", this.isLocked());
     root.putBoolean("autoEject", this.autoEject);
     return ClientboundBlockEntityDataPacket.create(this);
   }
@@ -158,7 +158,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
   public void onDataPacket(Connection net, ValueInput valueInput) {
     super.onDataPacket(net, valueInput);
     this.setFrequency(valueInput.read("frequency", Frequency.CODEC).orElseThrow());
-    this.locked = valueInput.getBooleanOr("locked", false);
+    this.setLocked(valueInput.getBooleanOr("locked", false));
     this.autoEject = valueInput.getBooleanOr("autoEject", false);
   }
 

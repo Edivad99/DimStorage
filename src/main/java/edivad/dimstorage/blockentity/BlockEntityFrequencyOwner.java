@@ -26,7 +26,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public abstract class BlockEntityFrequencyOwner extends BlockEntity implements MenuProvider {
 
   private Frequency frequency = new Frequency();
-  public boolean locked;
+  private boolean locked;
   private int changeCount;
 
   public BlockEntityFrequencyOwner(BlockEntityType<? extends BlockEntityFrequencyOwner> type,
@@ -56,6 +56,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
   public void setFrequency(Frequency frequency) {
     this.frequency = frequency;
+    this.invalidateCapabilities();
     this.setChanged();
     var state = this.level.getBlockState(this.worldPosition);
     this.level.sendBlockUpdated(this.worldPosition, state, state, Block.UPDATE_ALL);
@@ -69,9 +70,17 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     }
   }
 
-  public void swapLocked() {
-    this.locked = !this.locked;
+  public void setLocked(boolean locked) {
+    this.locked = locked;
     this.setChanged();
+  }
+
+  public boolean isLocked() {
+    return this.locked;
+  }
+
+  public void swapLocked() {
+    this.setLocked(!this.locked);
   }
 
   public boolean canAccess(Player player) {

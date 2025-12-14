@@ -33,7 +33,7 @@ public record UpdateDimTank(
   }
 
   public UpdateDimTank(BlockEntityDimTank tank) {
-    this(tank.getBlockPos(), tank.getFrequency(), tank.locked, tank.autoEject);
+    this(tank.getBlockPos(), tank.getFrequency(), tank.isLocked(), tank.autoEject);
   }
 
   public static void handle(UpdateDimTank message, IPayloadContext ctx) {
@@ -41,9 +41,8 @@ public record UpdateDimTank(
     var level = player.level();
     level.getBlockEntity(message.pos, ModRegistration.DIMTANK_TILE.get()).ifPresent(tank -> {
       tank.setFrequency(message.freq);
-      tank.locked = message.locked;
+      tank.setLocked(message.locked);
       tank.autoEject = message.autoEject;
-      tank.setChanged();
       level.sendBlockUpdated(message.pos, tank.getBlockState(), tank.getBlockState(), Block.UPDATE_ALL);
       player.openMenu(tank, buf -> buf.writeBlockPos(message.pos).writeBoolean(true));
     });
