@@ -78,7 +78,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
 
   @Nullable
   public IItemHandler getItemHandler(Direction direction) {
-    return this.locked ? null : new InvWrapper(getStorage());
+    return this.isLocked() ? null : new InvWrapper(getStorage());
   }
 
   @Override
@@ -117,7 +117,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     CompoundTag root = new CompoundTag();
     root.put("frequency", getFrequency().serializeNBT());
-    root.putBoolean("locked", this.locked);
+    root.putBoolean("locked", this.isLocked());
     root.putByte("rot", (byte) this.rotation);
     return ClientboundBlockEntityDataPacket.create(this);
   }
@@ -128,7 +128,7 @@ public class BlockEntityDimChest extends BlockEntityFrequencyOwner {
     super.onDataPacket(net, pkt, provider);
     var tag = pkt.getTag();
     this.setFrequency(Frequency.deserializeNBT(tag.getCompound("frequency")));
-    this.locked = tag.getBoolean("locked");
+    this.setLocked(tag.getBoolean("locked"));
     this.rotation = tag.getByte("rot") & 3;
   }
 

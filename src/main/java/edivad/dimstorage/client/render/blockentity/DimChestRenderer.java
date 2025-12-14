@@ -157,7 +157,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     poseStack.popPose();
 
     // Check state
-    if (blockentity.locked) {
+    if (blockentity.isLocked()) {
       redIndicatorLayer
           .render(poseStack, buffer, combinedLightIn, combinedOverlayIn, color);
     } else if (blockentity.getFrequency().hasOwner()) {
