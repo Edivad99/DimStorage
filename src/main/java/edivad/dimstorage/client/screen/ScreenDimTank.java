@@ -11,12 +11,12 @@ import edivad.edivadlib.tools.utils.FluidUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenDimTank extends FrequencyScreen<DimTankMenu> {
 
-  private static final ResourceLocation DIMTANK_GUI = DimStorage.rl("textures/gui/dimtank.png");
+  private static final Identifier DIMTANK_GUI = DimStorage.id("textures/gui/dimtank.png");
 
   public ScreenDimTank(DimTankMenu container, Inventory inventory, Component text) {
     super(container, container.owner, inventory, text, DIMTANK_GUI, container.isOpen);

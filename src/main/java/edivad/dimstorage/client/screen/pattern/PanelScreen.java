@@ -9,7 +9,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
@@ -26,7 +26,7 @@ public class PanelScreen<T extends AbstractContainerMenu> extends BaseScreen<T> 
   private int animationState;
   private boolean settingsButtonOver;
 
-  public PanelScreen(T container, Inventory inventory, Component text, ResourceLocation background,
+  public PanelScreen(T container, Inventory inventory, Component text, Identifier background,
       boolean drawSettings) {
     super(container, inventory, text, background);
 

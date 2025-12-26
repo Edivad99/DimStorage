@@ -2,7 +2,7 @@ package edivad.dimstorage.blocks;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;

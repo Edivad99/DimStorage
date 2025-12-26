@@ -12,7 +12,7 @@ public class DimStorageModelTemplates {
 
   private static final ModelTemplate DIM_TANK_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(DimStorage.rl("dimensional_tank_template").toString())),
+          .decorateBlockModelLocation(DimStorage.id("dimensional_tank_template").toString())),
       Optional.empty(),
       TextureSlot.DOWN,
       TextureSlot.SIDE,

@@ -13,13 +13,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
-            },
-            {
               "function": "minecraft:copy_components",
               "include": [
-                "dimstorage:frequency"
+                "dimstorage:frequency",
+                "minecraft:custom_name"
               ],
               "source": "block_entity"
             }

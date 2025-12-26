@@ -16,7 +16,7 @@ public record UpdateDimChest(
     BlockPos pos, Frequency freq, boolean locked) implements CustomPacketPayload {
 
   public static final Type<UpdateDimChest> TYPE =
-      new Type<>(DimStorage.rl("update_dim_chest"));
+      new Type<>(DimStorage.id("update_dim_chest"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, UpdateDimChest> STREAM_CODEC =
       StreamCodec.composite(

@@ -4,7 +4,7 @@ import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IServerDataProvider;
 
@@ -22,7 +22,7 @@ public class DimBlockBaseProvider implements IServerDataProvider<BlockAccessor> 
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return DimStorage.rl("dim_block_base");
+  public Identifier getUid() {
+    return DimStorage.id("dim_block_base");
   }
 }

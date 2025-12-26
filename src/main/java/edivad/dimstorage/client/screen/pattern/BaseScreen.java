@@ -4,15 +4,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
-  protected ResourceLocation background;
+  protected Identifier background;
 
-  public BaseScreen(T container, Inventory inventory, Component text, ResourceLocation background) {
+  public BaseScreen(T container, Inventory inventory, Component text, Identifier background) {
     super(container, inventory, text);
     this.background = background;
     this.imageWidth = 176;

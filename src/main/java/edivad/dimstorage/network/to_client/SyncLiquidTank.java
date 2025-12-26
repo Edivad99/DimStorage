@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record SyncLiquidTank(BlockPos pos, FluidStack fluidStack) implements CustomPacketPayload {
 
   public static final Type<SyncLiquidTank> TYPE =
-      new Type<>(DimStorage.rl("sync_liquid_tank"));
+      new Type<>(DimStorage.id("sync_liquid_tank"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, SyncLiquidTank> STREAM_CODEC =
       StreamCodec.composite(

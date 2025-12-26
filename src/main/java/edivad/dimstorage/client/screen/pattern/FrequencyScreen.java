@@ -13,7 +13,7 @@ import edivad.dimstorage.tools.Translations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -28,7 +28,7 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
   private FrequencyText freqTextField;
 
   public FrequencyScreen(T container, BlockEntityFrequencyOwner blockEntityFrequencyOwner,
-      Inventory inventory, Component text, ResourceLocation background, boolean drawSettings) {
+      Inventory inventory, Component text, Identifier background, boolean drawSettings) {
     super(container, inventory, text, background, drawSettings);
     this.blockEntityFrequencyOwner = blockEntityFrequencyOwner;
   }

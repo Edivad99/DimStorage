@@ -1,7 +1,7 @@
 package edivad.dimstorage.items;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.blockentity.BlockEntityDimChest;
 import edivad.dimstorage.items.components.DimStorageComponents;

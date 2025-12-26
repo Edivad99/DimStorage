@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import edivad.dimstorage.DimStorage;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModContainer;
@@ -57,7 +57,7 @@ public class Config {
               "A list of blocks that the DimTablet takes and transfers to the connected DimChest",
               "[/dimstorage add] adds the item you have in the main hand to this list")
           .defineList("allow_list", allowList(),
-              o -> ResourceLocation.tryParse(o.toString()) != null);
+              o -> Identifier.tryParse(o.toString()) != null);
 
       SERVER_BUILDER.pop();
     }

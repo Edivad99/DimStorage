@@ -3,7 +3,7 @@ package edivad.dimstorage.compat.jade;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 
 public class DimTankProvider extends DimBlockBaseProvider {
@@ -17,7 +17,7 @@ public class DimTankProvider extends DimBlockBaseProvider {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return DimStorage.rl("dim_tank");
+  public Identifier getUid() {
+    return DimStorage.id("dim_tank");
   }
 }

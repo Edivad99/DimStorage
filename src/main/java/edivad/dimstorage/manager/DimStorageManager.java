@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,10 +35,9 @@ public class DimStorageManager extends SavedData {
   private static final SavedDataType<DimStorageManager> TYPE = new SavedDataType<>(
       "dimstorage_inventories",
       DimStorageManager::new,
-      ctx -> RecordCodecBuilder.create(instance -> instance.group(
-          RecordCodecBuilder.point(ctx.levelOrThrow()),
+      serverLevel -> RecordCodecBuilder.create(instance -> instance.group(
           CompoundTag.CODEC.fieldOf("tag").forGetter(DimStorageManager::getTag)
-      ).apply(instance, DimStorageManager::new))
+      ).apply(instance, compoundTag -> new DimStorageManager(serverLevel, compoundTag)))
   );
 
   private static final HashMap<String, DimStoragePlugin> PLUGINS = new HashMap<>();
@@ -52,12 +52,8 @@ public class DimStorageManager extends SavedData {
   private final Level level;
   private CompoundTag saveTag;
 
-  private DimStorageManager(Context ctx) {
-    this(ctx.level().getLevel());
-  }
-
-  private DimStorageManager(Level level) {
-    this.level = level;
+  private DimStorageManager(@Nullable Level level) {
+    this.level = Objects.requireNonNull(level, "level");
     this.client = level.isClientSide();
     this.saveTag = new CompoundTag();
 
@@ -70,8 +66,8 @@ public class DimStorageManager extends SavedData {
     }
   }
 
-  private DimStorageManager(ServerLevel serverLevel, CompoundTag compoundTag) {
-    this(serverLevel);
+  private DimStorageManager(@Nullable Level level, CompoundTag compoundTag) {
+    this(level);
     this.saveTag = compoundTag.getCompound("inventory").orElse(new CompoundTag());
   }
 
@@ -79,7 +75,7 @@ public class DimStorageManager extends SavedData {
     if (level instanceof ServerLevel serverLevel) {
       SERVER_MANAGER = get(serverLevel);
     } else {
-      CLIENT_MANAGER =  new DimStorageManager(level);
+      CLIENT_MANAGER = new DimStorageManager(level);
     }
   }
 
@@ -167,8 +163,8 @@ public class DimStorageManager extends SavedData {
 
     @SubscribeEvent
     public void onWorldLoad(LevelEvent.Load event) {
-      if (event.getLevel() instanceof Level level) {
-        reloadManager(level);
+      if (event.getLevel() instanceof ServerLevel serverLevel) {
+        reloadManager(serverLevel);
       } else {
         DimStorage.LOGGER.warn("Unable to reload the manager");
       }

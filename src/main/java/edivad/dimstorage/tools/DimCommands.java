@@ -17,7 +17,7 @@ public class DimCommands {
   public static LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("dimtablet");
 
   public static void init(CommandDispatcher<CommandSourceStack> dispatcher) {
-    root.then(Commands.literal("add").requires(cs -> cs.hasPermission(0)).executes(context -> {
+    root.then(Commands.literal("add").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
       var player = context.getSource().getPlayerOrException();
       Item item = player.getMainHandItem().getItem();
 
@@ -31,7 +31,7 @@ public class DimCommands {
       return 0;
     }));
 
-    root.then(Commands.literal("remove").requires(cs -> cs.hasPermission(0)).executes(context -> {
+    root.then(Commands.literal("remove").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
       var player = context.getSource().getPlayerOrException();
       Item item = player.getMainHandItem().getItem();
 
@@ -46,7 +46,7 @@ public class DimCommands {
     }));
 
     root.then(
-        Commands.literal("removeAll").requires(cs -> cs.hasPermission(0)).executes(context -> {
+        Commands.literal("removeAll").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
           Config.DimTablet.ALLOW_LIST.set(new ArrayList<>());
           var player = context.getSource().getPlayerOrException();
           player.displayClientMessage(
@@ -55,7 +55,7 @@ public class DimCommands {
           return 0;
         }));
 
-    root.then(Commands.literal("list").requires(cs -> cs.hasPermission(0)).executes(context -> {
+    root.then(Commands.literal("list").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
       var player = context.getSource().getPlayerOrException();
       player.displayClientMessage(
           Component.literal("These are the items that the DimTablet will move:"), false);

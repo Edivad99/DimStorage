@@ -1,6 +1,6 @@
 package edivad.dimstorage.blocks;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import edivad.dimstorage.blockentity.BlockEntityDimChest;
 import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.core.BlockPos;

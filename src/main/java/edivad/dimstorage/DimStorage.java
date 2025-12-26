@@ -7,7 +7,6 @@ import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.client.screen.ScreenDimChest;
 import edivad.dimstorage.client.screen.ScreenDimTablet;
 import edivad.dimstorage.client.screen.ScreenDimTank;
-import edivad.dimstorage.compat.top.TOPProvider;
 import edivad.dimstorage.datagen.DimStorageAdvancementProvider;
 import edivad.dimstorage.datagen.DimStorageLanguageProvider;
 import edivad.dimstorage.datagen.DimStorageRecipeProvider;
@@ -28,11 +27,9 @@ import edivad.dimstorage.setup.DimStorageCreativeModeTabs;
 import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.DimCommands;
 import edivad.edivadlib.setup.UpdateChecker;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -81,9 +78,9 @@ public class DimStorage {
     NeoForge.EVENT_BUS.register(new DimStorageManager.DimStorageSaveHandler());
 
     //Register TheOneProbe
-    if (ModList.get().isLoaded("theoneprobe")) {
-      InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
-    }
+//    if (ModList.get().isLoaded("theoneprobe")) {
+//      InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
+//    }
   }
 
   private void handleClientSetup(FMLClientSetupEvent event) {
@@ -129,7 +126,7 @@ public class DimStorage {
     registrar.playToServer(UpdateDimTank.TYPE, UpdateDimTank.STREAM_CODEC, UpdateDimTank::handle);
   }
 
-  public static ResourceLocation rl(String path) {
-    return ResourceLocation.fromNamespaceAndPath(ID, path);
+  public static Identifier id(String path) {
+    return Identifier.fromNamespaceAndPath(ID, path);
   }
 }

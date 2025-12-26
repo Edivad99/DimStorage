@@ -1,7 +1,7 @@
 package edivad.dimstorage.client.render.blockentity;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentity.BlockEntityDimChest;
@@ -13,15 +13,15 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 
@@ -42,7 +42,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
   private static final String RED_INDICATOR = "redIndicator";
   public static final ModelLayerLocation RED_INDICATOR_LAYER =
       new ModelLayerLocation(ModRegistration.DIMCHEST.getId(), RED_INDICATOR);
-  private static final ResourceLocation TEXTURE = DimStorage.rl("textures/model/dimchest.png");
+  private static final Identifier TEXTURE = DimStorage.id("textures/model/dimchest.png");
 
   private final ModelPart staticLayer;
   private final ModelPart movableLayer;
@@ -165,7 +165,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
 
   private static void renderModelPart(SubmitNodeCollector collector, ModelPart modelPart,
       PoseStack poseStack, BlockEntityRenderState state, int color) {
-    collector.submitModelPart(modelPart, poseStack, RenderType.entitySolid(TEXTURE),
+    collector.submitModelPart(modelPart, poseStack, RenderTypes.entitySolid(TEXTURE),
         state.lightCoords, OverlayTexture.NO_OVERLAY, null, false, false, color,
         state.breakProgress, 0);
   }
@@ -177,7 +177,7 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
 
   @Override
   public void extractRenderState(BlockEntityDimChest blockEntity, DimChestRenderState state,
-      float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      float partialTick, Vec3 cameraPos, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTick, cameraPos, crumblingOverlay);
     state.locked = blockEntity.isLocked();
     state.hasOwner = blockEntity.getFrequency().hasOwner();

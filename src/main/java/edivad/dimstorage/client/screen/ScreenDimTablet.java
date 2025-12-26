@@ -6,13 +6,13 @@ import edivad.dimstorage.menu.DimTabletMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenDimTablet extends BaseScreen<DimTabletMenu> {
 
-  private static final ResourceLocation DIMTABLET_GUI =
-      DimStorage.rl("textures/gui/dimchest.png");
+  private static final Identifier DIMTABLET_GUI =
+      DimStorage.id("textures/gui/dimchest.png");
 
   public ScreenDimTablet(DimTabletMenu container, Inventory inventory, Component text) {
     super(container, inventory, text, DIMTABLET_GUI);

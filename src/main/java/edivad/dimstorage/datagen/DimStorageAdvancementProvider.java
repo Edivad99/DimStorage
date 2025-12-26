@@ -9,12 +9,12 @@ import edivad.dimstorage.tools.Translations;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class DimStorageAdvancementProvider extends AdvancementProvider {
 
@@ -31,14 +31,14 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .display(ModRegistration.DIMCORE.get(),
               Translations.ADVANCEMENTS_ROOT.translateTitle(),
               Translations.ADVANCEMENTS_ROOT.translateDescription(),
-              ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
+              Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
               AdvancementType.TASK,
               true,
               true,
               false)
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMCORE.get()))
-          .save(writer, DimStorage.rl("root"));
+          .save(writer, DimStorage.id("root"));
 
       var DIMCHEST = Advancement.Builder.advancement()
           .display(ModRegistration.DIMCHEST_ITEM.get(),
@@ -52,7 +52,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMCHEST_ITEM.get()))
           .parent(ROOT)
-          .save(writer, DimStorage.rl("dimensional_chest"));
+          .save(writer, DimStorage.id("dimensional_chest"));
 
       Advancement.Builder.advancement()
           .display(ModRegistration.DIMTANK_ITEM.get(),
@@ -66,7 +66,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMTANK_ITEM.get()))
           .parent(ROOT)
-          .save(writer, DimStorage.rl("dimensional_tank"));
+          .save(writer, DimStorage.id("dimensional_tank"));
 
       Advancement.Builder.advancement()
           .display(ModRegistration.DIMTABLET.get(),
@@ -80,7 +80,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMTABLET.get()))
           .parent(DIMCHEST)
-          .save(writer, DimStorage.rl("dimensional_tablet"));
+          .save(writer, DimStorage.id("dimensional_tablet"));
     }
   }
 }

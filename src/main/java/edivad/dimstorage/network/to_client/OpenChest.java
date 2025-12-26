@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record OpenChest(Frequency freq, boolean open) implements CustomPacketPayload {
 
   public static final Type<OpenChest> TYPE =
-      new Type<>(DimStorage.rl("open_chest"));
+      new Type<>(DimStorage.id("open_chest"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, OpenChest> STREAM_CODEC =
       StreamCodec.composite(

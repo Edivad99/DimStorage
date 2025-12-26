@@ -17,7 +17,7 @@ public record UpdateDimTank(
     boolean locked, boolean autoEject) implements CustomPacketPayload {
 
   public static final Type<UpdateDimTank> TYPE =
-      new Type<>(DimStorage.rl("update_dim_tank"));
+      new Type<>(DimStorage.id("update_dim_tank"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, UpdateDimTank> STREAM_CODEC =
       StreamCodec.composite(

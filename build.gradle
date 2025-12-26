@@ -100,12 +100,12 @@ configurations {
 
 repositories {
     maven {
-        name 'curseforge'
-        url 'https://www.cursemaven.com'
+        name = 'curseforge'
+        url = 'https://www.cursemaven.com'
     }
     maven {
-        name 'JEI'
-        url 'https://maven.blamejared.com/'
+        name = 'JEI'
+        url = 'https://maven.blamejared.com/'
     }
     flatDir {
         dir 'libs'
@@ -153,14 +153,10 @@ tasks.register('generatePackageInfos') {
         pkgName = pkgName.replaceAll('/', '.')
 
         def pkgInfoText = """
-            |@FieldsAreNonnullByDefault
-            |@MethodsReturnNonnullByDefault
-            |@ParametersAreNonnullByDefault
+            |@NullMarked
             |package $pkgName;
             |
-            |import javax.annotation.ParametersAreNonnullByDefault;
-            |import net.minecraft.FieldsAreNonnullByDefault;
-            |import net.minecraft.MethodsReturnNonnullByDefault;
+            |import org.jspecify.annotations.NullMarked;
         """.stripMargin().trim()
 
         packageInfoFile.text = pkgInfoText

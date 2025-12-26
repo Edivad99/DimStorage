@@ -4,7 +4,7 @@ import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -26,7 +26,7 @@ public class DimTankComponent extends DimBlockBaseComponent implements IBlockCom
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return DimStorage.rl("dim_tank");
+  public Identifier getUid() {
+    return DimStorage.id("dim_tank");
   }
 }
