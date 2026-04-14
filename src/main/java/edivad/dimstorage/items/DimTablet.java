@@ -58,12 +58,12 @@ public class DimTablet extends Item implements MenuProvider {
         device.set(DimStorageComponents.FREQUENCY_TABLET,
             new FrequencyTabletComponent(dimChest.getFrequency(), true, false));
 
-        player.displayClientMessage(
-            Component.literal("Linked to chest").withStyle(ChatFormatting.GREEN), false);
+        player.sendSystemMessage(
+            Component.literal("Linked to chest").withStyle(ChatFormatting.GREEN));
         return InteractionResult.SUCCESS;
       }
-      player.displayClientMessage(Component.literal("Access Denied!")
-              .withStyle(ChatFormatting.RED), false);
+      player.sendSystemMessage(Component.literal("Access Denied!")
+              .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
     var frequencyComponent = device.get(DimStorageComponents.FREQUENCY_TABLET);
@@ -72,11 +72,11 @@ public class DimTablet extends Item implements MenuProvider {
           frequencyComponent.bound(), !frequencyComponent.autocollect());
       device.set(DimStorageComponents.FREQUENCY_TABLET, updatedFrequency);
       if (updatedFrequency.autocollect()) {
-        player.displayClientMessage(
-            Component.literal("Enabled autocollect").withStyle(ChatFormatting.GREEN), false);
+        player.sendSystemMessage(
+            Component.literal("Enabled autocollect").withStyle(ChatFormatting.GREEN));
       } else {
-        player.displayClientMessage(
-            Component.literal("Disabled autocollect").withStyle(ChatFormatting.RED), false);
+        player.sendSystemMessage(
+            Component.literal("Disabled autocollect").withStyle(ChatFormatting.RED));
       }
     }
     return InteractionResult.PASS;
@@ -91,9 +91,9 @@ public class DimTablet extends Item implements MenuProvider {
     var frequencyComponent = stack.get(DimStorageComponents.FREQUENCY_TABLET);
     if (frequencyComponent == null || !frequencyComponent.bound()) {
       if (level.isClientSide()) {
-        player.displayClientMessage(
+        player.sendSystemMessage(
             Component.literal("Dimensional Tablet not connected to any DimChest")
-                .withStyle(ChatFormatting.RED), false);
+                .withStyle(ChatFormatting.RED));
       }
       return InteractionResult.PASS;
     }

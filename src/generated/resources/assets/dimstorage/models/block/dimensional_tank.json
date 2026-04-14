@@ -1,6 +1,5 @@
 {
   "parent": "dimstorage:block/dimensional_tank_template",
-  "render_type": "minecraft:cutout",
   "textures": {
     "down": "dimstorage:block/dimensional_tank_bottom",
     "particle": "dimstorage:block/dimensional_tank_side",

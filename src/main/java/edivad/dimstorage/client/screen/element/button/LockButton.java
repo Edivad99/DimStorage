@@ -6,7 +6,7 @@ import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import edivad.dimstorage.network.to_server.UpdateDimChest;
 import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.InputWithModifiers;
@@ -27,9 +27,10 @@ public class LockButton extends AbstractButton {
   }
 
   @Override
-  protected void renderContents(GuiGraphics guiGraphics, int i, int i1, float v) {
-    this.renderDefaultSprite(guiGraphics);
-    this.renderDefaultLabel(guiGraphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
+  protected void extractContents(GuiGraphicsExtractor guiGraphicsExtractor, int i, int i1,
+      float v) {
+    this.extractDefaultSprite(guiGraphicsExtractor);
+    this.extractDefaultLabel(guiGraphicsExtractor.textRendererForWidget(this, GuiGraphicsExtractor.HoveredTextEffects.NONE));
   }
 
   @Override

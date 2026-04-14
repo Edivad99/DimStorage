@@ -17,7 +17,6 @@
       "translate": "advancements.dimstorage.root.desc"
     },
     "icon": {
-      "count": 1,
       "id": "dimstorage:dim_core"
     },
     "title": {

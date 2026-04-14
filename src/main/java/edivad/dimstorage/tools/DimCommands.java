@@ -22,11 +22,11 @@ public class DimCommands {
       Item item = player.getMainHandItem().getItem();
 
       if (Config.DimTablet.addItem(item)) {
-        player.displayClientMessage(
-            Component.literal("Item added to the list").withStyle(ChatFormatting.GREEN), false);
+        player.sendSystemMessage(
+            Component.literal("Item added to the list").withStyle(ChatFormatting.GREEN));
       } else {
-        player.displayClientMessage(
-            Component.literal("You must select a valid item").withStyle(ChatFormatting.RED), false);
+        player.sendSystemMessage(
+            Component.literal("You must select a valid item").withStyle(ChatFormatting.RED));
       }
       return 0;
     }));
@@ -36,11 +36,11 @@ public class DimCommands {
       Item item = player.getMainHandItem().getItem();
 
       if (Config.DimTablet.removeItem(item)) {
-        player.displayClientMessage(
-            Component.literal("Item removed from the list").withStyle(ChatFormatting.GREEN), false);
+        player.sendSystemMessage(
+            Component.literal("Item removed from the list").withStyle(ChatFormatting.GREEN));
       } else {
-        player.displayClientMessage(
-            Component.literal("You must select a valid item").withStyle(ChatFormatting.RED), false);
+        player.sendSystemMessage(
+            Component.literal("You must select a valid item").withStyle(ChatFormatting.RED));
       }
       return 0;
     }));
@@ -49,20 +49,19 @@ public class DimCommands {
         Commands.literal("removeAll").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
           Config.DimTablet.ALLOW_LIST.set(new ArrayList<>());
           var player = context.getSource().getPlayerOrException();
-          player.displayClientMessage(
-              Component.literal("Removed all items from the list").withStyle(ChatFormatting.GREEN),
-              false);
+          player.sendSystemMessage(
+              Component.literal("Removed all items from the list").withStyle(ChatFormatting.GREEN));
           return 0;
         }));
 
     root.then(Commands.literal("list").requires(Commands.hasPermission(Commands.LEVEL_ALL)).executes(context -> {
       var player = context.getSource().getPlayerOrException();
-      player.displayClientMessage(
-          Component.literal("These are the items that the DimTablet will move:"), false);
+      player.sendSystemMessage(
+          Component.literal("These are the items that the DimTablet will move:"));
       Config.DimTablet.ALLOW_LIST.get()
           .stream()
           .map(Component::literal)
-          .forEach(item -> player.displayClientMessage(item, false));
+          .forEach(player::sendSystemMessage);
       return 0;
     }));
 

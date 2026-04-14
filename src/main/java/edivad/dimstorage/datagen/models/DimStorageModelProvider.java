@@ -59,7 +59,6 @@ public class DimStorageModelProvider extends ModelProvider {
 
   private void createDimTank(BlockModelGenerators blockModels, DimTankBlock block) {
     var model = DimStorageModelTemplates.DIM_TANK_TEMPLATE_PROVIDER
-        .updateTemplate(modelTemplate -> modelTemplate.extend().renderType("cutout").build())
         .create(block, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(BlockModelGenerators

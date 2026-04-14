@@ -1,6 +1,6 @@
 package edivad.dimstorage.client.screen.pattern;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -13,10 +13,8 @@ public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContain
   protected Identifier background;
 
   public BaseScreen(T container, Inventory inventory, Component text, Identifier background) {
-    super(container, inventory, text);
+    super(container, inventory, text, 176, 220);
     this.background = background;
-    this.imageWidth = 176;
-    this.imageHeight = 220;
     this.titleLabelX = 8;
     this.titleLabelY = 6;
     this.inventoryLabelX = 8;
@@ -24,16 +22,11 @@ public class BaseScreen<T extends AbstractContainerMenu> extends AbstractContain
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    int x = (this.width - this.getXSize()) / 2;
-    int y = (this.height - this.getYSize()) / 2;
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, background, x, y, 0, 0,
-        this.getXSize(), this.getYSize(), 256, 256);
-  }
-
-  @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
-    this.renderTooltip(guiGraphics, mouseX, mouseY);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+    super.extractBackground(graphics, mouseX, mouseY, partialTicks);
+    int x = (this.width - this.getImageWidth()) / 2;
+    int y = (this.height - this.getImageHeight()) / 2;
+    graphics.blit(RenderPipelines.GUI_TEXTURED, background, x, y, 0, 0,
+        this.getImageWidth(), this.getImageHeight(), 256, 256);
   }
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -86,8 +86,8 @@ public class DimTankBlock extends DimBlockBase implements SimpleWaterloggedBlock
       var fluid = tank.liquidState.clientLiquid;
       if (!fluid.isEmpty()) {
         var fluidType = fluid.getFluid().getFluidType();
-        if (blockGetter instanceof BlockAndTintGetter blockAndTint) {
-          return fluidType.getLightLevel(fluid.getFluid().defaultFluidState(), blockAndTint, pos);
+        if (blockGetter instanceof BlockAndLightGetter blockAndLight) {
+          return fluidType.getLightLevel(fluid.getFluid().defaultFluidState(), blockAndLight, pos);
         } else {
           return fluidType.getLightLevel(fluid);
         }

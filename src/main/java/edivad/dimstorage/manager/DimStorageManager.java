@@ -33,7 +33,7 @@ public class DimStorageManager extends SavedData {
   private static final Logger LOGGER = LogUtils.getLogger();
 
   private static final SavedDataType<DimStorageManager> TYPE = new SavedDataType<>(
-      "dimstorage_inventories",
+      DimStorage.id("inventories"),
       DimStorageManager::new,
       serverLevel -> RecordCodecBuilder.create(instance -> instance.group(
           CompoundTag.CODEC.fieldOf("tag").forGetter(DimStorageManager::getTag)

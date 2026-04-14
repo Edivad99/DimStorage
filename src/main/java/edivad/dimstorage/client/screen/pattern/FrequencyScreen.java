@@ -10,7 +10,7 @@ import edivad.dimstorage.client.screen.element.textfield.FrequencyText;
 import edivad.dimstorage.network.to_server.UpdateDimChest;
 import edivad.dimstorage.network.to_server.UpdateDimTank;
 import edivad.dimstorage.tools.Translations;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -66,9 +66,10 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
-    freqTextField.render(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+    freqTextField.extractWidgetRenderState(graphics, mouseX, mouseY, partialTicks);
   }
 
   @Override
@@ -78,28 +79,27 @@ public abstract class FrequencyScreen<T extends AbstractContainerMenu> extends P
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
     if (drawSettings) {
       int posY = 45;
 
       // gameProfile
-      guiGraphics.drawString(this.font, OWNER, 185, posY, 0xFF333333, false);
+      graphics.text(this.font, OWNER, 185, posY, 0xFF333333, false);
       posY += 9;
-      guiGraphics.hLine(185, 185 + this.font.width(OWNER), posY, 0xFF333333);
+      graphics.horizontalLine(185, 185 + this.font.width(OWNER), posY, 0xFF333333);
       posY += 31;
 
       // freq
-      guiGraphics.drawString(this.font, FREQ, 185, posY, 0xFF333333, false);
+      graphics.text(this.font, FREQ, 185, posY, 0xFF333333, false);
       posY += 9;
-      guiGraphics.hLine(185, 185 + this.font.width(FREQ), posY, 0xFF333333);
+      graphics.horizontalLine(185, 185 + this.font.width(FREQ), posY, 0xFF333333);
       posY += 50;
 
       // locked
-      guiGraphics.drawString(this.font, LOCKED, 185, posY, 0xFF333333, false);
+      graphics.text(this.font, LOCKED, 185, posY, 0xFF333333, false);
       posY += 9;
-      guiGraphics.hLine(185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
+      graphics.horizontalLine(185, 185 + this.font.width(LOCKED), posY, 0xFF333333);
     }
   }
 }

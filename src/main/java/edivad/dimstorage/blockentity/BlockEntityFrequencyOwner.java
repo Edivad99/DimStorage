@@ -126,9 +126,7 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
     if (canAccess(player)) {
       player.openMenu(this, buf -> buf.writeBlockPos(getBlockPos()).writeBoolean(false));
     } else {
-      player.displayClientMessage(
-          Component.literal("Access Denied!")
-              .withStyle(ChatFormatting.RED), false);
+      player.sendSystemMessage(Component.literal("Access Denied!").withStyle(ChatFormatting.RED));
     }
     return InteractionResult.SUCCESS;
   }

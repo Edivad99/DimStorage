@@ -7,7 +7,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.1'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2'
     id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
     id 'com.diffplug.spotless' version '8.1.0'
 }
@@ -23,7 +23,7 @@ base.archivesName = 'DimStorage'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
         if (System.getProperty('idea.active')) {
             vendor = JvmVendorSpec.JETBRAINS
         }
@@ -43,15 +43,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-    enable {
-        version = project.neo_version
-        disableRecompilation = System.getenv("CI") == "true"
-    }
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
+    version = project.neo_version
 
     validateAccessTransformers = true
 
@@ -113,10 +105,10 @@ repositories {
 }
 
 dependencies {
-    //implementation "edivad:EdivadLib-$minecraft_version:3.3.1-snapshot"
+    //implementation "edivad:EdivadLib-$minecraft_version:3.5.0-snapshot"
     implementation "curse.maven:edivadlib-638508:$edivadlib_id"
 
-    compileOnly "curse.maven:the-one-probe-245211:$top_version"
+    //compileOnly "curse.maven:the-one-probe-245211:$top_version"
 
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
