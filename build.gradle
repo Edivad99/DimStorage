@@ -105,7 +105,7 @@ repositories {
 }
 
 dependencies {
-    //implementation "edivad:EdivadLib-$minecraft_version:3.5.0-snapshot"
+    //implementation "edivad:EdivadLib-$minecraft_version:4.0.1-snapshot"
     implementation "curse.maven:edivadlib-638508:$edivadlib_id"
 
     //compileOnly "curse.maven:the-one-probe-245211:$top_version"
