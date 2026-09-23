@@ -1,34 +1,34 @@
 package edivad.dimstorage.datagen;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 import edivad.dimstorage.DimStorage;
 import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.Translations;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
+import net.minecraft.core.registries.SingleRegistryBootstrap;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 
-public class DimStorageAdvancementProvider extends AdvancementProvider {
+public class DimStorageAdvancementProvider {
 
-  public DimStorageAdvancementProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries) {
-    super(packOutput, registries, List.of(new Advancements()));
+  public static SingleRegistryBootstrap<Advancement> create() {
+    return new AdvancementProvider(List.of(Advancements::new));
   }
 
-  private static class Advancements implements AdvancementSubProvider {
+  private static class Advancements extends AdvancementSubProvider {
+
+    private Advancements(BootstrapContext<Advancement> output) {
+      super(output);
+    }
 
     @Override
-    public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> writer) {
+    public void generate() {
       var ROOT = Advancement.Builder.advancement()
-          .display(ModRegistration.DIMCORE.get(),
+          .rootDisplay(ModRegistration.DIMCORE.get(),
               Translations.ADVANCEMENTS_ROOT.translateTitle(),
               Translations.ADVANCEMENTS_ROOT.translateDescription(),
               Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
@@ -38,13 +38,12 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
               false)
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMCORE.get()))
-          .save(writer, DimStorage.id("root"));
+          .save(output, DimStorage.id("root").toString());
 
       var DIMCHEST = Advancement.Builder.advancement()
           .display(ModRegistration.DIMCHEST_ITEM.get(),
               Translations.DIMCHEST_ADVANCEMENTS.translateTitle(),
               Translations.DIMCHEST_ADVANCEMENTS.translateDescription(),
-              null,
               AdvancementType.TASK,
               true,
               true,
@@ -52,13 +51,12 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMCHEST_ITEM.get()))
           .parent(ROOT)
-          .save(writer, DimStorage.id("dimensional_chest"));
+          .save(output, DimStorage.id("dimensional_chest").toString());
 
       Advancement.Builder.advancement()
           .display(ModRegistration.DIMTANK_ITEM.get(),
               Translations.DIMTANK_ADVANCEMENTS.translateTitle(),
               Translations.DIMTANK_ADVANCEMENTS.translateDescription(),
-              null,
               AdvancementType.TASK,
               true,
               true,
@@ -66,13 +64,12 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMTANK_ITEM.get()))
           .parent(ROOT)
-          .save(writer, DimStorage.id("dimensional_tank"));
+          .save(output, DimStorage.id("dimensional_tank").toString());
 
       Advancement.Builder.advancement()
           .display(ModRegistration.DIMTABLET.get(),
               Translations.DIMTABLET_ADVANCEMENTS.translateTitle(),
               Translations.DIMTABLET_ADVANCEMENTS.translateDescription(),
-              null,
               AdvancementType.TASK,
               true,
               true,
@@ -80,7 +77,7 @@ public class DimStorageAdvancementProvider extends AdvancementProvider {
           .addCriterion("inv_changed",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModRegistration.DIMTABLET.get()))
           .parent(DIMCHEST)
-          .save(writer, DimStorage.id("dimensional_tablet"));
+          .save(output, DimStorage.id("dimensional_tablet").toString());
     }
   }
 }

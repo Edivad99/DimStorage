@@ -3,6 +3,8 @@ package edivad.dimstorage.blocks;
 import org.jspecify.annotations.Nullable;
 import edivad.dimstorage.blockentity.BlockEntityFrequencyOwner;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -50,9 +52,9 @@ public abstract class DimBlockBase extends Block implements EntityBlock {
   }
 
   @Override
-  public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
-      @Nullable BlockEntity blockEntity, ItemStack stack) {
-    super.playerDestroy(level, player, pos, state, blockEntity, stack);
+  public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state,
+          @Nullable BlockEntity blockEntity, ItemStack destroyedWith) {
+    super.playerDestroy(level, player, pos, state, blockEntity, destroyedWith);
     level.removeBlockEntity(pos);
     level.removeBlock(pos, false);
   }

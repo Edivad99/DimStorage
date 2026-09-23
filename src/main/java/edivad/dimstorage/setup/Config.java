@@ -56,7 +56,7 @@ public class Config {
           .comment(
               "A list of blocks that the DimTablet takes and transfers to the connected DimChest",
               "[/dimstorage add] adds the item you have in the main hand to this list")
-          .defineList("allow_list", allowList(),
+          .defineList("allow_list", allowList(), () -> "",
               o -> Identifier.tryParse(o.toString()) != null);
 
       SERVER_BUILDER.pop();

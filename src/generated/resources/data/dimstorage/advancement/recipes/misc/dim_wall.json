@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "dimstorage:dim_wall"
+        "recipes": "dimstorage:dim_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

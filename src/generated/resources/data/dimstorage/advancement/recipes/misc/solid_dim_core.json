@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "dimstorage:solid_dim_core"
+        "recipes": "dimstorage:solid_dim_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

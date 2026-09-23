@@ -1,42 +1,27 @@
 package edivad.dimstorage.datagen;
 
-import java.util.concurrent.CompletableFuture;
 import edivad.dimstorage.setup.ModRegistration;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
+
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.world.item.Item;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+
 import net.neoforged.neoforge.common.Tags;
 
 public class DimStorageRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
-
-  public DimStorageRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-    super(registries, output);
-    this.items = registries.lookupOrThrow(Registries.ITEM);
+  public DimStorageRecipeProvider(BootstrapContext<Recipe<?>> recipeOutput,
+          BootstrapContext<Advancement> advancementOutput) {
+    super(recipeOutput, advancementOutput);
   }
 
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-      return new DimStorageRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "DimStorageRecipeProvider";
-    }
+  public static MultiRegistryBootstrap create() {
+    return RecipeProvider.asBootstrap(DimStorageRecipeProvider::new);
   }
 
   @Override

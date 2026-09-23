@@ -2,7 +2,6 @@ package edivad.dimstorage.datagen.models;
 
 import java.util.Optional;
 import edivad.dimstorage.DimStorage;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -11,8 +10,7 @@ import net.minecraft.client.data.models.model.TexturedModel;
 public class DimStorageModelTemplates {
 
   private static final ModelTemplate DIM_TANK_TEMPLATE = new ModelTemplate(
-      Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(DimStorage.id("dimensional_tank_template").toString())),
+      Optional.of(DimStorage.id("dimensional_tank_template").withPrefix("block/")),
       Optional.empty(),
       TextureSlot.DOWN,
       TextureSlot.SIDE,

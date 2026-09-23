@@ -27,6 +27,9 @@ import edivad.dimstorage.setup.DimStorageCreativeModeTabs;
 import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.DimCommands;
 import edivad.edivadlib.setup.UpdateChecker;
+
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
@@ -94,10 +97,11 @@ public class DimStorage {
   }
 
   private void handleGatherData(GatherDataEvent.Client event) {
-    event.createProvider(DimStorageRecipeProvider.Runner::new);
-    event.createProvider(DimStorageLootTableProvider::new);
+    event.createReloadableRegistryObjects(new RegistrySetBuilder()
+            .add(Registries.LOOT_TABLE, DimStorageLootTableProvider.create())
+            .add(Registries.ADVANCEMENT, DimStorageAdvancementProvider.create())
+            .add(DimStorageRecipeProvider.create()));
     event.createProvider(DimStorageTagsProvider::new);
-    event.createProvider(DimStorageAdvancementProvider::new);
     event.createProvider(DimStorageLanguageProvider::new);
     event.createProvider(DimStorageModelProvider::new);
   }

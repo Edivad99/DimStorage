@@ -133,11 +133,11 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
     poseStack.translate(0.5D, -0.5D, 0.5D);
 
     // Direction
-    poseStack.mulPose((new Quaternionf())
+    poseStack.rotate((new Quaternionf())
         .rotationXYZ(0F, (360 - state.rotation * 90) * ((float) Math.PI / 180F), 0F));
 
     // Sens
-    poseStack.mulPose((new Quaternionf()).rotationXYZ((float) Math.PI, 0F, 0F));
+    poseStack.rotate((new Quaternionf()).rotationXYZ((float) Math.PI, 0F, 0F));
 
     // Adjustment
     poseStack.translate(0D, -2D, 0D);
@@ -165,9 +165,13 @@ public class DimChestRenderer implements BlockEntityRenderer<BlockEntityDimChest
 
   private static void renderModelPart(SubmitNodeCollector collector, ModelPart modelPart,
       PoseStack poseStack, BlockEntityRenderState state, int color) {
-    collector.submitModelPart(modelPart, poseStack, RenderTypes.entitySolid(TEXTURE),
-        state.lightCoords, OverlayTexture.NO_OVERLAY, null, false, false, color,
-        state.breakProgress, 0);
+    var renderType = RenderTypes.entitySolid(TEXTURE);
+    collector.submitModelPart(modelPart, poseStack, renderType, state.lightCoords,
+        OverlayTexture.NO_OVERLAY, null, color, 0);
+    if (state.breakProgress != null) {
+      collector.order(1).submitCrumblingOverlay(modelPart, poseStack, renderType,
+          state.lightCoords, OverlayTexture.NO_OVERLAY, color, state.breakProgress);
+    }
   }
 
   @Override

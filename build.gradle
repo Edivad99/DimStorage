@@ -8,8 +8,8 @@ plugins {
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2'
-    id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
-    id 'com.diffplug.spotless' version '8.1.0'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
+    id 'com.diffplug.spotless' version '8.9.0'
 }
 
 def isRelease = System.getenv('CURSEFORGE_TOKEN')
@@ -105,7 +105,7 @@ repositories {
 }
 
 dependencies {
-    //implementation "edivad:EdivadLib-$minecraft_version:4.0.1-snapshot"
+    //implementation "edivad:EdivadLib-$minecraft_version:4.1.0-snapshot"
     implementation "curse.maven:edivadlib-638508:$edivadlib_id"
 
     //compileOnly "curse.maven:the-one-probe-245211:$top_version"
@@ -233,16 +233,21 @@ publishMods {
     modLoaders.add('neoforge')
     file = jar.archiveFile
 
+    maxRetries = 7
+
     curseforge {
         projectId = '353882'
         accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
         minecraftVersions.add(minecraft_version)
         requires('edivadlib')
+        client = true
+        server = true
     }
     modrinth {
         projectId = '8lnmIJH7'
         accessToken = providers.environmentVariable('MODRINTH_TOKEN')
         minecraftVersions.add(minecraft_version)
         requires('edivadlib')
+        environment = CLIENT_AND_SERVER
     }
 }

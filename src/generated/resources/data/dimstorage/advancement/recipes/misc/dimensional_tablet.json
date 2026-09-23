@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "dimstorage:dimensional_tablet"
+        "recipes": "dimstorage:dimensional_tablet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

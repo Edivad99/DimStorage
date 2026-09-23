@@ -130,7 +130,7 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
       return super.useItemOn(player, level, pos, hand);
     }
 
-    boolean result = FluidUtil.interactWithFluidHandler(player, hand, pos, getStorage());
+    boolean result = FluidUtil.interactWithFluidHandler(player, hand, pos, getStorage(), null);
     if (!result) {
       return super.useItemOn(player, level, pos, hand);
     }
