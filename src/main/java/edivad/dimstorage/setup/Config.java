@@ -16,13 +16,13 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config {
 
   public static void registerConfig(ModContainer container) {
-    var SERVER_BUILDER = new ModConfigSpec.Builder();
-    SERVER_BUILDER.comment(DimStorage.MODNAME + "'s config");
+    var builder = new ModConfigSpec.Builder();
+    builder.comment(DimStorage.MODNAME + "'s config");
 
-    DimBlock.registerServerConfig(SERVER_BUILDER);
-    DimTablet.registerServerConfig(SERVER_BUILDER);
+    DimBlock.registerSyncedConfig(builder);
+    DimTablet.registerSyncedConfig(builder);
 
-    container.registerConfig(ModConfig.Type.SERVER, SERVER_BUILDER.build());
+    container.registerConfig(ModConfig.Type.SYNCED, builder.build());
   }
 
   public static class DimBlock {
@@ -30,18 +30,18 @@ public class Config {
     public static ModConfigSpec.BooleanValue ALLOW_CONFIG;
     public static ModConfigSpec.BooleanValue ALLOW_PRIVATE_NETWORK;
 
-    public static void registerServerConfig(ModConfigSpec.Builder SERVER_BUILDER) {
-      SERVER_BUILDER.push("DimChest/DimTank");
+    public static void registerSyncedConfig(ModConfigSpec.Builder builder) {
+      builder.push("DimChest/DimTank");
 
-      ALLOW_CONFIG = SERVER_BUILDER
+      ALLOW_CONFIG = builder
           .comment("Allow players to change the DimChest/DimTank's frequency, default: true")
           .define("allowFrequency", true);
 
-      ALLOW_PRIVATE_NETWORK = SERVER_BUILDER
+      ALLOW_PRIVATE_NETWORK = builder
           .comment("Allow players to make DimChest/DimTank private, default: true")
           .define("allowPrivateNetwork", true);
 
-      SERVER_BUILDER.pop();
+      builder.pop();
     }
   }
 
@@ -49,17 +49,17 @@ public class Config {
 
     public static ModConfigSpec.ConfigValue<List<? extends String>> ALLOW_LIST;
 
-    public static void registerServerConfig(ModConfigSpec.Builder SERVER_BUILDER) {
-      SERVER_BUILDER.push("DimTablet");
+    public static void registerSyncedConfig(ModConfigSpec.Builder builder) {
+      builder.push("DimTablet");
 
-      ALLOW_LIST = SERVER_BUILDER
+      ALLOW_LIST = builder
           .comment(
               "A list of blocks that the DimTablet takes and transfers to the connected DimChest",
               "[/dimstorage add] adds the item you have in the main hand to this list")
           .defineList("allow_list", allowList(), () -> "",
               o -> Identifier.tryParse(o.toString()) != null);
 
-      SERVER_BUILDER.pop();
+      builder.pop();
     }
 
     public static boolean containItem(Item item) {
