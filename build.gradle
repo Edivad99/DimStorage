@@ -99,6 +99,10 @@ repositories {
         name = 'JEI'
         url = 'https://maven.blamejared.com/'
     }
+    maven {
+        name 'TOP'
+        url 'https://maven.k-4u.nl'
+    }
     flatDir {
         dir 'libs'
     }
@@ -108,7 +112,7 @@ dependencies {
     //implementation "edivad:EdivadLib-$minecraft_version:4.1.0-snapshot"
     implementation "curse.maven:edivadlib-638508:$edivadlib_id"
 
-    //compileOnly "curse.maven:the-one-probe-245211:$top_version"
+    compileOnly "mcjty.theoneprobe:theoneprobe:$top_version"
 
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
