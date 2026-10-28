@@ -28,7 +28,6 @@ import edivad.dimstorage.setup.ModRegistration;
 import edivad.dimstorage.tools.DimCommands;
 import edivad.edivadlib.setup.UpdateChecker;
 
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
@@ -41,6 +40,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -60,6 +60,7 @@ public class DimStorage {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleClientSetup);
     modEventBus.addListener(this::handleRegisterMenuScreens);
+    modEventBus.addListener(this::handleGatherDataRegistryEntries);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::registerCapabilities);
     modEventBus.addListener(this::registerPayloads);
@@ -96,11 +97,13 @@ public class DimStorage {
     event.register(ModRegistration.DIMTANK_MENU.get(), ScreenDimTank::new);
   }
 
+  private void handleGatherDataRegistryEntries(GatherDataRegistryEntriesEvent event) {
+    event.add(Registries.LOOT_TABLE, DimStorageLootTableProvider.create())
+        .add(Registries.ADVANCEMENT, DimStorageAdvancementProvider.create())
+        .add(DimStorageRecipeProvider.create());
+  }
+
   private void handleGatherData(GatherDataEvent.Client event) {
-    event.createReloadableRegistryObjects(new RegistrySetBuilder()
-            .add(Registries.LOOT_TABLE, DimStorageLootTableProvider.create())
-            .add(Registries.ADVANCEMENT, DimStorageAdvancementProvider.create())
-            .add(DimStorageRecipeProvider.create()));
     event.createProvider(DimStorageTagsProvider::new);
     event.createProvider(DimStorageLanguageProvider::new);
     event.createProvider(DimStorageModelProvider::new);
