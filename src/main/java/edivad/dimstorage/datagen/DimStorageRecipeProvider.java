@@ -72,7 +72,7 @@ public class DimStorageRecipeProvider extends RecipeProvider {
         .define('a', Items.OBSIDIAN)
         .define('b', ModRegistration.SOLIDDIMCORE.get())
         .define('c', Items.IRON_INGOT)
-        .define('d', Tags.Items.GLASS_PANES)
+        .define('d', Tags.BlockItems.GLASS_PANES.item())
         .unlockedBy(getHasName(ModRegistration.DIMCHEST.get()), has(ModRegistration.DIMCHEST.get()))
         .save(output);
 
@@ -83,7 +83,7 @@ public class DimStorageRecipeProvider extends RecipeProvider {
         .define('a', ModRegistration.DIMWALL.get())
         .define('b', ModRegistration.SOLIDDIMCORE.get())
         .define('c', Items.CAULDRON)
-        .define('d', Tags.Items.GLASS_BLOCKS)
+        .define('d', Tags.BlockItems.GLASS_BLOCKS.item())
         .unlockedBy(getHasName(Items.CAULDRON), has(Items.CAULDRON))
         .save(output);
   }
