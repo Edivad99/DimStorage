@@ -3,6 +3,7 @@ package edivad.dimstorage.blockentity;
 import edivad.dimstorage.api.AbstractDimStorage;
 import edivad.dimstorage.api.Frequency;
 import edivad.dimstorage.items.components.DimStorageComponents;
+import edivad.dimstorage.setup.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +12,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -86,6 +88,34 @@ public abstract class BlockEntityFrequencyOwner extends BlockEntity implements M
 
   public boolean canAccess(Player player) {
     return this.frequency.canAccess(player);
+  }
+
+  public boolean stillValid(Player player) {
+    return !this.isRemoved() && canAccess(player) && Container.stillValidBlockEntity(this, player);
+  }
+
+  /**
+   * Applies the settings requested by a client. The owner is never taken from the client: a
+   * private frequency is always bound to the player who sent the request.
+   */
+  public void applyClientSettings(ServerPlayer player, int channel, boolean privateFrequency,
+      boolean locked) {
+    if (!stillValid(player)) {
+      return;
+    }
+    var newFrequency = this.frequency;
+    if (Config.DimBlock.ALLOW_CONFIG.get() && channel >= 0) {
+      newFrequency = newFrequency.setChannel(channel);
+    }
+    if (Config.DimBlock.ALLOW_PRIVATE_NETWORK.get() && privateFrequency) {
+      newFrequency = newFrequency.setOwner(player);
+    } else if (!privateFrequency) {
+      newFrequency = newFrequency.setPublic();
+    }
+    if (!newFrequency.equals(this.frequency)) {
+      setFrequency(newFrequency);
+    }
+    setLocked(locked);
   }
 
   public abstract AbstractDimStorage getStorage();
