@@ -103,9 +103,13 @@ public class BlockEntityDimTank extends BlockEntityFrequencyOwner {
     return amount / 1000;
   }
 
-  public void swapAutoEject() {
-    this.autoEject = !this.autoEject;
+  public void setAutoEject(boolean autoEject) {
+    this.autoEject = autoEject;
     this.setChanged();
+  }
+
+  public void swapAutoEject() {
+    this.setAutoEject(!this.autoEject);
   }
 
   @Override

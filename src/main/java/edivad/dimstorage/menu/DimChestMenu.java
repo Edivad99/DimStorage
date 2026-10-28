@@ -35,7 +35,7 @@ public class DimChestMenu extends DimStorageMenu {
 
   @Override
   public boolean stillValid(Player player) {
-    return chestInv.stillValid(player);
+    return owner.stillValid(player);
   }
 
   @Override

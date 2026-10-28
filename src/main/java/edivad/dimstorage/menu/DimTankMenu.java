@@ -3,6 +3,7 @@ package edivad.dimstorage.menu;
 import edivad.dimstorage.blockentity.BlockEntityDimTank;
 import edivad.dimstorage.setup.ModRegistration;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 
 public class DimTankMenu extends DimStorageMenu {
 
@@ -16,5 +17,10 @@ public class DimTankMenu extends DimStorageMenu {
     this.isOpen = isOpen;
 
     this.addInventorySlots(inventory);
+  }
+
+  @Override
+  public boolean stillValid(Player player) {
+    return owner.stillValid(player);
   }
 }
